@@ -22,3 +22,11 @@
   width: 11px;
   content: "";
 }
+
+.timeline .timeline-item{
+  flex-direction: row;
+}
+
+.timeline .btn-delete{
+  margin:auto
+}
