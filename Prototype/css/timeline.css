@@ -4,17 +4,17 @@
   list-style: none;
 }
 
-.timeline .timeline-item {
+.timeline .timeline-item, .timeline-transport {
   position: relative;
 }
 
-.timeline .timeline-item:after {
+.timeline .timeline-item:after, .timeline-transport:after {
   position: absolute;
   display: block;
   top: 0;
 }
 
-.timeline .timeline-item:after {
+.timeline .timeline-item:after, .timeline-transport:after{
   background-color: hsl(0, 0%, 90%);
   left: -38px;
   border-radius: 50%;
@@ -29,4 +29,8 @@
 
 .timeline .btn-delete{
   margin:auto
+}
+
+.timeline .timeline-transport{
+  margin: 10px 0px;
 }
