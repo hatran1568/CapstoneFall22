@@ -24,7 +24,7 @@ $(function () {
         $(".edit-form").css("display", "none");
         $(".add-form").css("display", "none");
     });
-    $(".btn-save").click(function () {
+    $("#editBtnSave").click(function () {
         var startTime = $("#startTime").val();
         let startDate = new Date($("date").val().toString() + "T" + $("startTime").val().toString());
         let endDate = new Date(startDate.valueOf());
