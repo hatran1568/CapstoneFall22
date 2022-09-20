@@ -14,6 +14,14 @@ $(function () {
         $(".edit-form").css("display", "none");
         $(".add-form").css("display", "none");
     });
+    $(".btn-save").click(function () {
+        item.find(".name-value").html($("#placeName").val());
+        item.find(".date-value").html($("#date").val());
+        item.find(".time-value").html($("#time").val());
+        item.find(".address-value").html($("#address").val());
+        $(".edit-form").css("display", "none");
+    });
+
     $("#btnAdd").click(function(){
         $(".add-form").css("display", "block");
     });
@@ -38,12 +46,5 @@ $(function () {
             
         });
         $(".add-form").css("display", "none");
-    });
-    $(".btn-save").click(function () {
-        item.find(".name-value").html($("#placeName").val());
-        item.find(".date-value").html($("#date").val());
-        item.find(".time-value").html($("#time").val());
-        item.find(".address-value").html($("#address").val());
-        $(".edit-form").css("display", "none");
     });
 });
