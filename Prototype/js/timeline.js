@@ -21,6 +21,7 @@ $(function () {
         dateEnd.setTime(dateEnd.getTime() + ($('#durationAdd').val()*60*60*1000));
         var endTime = String(dateEnd.getHours()).padStart(2, '0') + ":" + String(dateEnd.getMinutes()).padStart(2, '0');
         console.log(startTime);
+        console.log(endTime);
         $(".timeline").children(".timeline-item").each(function(){
             var startTimeItem = $(this).find(".time-value").html().split(" - ")[0];
             if (startTimeItem >= startTime){
@@ -28,7 +29,7 @@ $(function () {
                 item.find(".name-value").html($("#placeNameAdd").val());
                 item.find(".date-value").html($("#dateAdd").val());
                 item.find(".address-value").html($("#addressAdd").val());
-                item.find("time-value").html(startTime + " - " + endTime);
+                item.find(".time-value").html(startTime + " - " + endTime);
                 $(this).after(item);
                 return false;
             }
