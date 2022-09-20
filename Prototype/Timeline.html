@@ -7,10 +7,9 @@
     <body>
         <div class="container page">
             <div class="row">
-                <div class="col-6">
+                <div class="col-8">
                     <ul class="timeline">
                         <li class="timeline-item card">
-
                             <div class="card-body row">
                                 <div class="col-10">
                                     <h5 class="fw-bold card-title name-value">Trung tâm thương mại The Garden</h5>
@@ -41,7 +40,8 @@
                                 </div>
                             </div>
                         </li>
-                        <li class="timeline-transport "><i class="fa-solid fa-car"></i> 30 mins</li>
+
+                        <li class="timeline-transport"><i class="fa-solid fa-car"></i> 30 mins</li>
 
                         <li class="timeline-item card">
                             <div class="card-body row">
@@ -74,7 +74,9 @@
                                 </div>
                             </div>
                         </li>
-                        <li class="timeline-transport "><i class="fa-solid fa-car"></i> 30 mins</li>
+
+                        <li class="timeline-transport"><i class="fa-solid fa-car"></i> 30 mins</li>
+
                         <li class="timeline-item card">
                             <div class="card-body row">
                                 <div class="col-10">
@@ -106,7 +108,8 @@
                                 </div>
                             </div>
                         </li>
-                        <li class="timeline-transport "><i class="fa-solid fa-car"></i> 30 mins</li>
+
+                        <li class="timeline-transport"><i class="fa-solid fa-car"></i> 30 mins</li>
 
                         <li class="timeline-item card">
                             <div class="card-body row">
@@ -139,7 +142,8 @@
                                 </div>
                             </div>
                         </li>
-                        <li class="timeline-transport "><i class="fa-solid fa-car"></i> 30 mins</li>
+
+                        <li class="timeline-transport"><i class="fa-solid fa-car"></i> 30 mins</li>
 
                         <li class="timeline-item card">
                             <div class="card-body row">
@@ -174,6 +178,15 @@
                         </li>
                     </ul>
                 </div>
+
+                <div class="col-4" style="position: fixed; top: 0; right: 0">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">Estimated cost</h5>
+                            <p class="card-text"><span class="money-value">0</span> ₫</p>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
 
@@ -186,32 +199,38 @@
                         </div>
 
                         <div class="form-group">
-                            <label for="placeName" class="form-label">Tên địa điểm</label>
+                            <label for="placeName" class="form-label">Place name</label>
                             <input type="text" class="form-control" id="placeName" />
                         </div>
 
                         <div class="form-group">
-                            <label for="address" class="form-label">Địa chỉ</label>
+                            <label for="address" class="form-label">Address</label>
                             <input type="text" class="form-control" id="address" />
                         </div>
 
                         <div class="form-group">
-                            <label for="date" class="form-label">Ngày</label>
+                            <label for="date" class="form-label">Date</label>
                             <input type="date" class="form-control" id="date" />
                         </div>
 
                         <div class="form-group">
-                            <label for="time" class="form-label">Giờ</label>
-                            <input type="time" class="form-control" id="time" />
+                            <label for="time" class="form-label">Start time</label>
+                            <input type="time" class="form-control" id="startTime" />
+                        </div>
+
+                        <div class="form-group">
+                            <label for="time" class="form-label">Duration</label>
+                            <input type="number" class="form-control" id="duration" />
                         </div>
 
                         <div class="form-group d-flex justify-content-center">
-                            <button type="button" class="btn btn-success btn-save">Lưu</button>
+                            <button type="button" class="btn btn-success btn-save">Save</button>
                         </div>
                     </form>
                 </div>
             </div>
         </div>
+
         <div class="add-form">
             <div class="row">
                 <div class="col-3 border rounded-2 bg-light position-absolute top-50 start-50 translate-middle">
@@ -246,16 +265,19 @@
                         </div>
 
                         <div class="form-group d-flex justify-content-center">
-                            <button type="button" value="1" id="addBtnSave" class="btn btn-success btn-save">Save</button>
+                            <button type="button" value="1" id="addBtnSave" class="btn btn-success btn-save">
+                                Save
+                            </button>
                         </div>
                     </form>
                 </div>
             </div>
         </div>
-        <div class="form-group" style="position: fixed;bottom:0; right: 20px;">
-            <button type="button" class="btn btn-primary btn-md" id="btnAdd" data-toggle="modal"
-              data-target="#myModal">+</button>
-          </div>
+        <div class="form-group" style="position: fixed; bottom: 0; right: 20px">
+            <button type="button" class="btn btn-primary btn-md" id="btnAdd" data-toggle="modal" data-target="#myModal">
+                +
+            </button>
+        </div>
     </body>
     <script src="resources/jquery/jquery-3.6.1.min.js"></script>
     <script src="js/timeline.js"></script>
