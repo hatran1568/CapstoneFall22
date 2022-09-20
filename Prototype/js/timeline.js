@@ -26,7 +26,7 @@ $(function () {
     });
     $(".btn-save").click(function () {
         var startTime = $("#startTime").val();
-        let startDate = new Date($("date").val().toString() + "T" + $("startTime").val().toString());
+        let startDate = new Date($("#date").val().toString() + "T" + $("#startTime").val().toString());
         let endDate = new Date(startDate.valueOf());
         endDate.setTime(endDate.getTime() + $("#duration").val() * 60 * 60 * 1000);
         var endTime = String(endDate.getHours()).padStart(2, "0") + ":" + String(endDate.getMinutes()).padStart(2, "0");
