@@ -35,7 +35,7 @@
         slotDuration: '00:15:00',
         slotLabelInterval: '01:00:00',
         initialDate: '2022-09-21',
-        navLinks: true, // can click day/week names to navigate views
+        navLinks: false, // can click day/week names to navigate views
         nowIndicator: true,
         allDaySlot: false,
         weekNumbers: true,
@@ -78,58 +78,84 @@
               calendar.getEventById(arg.event.id).remove()
             }
           }
+          let detailBtn = document.createElement('a')
+          detailBtn.classList = 'dropdown-item'
+          detailBtn.innerHTML = 'Details'
+          detailBtn.onclick = function () {
+              window.location.href = "LocationDetails.html"
+          }
+
+          moreMenu.appendChild(detailBtn)
           moreMenu.appendChild(deleteBtn)
           moreDiv.appendChild(moreMenu)
 
-          let arrayOfDomNodes = [timeDiv, titleDiv, moreDiv]
+          let costDiv = document.createElement('div')
+          if(arg.event.extendedProps.cost){
+              costDiv.innerHTML = 'Cost: ' + arg.event.extendedProps.cost + ' VND'
+          }
+
+          let arrayOfDomNodes = [timeDiv, titleDiv, moreDiv, costDiv]
           return { domNodes: arrayOfDomNodes }
         },
         events: [
           {
             id: 1,
             title: 'Ho Chi Minh Mausoleum',
-            start: '2022-09-21T16:00:00'
+            start: '2022-09-21T16:00:00',
+            cost: 0
           },
           {
             id: 2,
             title: 'Temple Of Literature',
-            start: '2022-09-22T16:00:00'
+            start: '2022-09-22T16:00:00',
+            cost: 30000
           },
           {
             id: 3,
             title: 'Thang Long Water Puppet Theatre',
             start: '2022-09-21T10:30:00',
-            end: '2022-09-21T12:30:00'
+            end: '2022-09-21T12:30:00',
+            cost: 200000
           },
           {
             id: 4,
             title: 'Old Quarter',
-            start: '2022-09-21T12:00:00'
+            start: '2022-09-21T12:00:00',
+            cost: 0
           },
           {
             id: 5,
             title: 'Hoan Kiem Lake',
-            start: '2022-09-22T14:30:00'
+            start: '2022-09-22T14:30:00',
+            cost: 0
           },
           {
             id: 6,
             title: 'West Lake',
-            start: '2022-09-23T17:30:00'
+            start: '2022-09-23T17:30:00',
+            cost: 0
           },
           {
             id: 7,
             title: 'Hoa Lo Prison',
-            start: '2022-09-24T20:00:00'
+            start: '2022-09-24T20:00:00',
+            cost: 30000
           },
           {
             id: 8,
             title: 'Fine Arts Museum',
-            start: '2022-09-24T07:00:00'
+            start: '2022-09-24T07:00:00',
+            cost: 150000
           }
-        ]
+        ], 
+        eventAdd: function(arg){
+          console.log(arg.event.extendedProps.cost)
+          getTotalCost()
+        }
       });
 
       calendar.render();
+      getTotalCost()
       $("#addEventBtn").on("click", function () {
         let dateStart = new Date($('#newDate').val().toString()+'T'+ $('#newStartTime').val().toString())
         let dateEnd = new Date(dateStart.valueOf())
@@ -137,12 +163,27 @@
         calendar.addEvent({
           title: $('#newTitle').val(),
           start: dateStart,
-          end: dateEnd
+          end: dateEnd,
+          cost: Number($('#newCost').val())
         });
         $('#myModal').modal('hide')
       });
+      function getTotalCost(){
+        let totalEvents = calendar.getEvents()
+        let totalCost = 0
+        totalEvents.forEach(event => {
+          if(event.extendedProps.cost){
+            totalCost += event.extendedProps.cost
+          }
+        });
+        document.getElementById('totalCost').innerHTML = totalCost
+      }
+
     });
 
+    function goToTimeline(){
+        window.location.href = "Timeline.html"
+      }
   </script>
   <style>
     body {
@@ -152,7 +193,7 @@
     }
 
     #calendar {
-      max-width: 100%;
+      /* max-width: 80vw; */
     }
 
     #btnAdd {
@@ -163,13 +204,27 @@
       border: none;
       font-size: 30px;
     }
+    #calendar-container{
+      /* display: inline-block; */
+    }
   </style>
 </head>
 
 <body>
 
-  <div id='calendar'></div>
-  <div class="form-group" style="position: absolute;bottom:0; right: 20px;">
+  <div>
+    <button id="timelineBtn" onclick="goToTimeline()">Back to Timeline</button>
+  </div>
+  <div class="row">
+    <div id="calendar-container" class="col-9">
+      <div id='calendar'></div>
+    </div>
+    <div id="dashboard" class="col-3">
+      <span>Total Cost:</span>
+      <span id="totalCost"></span>
+    </div>
+  </div>
+  <div class="form-group" style="position: fixed;bottom:0; right: 20px;">
     <button type="button" class="btn btn-primary btn-md" id="btnAdd" data-toggle="modal"
       data-target="#myModal">+</button>
   </div>
@@ -201,6 +256,10 @@
             <div class="form-group">
               <label class="col-form-label">Duration:</label>
               <input class="form-control" type="number" min="0" value="1" id="newDuration"/>
+            </div>
+            <div class="form-group">
+              <label class="col-form-label">Cost:</label>
+              <input class="form-control" type="number" min="0" value="0" id="newCost"/>
             </div>
           </form>
         </div>
