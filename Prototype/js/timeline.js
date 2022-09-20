@@ -1,11 +1,21 @@
 $(function () {
+    var item;
+    var minNum = 500;
+    var maxNum = 10000;
+    let value = Math.floor(Math.random() * (maxNum - minNum) + minNum) * 1000;
+
+    $(document).ready(function () {
+        $(".money-value").html(value);
+    });
+
     $(".btn-delete").click(function () {
         if (confirm("Do you want to delete this activity in your itinerary?")) {
+            $(this).closest(".timeline-item").next().css("display", "none");
             $(this).closest(".timeline-item").css("display", "none");
+            $(".money-value").html(value);
         }
     });
 
-    var item;
     $(".btn-edit").click(function () {
         item = $(this).closest(".timeline-item");
         $(".edit-form").css("display", "block");
@@ -24,6 +34,7 @@ $(function () {
         item.find(".date-value").html($("#date").val());
         item.find(".time-value").html(startTime + " - " + endTime);
         item.find(".address-value").html($("#address").val());
+        $(".money-value").html(value);
         $(".edit-form").css("display", "none");
     });
 
@@ -51,6 +62,7 @@ $(function () {
                     return false;
                 }
             });
+        $(".money-value").html(value);
         $(".add-form").css("display", "none");
     });
 });
