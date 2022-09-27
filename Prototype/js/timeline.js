@@ -62,7 +62,7 @@ $(function () {
                     return false;
                 }
             });
-        $(".money-value").html(value);
+        $(".money-value").html(value + 500000);
         $(".add-form").css("display", "none");
     });
 });
