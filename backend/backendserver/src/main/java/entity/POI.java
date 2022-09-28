@@ -45,8 +45,11 @@ public class POI {
     @Column(name="website")
     private String website;
 
-    @Column(name="openning_time")
+    @Column(name="opening_time")
     private int openTime;
+
+    @Column(name="duration")
+    private int duration;
 
     @Column(name = "closing_time")
     private int closeTime;
