@@ -17,9 +17,9 @@ public class ChecklistItem {
     @JoinColumn(name = "trip_id", nullable = false)
     private Trip trip;
 
-    @Column(name = "check")
+    @Column(name = "checked")
     private boolean checked;
 
-    @Column(name="content")
+    @Column(name="content", columnDefinition = "text")
     private String content;
 }
