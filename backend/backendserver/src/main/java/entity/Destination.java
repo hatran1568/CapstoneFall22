@@ -13,6 +13,9 @@ public class Destination {
     @Column(name="destination_id",columnDefinition = "INT(1)")
     private int destinationId;
 
+    @Column(name="name")
+    private String name;
+
     @Column(name="introduction")
     private String introduction;
 
