@@ -16,6 +16,6 @@ public class Category {
     @Column(name="category_name")
     private String categoryName;
 
-    @Column(name="description")
+    @Column(name="description", columnDefinition = "text")
     private String description;
 }

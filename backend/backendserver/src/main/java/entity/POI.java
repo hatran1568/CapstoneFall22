@@ -24,10 +24,10 @@ public class POI {
     @Column(name="Name")
     private String name;
 
-    @Column(name="introduction")
+    @Column(name="introduction", columnDefinition = "text")
     private String Introduction;
 
-    @Column(name="description")
+    @Column(name="description", columnDefinition = "text")
     private String Description;
 
     @Column(name="address")
@@ -57,6 +57,6 @@ public class POI {
     @Column(name = "typical_price")
     private double typicalPrice;
 
-    @Column(name = "additional_information")
+    @Column(name = "additional_information", columnDefinition = "text")
     private String additionalInformation;
 }
