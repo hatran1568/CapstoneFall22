@@ -22,6 +22,6 @@ public class POIImage {
     private String URL;
 
 
-    @Column(name="description")
+    @Column(name="description", columnDefinition = "text")
     private String description;
 }
