@@ -24,7 +24,7 @@ public class POI {
     @Column(name="Name")
     private String name;
 
-    @Column(name="introdcution")
+    @Column(name="introduction")
     private String Introduction;
 
     @Column(name="description")
