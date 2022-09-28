@@ -16,10 +16,10 @@ public class Destination {
     @Column(name="name")
     private String name;
 
-    @Column(name="introduction")
+    @Column(name="introduction", columnDefinition = "text")
     private String introduction;
 
-    @Column(name="description")
+    @Column(name="description", columnDefinition = "text")
     private String description;
 
 

@@ -20,7 +20,7 @@ public class Ticket {
     @JoinColumn(name = "trip_id", nullable = false)
     private Trip trip;
 
-    @Column(name="details")
+    @Column(name="details", columnDefinition = "text")
     private String details;
 
     @Column(name="time")

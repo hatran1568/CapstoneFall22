@@ -50,6 +50,6 @@ public class Request {
     @Column(name = "typical_price")
     private double typicalPrice;
 
-    @Column(name = "additional_information")
+    @Column(name = "additional_information", columnDefinition = "text")
     private String additionalInformation;
 }

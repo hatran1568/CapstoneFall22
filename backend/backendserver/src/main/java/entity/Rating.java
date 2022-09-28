@@ -24,7 +24,7 @@ public class Rating {
     @JoinColumn(name = "rate")
     private int rate;
 
-    @JoinColumn(name = "comment")
+    @JoinColumn(name = "comment", columnDefinition = "text")
     private String Comment;
 
 
