@@ -1,5 +1,4 @@
-package entity;
-
+package com.planner.backendserver.entity;
 
 import lombok.Data;
 
@@ -7,30 +6,35 @@ import javax.persistence.*;
 
 @Data
 @Entity
-@Table(name="request")
-public class Request {
+@Table(name="poi")
+public class POI {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name="request_id",columnDefinition = "INT(1)")
-    private int requestId;
+    @Column(name="poi_id",columnDefinition = "INT(1)")
+    private int poiId;
 
     @ManyToOne
-    @JoinColumn(name = "poi_id", nullable = false)
-    private POI poi;
+    @JoinColumn(name = "destination_id", nullable = false)
+    private Destination destination;
 
     @ManyToOne
-    @JoinColumn(name = "user_id", nullable = false)
-    private User user;
+    @JoinColumn(name = "category_id", nullable = false)
+    private Category category;
 
     @Column(name="Name")
     private String name;
 
+    @Column(name="introduction", columnDefinition = "text")
+    private String Introduction;
 
+    @Column(name="description", columnDefinition = "text")
+    private String Description;
 
     @Column(name="address")
     private String Address;
 
-
+    @Column(name="google_rate")
+    private double googleRate;
 
     @Column(name="telephone_number")
     private String phone;
@@ -41,8 +45,11 @@ public class Request {
     @Column(name="website")
     private String website;
 
-    @Column(name="openning_time")
+    @Column(name="opening_time")
     private int openTime;
+
+    @Column(name="duration")
+    private int duration;
 
     @Column(name = "closing_time")
     private int closeTime;

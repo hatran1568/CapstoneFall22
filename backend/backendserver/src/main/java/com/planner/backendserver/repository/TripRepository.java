@@ -1,6 +1,6 @@
-package repository;
+package com.planner.backendserver.repository;
 
-import entity.Trip;
+import com.planner.backendserver.entity.Trip;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
