@@ -3,6 +3,7 @@ package entity;
 import lombok.Data;
 
 import javax.persistence.*;
+import java.sql.Date;
 
 @Data
 @Entity
@@ -59,4 +60,13 @@ public class POI {
 
     @Column(name = "additional_information", columnDefinition = "text")
     private String additionalInformation;
+
+    @Column(name = "date_created")
+    private Date dateCreated;
+
+    @Column(name = "date_modified")
+    private Date dateModified;
+
+    @Column(name="is_deleted")
+    private boolean isDeleted;
 }

@@ -5,6 +5,7 @@ import lombok.Data;
 
 import javax.persistence.*;
 import java.sql.Date;
+import java.util.List;
 
 @Data
 @Entity
@@ -24,4 +25,8 @@ public class DayOfTrip {
 
     @Column(name="number")
     private int number;
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "dayOfTrip", cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
+
+    private List<POIOfDay> listPOIs;
 }
