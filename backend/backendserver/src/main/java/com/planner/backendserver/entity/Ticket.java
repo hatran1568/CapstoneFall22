@@ -1,11 +1,10 @@
-package entity;
+package com.planner.backendserver.entity;
 
 
 import lombok.Data;
 
 import javax.persistence.*;
 import java.sql.Date;
-import java.sql.Time;
 
 @Data
 @Entity

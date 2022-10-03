@@ -1,4 +1,4 @@
-package entity;
+package com.planner.backendserver.entity;
 
 
 import lombok.Data;
