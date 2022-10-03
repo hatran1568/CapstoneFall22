@@ -1,4 +1,4 @@
-package entity;
+package com.planner.backendserver.entity;
 
 import lombok.Data;
 
@@ -7,22 +7,20 @@ import java.sql.Date;
 
 @Data
 @Entity
-@Table(name="blog")
-public class Blog {
+@Table(name="collection")
+public class Collection {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name="blog_id",columnDefinition = "INT(1)")
-    private int blogId;
+    @Column(name="request_id",columnDefinition = "INT(1)")
+    private  int requestId;
 
     @ManyToOne
-    @JoinColumn(name = "user_id", nullable = false)
+    @JoinColumn(name = "user_id", nullable = false,unique = true)
     private User user;
 
     @Column(name = "title")
     private  String title;
 
-    @Column(name = "content", columnDefinition = "text")
-    private  String content;
 
     @Column(name="date")
     private Date date;
