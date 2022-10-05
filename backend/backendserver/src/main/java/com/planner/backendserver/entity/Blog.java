@@ -1,9 +1,11 @@
 package com.planner.backendserver.entity;
 
 import lombok.Data;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
-import java.sql.Date;
+import java.util.Date;
 
 @Data
 @Entity
@@ -24,6 +26,20 @@ public class Blog {
     @Column(name = "content", columnDefinition = "text")
     private  String content;
 
-    @Column(name="date")
-    private Date date;
+    @Column(name="thumbnail",columnDefinition = "text")
+    private  String thumbnail;
+
+    @Column(name="date_created")
+    @Temporal(TemporalType.TIMESTAMP)
+    @CreationTimestamp
+    private Date dateCreated;
+
+    @Column(name="date_modified")
+    @Temporal(TemporalType.TIMESTAMP)
+    @UpdateTimestamp
+    private Date dateModified;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name= "status")
+    private BlogStatus status;
 }

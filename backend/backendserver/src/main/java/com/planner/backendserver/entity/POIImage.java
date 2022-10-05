@@ -18,8 +18,8 @@ public class POIImage {
     @JoinColumn(name = "poi_id", nullable = false)
     private POI poi;
 
-    @Column(name="url")
-    private String URL;
+    @Column(name="url",columnDefinition = "text")
+    private String url;
 
 
     @Column(name="description", columnDefinition = "text")

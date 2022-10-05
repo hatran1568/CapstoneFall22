@@ -18,7 +18,7 @@ public class DestinationImage {
     @JoinColumn(name = "destination_id", nullable = false)
     private Destination destination;
 
-    @Column(name="url")
+    @Column(name="url",columnDefinition = "text")
     private String URL;
 
 

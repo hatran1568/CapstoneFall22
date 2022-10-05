@@ -8,7 +8,7 @@ public class Distance_PK  implements Serializable {
     private POI startStation;
     private POI endStation;
 
-    public Distance_PK(POI startStation, POI endStation) {
+    public Distance_PK(POI startStation,POI endStation) {
         this.startStation = startStation;
         this.endStation = endStation;
     }
