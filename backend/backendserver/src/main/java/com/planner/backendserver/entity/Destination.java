@@ -1,8 +1,11 @@
 package com.planner.backendserver.entity;
 
 import lombok.Data;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
+import java.util.Date;
 
 @Data
 @Entity
@@ -16,11 +19,23 @@ public class Destination {
     @Column(name="name")
     private String name;
 
-    @Column(name="introduction", columnDefinition = "text")
-    private String introduction;
+
 
     @Column(name="description", columnDefinition = "text")
     private String description;
+
+    @Column(name="date_created")
+    @Temporal(TemporalType.TIMESTAMP)
+    @CreationTimestamp
+    private Date dateCreated;
+
+    @Column(name="is_deleted")
+    private boolean isDeleted;
+
+    @Column(name="date_modified")
+    @Temporal(TemporalType.TIMESTAMP)
+    @UpdateTimestamp
+    private Date dateModified;
 
 
 }

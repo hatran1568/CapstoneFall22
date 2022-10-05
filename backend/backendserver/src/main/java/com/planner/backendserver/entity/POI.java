@@ -1,18 +1,20 @@
 package com.planner.backendserver.entity;
 
 import lombok.Data;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
-import java.sql.Date;
+import java.util.Date;
 
 @Data
 @Entity
 @Table(name="poi")
-public class POI {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name="poi_id",columnDefinition = "INT(1)")
-    private int poiId;
+public class POI extends MasterActivity {
+
+//    @OneToOne(cascade = CascadeType.ALL)
+//    @JoinColumn(name="poi_id")
+//    private MasterActivity masterActivity;
 
     @ManyToOne
     @JoinColumn(name = "destination_id", nullable = false)
@@ -22,22 +24,15 @@ public class POI {
     @JoinColumn(name = "category_id", nullable = false)
     private Category category;
 
-    @Column(name="Name")
-    private String name;
-
-    @Column(name="introduction", columnDefinition = "text")
-    private String Introduction;
-
     @Column(name="description", columnDefinition = "text")
     private String Description;
 
-    @Column(name="address")
-    private String Address;
+
 
     @Column(name="google_rate")
     private double googleRate;
 
-    @Column(name="telephone_number")
+    @Column(name="telephone_number",columnDefinition = "text")
     private String phone;
 
     @Column(name="business_email")
@@ -62,9 +57,13 @@ public class POI {
     private String additionalInformation;
 
     @Column(name = "date_created")
+    @Temporal(TemporalType.TIMESTAMP)
+    @CreationTimestamp
     private Date dateCreated;
 
     @Column(name = "date_modified")
+    @Temporal(TemporalType.TIMESTAMP)
+    @UpdateTimestamp
     private Date dateModified;
 
     @Column(name="is_deleted")

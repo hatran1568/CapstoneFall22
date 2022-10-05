@@ -1,10 +1,13 @@
 package com.planner.backendserver.entity;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
-import java.sql.Date;
+import java.util.Date;
 import java.util.List;
 
 @Data
@@ -20,24 +23,34 @@ public class Trip {
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
+    @Column(name="budget")
+    private double budget;
+
     @Column(name="start_date")
     private Date startDate;
 
     @Column(name="end_date")
     private Date endDate;
 
-    @Column(name = "number_of_days")
-    private int numberOfDays;
+    @Column(name="name")
+    private String name;
 
     @Column(name = "date_created")
+    @CreationTimestamp
+    @Temporal(TemporalType.TIMESTAMP)
     private Date dateCreated;
 
     @Column(name = "date_modified")
+    @UpdateTimestamp
+    @Temporal(TemporalType.TIMESTAMP)
     private Date dateModified;
 
     @Column(name="is_deleted")
     private boolean isDeleted;
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "trip", cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
-    private List<DayOfTrip> listDays;
+    @OneToMany(targetEntity = TripDetails.class,fetch = FetchType.LAZY, mappedBy = "trip", cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
+    private List<TripDetails> listTripDetails;
+
+
+
 }

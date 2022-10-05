@@ -17,6 +17,6 @@ public class CollectionPOI {
 
     @Id
     @ManyToOne
-    @JoinColumn(name = "poi_id", nullable = false)
+    @JoinColumn(name = "poi_id", nullable = false,referencedColumnName = "activity_id")
     private POI poi;
 }
