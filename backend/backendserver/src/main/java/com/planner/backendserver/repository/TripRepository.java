@@ -13,4 +13,6 @@ public interface TripRepository extends JpaRepository<Trip, Integer> {
     Optional<Trip> findById(int id);
     ArrayList<Trip> getTripsByUser(String email);
 
+
+
 }

@@ -16,6 +16,7 @@ public class Distance {
 
     @Id
     @ManyToOne
+
     @JoinColumn(name = "dest_poi", nullable = false)
     private POI endStation;
 

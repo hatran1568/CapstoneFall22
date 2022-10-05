@@ -1,13 +1,11 @@
 package com.planner.backendserver.controller;
 
+import com.planner.backendserver.DTO.GenerateTripUserInput;
 import com.planner.backendserver.entity.Trip;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import com.planner.backendserver.repository.TripRepository;
 
 import java.util.Optional;
@@ -30,4 +28,6 @@ public class TripController {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+
+
 }
