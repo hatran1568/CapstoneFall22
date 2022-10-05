@@ -10,15 +10,15 @@ import javax.persistence.*;
 public class RequestAttachment {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name="attach_id",columnDefinition = "INT(1)")
+    @Column(name="attachment_id",columnDefinition = "INT(1)")
     private int attachId;
 
     @ManyToOne
     @JoinColumn(name = "request_id", nullable = false)
     private Request request;
 
-    @Column(name="url")
-    private String URL;
+    @Column(name="url",columnDefinition = "text")
+    private String url;
 
 
 }

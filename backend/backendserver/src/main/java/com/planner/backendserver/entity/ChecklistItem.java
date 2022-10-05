@@ -1,8 +1,11 @@
 package com.planner.backendserver.entity;
 
 import lombok.Data;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
+import java.util.Date;
 
 @Data
 @Entity
@@ -11,7 +14,7 @@ public class ChecklistItem {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name="checklist_id",columnDefinition = "INT(1)")
-    private int ticketId;
+    private int itemId;
 
     @ManyToOne
     @JoinColumn(name = "trip_id", nullable = false)
@@ -22,4 +25,17 @@ public class ChecklistItem {
 
     @Column(name="content", columnDefinition = "text")
     private String content;
+
+    @Column(name="date_created")
+    @Temporal(TemporalType.TIMESTAMP)
+    @CreationTimestamp
+    private Date dateCreated;
+
+    @Column(name="date_modified")
+    @Temporal(TemporalType.TIMESTAMP)
+    @UpdateTimestamp
+    private Date dateModified;
+
+    @Column(name="is_deleted")
+    private boolean isDeleted;
 }

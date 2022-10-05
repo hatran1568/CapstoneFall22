@@ -2,9 +2,12 @@ package com.planner.backendserver.entity;
 
 
 import lombok.Data;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
-import java.sql.Date;
+import java.util.Date;
+import java.time.LocalTime;
 
 @Data
 @Entity
@@ -22,8 +25,41 @@ public class Ticket {
     @Column(name="details", columnDefinition = "text")
     private String details;
 
-    @Column(name="time")
-    private Date time;
+    @Column(name="departure_time")
+    private LocalTime departureTime;
+
+    @Column(name="departure_date")
+    private Date departureDate;
+
+    @Column(name="start_location",columnDefinition = "text")
+    private String startLocation;
+
+    @Column(name="end_location",columnDefinition = "text")
+    private String endLocation;
+
+    @Column(name="cost")
+    private double cost;
+
+    @Column(name="note",columnDefinition = "text")
+    private  int note;
+
+
+    @Enumerated(EnumType.STRING)
+    @Column(name="type")
+    private  TicketType type;
+
+    @Column(name="date_created")
+    @Temporal(TemporalType.TIMESTAMP)
+    @CreationTimestamp
+    private Date dateCreated;
+
+    @Column(name="is_deleted")
+    private boolean isDeleted;
+
+    @Column(name="date_modified")
+    @UpdateTimestamp
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date dateModified;
 
 
 }
