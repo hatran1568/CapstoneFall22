@@ -18,4 +18,9 @@ public class Role {
     private String roleName;
 
 
+    public Role(int id, String name) {
+        setRoleID(id);
+        setRoleName(name);
+    }
+    public Role(){}
 }
