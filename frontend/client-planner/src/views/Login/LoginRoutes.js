@@ -7,7 +7,7 @@ export default function LoginRoutes() {
   return (
     <Routes>
       <Route exact path="/login" element={<Login />} />
-      <Route exact path="/signup" element={<Signup />} />
+      <Route exact path="/register" element={<Signup />} />
     </Routes>
   );
 }
