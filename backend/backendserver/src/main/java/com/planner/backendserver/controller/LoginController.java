@@ -58,5 +58,10 @@ public class LoginController {
 
     }
 
+    @RequestMapping(value = "/wrongUser",produces = {"*/*"},method = RequestMethod.GET)
+    public ResponseEntity returnWrongUser(){
+        return new ResponseEntity( HttpStatus.FORBIDDEN);
+    }
+
 
 }
