@@ -5,12 +5,14 @@ const RequireAuth = ({ allowedRoles }) => {
   const { auth } = useAuth();
   const location = useLocation();
 
-  return auth?.role?.find((role) => allowedRoles?.includes(role)) ? (
+  const curRole = localStorage.getItem("role");
+  const curAccessToken = localStorage.getItem("token");
+  return allowedRoles.includes(curRole) ? (
     <Outlet />
-  ) : auth?.user ? (
-    <Navigate to="/unauthorized" state={{ from: location }} replace></Navigate>
+  ) : curAccessToken ? (
+    <Navigate to="/unauthorized" state={{ from: location }} replace />
   ) : (
-    <Navigate to="/login" state={{ from: location }} replace></Navigate>
+    <Navigate to="/login" state={{ from: location }} replace />
   );
 };
 
