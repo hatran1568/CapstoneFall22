@@ -4,7 +4,7 @@ import "./index.css";
 import "mdb-react-ui-kit/dist/css/mdb.min.css";
 import App from "./App/App";
 import reportWebVitals from "./reportWebVitals";
-
+import 'bootstrap/dist/css/bootstrap.min.css';
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(<App />);
 

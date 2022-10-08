@@ -71,7 +71,7 @@ function Login() {
                 style={{ backgroundColor: "#dd4b39" }}
                 type="submit"
               >
-                <i class="fab fa-google me-2"></i> Continue with google
+                <i className="fab fa-google me-2"></i> Continue with google
               </MDBBtn>
               <MDBBtn
                 className="btn btn-lg col-6 mx-auto btn-primary mb-5"
