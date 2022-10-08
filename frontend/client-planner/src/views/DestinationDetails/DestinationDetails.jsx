@@ -1,6 +1,6 @@
 import React from "react";
 import {useState} from 'react';
-import POIBox from './POIBox.jsx'
+import POIBox from '../../components/POIBox.jsx'
 import imageData from './imagedata.json'
 import dataPOI from './data.json'
 import MyGallery from './MyGallery.jsx'
