@@ -1,0 +1,13 @@
+.boxImg{
+    width:100%;
+    height: 300px;
+    object-fit: cover;
+    border-radius: 10px;
+}
+.poiBox{
+    margin:auto;
+    width: 33.33%;
+}
+.catText{
+    color: grey
+}
