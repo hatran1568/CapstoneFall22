@@ -80,10 +80,14 @@ public class WebSercurityConfig extends WebSecurityConfigurerAdapter {
         http
                 .cors().configurationSource(request -> {
                     var cors = new CorsConfiguration();
-                    cors.setAllowedOrigins(List.of("http://localhost:3000", "http://127.0.0.1:80", "http://example.com"));
+                    cors.setAllowedOrigins(List.of("http://localhost:3000/"));
                     cors.setAllowedMethods(List.of("GET","POST", "PUT", "DELETE", "OPTIONS"));
-                    cors.setAllowedHeaders(List.of("*"));
-                    cors.setAllowCredentials(Boolean.TRUE);
+                    cors.setAllowedHeaders(List.of("Authorization",
+                            "Content-Type",
+                            "X-Requested-With",
+                            "Accept",
+                            "X-XSRF-TOKEN"));
+                    cors.setAllowCredentials(true);
                     return cors;
                 })
                 .and()
