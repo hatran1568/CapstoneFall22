@@ -21,17 +21,21 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfiguration;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.client.userinfo.OAuth2UserService;
 import org.springframework.security.oauth2.core.user.OAuth2User;
+import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.cors.CorsConfiguration;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.List;
 
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)
@@ -74,18 +78,46 @@ public class WebSercurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
-                .cors()
+                .cors().configurationSource(request -> {
+                    var cors = new CorsConfiguration();
+                    cors.setAllowedOrigins(List.of("http://localhost:3000", "http://127.0.0.1:80", "http://example.com"));
+                    cors.setAllowedMethods(List.of("GET","POST", "PUT", "DELETE", "OPTIONS"));
+                    cors.setAllowedHeaders(List.of("*"));
+                    cors.setAllowCredentials(Boolean.TRUE);
+                    return cors;
+                })
                 .and()
                 .csrf()
                 .disable()
                 .authorizeRequests()
-                .antMatchers("/api/login","/login","/oauth/**","/api/loginByOAuth").permitAll()
-                .anyRequest().authenticated().and().formLogin().permitAll().and().oauth2Login().permitAll().loginPage("/login").userInfoEndpoint().userService(oAuth2User);
+                .antMatchers("/api/login","/login","/oauth/**","/api/loginByOAuth","/api/wrongUser").permitAll()
+                .anyRequest().authenticated().and().formLogin().loginPage("/api/wrongUser").failureHandler(new AuthenticationFailureHandler() {
+
+                    @Override
+                    public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response,
+                                                        AuthenticationException exception) throws IOException, ServletException {
+
+
+
+                        response.sendRedirect("/api/wrongUser");
+                    }
+                })
+                .permitAll();
         http.oauth2Login()
-                .loginPage("/login")
+
                 .userInfoEndpoint()
                 .userService(oAuth2User)
-                .and()
+                .and().failureHandler(new AuthenticationFailureHandler() {
+
+                    @Override
+                    public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response,
+                                                        AuthenticationException exception) throws IOException, ServletException {
+
+
+                        response.getWriter().write("failed");
+                        response.setStatus(403);
+                    }
+                })
                 .successHandler(new AuthenticationSuccessHandler() {
 
                     @Override
