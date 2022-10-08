@@ -8,7 +8,6 @@ import {
   MDBCard,
   MDBCardBody,
   MDBInput,
-  MDBIcon,
 } from "mdb-react-ui-kit";
 
 function Signup() {

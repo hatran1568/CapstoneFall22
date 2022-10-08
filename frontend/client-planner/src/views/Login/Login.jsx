@@ -22,7 +22,7 @@ function Login() {
   const location = useLocation();
   const from = location.state?.from?.pathname || "/";
 
-  const [user, setUser] = useState({ email: "", password: "" });
+  const [user, setUser] = useState({ username: "", password: "" });
 
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -31,11 +31,15 @@ function Login() {
         headers: { "Content-Type": "application/json" },
         withCredentials: true,
       });
+      console.log(response);
+
       const accessToken = response?.data?.accessToken;
-      const roles = response?.data?.roles;
-      setAuth({ user, roles, accessToken });
+      const role = response?.data?.role;
+      if (accessToken) {
+        setAuth({ user, role, accessToken });
+        navigate(from, { replace: true });
+      }
       setUser({ ...user, username: "", password: "" });
-      navigate(from, { replace: true });
     } catch (error) {}
   };
 
@@ -56,7 +60,7 @@ function Login() {
                 id="loginEmail"
                 type="email"
                 size="lg"
-                onChange={(e) => setUser({ ...user, email: e.target.value })}
+                onChange={(e) => setUser({ ...user, username: e.target.value })}
               />
               <MDBInput
                 wrapperClass="mb-2 mx-5"
