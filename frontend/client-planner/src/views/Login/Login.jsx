@@ -27,16 +27,17 @@ function Login() {
   const handleLogin = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post(LOGIN_URL, JSON.stringify({ user }), {
+      const response = await axios.post(LOGIN_URL, user, {
         headers: { "Content-Type": "application/json" },
         withCredentials: true,
       });
-      console.log(response);
-
       const accessToken = response?.data?.accessToken;
       const role = response?.data?.role;
       if (accessToken) {
         setAuth({ user, role, accessToken });
+        localStorage.setItem("token", accessToken);
+        localStorage.setItem("role", role);
+
         navigate(from, { replace: true });
       }
       setUser({ ...user, username: "", password: "" });
@@ -75,6 +76,8 @@ function Login() {
                   Forgot password?
                 </a>
               </div>
+
+              <p>Wrong email or password!</p>
 
               <MDBBtn
                 className="mt-4 px-5 col-6 mx-auto mb-2"
