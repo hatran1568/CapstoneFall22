@@ -6,6 +6,7 @@ import com.planner.backendserver.entity.User;
 import com.planner.backendserver.entity.UserStatus;
 import com.planner.backendserver.repository.UserRepository;
 import com.planner.backendserver.service.interfaces.UserService;
+import org.hibernate.annotations.SQLInsert;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -49,5 +50,20 @@ public class UserServiceImplementer implements UserService  {
     @Override
     public void updateProvider(int userID, Provider authType) {
 
+    }
+
+
+    @Override
+    public void register(User user) {
+
+        userRepository.save(user);
+    }
+
+    @Override
+    public boolean checkExistByEmail(String email) {
+        User check = userRepository.findByEmail(email);
+        if(check==null)
+            return false;
+        else return true;
     }
 }
