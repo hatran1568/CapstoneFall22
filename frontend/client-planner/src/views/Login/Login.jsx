@@ -41,7 +41,11 @@ function Login() {
         navigate(from, { replace: true });
       }
       setUser({ ...user, username: "", password: "" });
-    } catch (error) {}
+    } catch (error) {
+      if (error.response.status === 403) {
+        document.getElementById("invalidWarning").style.display = "block";
+      }
+    }
   };
 
   return (
@@ -77,7 +81,13 @@ function Login() {
                 </a>
               </div>
 
-              <p>Wrong email or password!</p>
+              <p
+                id="invalidWarning"
+                className="text-danger my-1"
+                style={{ display: "none" }}
+              >
+                Wrong email or password!
+              </p>
 
               <MDBBtn
                 className="mt-4 px-5 col-6 mx-auto mb-2"
