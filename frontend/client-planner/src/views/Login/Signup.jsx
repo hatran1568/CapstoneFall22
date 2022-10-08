@@ -8,7 +8,6 @@ import {
   MDBCard,
   MDBCardBody,
   MDBInput,
-  MDBIcon,
 } from "mdb-react-ui-kit";
 
 function Signup() {
@@ -22,17 +21,14 @@ function Signup() {
 
           <MDBCol md="6">
             <MDBCardBody className="d-flex flex-column">
-              <div className="d-flex flex-row justify-content-center mt-2">
-                <MDBIcon
-                  fas
-                  icon="cubes fa-3x me-3"
-                  style={{ color: "#ff6219" }}
-                />
-                <span className="h1 fw-bold mb-0">Tripplanner</span>
-              </div>
-              <h5 className="fw-normal display-6 my-4 pb-3 text-center">
-                Register
-              </h5>
+              <h3 className="fw-normal my-3 pb-3 text-center">Register</h3>
+              <MDBInput
+                wrapperClass="mb-4 mx-5"
+                label="Username"
+                id="formControlLg"
+                type="text"
+                size="lg"
+              />
               <MDBInput
                 wrapperClass="mb-4 mx-5"
                 label="Email address"
@@ -41,8 +37,15 @@ function Signup() {
                 size="lg"
               />
               <MDBInput
-                wrapperClass="mb-2 mx-5"
+                wrapperClass="mb-4 mx-5"
                 label="Password"
+                id="formControlLg"
+                type="password"
+                size="lg"
+              />
+              <MDBInput
+                wrapperClass="mb-2 mx-5"
+                label="Confirm password"
                 id="formControlLg"
                 type="password"
                 size="lg"
@@ -56,38 +59,24 @@ function Signup() {
                 Register
               </MDBBtn>
 
-              <hr className="my-4" />
-
-              <div className="text-center mb-5">
-                <p>or sign up with:</p>
-
-                <MDBBtn
-                  tag="a"
-                  color="none"
-                  className="mx-3"
-                  style={{ color: "#1266f1" }}
-                >
-                  <MDBIcon fab icon="facebook-f" size="sm" />
-                </MDBBtn>
-
-                <MDBBtn
-                  tag="a"
-                  color="none"
-                  className="mx-3"
-                  style={{ color: "#1266f1" }}
-                >
-                  <MDBIcon fab icon="twitter" size="sm" />
-                </MDBBtn>
-
-                <MDBBtn
-                  tag="a"
-                  color="none"
-                  className="mx-3"
-                  style={{ color: "#1266f1" }}
-                >
-                  <MDBIcon fab icon="google" size="sm" />
-                </MDBBtn>
+              <div className="divider d-flex align-items-center my-2">
+                <p className="text-center fw-bold mx-3 mb-0">OR</p>
               </div>
+
+              <MDBBtn
+                className="btn btn-lg col-6 mx-auto btn-primary mb-2"
+                style={{ backgroundColor: "#dd4b39" }}
+                type="submit"
+              >
+                <i className="fab fa-google me-2"></i> Continue with google
+              </MDBBtn>
+              <MDBBtn
+                className="btn btn-lg col-6 mx-auto btn-primary mb-5"
+                style={{ backgroundColor: "#3b5998" }}
+                type="submit"
+              >
+                <i className="fab fa-facebook me-2"></i> Continue with Facebook
+              </MDBBtn>
               <p
                 className="mb-0 pb-lg-2 text-center"
                 style={{ color: "#393f81" }}
