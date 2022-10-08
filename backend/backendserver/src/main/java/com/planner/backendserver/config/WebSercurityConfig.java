@@ -21,10 +21,12 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfiguration;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.client.userinfo.OAuth2UserService;
 import org.springframework.security.oauth2.core.user.OAuth2User;
+import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
@@ -92,13 +94,34 @@ public class WebSercurityConfig extends WebSecurityConfigurerAdapter {
                 .csrf()
                 .disable()
                 .authorizeRequests()
-                .antMatchers("/api/login","/login","/oauth/**","/api/loginByOAuth").permitAll()
-                .anyRequest().authenticated().and().formLogin().permitAll().and().oauth2Login().permitAll().loginPage("/login").userInfoEndpoint().userService(oAuth2User);
+                .antMatchers("/api/login","/login","/oauth/**","/api/loginByOAuth","/api/wrongUser").permitAll()
+                .anyRequest().authenticated().and().formLogin().loginPage("/api/wrongUser").failureHandler(new AuthenticationFailureHandler() {
+
+                    @Override
+                    public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response,
+                                                        AuthenticationException exception) throws IOException, ServletException {
+
+
+
+                        response.sendRedirect("/api/wrongUser");
+                    }
+                })
+                .permitAll();
         http.oauth2Login()
-                .loginPage("/login")
+
                 .userInfoEndpoint()
                 .userService(oAuth2User)
-                .and()
+                .and().failureHandler(new AuthenticationFailureHandler() {
+
+                    @Override
+                    public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response,
+                                                        AuthenticationException exception) throws IOException, ServletException {
+
+
+                        response.getWriter().write("failed");
+                        response.setStatus(403);
+                    }
+                })
                 .successHandler(new AuthenticationSuccessHandler() {
 
                     @Override
