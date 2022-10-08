@@ -1,7 +1,7 @@
 import React from "react";
 import { BrowserRouter } from "react-router-dom";
 import LoginRoutes from "../views/Login/LoginRoutes";
-import HomePageRoutes from "../views/HomePageRoutes";
+import HomePageRoutes from "../views/HomePage/HomePageRoutes";
 export default function Routes() {
     return (
         <BrowserRouter>
