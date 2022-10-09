@@ -94,10 +94,6 @@ public class WebSercurityConfig extends WebSecurityConfigurerAdapter {
                 .csrf()
                 .disable()
                 .authorizeRequests()
-<<<<<<< HEAD
-                .antMatchers("/api/login","/login","/oauth/**","/api/loginByOAuth", "/trip/*").permitAll()
-                .anyRequest().authenticated().and().formLogin().permitAll().and().oauth2Login().permitAll().loginPage("/login").userInfoEndpoint().userService(oAuth2User);
-=======
                 .antMatchers("/api/login","/login","/oauth/**","/api/loginByOAuth","/api/wrongUser").permitAll()
                 .anyRequest().authenticated().and().formLogin().loginPage("/api/wrongUser").failureHandler(new AuthenticationFailureHandler() {
 
@@ -111,7 +107,6 @@ public class WebSercurityConfig extends WebSecurityConfigurerAdapter {
                     }
                 })
                 .permitAll();
->>>>>>> 8a437be859acf11015f87b56ee7c9b1284c085c5
         http.oauth2Login()
 
                 .userInfoEndpoint()
