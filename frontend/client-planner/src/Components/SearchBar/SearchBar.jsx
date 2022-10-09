@@ -5,8 +5,9 @@ import "./SearchBar.css";
 const SearchBar = () => {
     const [searchInput, setSearchInput] = useState("");
 
+    // Dummy data for demo purposes, would be updated later
     const POIs = [
-        { name: "hanoi" },
+        { name: "ha noi" },
         { name: "thai binh" },
         { name: "nam dinh" },
         { name: "hai phong" },
@@ -15,11 +16,10 @@ const SearchBar = () => {
     ];
 
     const list = POIs.filter((p) => {
-        if (searchInput === "") {
-            return p;
-        } else if (p.name.toLowerCase().includes(searchInput.toLowerCase())) {
+        if (searchInput !== "" && p.name.toLowerCase().includes(searchInput.toLowerCase())) {
             return p;
         }
+        return null;
     });
 
     return (
@@ -37,6 +37,7 @@ const SearchBar = () => {
                 <MDBRow>
                     {list.map((poi, index) => {
                         return (
+                            // This one still needs a link tag for poi details, will be added later
                             <div key={index}>
                                 <p>{poi.name}</p>
                             </div>
