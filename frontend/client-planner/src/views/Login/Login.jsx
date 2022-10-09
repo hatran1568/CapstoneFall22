@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import React, { useState, useContext } from "react";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 import {
   MDBBtn,
   MDBContainer,
@@ -10,14 +10,42 @@ import {
   MDBInput,
 } from "mdb-react-ui-kit";
 import "./Login.css";
+import useAuth from "../../hooks/useAuth";
+import axios from "../../api/axios";
+
+const LOGIN_URL = "/api/login";
 
 function Login() {
-  const [user, setUser] = useState({ email: "", password: "" });
+  const { setAuth } = useAuth();
+
+  const navigate = useNavigate();
+  const location = useLocation();
+  const from = location.state?.from?.pathname || "/";
+
+  const [user, setUser] = useState({ username: "", password: "" });
 
   const handleLogin = async (e) => {
     e.preventDefault();
-    console.log(user);
-    setUser({ ...user, email: "", password: "" });
+    try {
+      const response = await axios.post(LOGIN_URL, user, {
+        headers: { "Content-Type": "application/json" },
+        withCredentials: true,
+      });
+      const accessToken = response?.data?.accessToken;
+      const role = response?.data?.role;
+      if (accessToken) {
+        setAuth({ user, role, accessToken });
+        localStorage.setItem("token", accessToken);
+        localStorage.setItem("role", role);
+
+        navigate(from, { replace: true });
+      }
+      setUser({ ...user, username: "", password: "" });
+    } catch (error) {
+      if (error.response.status === 403) {
+        document.getElementById("invalidWarning").style.display = "block";
+      }
+    }
   };
 
   return (
@@ -34,15 +62,15 @@ function Login() {
               <MDBInput
                 wrapperClass="mb-4 mx-5"
                 label="Email address"
-                id="formControlLg"
+                id="loginEmail"
                 type="email"
                 size="lg"
-                onChange={(e) => setUser({ ...user, email: e.target.value })}
+                onChange={(e) => setUser({ ...user, username: e.target.value })}
               />
               <MDBInput
                 wrapperClass="mb-2 mx-5"
                 label="Password"
-                id="formControlLg"
+                id="loginPwd"
                 type="password"
                 size="lg"
                 onChange={(e) => setUser({ ...user, password: e.target.value })}
@@ -52,6 +80,14 @@ function Login() {
                   Forgot password?
                 </a>
               </div>
+
+              <p
+                id="invalidWarning"
+                className="text-danger my-1"
+                style={{ display: "none" }}
+              >
+                Wrong email or password!
+              </p>
 
               <MDBBtn
                 className="mt-4 px-5 col-6 mx-auto mb-2"
@@ -71,7 +107,7 @@ function Login() {
                 style={{ backgroundColor: "#dd4b39" }}
                 type="submit"
               >
-                <i class="fab fa-google me-2"></i> Continue with google
+                <i className="fab fa-google me-2"></i> Continue with google
               </MDBBtn>
               <MDBBtn
                 className="btn btn-lg col-6 mx-auto btn-primary mb-5"
@@ -84,7 +120,7 @@ function Login() {
                 className="mb-0 pb-lg-2 text-center"
                 style={{ color: "#393f81" }}
               >
-                Don't have an account? <Link to="/signup">Sign up</Link>
+                Don't have an account? <Link to="/register">Sign up</Link>
               </p>
             </MDBCardBody>
           </MDBCol>
