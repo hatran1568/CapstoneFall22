@@ -1,11 +1,11 @@
 import React from "react";
 import "./HomePage.css";
-import SearchBar from "../../components/SearchBar/SearchBar";
+import POISearchBar from "../../components/POISearchBar/POISearchBar";
 
 function HomePage() {
     return (
         <div className='homepage'>
-            <SearchBar />
+            <POISearchBar />
         </div>
     );
 }

@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import { MDBCard, MDBCardBody, MDBRow, MDBCol, MDBInput } from "mdb-react-ui-kit";
-import "./SearchBar.css";
+import "./POISearchBar.css";
 
-const SearchBar = () => {
+const POISearchBar = () => {
     const [searchInput, setSearchInput] = useState("");
 
     // Dummy data for demo purposes, would be updated later
@@ -49,4 +49,4 @@ const SearchBar = () => {
     );
 };
 
-export default SearchBar;
+export default POISearchBar;
