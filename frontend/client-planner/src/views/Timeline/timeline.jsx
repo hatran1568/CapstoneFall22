@@ -78,6 +78,13 @@ class Timeline extends Component {
     });
     return detailsArr;
   };
+  getNextActivityId = (date, tripDetail) => {
+    var detailsArr = this.getTripDetailsByDate(date);
+    var currentIndex = detailsArr.indexOf(tripDetail);
+    if (detailsArr[currentIndex + 1])
+      return detailsArr[currentIndex + 1].activity.id;
+    return -1;
+  };
 
   render() {
     var allDates = this.getAllDates(this.state.startDate, this.state.endDate);
@@ -138,8 +145,11 @@ class Timeline extends Component {
                   <div key={month}>
                     <div>{month}</div>
                     {this.getAllDatesOfMonth(allDates, month).map((date) => (
-                      <a href={"#" + date.toISOString().split("T")[0]}>
-                        <div key={date}>{date.getDate()}</div>
+                      <a
+                        href={"#" + date.toISOString().split("T")[0]}
+                        key={date}
+                      >
+                        <div>{date.getDate()}</div>
                       </a>
                     ))}
                   </div>
@@ -148,8 +158,11 @@ class Timeline extends Component {
             </div>
             <div className="col-8">
               {allDates.map((date) => (
-                <a name={date.toISOString().split("T")[0]}>
-                  <div key={date.toISOString().split("T")[0]}>
+                <a
+                  name={date.toISOString().split("T")[0]}
+                  key={date.toISOString().split("T")[0]}
+                >
+                  <div>
                     <div className="details-group-date">
                       {date.toISOString().split("T")[0]}
                     </div>
@@ -158,6 +171,10 @@ class Timeline extends Component {
                         <TripDetail
                           key={tripDetail.id}
                           tripDetail={tripDetail}
+                          nextActivityId={this.getNextActivityId(
+                            date,
+                            tripDetail
+                          )}
                         ></TripDetail>
                       ))}
                     </ul>

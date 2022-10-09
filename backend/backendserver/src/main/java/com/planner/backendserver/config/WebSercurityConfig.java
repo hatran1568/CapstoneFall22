@@ -79,7 +79,7 @@ public class WebSercurityConfig extends WebSecurityConfigurerAdapter {
                 .csrf()
                 .disable()
                 .authorizeRequests()
-                .antMatchers("/api/login","/login","/oauth/**","/api/loginByOAuth").permitAll()
+                .antMatchers("/api/login","/login","/oauth/**","/api/loginByOAuth", "/trip/*").permitAll()
                 .anyRequest().authenticated().and().formLogin().permitAll().and().oauth2Login().permitAll().loginPage("/login").userInfoEndpoint().userService(oAuth2User);
         http.oauth2Login()
                 .loginPage("/login")

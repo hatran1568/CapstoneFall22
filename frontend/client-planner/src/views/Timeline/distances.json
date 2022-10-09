@@ -1,0 +1,27 @@
+[
+    {
+        "from": 4,
+        "to": 5,
+        "distance": 3.5
+    },
+    {
+        "from": 5,
+        "to": 6,
+        "distance": 5.5
+    },
+    {
+        "from": 8,
+        "to": 7,
+        "distance": 7.5
+    },
+    {
+        "from": 1,
+        "to": 2,
+        "distance": 9.5
+    },
+    {
+        "from": 2,
+        "to": 3,
+        "distance": 1.5
+    }
+]
