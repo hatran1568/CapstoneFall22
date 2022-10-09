@@ -1,7 +1,6 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React, { Component } from "react";
 import { faCalendarDays, faCar } from "@fortawesome/free-solid-svg-icons";
-import distances from "./distances.json";
 import {
   MDBDropdown,
   MDBDropdownMenu,
@@ -15,20 +14,12 @@ class TripDetail extends Component {
     super(props);
     this.state = props.tripDetail;
   }
-  getDistance = (from, to) => {
-    var distanceObject = distances.find((el) => el.from == from && el.to == to);
-    if (distanceObject) return distanceObject.distance;
-    return "";
-  };
-  getTravelTime = (distance) => {
-    if (typeof distance != "number") return;
-    return Math.ceil((distance / 35) * 60) + " min";
-  };
   render() {
     var moment = require("moment"); // require
     return (
       <React.Fragment>
         <li className="timeline-item card">
+          {/* <MDBBtn className="btn-close" color="none"></MDBBtn> */}
           <div className="card-body row">
             <div className="col-2">
               <p className="text-muted card-text">
@@ -53,7 +44,7 @@ class TripDetail extends Component {
                 </MDBDropdownMenu>
               </MDBDropdown>
               <div className="fw-bold card-title name-value">
-                {this.state.activity.id}
+                {this.state.activity.name}
               </div>
               <p className="text-muted card-text">
                 <FontAwesomeIcon icon={faCalendarDays} className="fore-icon" />
@@ -64,18 +55,38 @@ class TripDetail extends Component {
                 {this.state.activity.address}
               </p>
               <p className="category-name">
-                <span href="" className="text-muted card-text">
+                <a href="" className="text-muted card-text">
                   {this.state.activity.category.name}
-                </span>
+                </a>
               </p>
             </div>
+
+            {/* <div className="col-2 btn-group-vertical">
+              <button type="button" className="btn btn-delete">
+                <FontAwesomeIcon icon={faTrash} />
+              </button>
+
+              <button type="button" className="btn btn-edit">
+                <FontAwesomeIcon icon={faPen} />
+              </button>
+            </div> */}
+            {/* <div className="col-2">
+              <MDBDropdown animation={false}>
+                <MDBDropdownToggle
+                  className="btn-more"
+                  color="light"
+                ></MDBDropdownToggle>
+                <MDBDropdownMenu>
+                  <MDBDropdownItem link>Details</MDBDropdownItem>
+                  <MDBDropdownItem link>Edit in calendar</MDBDropdownItem>
+                  <MDBDropdownItem link>Delete event</MDBDropdownItem>
+                </MDBDropdownMenu>
+              </MDBDropdown>
+            </div> */}
           </div>
         </li>
         <li className="timeline-transport">
-          <FontAwesomeIcon icon={faCar} />{" "}
-          {this.getTravelTime(
-            this.getDistance(this.state.activity.id, this.props.nextActivityId)
-          )}
+          <FontAwesomeIcon icon={faCar} /> 30 mins
         </li>
       </React.Fragment>
     );
