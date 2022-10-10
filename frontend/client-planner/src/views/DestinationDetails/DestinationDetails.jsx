@@ -21,8 +21,8 @@ function DestinationDetails(){
     return(
         <MDBContainer className="container">
             <br/>
-            <MDBCard className="contentbox">
-                <h1 id="destinationName">Hà Nội</h1><br/><br/>
+            <MDBCard className="contentbox"><br/>
+                <h1 id="destinationName">Explore Hà Nội</h1><br/><br/>
                 <MyGallery images={imgs}/>
 
                 <MDBCardBody id="description">
