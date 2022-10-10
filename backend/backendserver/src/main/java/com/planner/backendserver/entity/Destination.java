@@ -1,11 +1,15 @@
 package com.planner.backendserver.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 
 @Data
 @Entity
@@ -37,5 +41,12 @@ public class Destination {
     @UpdateTimestamp
     private Date dateModified;
 
+    @ManyToOne(cascade={CascadeType.ALL})
+    @JoinColumn(name="belong_to")
+    @JsonIgnore
+    private Destination belongTo;
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "belongTo", cascade = CascadeType.REMOVE)
+    private Set<Destination> listDest = new HashSet<>();
 
 }
