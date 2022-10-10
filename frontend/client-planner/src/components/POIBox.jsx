@@ -16,12 +16,17 @@ import "react-image-gallery/styles/css/image-gallery.css";
 
 class POIBox extends React.Component {
   render() {    
+    const link = "link here/" + this.props.activityId;
     return (
       <MDBCard className="poiBox"><br/>
-        <img className="boxImg" src={this.props.url}/>
-        <h2>{this.props.name}</h2>
-        <Rating ratings={this.props.rating}/>
-        <div className="catText">{this.props.category}</div><br/>
+        <a href={link}>
+          <MDBCardBody>
+            <img className="boxImg" src={this.props.url}/>
+            <h3 className="boxName">{this.props.name}</h3>
+            <Rating ratings={this.props.rating}/>
+            <div className="catText">{this.props.category}</div><br/>
+          </MDBCardBody>
+        </a>
       </MDBCard>
     )
   }

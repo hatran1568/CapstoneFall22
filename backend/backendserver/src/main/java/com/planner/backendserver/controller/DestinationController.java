@@ -1,9 +1,8 @@
 package com.planner.backendserver.controller;
 
-import com.planner.backendserver.DTO.DestinationDetailsDTO;
+import com.planner.backendserver.DTO.GalleryImages;
+import com.planner.backendserver.DTO.POIBoxDTO;
 import com.planner.backendserver.entity.Destination;
-import com.planner.backendserver.entity.DestinationImage;
-import com.planner.backendserver.entity.POI;
 import com.planner.backendserver.repository.DestinationRepository;
 import com.planner.backendserver.service.UserDTOServiceImplementer;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,30 +14,47 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.ArrayList;
-import java.util.Optional;
 
 @RestController
-@RequestMapping("/Destination")
+@RequestMapping("/api")
 public class DestinationController {
     @Autowired
     private UserDTOServiceImplementer userDTOService;
     @Autowired
     private DestinationRepository destinationRepo;
 
-    @GetMapping("/{id}")
-    public ResponseEntity<DestinationDetailsDTO> getDestinationById(@PathVariable int id){
+    @GetMapping("/destination/{id}")
+    public ResponseEntity<Destination> getDestinationById(@PathVariable int id){
         try{
             Destination destination = destinationRepo.getDestinationById(id);
             if (destination == null){
                 return new ResponseEntity<>(HttpStatus.NOT_FOUND);
             }
-            ArrayList<POI> POIs = destinationRepo.get3FirstPOIofDestination(id);
-            ArrayList<String> images = destinationRepo.getDestinationImagesURL(id);
-            DestinationDetailsDTO destinationDetailsDTO = new DestinationDetailsDTO();
-            destinationDetailsDTO.setDestination(destination);
-            destinationDetailsDTO.setImages(images);
-            destinationDetailsDTO.setPOIs(POIs);
-            return new ResponseEntity<>(destinationDetailsDTO, HttpStatus.OK);
+            return new ResponseEntity<>(destination, HttpStatus.OK);
+        } catch (Exception e){
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+    @GetMapping("/destination/first3POIs/{id}")
+    public ResponseEntity<ArrayList<POIBoxDTO>> get3POIinDestination(@PathVariable int id){
+        try{
+            ArrayList<POIBoxDTO> POIs = destinationRepo.get3FirstPOIofDestination(id);
+            if (POIs.isEmpty()){
+                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            }
+            return new ResponseEntity<>(POIs, HttpStatus.OK);
+        } catch (Exception e){
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+    @GetMapping("/destination/images/{id}")
+    public ResponseEntity<ArrayList<GalleryImages>> getDestinationImages(@PathVariable int id){
+        try{
+            ArrayList<GalleryImages> images = destinationRepo.getDestinationImagesURL(id);
+            if (images.isEmpty()){
+                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            }
+            return new ResponseEntity<>(images, HttpStatus.OK);
         } catch (Exception e){
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }

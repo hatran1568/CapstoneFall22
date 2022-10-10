@@ -1,9 +1,10 @@
 import React from "react";
+import ReactDOM from "react-dom"
 import {useState} from 'react';
+import {useEffect} from 'react';
 import POIBox from '../../components/POIBox.jsx'
-import imageData from './imagedata.json'
-import dataPOI from './data.json'
 import MyGallery from './MyGallery.jsx'
+import axios from "../../api/axios";
 import {
     MDBBtn,
     MDBContainer,
@@ -17,31 +18,62 @@ import './DestinationDetails.css';
 import ImageGallery from 'react-image-gallery';
 import "react-image-gallery/styles/css/image-gallery.css";
 function DestinationDetails(){
-    const imgs = imageData;
+    const [imgs, setImages] = useState([]);
+    useEffect(() => {
+        const expensesListResp = async () => {
+          await axios.get('http://localhost:8080/api/destination/images/1')
+          .then(
+            response => setImages(response.data))
+        }
+        expensesListResp();
+      }, []);
+    const [destination, setDestination] = useState([]);
+    useEffect(() => {
+        const expensesListResp = async () => {
+          await axios.get('http://localhost:8080/api/destination/1')
+          .then(
+            response => setDestination(response.data))
+        }
+        expensesListResp();
+      }, []);
+    const [pois, setPOIs] = useState([]);
+    useEffect(() => {
+        const expensesListResp = async () => {
+        await axios.get('http://localhost:8080/api/destination/first3POIs/1')
+        .then(
+            response => setPOIs(response.data))
+        }
+        expensesListResp();
+    }, []);
+    const poiBox = [];
+    pois.forEach((poi, index) => {
+            poiBox.push(<POIBox name={poi.name} url={poi.image} rating={poi.googleRating} category={poi.categoryName} activityId={poi.activityId}/>)
+        });
     return(
         <MDBContainer className="container">
             <br/>
             <MDBCard className="contentbox"><br/>
-                <h1 id="destinationName">Explore Hà Nội</h1><br/><br/>
+                <h1 id="destinationName">Explore {destination.name}</h1><br/><br/>
                 <MyGallery images={imgs}/>
 
                 <MDBCardBody id="description">
-                    Hồ Hoàn Kiếm (chữ Nôm: 湖還劍 hoặc 還劍湖) còn được gọi là Hồ Gươm là một hồ nước ngọt tự nhiên nằm ở trung tâm thành phố Hà Nội. Hồ có diện tích khoảng 12 ha[2]. Trước kia, hồ còn có các tên gọi là hồ Lục Thủy (vì nước có màu xanh quanh năm), hồ Thủy Quân (dùng để duyệt thủy binh), hồ Tả Vọng và Hữu Vọng (trong thời Lê mạt). Tên gọi Hoàn Kiếm xuất hiện vào đầu thế kỷ 15 gắn với truyền thuyết vua Lê Lợi trả lại gươm thần cho Rùa thần. Theo truyền thuyết, trong một lần vua Lê Thái Tổ dạo chơi trên thuyền, bỗng một con rùa vàng nổi lên mặt nước đòi nhà vua trả thanh gươm mà Long Vương cho mượn để đánh đuổi quân Minh xâm lược. Nhà vua liền trả gươm cho rùa thần và rùa lặn xuống nước biến mất. Từ đó hồ được lấy tên là hồ Hoàn Kiếm. Tên hồ còn được lấy để đặt cho một quận trung tâm của Hà Nội (quận Hoàn Kiếm) và là hồ nước duy nhất của quận này cho đến ngày nay.
+                    {destination.description}    
                 </MDBCardBody><br/><br/>
                 <MDBCardBody className="container2">
-                    <h3>Traveling to Hanoi?</h3>
+                    <h3>Traveling to {destination.name}?</h3>
                     <MDBBtn className="button-2" role="button" id="generateTrip">Plan your trip</MDBBtn><br/><br/>
-                    <h2 id="destinationName">Places and activities in Hà Nội</h2>
+                    <h2 id="destinationName">Places and activities in {destination.name}</h2>
                 </MDBCardBody>
                 <MDBCardBody>
                   <MDBRow className="row">
+                    {/* <POIBox name="Hồ Hoàn Kiếm" url="./assets/images/hanoi6.png" rating={4.3} category="Outdoors"/>
                     <POIBox name="Hồ Hoàn Kiếm" url="./assets/images/hanoi6.png" rating={4.3} category="Outdoors"/>
-                    <POIBox name="Hồ Hoàn Kiếm" url="./assets/images/hanoi6.png" rating={4.3} category="Outdoors"/>
-                    <POIBox name="Hồ Hoàn Kiếm" url="./assets/images/hanoi6.png" rating={4.3} category="Outdoors"/>
+                    <POIBox name="Hồ Hoàn Kiếm" url="./assets/images/hanoi6.png" rating={4.3} category="Outdoors"/> */}
+                    {poiBox}
                   </MDBRow>
                 </MDBCardBody>
                 <MDBCardBody className="container2">
-                    <MDBBtn className="button-2" role="button" id="poiList">Find more places in Hanoi</MDBBtn><br/><br/>
+                    <MDBBtn className="button-2" role="button" id="poiList">Find more places in {destination.name}</MDBBtn><br/><br/>
                 </MDBCardBody>
             </MDBCard>
         </MDBContainer>

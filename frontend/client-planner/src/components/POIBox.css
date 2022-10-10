@@ -5,8 +5,9 @@
     border-radius: 10px;
 }
 .poiBox{
+    width: 30%;
+    display:inline-block;
     margin:auto;
-    width: 33.33%;
 }
 .catText{
     color: grey

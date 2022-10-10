@@ -1,12 +1,10 @@
 package com.planner.backendserver.repository;
 
+import com.planner.backendserver.DTO.GalleryImages;
+import com.planner.backendserver.DTO.POIBoxDTO;
 import com.planner.backendserver.entity.Destination;
-import com.planner.backendserver.entity.DestinationImage;
-import com.planner.backendserver.entity.POI;
-import com.planner.backendserver.entity.User;
 
 import java.util.ArrayList;
-import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -20,12 +18,12 @@ public interface DestinationRepository extends JpaRepository<Destination,Integer
     Destination getDestinationById(int destinationId);
 
     @Query(
-        value = "SELECT p.google_rate, c.category_name, m.name from POI p LEFT JOIN master_activity m ON m.activity_id = p.activity_id LEFT JOIN category c ON p.category_id = c.category_id where p.destination_id = ?1 limit 3",
+        value = "SELECT p.activity_id as activityId, p.google_rate as googleRate, c.category_name as categoryName, m.name as name, pi.url as image from POI p LEFT JOIN master_activity m ON m.activity_id = p.activity_id LEFT JOIN category c ON p.category_id = c.category_id LEFT JOIN poi_destination pd ON p.activity_id = pd.poi_id LEFT JOIN poi_image pi on p.activity_id = pi.poi_id where pd.destination_id = ?1 limit 3",
         nativeQuery = true)
-    ArrayList<POI> get3FirstPOIofDestination(int destinationId);
+    ArrayList<POIBoxDTO> get3FirstPOIofDestination(int destinationId);
 
     @Query(
-        value = "SELECT di.url FROM destination_image di where di.destination_id = ?1",
+        value = "SELECT di.url as original, di.url as thumbnail FROM destination_image di where di.destination_id = ?1",
         nativeQuery = true)
-    ArrayList<String> getDestinationImagesURL(int destinationId);
+    ArrayList<GalleryImages> getDestinationImagesURL(int destinationId);
 }
