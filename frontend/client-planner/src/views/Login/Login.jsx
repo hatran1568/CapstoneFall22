@@ -83,7 +83,7 @@ function Login() {
 
               <p
                 id="invalidWarning"
-                className="text-danger my-1"
+                className="text-danger my-1 mx-5"
                 style={{ display: "none" }}
               >
                 Wrong email or password!
