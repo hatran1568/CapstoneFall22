@@ -12,7 +12,8 @@ import {
 import axios from "../../api/axios";
 import { useState } from "react";
 
-const LOGIN_URL = "/api/register";
+const REGISTER_URL = "/api/register";
+const LOGIN_URL = "/api/login";
 
 function Signup() {
   const pattern = /^\w+@[a-zA-Z_]+?\.[a-zA-Z]{2,3}$/;
@@ -59,8 +60,8 @@ function Signup() {
     e.preventDefault();
     if (handleValidation()) {
       try {
-        const response = await axios.post(
-          LOGIN_URL,
+        await axios.post(
+          REGISTER_URL,
           {
             username: user.username,
             email: user.email,
@@ -71,8 +72,29 @@ function Signup() {
             withCredentials: true,
           }
         );
+        const response = await axios.post(
+          LOGIN_URL,
+          {
+            username: user.email,
+            password: user.password,
+          },
+          {
+            headers: { "Content-Type": "application/json" },
+            withCredentials: true,
+          }
+        );
+        const accessToken = response?.data?.accessToken;
+        const role = response?.data?.role;
+        if (accessToken) {
+          localStorage.setItem("token", accessToken);
+          localStorage.setItem("role", role);
+        }
         navigate("/", { replace: true });
-      } catch (err) {}
+      } catch (error) {
+        if (error.response.status === 400) {
+          document.getElementById("invalidWarning").style.display = "block";
+        }
+      }
     }
   };
 
@@ -87,74 +109,87 @@ function Signup() {
           <MDBCol md="6">
             <MDBCardBody className="d-flex flex-column">
               <h3 className="fw-normal my-3 pb-3 text-center">Register</h3>
-              <form>
-                <MDBInput
-                  wrapperClass="mt-4 mx-5"
-                  label="Username"
-                  id="formUsername"
-                  type="text"
-                  size="lg"
-                  onChange={(e) =>
-                    setUser({ ...user, username: e.target.value })
-                  }
-                />
-                <span
-                  style={{ color: "red", display: "none" }}
-                  id="errUsername"
-                >
-                  Username must not be empty
-                </span>
+              <MDBInput
+                wrapperClass="mt-4 mx-5"
+                label="Username"
+                id="formUsername"
+                type="text"
+                size="lg"
+                onChange={(e) => setUser({ ...user, username: e.target.value })}
+              />
+              <span
+                style={{ color: "red", display: "none" }}
+                className="mx-5"
+                id="errUsername"
+              >
+                Username must not be empty
+              </span>
 
-                <MDBInput
-                  wrapperClass="mt-4 mx-5"
-                  label="Email address"
-                  id="formEmail"
-                  type="email"
-                  size="lg"
-                  onChange={(e) => setUser({ ...user, email: e.target.value })}
-                />
-                <span style={{ color: "red", display: "none" }} id="errEmail">
-                  Please check your email
-                </span>
+              <MDBInput
+                wrapperClass="mt-4 mx-5"
+                label="Email address"
+                id="formEmail"
+                type="email"
+                size="lg"
+                onChange={(e) => setUser({ ...user, email: e.target.value })}
+              />
+              <span
+                style={{ color: "red", display: "none" }}
+                className="mx-5"
+                id="errEmail"
+              >
+                Please check your email
+              </span>
 
-                <MDBInput
-                  wrapperClass="mt-4 mx-5"
-                  label="Password"
-                  id="formPwd"
-                  type="password"
-                  size="lg"
-                  onChange={(e) =>
-                    setUser({ ...user, password: e.target.value })
-                  }
-                />
-                <span style={{ color: "red", display: "none" }} id="errPwd">
-                  Password cannot be empty
-                </span>
+              <MDBInput
+                wrapperClass="mt-4 mx-5"
+                label="Password"
+                id="formPwd"
+                type="password"
+                size="lg"
+                onChange={(e) => setUser({ ...user, password: e.target.value })}
+              />
+              <span
+                style={{ color: "red", display: "none" }}
+                className="mx-5"
+                id="errPwd"
+              >
+                Password cannot be empty
+              </span>
 
-                <MDBInput
-                  wrapperClass="mt-4 mx-5"
-                  label="Confirm password"
-                  id="formPwdCf"
-                  type="password"
-                  size="lg"
-                  onChange={(e) =>
-                    setUser({ ...user, confirmPassword: e.target.value })
-                  }
-                />
-                <span style={{ color: "red", display: "none" }} id="errCfPwd">
-                  Confirm password doesn't match password
-                </span>
-
-                <MDBBtn
-                  className="my-4 px-5 col-6 mx-auto mb-2"
-                  color="dark"
-                  size="lg"
-                  type="button"
-                  onClick={handleRegister}
-                >
-                  Register
-                </MDBBtn>
-              </form>
+              <MDBInput
+                wrapperClass="mt-4 mx-5"
+                label="Confirm password"
+                id="formPwdCf"
+                type="password"
+                size="lg"
+                onChange={(e) =>
+                  setUser({ ...user, confirmPassword: e.target.value })
+                }
+              />
+              <span
+                style={{ color: "red", display: "none" }}
+                className="mx-5"
+                id="errCfPwd"
+              >
+                Confirm password doesn't match password
+              </span>
+              <span
+                style={{ color: "red", display: "none" }}
+                className="mx-5"
+                id="invalidWarning"
+              >
+                Email already in use!
+              </span>
+              <MDBBtn
+                className="my-4 px-5 col-6 mx-auto mb-2"
+                color="dark"
+                size="lg"
+                type="button"
+                onClick={handleRegister}
+              >
+                Register
+              </MDBBtn>
 
               <p
                 className="mt-5 mb-0 pb-lg-2 text-center"
