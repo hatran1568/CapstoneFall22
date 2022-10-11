@@ -1,7 +1,10 @@
-import React, { Component } from "react";
+import React, { Component, useState } from "react";
+import { withRouter } from "react-router";
 import TripDetail from "./tripDetail";
+import AddActivityModal from "./AddActivityModal";
 import "./timeline.css";
-import tripData from "./tripData.json";
+import axios from "axios";
+// import tripData from "./tripData.json";
 import {
   MDBNavbar,
   MDBContainer,
@@ -14,14 +17,33 @@ import {
   MDBTabsContent,
   MDBTabsPane,
 } from "mdb-react-ui-kit";
+import { useParams } from "react-router-dom";
 class Timeline extends Component {
-  state = tripData;
-  constructor() {
-    super();
+  state = {};
+  constructor(props) {
+    super(props);
+    this.state = {
+      trip: {},
+      showAddModal: false,
+      showEditModal: false,
+      dataLoaded: false,
+    };
   }
   componentDidMount() {
+    axios.get(`http://localhost:8080/trip/1`).then((res) => {
+      const tripData = res.data;
+      console.log("data: " + res.data);
+      this.setState({
+        trip: tripData,
+        showAddModal: false,
+        showEditModal: false,
+        dataLoaded: true,
+      });
+    });
+  }
+  orderTripDetails = () => {
     var newState = this.state;
-    var sortedDetails = this.state.tripDetails
+    var sortedDetails = this.state.trip.listTripDetails
       .sort((a, b) =>
         new Date("1970-01-01T" + a.startTime) >
         new Date("1970-01-01T" + b.startTime)
@@ -38,9 +60,9 @@ class Timeline extends Component {
           ? -1
           : 0
       );
-    newState.tripDetails = sortedDetails;
+    newState.trip.listTripDetails = sortedDetails;
     this.setState(newState);
-  }
+  };
   getAllMonths = (dateArr) => {
     var monthArr = [];
     dateArr.forEach((date) => {
@@ -57,6 +79,7 @@ class Timeline extends Component {
     ) {
       arr.push(new Date(dt));
     }
+    console.log(arr);
     return arr;
   };
   getAllDatesOfMonth = (dateArr, month) => {
@@ -71,16 +94,32 @@ class Timeline extends Component {
   getTripDetailsByDate = (date) => {
     var detailsArr = [];
     var dateStr = date.toISOString().split("T")[0];
-    this.state.tripDetails.forEach((detail) => {
+    console.log("date: ", dateStr);
+    this.state.trip.listTripDetails.forEach((detail) => {
       if (dateStr.valueOf() == detail.date.valueOf()) {
         detailsArr.push(detail);
       }
     });
     return detailsArr;
   };
+  toggleAddModal = () => {
+    var newState = this.state;
+    newState.showAddModal = !newState.showAddModal;
+    this.setState(newState);
+  };
+  insertTripDetail = () => {};
 
   render() {
-    var allDates = this.getAllDates(this.state.startDate, this.state.endDate);
+    if (!this.state.dataLoaded)
+      return (
+        <div>
+          <h1> Pleses wait some time.... </h1>{" "}
+        </div>
+      );
+    var allDates = this.getAllDates(
+      this.state.trip.startDate,
+      this.state.trip.endDate
+    );
     var allMonths = this.getAllMonths(allDates);
     return (
       <div>
@@ -93,7 +132,7 @@ class Timeline extends Component {
                 alt=""
                 loading="lazy"
               />
-              {this.state.name}
+              {this.state.trip.name}
             </MDBNavbarBrand>
             <form className="d-flex input-group w-auto">
               <input
@@ -138,8 +177,11 @@ class Timeline extends Component {
                   <div key={month}>
                     <div>{month}</div>
                     {this.getAllDatesOfMonth(allDates, month).map((date) => (
-                      <a href={"#" + date.toISOString().split("T")[0]}>
-                        <div key={date}>{date.getDate()}</div>
+                      <a
+                        href={"#" + date.toISOString().split("T")[0]}
+                        key={date}
+                      >
+                        <div>{date.getDate()}</div>
                       </a>
                     ))}
                   </div>
@@ -148,8 +190,11 @@ class Timeline extends Component {
             </div>
             <div className="col-8">
               {allDates.map((date) => (
-                <a name={date.toISOString().split("T")[0]}>
-                  <div key={date.toISOString().split("T")[0]}>
+                <a
+                  name={date.toISOString().split("T")[0]}
+                  key={date.toISOString().split("T")[0]}
+                >
+                  <div>
                     <div className="details-group-date">
                       {date.toISOString().split("T")[0]}
                     </div>
@@ -167,7 +212,27 @@ class Timeline extends Component {
             </div>
             <div className="col-2"></div>
           </div>
+          <div
+            className="form-group add-btn"
+            style={{ position: "fixed", bottom: 0, right: "20px" }}
+          >
+            <button
+              type="button"
+              className="btn btn-primary btn-md"
+              id="btnAdd"
+              variant="primary"
+              onClick={this.toggleAddModal}
+            >
+              +
+            </button>
+          </div>
         </div>
+        <AddActivityModal
+          show={this.state.showAddModal}
+          onHide={this.toggleAddModal}
+          allDates={allDates}
+          onSubmit={this.insertTripDetail}
+        />
       </div>
     );
   }

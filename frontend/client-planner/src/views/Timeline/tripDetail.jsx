@@ -14,6 +14,12 @@ class TripDetail extends Component {
     super(props);
     this.state = props.tripDetail;
   }
+  getTimeFromSecs = (seconds) => {
+    var date = new Date(0);
+    date.setSeconds(seconds); // specify value for SECONDS here
+    var timeString = date.toISOString().substring(11, 19);
+    return timeString;
+  };
   render() {
     var moment = require("moment"); // require
     return (
@@ -23,14 +29,24 @@ class TripDetail extends Component {
           <div className="card-body row">
             <div className="col-2">
               <p className="text-muted card-text">
-                {moment(this.state.startTime, "HH:mm:ss").format("hh:mm a")}
+                {moment(
+                  this.getTimeFromSecs(this.state.startTime),
+                  "HH:mm:ss"
+                ).format("hh:mm a")}
                 <br />
-                {moment(this.state.endTime, "HH:mm:ss").format("hh:mm a")}
+                {moment(
+                  this.getTimeFromSecs(this.state.endTime),
+                  "HH:mm:ss"
+                ).format("hh:mm a")}
               </p>
             </div>
             <div className="col-4">
               <img
-                src={this.state.activity.images[0].url}
+                src={
+                  this.state.masterActivity.listImages[0]
+                    ? this.state.masterActivity.listImages[0].url
+                    : "https://picsum.photos/seed/picsum/300/200"
+                }
                 className="activity-img"
               ></img>
             </div>
@@ -44,7 +60,7 @@ class TripDetail extends Component {
                 </MDBDropdownMenu>
               </MDBDropdown>
               <div className="fw-bold card-title name-value">
-                {this.state.activity.name}
+                {this.state.masterActivity.name}
               </div>
               <p className="text-muted card-text">
                 <FontAwesomeIcon icon={faCalendarDays} className="fore-icon" />
@@ -52,37 +68,14 @@ class TripDetail extends Component {
               </p>
 
               <p className="text-muted card-text address-value">
-                {this.state.activity.address}
+                {this.state.masterActivity.address}
               </p>
               <p className="category-name">
-                <a href="" className="text-muted card-text">
-                  {this.state.activity.category.name}
-                </a>
+                <span href="" className="text-muted card-text">
+                  {this.state.masterActivity.category.name}
+                </span>
               </p>
             </div>
-
-            {/* <div className="col-2 btn-group-vertical">
-              <button type="button" className="btn btn-delete">
-                <FontAwesomeIcon icon={faTrash} />
-              </button>
-
-              <button type="button" className="btn btn-edit">
-                <FontAwesomeIcon icon={faPen} />
-              </button>
-            </div> */}
-            {/* <div className="col-2">
-              <MDBDropdown animation={false}>
-                <MDBDropdownToggle
-                  className="btn-more"
-                  color="light"
-                ></MDBDropdownToggle>
-                <MDBDropdownMenu>
-                  <MDBDropdownItem link>Details</MDBDropdownItem>
-                  <MDBDropdownItem link>Edit in calendar</MDBDropdownItem>
-                  <MDBDropdownItem link>Delete event</MDBDropdownItem>
-                </MDBDropdownMenu>
-              </MDBDropdown>
-            </div> */}
           </div>
         </li>
         <li className="timeline-transport">

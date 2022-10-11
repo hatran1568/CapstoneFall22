@@ -3,7 +3,9 @@ package com.planner.backendserver.controller;
 import com.planner.backendserver.DTO.GenerateTripUserInput;
 import com.planner.backendserver.DTO.UserDTO;
 import com.planner.backendserver.entity.Trip;
+import com.planner.backendserver.entity.TripDetails;
 import com.planner.backendserver.service.UserDTOServiceImplementer;
+import com.planner.backendserver.service.interfaces.TripService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,12 +22,12 @@ public class TripController {
     @Autowired
     private UserDTOServiceImplementer userDTOService;
     @Autowired
-    private TripRepository tripRepo;
+    private TripService tripService;
 
     @GetMapping("/{id}")
     public ResponseEntity<Trip> getTripById(@PathVariable int id){
         try{
-            Optional<Trip> trip = tripRepo.findById(id);
+            Optional<Trip> trip = tripService.getTripById(id);
             if (trip.isEmpty()){
                 return new ResponseEntity<>(HttpStatus.NOT_FOUND);
             }
@@ -34,7 +36,24 @@ public class TripController {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
-
+    @PostMapping("/add-detail")
+    public ResponseEntity<TripDetails> addTripDetail(@RequestBody TripDetails tripDetail){
+        try{
+            TripDetails result = tripService.addTripDetail(tripDetail);
+            return new ResponseEntity<>(result, HttpStatus.OK);
+        } catch (Exception e){
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+    @DeleteMapping("/delete-detail/{id}")
+    public ResponseEntity<TripDetails> deleteTripDetail(@PathVariable int id){
+        try{
+            tripService.deleteDetailById(id);
+            return new ResponseEntity<>(HttpStatus.OK);
+        } catch (Exception e){
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
     @PreAuthorize("hasAuthority('Admin')")
     @RequestMapping(value="/test/{id}", method = RequestMethod.GET)
 

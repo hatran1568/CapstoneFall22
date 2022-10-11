@@ -5,7 +5,7 @@ import Timeline from "./timeline";
 export default function TimelineRoute() {
   return (
     <Routes>
-      <Route exact path="/timeline" element={<Timeline />} />
+      <Route exact path="/timeline/:id" element={<Timeline />} />
     </Routes>
   );
 }

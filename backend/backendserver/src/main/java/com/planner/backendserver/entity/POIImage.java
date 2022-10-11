@@ -1,6 +1,7 @@
 package com.planner.backendserver.entity;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 
 import javax.persistence.*;
@@ -14,6 +15,7 @@ public class POIImage {
     @Column(name="image_id",columnDefinition = "INT(1)")
     private int imageId;
 
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "poi_id", nullable = false)
     private POI poi;
