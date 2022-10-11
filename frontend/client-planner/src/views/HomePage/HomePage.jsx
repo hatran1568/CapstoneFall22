@@ -1,6 +1,6 @@
 import React from "react";
 import "./HomePage.css";
-import POISearchBar from "../../tempComp/POISearchBar/POISearchBar";
+import POISearchBar from "../../components/POISearchBar/POISearchBar";
 
 function HomePage() {
     return (
