@@ -6,8 +6,8 @@ import RequireAuth from "../../components/RequireAuth";
 export default function ProfileRoute() {
   return (
     <Routes>
-      <Route element={<RequireAuth allowedRoles={["Admin"]} />}>
-        <Route exact path="/profile" element={<Profile />}></Route>
+      <Route element={<RequireAuth allowedRoles={["User", "Admin"]} />}>
+        <Route path="/profile" element={<Profile />}></Route>
       </Route>
     </Routes>
   );
