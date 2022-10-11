@@ -4,7 +4,7 @@ import {useState} from 'react';
 import {useEffect} from 'react';
 import {useParams } from 'react-router-dom';
 import POIBox from '../../components/POIBox.jsx'
-import MyGallery from './MyGallery.jsx'
+import MyGallery from '../../components/MyGallery.jsx'
 import axios from "../../api/axios";
 import {
     MDBBtn,
@@ -62,19 +62,16 @@ function DestinationDetails(){
                 </MDBCardBody><br/><br/>
                 <MDBCardBody className="container2">
                     <h3>Traveling to {destination.name}?</h3>
-                    <MDBBtn className="button-2" role="button" id="generateTrip">Plan your trip</MDBBtn><br/><br/>
+                    <MDBBtn className="button-2" id="generateTrip">Plan your trip</MDBBtn><br/><br/>
                     <h2 id="destinationName">Places and activities in {destination.name}</h2>
                 </MDBCardBody>
                 <MDBCardBody>
                   <MDBRow className="row">
-                    {/* <POIBox name="Hồ Hoàn Kiếm" url="./assets/images/hanoi6.png" rating={4.3} category="Outdoors"/>
-                    <POIBox name="Hồ Hoàn Kiếm" url="./assets/images/hanoi6.png" rating={4.3} category="Outdoors"/>
-                    <POIBox name="Hồ Hoàn Kiếm" url="./assets/images/hanoi6.png" rating={4.3} category="Outdoors"/> */}
                     {poiBox}
                   </MDBRow>
                 </MDBCardBody>
                 <MDBCardBody className="container2">
-                    <MDBBtn className="button-2" role="button" id="poiList">Find more places in {destination.name}</MDBBtn><br/><br/>
+                    <MDBBtn className="button-2" id="poiList">Find more places in {destination.name}</MDBBtn><br/><br/>
                 </MDBCardBody>
             </MDBCard>
         </MDBContainer>
