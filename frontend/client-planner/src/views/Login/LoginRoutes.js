@@ -8,7 +8,7 @@ export default function LoginRoutes() {
     <Routes>
       <Route path="login" element={<Login />} />
       <Route path="register" element={<Signup />} />
-      <Route path="oauth2/redirect" component={<OAuthHandler />}></Route>
+      <Route path="oauth2/*" element={<OAuthHandler />}></Route>
     </Routes>
   );
 }
