@@ -17,9 +17,6 @@ public class POI extends MasterActivity {
 //    @JoinColumn(name="poi_id")
 //    private MasterActivity masterActivity;
 
-    @ManyToOne
-    @JoinColumn(name = "destination_id", nullable = false)
-    private Destination destination;
 
     @ManyToOne
     @JoinColumn(name = "category_id", nullable = false)
