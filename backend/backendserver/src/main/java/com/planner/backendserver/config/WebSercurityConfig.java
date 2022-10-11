@@ -94,8 +94,7 @@ public class WebSercurityConfig extends WebSecurityConfigurerAdapter {
                 .csrf()
                 .disable()
                 .authorizeRequests()
-                .antMatchers("/api/login","/login","/oauth/**","/api/loginByOAuth","/api/wrongUser", "/api/destination/**", "/trip/**").permitAll()
-
+                .antMatchers("/api/login","/api/register","/login","/oauth/**","/api/loginByOAuth","/api/wrongUser", "/api/user/findById/**", "/api/destination/**", "/trip/**").permitAll()
                 .anyRequest().authenticated().and().formLogin().loginPage("/api/wrongUser").failureHandler(new AuthenticationFailureHandler() {
 
                     @Override
