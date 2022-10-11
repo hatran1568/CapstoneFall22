@@ -1,6 +1,5 @@
 package com.planner.backendserver.controller;
 
-import com.planner.backendserver.DTO.GenerateTripUserInput;
 import com.planner.backendserver.DTO.UserDTO;
 import com.planner.backendserver.entity.Trip;
 import com.planner.backendserver.service.UserDTOServiceImplementer;
@@ -11,7 +10,6 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import com.planner.backendserver.repository.TripRepository;
 
-import javax.annotation.security.RolesAllowed;
 import java.util.Optional;
 
 @RestController
@@ -55,7 +53,21 @@ public class TripController {
         return  userDetails;
     }
 
+//    @PostMapping(
+//            value = "/createTrip", consumes = "application/json", produces = "application/json")
+//    public Trip createEmptyTrip(@RequestBody EmptyTripDTO trip) {
+//        return tripRepo.createEmptyTrip(null, trip.getBudget(), trip.getName(), 1, trip.getStartDate(), trip.getEndDate());
+//    }
+    @RequestMapping(value = "/createTrip", consumes = "application/json", produces = { "*/*" }, method = RequestMethod.POST)
+    public ResponseEntity createEmptyTrip(@RequestBody Trip trip) {
+        System.out.println(trip);
+        try{
+            tripRepo.createEmptyTrip(null, trip.getBudget(), trip.getName(), 1, trip.getStartDate(), trip.getEndDate());
+            return new ResponseEntity<>(HttpStatus.OK);
+        }
+        catch (Exception e){
+            return  new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
 
-
-
+    }
 }

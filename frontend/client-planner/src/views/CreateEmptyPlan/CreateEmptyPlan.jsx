@@ -1,4 +1,5 @@
 import React from "react";
+import axios from "../../api/axios";
 import {useState} from 'react';
 import {
     MDBBtn,
@@ -23,7 +24,19 @@ function CreateEmptyPlan() {
         setIsShown(false);
     };
     const submitTrip = event => {
-        
+        axios({
+            method: 'post',
+            url: 'http://localhost:8080/trip/createTrip',
+            data: {
+                budget: document.getElementById("budgetInput").value,
+                name: document.getElementById("tripNameInput").value,
+                startDate: document.getElementById("startDateInput").value,
+                endDate: document.getElementById("endDateInput").value
+            },
+            headers: {
+                'Content-Type': 'application/json'
+            }
+          });
     };
     return (
         <MDBContainer>
@@ -36,17 +49,17 @@ function CreateEmptyPlan() {
                     <MDBRow className="row">
                         <div md="2"></div>
                         <div md="8" className="form-group">
-                            <h5>Destination</h5>
-                            <MDBInput id="destinationInput" type="text" className="form-control"/>
-                        </div>
-                    </MDBRow><br/>
-                    <MDBRow className="row">
-                        <div md="2"></div>
-                        <div md="8" className="form-group">
                             <h5>Trip Name</h5>
                             <MDBInput type="text" id="tripNameInput" className="form-control"/>
                         </div>
                     </MDBRow>
+                    <MDBRow className="row">
+                        <div md="2"></div>
+                        <div md="8" className="form-group">
+                            <h5>Budget</h5>
+                            <MDBInput id="budgetInput" type="text" className="form-control"/>
+                        </div>
+                    </MDBRow><br/>
                     <MDBRow className="row">
                         <MDBCol md="2"></MDBCol>
                         <MDBCol md="3" className="form-group">

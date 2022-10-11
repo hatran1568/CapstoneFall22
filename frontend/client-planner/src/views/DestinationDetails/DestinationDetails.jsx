@@ -2,6 +2,7 @@ import React from "react";
 import ReactDOM from "react-dom"
 import {useState} from 'react';
 import {useEffect} from 'react';
+import {useParams } from 'react-router-dom';
 import POIBox from '../../components/POIBox.jsx'
 import MyGallery from './MyGallery.jsx'
 import axios from "../../api/axios";
@@ -11,43 +12,43 @@ import {
     MDBCard,
     MDBCardBody,
     MDBRow,
-    MDBCol,
-    MDBInput,
   } from "mdb-react-ui-kit";
 import './DestinationDetails.css';
 import ImageGallery from 'react-image-gallery';
 import "react-image-gallery/styles/css/image-gallery.css";
 function DestinationDetails(){
+    const queryParams = new URLSearchParams(window.location.search);
+    const id = queryParams.get('id');
     const [imgs, setImages] = useState([]);
     useEffect(() => {
-        const expensesListResp = async () => {
-          await axios.get('http://localhost:8080/api/destination/images/1')
+        const listResp = async () => {
+          await axios.get('http://localhost:8080/api/destination/images/' + id)
           .then(
             response => setImages(response.data))
         }
-        expensesListResp();
+        listResp();
       }, []);
     const [destination, setDestination] = useState([]);
     useEffect(() => {
-        const expensesListResp = async () => {
-          await axios.get('http://localhost:8080/api/destination/1')
+        const listResp = async () => {
+          await axios.get('http://localhost:8080/api/destination/' + id)
           .then(
             response => setDestination(response.data))
         }
-        expensesListResp();
+        listResp();
       }, []);
     const [pois, setPOIs] = useState([]);
     useEffect(() => {
-        const expensesListResp = async () => {
-        await axios.get('http://localhost:8080/api/destination/first3POIs/1')
+        const listResp = async () => {
+        await axios.get('http://localhost:8080/api/destination/first3POIs/' + id)
         .then(
             response => setPOIs(response.data))
         }
-        expensesListResp();
+        listResp();
     }, []);
     const poiBox = [];
     pois.forEach((poi, index) => {
-            poiBox.push(<POIBox name={poi.name} url={poi.image} rating={poi.googleRating} category={poi.categoryName} activityId={poi.activityId}/>)
+            poiBox.push(<POIBox name={poi.name} url={poi.image} rating={poi.googleRate} category={poi.categoryName} activityId={poi.activityId}/>)
         });
     return(
         <MDBContainer className="container">

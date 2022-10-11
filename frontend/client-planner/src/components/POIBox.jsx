@@ -18,13 +18,13 @@ class POIBox extends React.Component {
   render() {    
     const link = "link here/" + this.props.activityId;
     return (
-      <MDBCard className="poiBox"><br/>
+      <MDBCard className="poiBox">
         <a href={link}>
+          <img className="boxImg" src={this.props.url}/>
           <MDBCardBody>
-            <img className="boxImg" src={this.props.url}/>
-            <h3 className="boxName">{this.props.name}</h3>
+            <h4 className="boxName">{this.props.name}</h4>
             <Rating ratings={this.props.rating}/>
-            <div className="catText">{this.props.category}</div><br/>
+            <div className="catText">{this.props.category}</div>
           </MDBCardBody>
         </a>
       </MDBCard>
