@@ -44,9 +44,9 @@ public class LoginController {
         String jwt = tokenProvider.generateToken((UserDTO) authentication.getPrincipal());
         UserDTO userDTO = (UserDTO) authentication.getPrincipal();
         User user = userRepository.findByUserID(userDTO.getUser().getUserID());
-        LoginResponseDTO responseDTO = new LoginResponseDTO(jwt,user.getRole().getRoleName());
+        LoginResponseDTO responseDTO = new LoginResponseDTO(jwt,user.getRole().getRoleName(),user.getUserID());
         try {
-            return new ObjectMapper().writeValueAsString(new LoginResponseDTO(jwt,user.getRole().getRoleName()));
+            return new ObjectMapper().writeValueAsString(new LoginResponseDTO(jwt,user.getRole().getRoleName(), user.getUserID()));
         } catch (JsonProcessingException e) {
             throw new RuntimeException(e);
         }
