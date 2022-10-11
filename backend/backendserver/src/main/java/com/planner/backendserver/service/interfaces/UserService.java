@@ -10,6 +10,5 @@ public interface UserService {
     public void updateProvider(int usernID, Provider authType);
     public void register(User user);
     public boolean checkExistByEmail(String email);
-
     public UserDetailResponseDTO getUserProfileById(int userId);
 }

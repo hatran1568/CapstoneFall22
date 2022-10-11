@@ -8,6 +8,7 @@ import com.planner.backendserver.entity.UserStatus;
 import com.planner.backendserver.repository.UserRepository;
 import com.planner.backendserver.service.interfaces.UserService;
 import org.hibernate.annotations.SQLInsert;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -16,7 +17,8 @@ public class UserServiceImplementer implements UserService  {
     @Autowired
     UserRepository userRepository;
 
-
+    @Autowired
+    ModelMapper mapper;
 
 
 
@@ -70,6 +72,11 @@ public class UserServiceImplementer implements UserService  {
 
     @Override
     public UserDetailResponseDTO getUserProfileById(int userId) {
-        return null;
+        User user = userRepository.findByUserID(userId);
+        if (user == null){
+            return null;
+        }
+        UserDetailResponseDTO userDTO = mapper.map(user, UserDetailResponseDTO.class);
+        return userDTO;
     }
 }
