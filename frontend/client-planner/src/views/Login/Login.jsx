@@ -20,8 +20,12 @@ function Login() {
 
   const navigate = useNavigate();
   const location = useLocation();
+
   const from = location.state?.from?.pathname || "/";
 
+  if (localStorage.getItem("token") != null) {
+    window.location.href = "http://localhost:3000/";
+  }
   const [user, setUser] = useState({ username: "", password: "" });
 
   const handleLogin = async (e) => {
@@ -49,43 +53,12 @@ function Login() {
     }
   };
 
-  const handleLoginGoogle = async (e) => {
-    e.preventDefault();
-    try {
-      const response = await axios.get("/oauth2/authorization/google", {
-        headers: { "Content-Type": "application/json" },
-        withCredentials: true,
-      });
-      const accessToken = response?.data?.accessToken;
-      const role = response?.data?.role;
-      if (accessToken) {
-        setAuth({ user, role, accessToken });
-        localStorage.setItem("token", accessToken);
-        localStorage.setItem("role", role);
-
-        navigate(from, { replace: true });
-      }
-      setUser({ ...user, username: "", password: "" });
-    } catch (error) {}
+  const handleLoginGoogle = (e) => {
+    window.location.href = "http://localhost:8080/oauth2/authorization/google";
   };
-  const handleLoginFacebook = async (e) => {
-    e.preventDefault();
-    try {
-      const response = await axios.get("/oauth2/authorization/facebook", {
-        headers: { "Content-Type": "application/json" },
-        withCredentials: true,
-      });
-      const accessToken = response?.data?.accessToken;
-      const role = response?.data?.role;
-      if (accessToken) {
-        setAuth({ user, role, accessToken });
-        localStorage.setItem("token", accessToken);
-        localStorage.setItem("role", role);
-
-        navigate(from, { replace: true });
-      }
-      setUser({ ...user, username: "", password: "" });
-    } catch (error) {}
+  const handleLoginFacebook = (e) => {
+    window.location.href =
+      "http://localhost:8080/oauth2/authorization/facebook";
   };
   return (
     <MDBContainer className="my-5 ">

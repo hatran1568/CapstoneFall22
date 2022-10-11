@@ -1,12 +1,16 @@
-import React from "react";
-import { Navigate, useNavigate, useLocation } from "react-router-dom";
+import React, { useEffect } from "react";
+
+import { useNavigate, useLocation } from "react-router-dom";
 
 function OAuthHandler() {
+  const location = useLocation();
+  const navigate = useNavigate();
+
   const getUrlParameter = (name) => {
     name = name.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]");
     var regex = new RegExp("[\\?&]" + name + "=([^&#]*)");
 
-    var results = regex.exec(this.props.location.search);
+    var results = regex.exec(location.search);
     return results === null
       ? ""
       : decodeURIComponent(results[1].replace(/\+/g, " "));
@@ -16,17 +20,16 @@ function OAuthHandler() {
   const role = getUrlParameter("role");
   const id = getUrlParameter("id");
 
-  const location = useLocation();
-
-  const from = location.state?.from?.pathname || "/";
-  if (token) {
-    localStorage.setItem("token", token);
-    localStorage.setItem("role", role);
-    localStorage.setItem("id", id);
-    <Navigate to="/" />;
-  } else {
-    <Navigate to="/login" />;
-  }
+  useEffect(() => {
+    if (token) {
+      localStorage.setItem("token", token);
+      localStorage.setItem("role", role);
+      localStorage.setItem("id", id);
+      navigate("/");
+    } else {
+      navigate("/login");
+    }
+  }, []);
 }
 
 export default OAuthHandler;
