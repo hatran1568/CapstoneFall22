@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import React, { useState } from "react";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import {
   MDBBtn,
@@ -83,7 +83,7 @@ function Login() {
 
               <p
                 id="invalidWarning"
-                className="text-danger my-1"
+                className="text-danger my-1 mx-5"
                 style={{ display: "none" }}
               >
                 Wrong email or password!
