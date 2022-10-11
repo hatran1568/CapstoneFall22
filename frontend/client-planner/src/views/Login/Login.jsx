@@ -9,7 +9,7 @@ import {
   MDBCol,
   MDBInput,
 } from "mdb-react-ui-kit";
-import "./Login.css";
+import style from "./Login.module.css";
 import useAuth from "../../hooks/useAuth";
 import axios from "../../api/axios";
 
@@ -53,12 +53,14 @@ function Login() {
       <MDBCard>
         <MDBRow className="g-0">
           <MDBCol md="6">
-            <div className="d-flex flex-column justify-content-center gradient-custom-2 h-100 mb-4"></div>
+            <div
+              className={`${style.customGradient} d-flex flex-column justify-content-center h-100 mb-4`}
+            ></div>
           </MDBCol>
 
           <MDBCol md="6">
             <MDBCardBody className="d-flex flex-column">
-              <h3 className="fw-normal  my-4 pb-3 text-center">Login</h3>
+              <h3 className="fw-normal my-4 pb-3 text-center">Login</h3>
               <MDBInput
                 wrapperClass="mb-4 mx-5"
                 label="Email address"
@@ -98,7 +100,9 @@ function Login() {
                 Login
               </MDBBtn>
 
-              <div className="divider d-flex align-items-center my-4">
+              <div
+                className={`${style.divider}  d-flex align-items-center my-4`}
+              >
                 <p className="text-center fw-bold mx-3 mb-0">OR</p>
               </div>
 
