@@ -33,11 +33,12 @@ function Login() {
       });
       const accessToken = response?.data?.accessToken;
       const role = response?.data?.role;
+      const id = response?.data?.id;
       if (accessToken) {
         setAuth({ user, role, accessToken });
         localStorage.setItem("token", accessToken);
         localStorage.setItem("role", role);
-
+        localStorage.setItem("id", id);
         navigate(from, { replace: true });
       }
       setUser({ ...user, username: "", password: "" });
@@ -48,6 +49,44 @@ function Login() {
     }
   };
 
+  const handleLoginGoogle = async (e) => {
+    e.preventDefault();
+    try {
+      const response = await axios.get("/oauth2/authorization/google", {
+        headers: { "Content-Type": "application/json" },
+        withCredentials: true,
+      });
+      const accessToken = response?.data?.accessToken;
+      const role = response?.data?.role;
+      if (accessToken) {
+        setAuth({ user, role, accessToken });
+        localStorage.setItem("token", accessToken);
+        localStorage.setItem("role", role);
+
+        navigate(from, { replace: true });
+      }
+      setUser({ ...user, username: "", password: "" });
+    } catch (error) {}
+  };
+  const handleLoginFacebook = async (e) => {
+    e.preventDefault();
+    try {
+      const response = await axios.get("/oauth2/authorization/facebook", {
+        headers: { "Content-Type": "application/json" },
+        withCredentials: true,
+      });
+      const accessToken = response?.data?.accessToken;
+      const role = response?.data?.role;
+      if (accessToken) {
+        setAuth({ user, role, accessToken });
+        localStorage.setItem("token", accessToken);
+        localStorage.setItem("role", role);
+
+        navigate(from, { replace: true });
+      }
+      setUser({ ...user, username: "", password: "" });
+    } catch (error) {}
+  };
   return (
     <MDBContainer className="my-5 ">
       <MDBCard>
@@ -110,6 +149,7 @@ function Login() {
                 className="btn btn-lg col-6 mx-auto btn-primary mb-2"
                 style={{ backgroundColor: "#dd4b39" }}
                 type="submit"
+                onClick={handleLoginGoogle}
               >
                 <i className="fab fa-google me-2"></i> Continue with google
               </MDBBtn>
@@ -117,6 +157,7 @@ function Login() {
                 className="btn btn-lg col-6 mx-auto btn-primary mb-5"
                 style={{ backgroundColor: "#3b5998" }}
                 type="submit"
+                onClick={handleLoginFacebook}
               >
                 <i className="fab fa-facebook me-2"></i> Continue with Facebook
               </MDBBtn>
