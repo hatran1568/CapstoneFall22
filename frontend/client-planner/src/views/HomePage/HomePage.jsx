@@ -1,5 +1,5 @@
 import React from "react";
-import "./HomePage.css";
+import style from "./HomePage.module.css";
 import POISearchBar from "../../components/POISearchBar/POISearchBar";
 
 function HomePage() {

@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { MDBCard, MDBCardBody, MDBRow, MDBCol, MDBInput } from "mdb-react-ui-kit";
-import "./POISearchBar.css";
+import style from "./POISearchBar.module.css";
 
 const POISearchBar = () => {
     const [searchInput, setSearchInput] = useState("");
