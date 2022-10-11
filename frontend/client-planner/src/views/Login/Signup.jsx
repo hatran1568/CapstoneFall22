@@ -85,9 +85,12 @@ function Signup() {
         );
         const accessToken = response?.data?.accessToken;
         const role = response?.data?.role;
+        const id = response?.data?.id;
+
         if (accessToken) {
           localStorage.setItem("token", accessToken);
           localStorage.setItem("role", role);
+          localStorage.setItem("id", id);
         }
         navigate("/", { replace: true });
       } catch (error) {
