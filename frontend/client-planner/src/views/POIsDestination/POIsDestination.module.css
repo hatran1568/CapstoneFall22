@@ -1,0 +1,39 @@
+.headContainer{
+    width: 100vw;
+    height: 60vh;
+    padding: 0;
+    margin: auto;
+    text-align: center;
+}
+.mainContainer{
+    padding: 0;
+    margin: 0;
+}
+.thumbnail{
+    position: absolute;
+    width: 100vw;
+    height: 60vh;
+    object-fit: cover;
+    z-index: -1;
+    margin: 0;
+    padding: 0;
+}
+.title{
+    margin-top: 15vh;
+    position: absolute;
+    width: 100%;
+    color: rgb(255, 255, 104);
+    font-size: 6vw;
+}
+.bodyContainer{
+    margin: auto;
+    margin-top: 5vh;
+    width: 60vw;
+}
+.catButton{
+    margin: 3px;
+    background-color: rgb(255, 128, 215);
+}
+.catButton:hover{
+    background-color: rgb(253, 88, 201);
+}

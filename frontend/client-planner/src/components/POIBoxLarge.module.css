@@ -1,0 +1,28 @@
+
+.poiLargeBox{
+    margin-top: 2vh;
+    width: 100%;
+}
+.poiThumb{
+    border-radius: 10px;
+    width: 100%;
+}
+.poiThumbBox{
+    width: 30%;
+    align-content: center;
+    text-align: center;
+}
+.exploreBtn{
+    border-radius: 50px;
+    background-color: rgb(255, 123, 196);
+}
+.exploreBtn:hover {
+    background-color: rgb(255, 86, 179);
+}
+.exploreBtn:active {
+    background-color: rgb(255, 76, 174);
+}
+.poiPrice{
+    color: rgb(223, 61, 172);
+    font-style: italic;
+}

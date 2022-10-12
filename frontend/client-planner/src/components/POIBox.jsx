@@ -1,6 +1,6 @@
 import React from "react";
 import {useState} from 'react';
-import "./POIBox.css"
+import style from "./POIBox.module.css"
 import Rating from './Rating.jsx';
 import {
     MDBBtn,
@@ -18,13 +18,13 @@ class POIBox extends React.Component {
   render() {    
     const link = "link here/" + this.props.activityId;
     return (
-      <MDBCard className="poiBox">
+      <MDBCard className={style.poiBox}>
         <a href={link}>
-          <img className="boxImg" src={this.props.url}/>
+          <img className={style.boxImg} src={this.props.url}/>
           <MDBCardBody>
-            <h4 className="boxName">{this.props.name}</h4>
+            <h4 className={style.boxName}>{this.props.name}</h4>
             <Rating ratings={this.props.rating}/>
-            <div className="catText">{this.props.category}</div>
+            <div className={style.catText}>{this.props.category}</div>
           </MDBCardBody>
         </a>
       </MDBCard>

@@ -13,7 +13,7 @@ import {
     MDBCardBody,
     MDBRow,
   } from "mdb-react-ui-kit";
-import './DestinationDetails.css';
+import style from './DestinationDetails.module.css';
 import ImageGallery from 'react-image-gallery';
 import "react-image-gallery/styles/css/image-gallery.css";
 function DestinationDetails(){
@@ -51,27 +51,27 @@ function DestinationDetails(){
             poiBox.push(<POIBox name={poi.name} url={poi.image} rating={poi.googleRate} category={poi.categoryName} activityId={poi.activityId}/>)
         });
     return(
-        <MDBContainer className="container">
+        <MDBContainer className={style.container}>
             <br/>
-            <MDBCard className="contentbox"><br/>
-                <h1 id="destinationName">Explore {destination.name}</h1><br/><br/>
+            <MDBCard className={style.contentbox}><br/>
+                <h1>Explore {destination.name}</h1><br/><br/>
                 <MyGallery images={imgs}/>
 
-                <MDBCardBody id="description">
+                <MDBCardBody>
                     {destination.description}    
                 </MDBCardBody><br/><br/>
-                <MDBCardBody className="container2">
+                <MDBCardBody className={style.container2}>
                     <h3>Traveling to {destination.name}?</h3>
-                    <MDBBtn className="button-2" id="generateTrip">Plan your trip</MDBBtn><br/><br/>
-                    <h2 id="destinationName">Places and activities in {destination.name}</h2>
+                    <MDBBtn className={style.button2} id="generateTrip">Plan your trip</MDBBtn><br/><br/>
+                    <h2>Places and activities in {destination.name}</h2>
                 </MDBCardBody>
                 <MDBCardBody>
-                  <MDBRow className="row">
+                  <MDBRow className={style.row}>
                     {poiBox}
                   </MDBRow>
                 </MDBCardBody>
-                <MDBCardBody className="container2">
-                    <MDBBtn className="button-2" id="poiList">Find more places in {destination.name}</MDBBtn><br/><br/>
+                <MDBCardBody className={style.container2}>
+                    <MDBBtn className={style.button2} id="poiList">Find more places in {destination.name}</MDBBtn><br/><br/>
                 </MDBCardBody>
             </MDBCard>
         </MDBContainer>
