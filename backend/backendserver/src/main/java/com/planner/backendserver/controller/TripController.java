@@ -1,9 +1,12 @@
 package com.planner.backendserver.controller;
 
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.planner.backendserver.DTO.GenerateTripUserInput;
 import com.planner.backendserver.DTO.UserDTO;
+import com.planner.backendserver.entity.MasterActivity;
 import com.planner.backendserver.entity.Trip;
 import com.planner.backendserver.entity.TripDetails;
+import com.planner.backendserver.repository.POIRepository;
 import com.planner.backendserver.service.UserDTOServiceImplementer;
 import com.planner.backendserver.service.interfaces.TripService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +17,7 @@ import org.springframework.web.bind.annotation.*;
 import com.planner.backendserver.repository.TripRepository;
 
 import javax.annotation.security.RolesAllowed;
+import java.sql.Date;
 import java.util.Optional;
 
 @RestController
@@ -23,7 +27,8 @@ public class TripController {
     private UserDTOServiceImplementer userDTOService;
     @Autowired
     private TripService tripService;
-
+@Autowired
+private POIRepository poiRepository;
     @GetMapping("/{id}")
     public ResponseEntity<Trip> getTripById(@PathVariable int id){
         try{
@@ -36,18 +41,34 @@ public class TripController {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
-    @PostMapping("/add-detail")
-    public ResponseEntity<TripDetails> addTripDetail(@RequestBody TripDetails tripDetail){
+    @GetMapping("/master-activity/{id}")
+    public ResponseEntity<MasterActivity> getMasterActivityById(@PathVariable int id){
         try{
-            TripDetails result = tripService.addTripDetail(tripDetail);
+            MasterActivity ma = poiRepository.getPOIByActivityId(id);
+
+            return new ResponseEntity<>(ma, HttpStatus.OK);
+        } catch (Exception e){
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+    @PostMapping("/add-detail")
+    public ResponseEntity<TripDetails> addTripDetail(@RequestBody ObjectNode objectNode){
+        try{
+            Date date = Date.valueOf(objectNode.get("date").asText());
+            int startTime = objectNode.get("startTime").asInt();
+            int endTime = objectNode.get("endTime").asInt();
+            int activityId = objectNode.get("activityId").asInt();
+            int tripId = objectNode.get("tripId").asInt();
+            TripDetails result = tripService.addTripDetail(date, startTime, endTime, activityId, tripId);
             return new ResponseEntity<>(result, HttpStatus.OK);
         } catch (Exception e){
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
-    @DeleteMapping("/delete-detail/{id}")
-    public ResponseEntity<TripDetails> deleteTripDetail(@PathVariable int id){
+    @DeleteMapping("/delete-detail")
+    public ResponseEntity<TripDetails> deleteTripDetail(@RequestBody ObjectNode objectNode){
         try{
+            int id = objectNode.get("id").asInt();
             tripService.deleteDetailById(id);
             return new ResponseEntity<>(HttpStatus.OK);
         } catch (Exception e){

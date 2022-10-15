@@ -13,4 +13,6 @@ public interface TripDetailRepository extends JpaRepository<TripDetails, Integer
 
     @Override
     void deleteById(Integer integer);
+    @Override
+    TripDetails getById(Integer integer);
 }

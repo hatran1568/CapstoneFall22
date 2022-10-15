@@ -21,6 +21,7 @@ class TripDetail extends Component {
     return timeString;
   };
   render() {
+    // console.log(this.state);
     var moment = require("moment"); // require
     return (
       <React.Fragment>
@@ -43,8 +44,10 @@ class TripDetail extends Component {
             <div className="col-4">
               <img
                 src={
-                  this.state.masterActivity.listImages[0]
-                    ? this.state.masterActivity.listImages[0].url
+                  this.state.masterActivity.listImages
+                    ? this.state.masterActivity.listImages[0]
+                      ? this.state.masterActivity.listImages[0].url
+                      : "https://picsum.photos/seed/picsum/300/200"
                     : "https://picsum.photos/seed/picsum/300/200"
                 }
                 className="activity-img"
@@ -56,11 +59,20 @@ class TripDetail extends Component {
                 <MDBDropdownMenu>
                   <MDBDropdownItem link>Details</MDBDropdownItem>
                   <MDBDropdownItem link>Edit in calendar</MDBDropdownItem>
-                  <MDBDropdownItem link>Delete event</MDBDropdownItem>
+                  <MDBDropdownItem
+                    link
+                    onClick={(event) =>
+                      this.props.deleteEvent(event, this.state.tripDetailsId)
+                    }
+                  >
+                    Delete event
+                  </MDBDropdownItem>
                 </MDBDropdownMenu>
               </MDBDropdown>
               <div className="fw-bold card-title name-value">
-                {this.state.masterActivity.name}
+                {this.state.masterActivity.name
+                  ? this.state.masterActivity.name
+                  : ""}
               </div>
               <p className="text-muted card-text">
                 <FontAwesomeIcon icon={faCalendarDays} className="fore-icon" />
@@ -72,7 +84,9 @@ class TripDetail extends Component {
               </p>
               <p className="category-name">
                 <span href="" className="text-muted card-text">
-                  {this.state.masterActivity.category.name}
+                  {this.state.masterActivity.category
+                    ? this.state.masterActivity.category.name
+                    : ""}
                 </span>
               </p>
             </div>

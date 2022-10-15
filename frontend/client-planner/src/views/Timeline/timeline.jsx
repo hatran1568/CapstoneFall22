@@ -32,7 +32,6 @@ class Timeline extends Component {
   componentDidMount() {
     axios.get(`http://localhost:8080/trip/1`).then((res) => {
       const tripData = res.data;
-      console.log("data: " + res.data);
       this.setState({
         trip: tripData,
         showAddModal: false,
@@ -79,7 +78,6 @@ class Timeline extends Component {
     ) {
       arr.push(new Date(dt));
     }
-    console.log(arr);
     return arr;
   };
   getAllDatesOfMonth = (dateArr, month) => {
@@ -92,22 +90,88 @@ class Timeline extends Component {
     return arr;
   };
   getTripDetailsByDate = (date) => {
+    console.log("state from get by date: ", this.state);
     var detailsArr = [];
     var dateStr = date.toISOString().split("T")[0];
-    console.log("date: ", dateStr);
     this.state.trip.listTripDetails.forEach((detail) => {
       if (dateStr.valueOf() == detail.date.valueOf()) {
         detailsArr.push(detail);
       }
     });
-    return detailsArr;
+    var sortedArr = detailsArr.sort((a, b) =>
+      a.startTime > b.startTime ? 1 : b.startTime > a.startTime ? -1 : 0
+    );
+    return sortedArr;
   };
   toggleAddModal = () => {
     var newState = this.state;
     newState.showAddModal = !newState.showAddModal;
     this.setState(newState);
   };
-  insertTripDetail = () => {};
+  deleteTripDetail = (event, detailId) => {
+    if (
+      confirm(
+        "Do you really want to delete this event from your trip?" + detailId
+      )
+    ) {
+      axios
+        .delete(`http://localhost:8080/trip/delete-detail`, {
+          data: { id: detailId },
+        })
+        .then((response) => {
+          if (response.status == 200) {
+            var newTrip = this.state.trip;
+            newTrip.listTripDetails = newTrip.listTripDetails.filter(function (
+              detail
+            ) {
+              return detail.tripDetailsId !== detailId;
+            });
+            console.log("trip after deleted: ", newTrip);
+            this.setState(
+              {
+                trip: newTrip,
+                showAddModal: false,
+                showEditModal: false,
+                dataLoaded: true,
+              },
+              this.render
+            );
+          }
+          console.log("state after deleted: ", this.state);
+        });
+    }
+  };
+  insertTripDetail = (event, input) => {
+    var start = input.start_time.split(":");
+    var startSeconds = +start[0] * 60 * 60 + +start[1] * 60;
+    var end = input.end_time.split(":");
+    var endSeconds = +end[0] * 60 * 60 + +end[1] * 60;
+    axios
+      .post(`http://localhost:8080/trip/add-detail`, {
+        date: input.date,
+        startTime: startSeconds,
+        endTime: endSeconds,
+        activityId: input.activity_id,
+        tripId: this.state.trip.tripId,
+      })
+      .then((response) => {
+        var newDetail = response.data;
+        var newTrip = this.state.trip;
+        newTrip.listTripDetails.push(newDetail);
+        this.setState(
+          {
+            trip: newTrip,
+            showAddModal: false,
+            showEditModal: false,
+            dataLoaded: true,
+          },
+          this.render
+        );
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
+  };
 
   render() {
     if (!this.state.dataLoaded)
@@ -203,6 +267,9 @@ class Timeline extends Component {
                         <TripDetail
                           key={tripDetail.id}
                           tripDetail={tripDetail}
+                          deleteEvent={(event, detailId) =>
+                            this.deleteTripDetail(event, detailId)
+                          }
                         ></TripDetail>
                       ))}
                     </ul>
@@ -232,6 +299,8 @@ class Timeline extends Component {
           onHide={this.toggleAddModal}
           allDates={allDates}
           onSubmit={this.insertTripDetail}
+          tripName={this.state.trip.name}
+          activityAdded={(event, input) => this.insertTripDetail(event, input)}
         />
       </div>
     );
