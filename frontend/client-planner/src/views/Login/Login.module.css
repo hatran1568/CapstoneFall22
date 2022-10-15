@@ -1,4 +1,4 @@
-.gradient-custom-2 {
+.customGradient {
   /* fallback for old browsers */
   background: #fccb90;
 
@@ -29,8 +29,8 @@
   }
 }
 @media (min-width: 769px) {
-  .gradient-custom-2 {
-    border-top-right-radius: 0.3rem;
-    border-bottom-right-radius: 0.3rem;
+  .customGradient {
+    border-top-left-radius: 0.3rem;
+    border-bottom-left-radius: 0.3rem;
   }
 }
