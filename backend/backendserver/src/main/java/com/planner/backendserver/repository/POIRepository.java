@@ -11,5 +11,6 @@ import java.util.ArrayList;
 @Repository
 
 public interface POIRepository extends JpaRepository<POI,Integer> {
-
+    @Query("SELECT p from POI p where p.name like  CONCAT('%',:keyword,'%')")
+    public ArrayList<POI> findPOISByKeyword(String keyword);
 }
