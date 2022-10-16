@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import React, { useState } from "react";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import {
   MDBBtn,
@@ -9,7 +9,7 @@ import {
   MDBCol,
   MDBInput,
 } from "mdb-react-ui-kit";
-import "./Login.css";
+import style from "./Login.module.css";
 import useAuth from "../../hooks/useAuth";
 import axios from "../../api/axios";
 
@@ -20,8 +20,12 @@ function Login() {
 
   const navigate = useNavigate();
   const location = useLocation();
+
   const from = location.state?.from?.pathname || "/";
 
+  if (localStorage.getItem("token") != null) {
+    window.location.href = "http://localhost:3000/";
+  }
   const [user, setUser] = useState({ username: "", password: "" });
 
   const handleLogin = async (e) => {
@@ -33,11 +37,12 @@ function Login() {
       });
       const accessToken = response?.data?.accessToken;
       const role = response?.data?.role;
+      const id = response?.data?.id;
       if (accessToken) {
         setAuth({ user, role, accessToken });
         localStorage.setItem("token", accessToken);
         localStorage.setItem("role", role);
-
+        localStorage.setItem("id", id);
         navigate(from, { replace: true });
       }
       setUser({ ...user, username: "", password: "" });
@@ -48,17 +53,26 @@ function Login() {
     }
   };
 
+  const handleLoginGoogle = (e) => {
+    window.location.href = "http://localhost:8080/oauth2/authorization/google";
+  };
+  const handleLoginFacebook = (e) => {
+    window.location.href =
+      "http://localhost:8080/oauth2/authorization/facebook";
+  };
   return (
     <MDBContainer className="my-5 ">
       <MDBCard>
         <MDBRow className="g-0">
           <MDBCol md="6">
-            <div className="d-flex flex-column justify-content-center gradient-custom-2 h-100 mb-4"></div>
+            <div
+              className={`${style.customGradient} d-flex flex-column justify-content-center h-100 mb-4`}
+            ></div>
           </MDBCol>
 
           <MDBCol md="6">
             <MDBCardBody className="d-flex flex-column">
-              <h3 className="fw-normal  my-4 pb-3 text-center">Login</h3>
+              <h3 className="fw-normal my-4 pb-3 text-center">Login</h3>
               <MDBInput
                 wrapperClass="mb-4 mx-5"
                 label="Email address"
@@ -83,7 +97,7 @@ function Login() {
 
               <p
                 id="invalidWarning"
-                className="text-danger my-1"
+                className="text-danger my-1 mx-5"
                 style={{ display: "none" }}
               >
                 Wrong email or password!
@@ -98,7 +112,9 @@ function Login() {
                 Login
               </MDBBtn>
 
-              <div className="divider d-flex align-items-center my-4">
+              <div
+                className={`${style.divider}  d-flex align-items-center my-4`}
+              >
                 <p className="text-center fw-bold mx-3 mb-0">OR</p>
               </div>
 
@@ -106,6 +122,7 @@ function Login() {
                 className="btn btn-lg col-6 mx-auto btn-primary mb-2"
                 style={{ backgroundColor: "#dd4b39" }}
                 type="submit"
+                onClick={handleLoginGoogle}
               >
                 <i className="fab fa-google me-2"></i> Continue with google
               </MDBBtn>
@@ -113,6 +130,7 @@ function Login() {
                 className="btn btn-lg col-6 mx-auto btn-primary mb-5"
                 style={{ backgroundColor: "#3b5998" }}
                 type="submit"
+                onClick={handleLoginFacebook}
               >
                 <i className="fab fa-facebook me-2"></i> Continue with Facebook
               </MDBBtn>
