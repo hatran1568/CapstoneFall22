@@ -1,19 +1,19 @@
 .card {
-  width: 300px;
+  width: 20vw;
   background-color: white;
   border: none;
-  cursor: pointer;
-  transition: all 0.5s;
 }
 .image {
   position: "absolute";
   left: "50%";
   top: "50%";
-  transform: "translate(-50%, -50%)";
 }
-.image img {
+.avatar {
   margin: auto;
   transition: all 0.5s;
+  border-radius: 50%;
+  height: 148px;
+  width: 148px;
 }
 
 .btn {
@@ -67,4 +67,8 @@ hr .new1 {
 
 .date {
   background-color: #ccc;
+}
+
+.link {
+  text-decoration: underline;
 }

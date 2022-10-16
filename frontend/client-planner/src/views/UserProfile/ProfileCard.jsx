@@ -1,21 +1,30 @@
-import { MDBCard } from "mdb-react-ui-kit";
+import { MDBCard, MDBCardLink } from "mdb-react-ui-kit";
 import React from "react";
 import style from "./Profile.module.css";
-function ProfileCard() {
+function ProfileCard(props) {
   return (
     <MDBCard className={`${style.card} p-3`}>
+      <div className={`${style.link} text-end mb-4`}>
+        <MDBCardLink href="#">
+          <i className="fas fa-pen-alt mx-1"></i>
+          Edit profile
+        </MDBCardLink>
+      </div>
       <div
-        className={`${style.image} d-flex flex-column justify-content-center align-items-center`}
+        className={` d-flex flex-column justify-content-center align-items-center`}
       >
-        <button className={style.btn}>
-          <img src="https://i.imgur.com/wvxPV9S.png" height="100" width="100" />
-        </button>
-        <span className={`${style.name} mt-3 mx-auto`}>Hatran</span>
-        <span className={style.email}>test@test</span>
-
-        <div className="d-flex mt-2">
-          <button className={`${style.btn1} btn-dark`}>Edit Profile</button>
+        <div className={style.btn}>
+          <img
+            className={`${style.avatar} hover-shadow`}
+            src={
+              props.user.avatar
+                ? props.user.avatar
+                : "http://www.gravatar.com/avatar/?d=mp"
+            }
+          />
         </div>
+        <span className={`${style.name} mt-3 mx-auto`}>{props.user.name}</span>
+        <span className={style.email}>{props.user.email}</span>
 
         <div className={`px-2 rounded mt-4 ${style.date}`}>
           <span className={style.join}>Joined May,2021</span>
