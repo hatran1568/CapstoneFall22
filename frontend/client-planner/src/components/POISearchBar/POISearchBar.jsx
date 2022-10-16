@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { MDBCard, MDBCardBody, MDBRow, MDBCol, MDBInput } from "mdb-react-ui-kit";
+import { MDBCard, MDBCardBody, MDBRow, MDBCol, MDBInput, MDBBtn } from "mdb-react-ui-kit";
 import style from "./POISearchBar.module.css";
 
 const POISearchBar = () => {
@@ -15,12 +15,16 @@ const POISearchBar = () => {
         { name: "can tho" },
     ];
 
+    // For realtime search
     const list = POIs.filter((p) => {
         if (searchInput !== "" && p.name.toLowerCase().includes(searchInput.toLowerCase())) {
             return p;
         }
         return null;
     });
+
+    // For search button
+    /*const handleSearch = async (e) => {};*/
 
     return (
         <MDBCard>
@@ -33,6 +37,11 @@ const POISearchBar = () => {
                             onChange={(e) => setSearchInput(e.target.value)}
                         />
                     </MDBCol>
+                    {/*<MDBCol md='2'>
+                        <MDBBtn className='btn-primary' onClick={handleSearch}>
+                            Search
+                        </MDBBtn>
+                    </MDBCol>*/}
                 </MDBRow>
                 <MDBRow>
                     {list.map((poi, index) => {
