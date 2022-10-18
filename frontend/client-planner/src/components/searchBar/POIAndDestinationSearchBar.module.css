@@ -1,0 +1,14 @@
+.searchBarGroup {
+    margin-top: 15px;
+    margin-left: 20px;
+    border-radius: 15%;
+    height: 6vh;
+}
+
+.icon {
+    margin-right: 50px;
+}
+
+.searchBar {
+    width: 50%
+}

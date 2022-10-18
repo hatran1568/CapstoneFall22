@@ -20,8 +20,12 @@ function Login() {
 
   const navigate = useNavigate();
   const location = useLocation();
+
   const from = location.state?.from?.pathname || "/";
 
+  if (localStorage.getItem("token") != null) {
+    window.location.href = "http://localhost:3000/";
+  }
   const [user, setUser] = useState({ username: "", password: "" });
 
   const handleLogin = async (e) => {
@@ -33,11 +37,12 @@ function Login() {
       });
       const accessToken = response?.data?.accessToken;
       const role = response?.data?.role;
+      const id = response?.data?.id;
       if (accessToken) {
         setAuth({ user, role, accessToken });
         localStorage.setItem("token", accessToken);
         localStorage.setItem("role", role);
-
+        localStorage.setItem("id", id);
         navigate(from, { replace: true });
       }
       setUser({ ...user, username: "", password: "" });
@@ -48,6 +53,13 @@ function Login() {
     }
   };
 
+  const handleLoginGoogle = (e) => {
+    window.location.href = "http://localhost:8080/oauth2/authorization/google";
+  };
+  const handleLoginFacebook = (e) => {
+    window.location.href =
+      "http://localhost:8080/oauth2/authorization/facebook";
+  };
   return (
     <MDBContainer className="my-5 ">
       <MDBCard>
@@ -110,6 +122,7 @@ function Login() {
                 className="btn btn-lg col-6 mx-auto btn-primary mb-2"
                 style={{ backgroundColor: "#dd4b39" }}
                 type="submit"
+                onClick={handleLoginGoogle}
               >
                 <i className="fab fa-google me-2"></i> Continue with google
               </MDBBtn>
@@ -117,6 +130,7 @@ function Login() {
                 className="btn btn-lg col-6 mx-auto btn-primary mb-5"
                 style={{ backgroundColor: "#3b5998" }}
                 type="submit"
+                onClick={handleLoginFacebook}
               >
                 <i className="fab fa-facebook me-2"></i> Continue with Facebook
               </MDBBtn>
