@@ -14,7 +14,6 @@ import {
 } from "mdb-react-ui-kit";
 import PersonIcon from "@mui/icons-material/Person";
 import SearchBar from "../searchBar/POIAndDestinationSearchBar";
-import RequireAuth from "../../components/RequireAuth";
 import style from "./NavBar.module.css";
 
 const NavBar = () => {
@@ -22,18 +21,21 @@ const NavBar = () => {
     const isLoggedIn = localStorage.getItem("token");
 
     return (
-        <MDBNavbar expand='lg' light>
+        <MDBNavbar expand='lg' light className={style.navBar}>
             <MDBContainer fluid>
-                <MDBNavbarBrand className='fs-2' href='/homepage'>
-                    TPS
+                <MDBNavbarBrand href='/homepage' className="me-0">
+                    <p className='mb-0 d-flex align-items-center'>
+                        <span className='fs-3 me-2'>TPS</span>
+                        <span className='fs-5 text-muted'>Itinerary planner</span>
+                    </p>
                 </MDBNavbarBrand>
-                <MDBNavbarBrand className='fs-6 text-muted'>Plan things right</MDBNavbarBrand>
 
                 <MDBNavbarNav>
                     <MDBNavbarItem>
-                        <MDBNavbarLink className={pathname === "/homepage" ? "active" : ""} href='/homepage'>
-                            Home
-                        </MDBNavbarLink>
+                        <MDBNavbarLink
+                            className={pathname === "/homepage" ? "active" : ""}
+                            href='/homepage'
+                        ></MDBNavbarLink>
                     </MDBNavbarItem>
 
                     {/*<MDBNavbarItem>
@@ -43,7 +45,7 @@ const NavBar = () => {
                     </MDBNavbarItem>*/}
                 </MDBNavbarNav>
 
-                <MDBNavbarNav>
+                <MDBNavbarNav center>
                     <MDBNavbarItem>
                         <SearchBar />
                     </MDBNavbarItem>

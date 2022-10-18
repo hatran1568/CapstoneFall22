@@ -30,6 +30,7 @@ function POIAndDestinationSearchBar(Children) {
                     label='Search'
                     id='form1'
                     type='text'
+                    className={style.searchBar}
                 />
             </MDBInputGroup>
 

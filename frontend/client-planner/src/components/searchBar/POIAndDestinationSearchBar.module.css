@@ -3,6 +3,7 @@
     margin-left: 20px;
     height: 6vh;*/
     border-radius: 15%;
+    width: 50em;
 }
 
 .icon {
@@ -10,9 +11,9 @@
 }
 
 .searchBar {
-    width: 100%;
+    width: 25em;
 }
 
-.container{
-position: relative;
+.container {
+    position: relative;
 }

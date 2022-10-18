@@ -9,6 +9,7 @@
 
 .item {
     cursor: pointer;
+    width: 25em;
 }
 
 .active {
