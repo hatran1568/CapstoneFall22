@@ -20,6 +20,7 @@ import {
 import { useParams } from "react-router-dom";
 class Timeline extends Component {
   state = {};
+  //set state of component
   constructor(props) {
     super(props);
     this.state = {
@@ -27,8 +28,10 @@ class Timeline extends Component {
       showAddModal: false,
       showEditModal: false,
       dataLoaded: false,
+      detailInEdit: -1,
     };
   }
+  //get request to get trip info
   componentDidMount() {
     axios.get(`http://localhost:8080/trip/1`).then((res) => {
       const tripData = res.data;
@@ -40,6 +43,7 @@ class Timeline extends Component {
       });
     });
   }
+  //order all tripDetails by date and time
   orderTripDetails = () => {
     var newState = this.state;
     var sortedDetails = this.state.trip.listTripDetails
@@ -62,6 +66,7 @@ class Timeline extends Component {
     newState.trip.listTripDetails = sortedDetails;
     this.setState(newState);
   };
+  //get all months of a trip
   getAllMonths = (dateArr) => {
     var monthArr = [];
     dateArr.forEach((date) => {
@@ -70,6 +75,7 @@ class Timeline extends Component {
     });
     return monthArr;
   };
+  //get all dates in the trip
   getAllDates = (start, end) => {
     for (
       var arr = [], dt = new Date(start);
@@ -80,6 +86,7 @@ class Timeline extends Component {
     }
     return arr;
   };
+  //get all dates of a month in the trip
   getAllDatesOfMonth = (dateArr, month) => {
     var arr = [];
     dateArr.forEach((dt) => {
@@ -89,8 +96,8 @@ class Timeline extends Component {
     });
     return arr;
   };
+  //get all trip details in a day
   getTripDetailsByDate = (date) => {
-    console.log("state from get by date: ", this.state);
     var detailsArr = [];
     var dateStr = date.toISOString().split("T")[0];
     this.state.trip.listTripDetails.forEach((detail) => {
@@ -103,11 +110,13 @@ class Timeline extends Component {
     );
     return sortedArr;
   };
+  //toggle add modal
   toggleAddModal = () => {
     var newState = this.state;
     newState.showAddModal = !newState.showAddModal;
     this.setState(newState);
   };
+  //delete an activirty
   deleteTripDetail = (event, detailId) => {
     if (
       confirm(
@@ -126,7 +135,6 @@ class Timeline extends Component {
             ) {
               return detail.tripDetailsId !== detailId;
             });
-            console.log("trip after deleted: ", newTrip);
             this.setState(
               {
                 trip: newTrip,
@@ -137,10 +145,50 @@ class Timeline extends Component {
               this.render
             );
           }
-          console.log("state after deleted: ", this.state);
         });
     }
   };
+  //get a tripDetail inside trip in state
+  getTripDetailById = (id) => {
+    var arr = this.state.trip.listTripDetails.find((element) => {
+      return element.tripDetailsId === id;
+    });
+    if (arr.length > 0) return arr[0];
+    return {};
+  };
+  //put request to edit a detail
+  editTripDetail = (event, detail) => {
+    var start = detail.startTime.split(":");
+    detail.startTime = +start[0] * 60 * 60 + +start[1] * 60;
+    var end = detail.endTime.split(":");
+    detail.endTime = +end[0] * 60 * 60 + +end[1] * 60;
+    axios({
+      method: "put",
+      url: "http://localhost:8080/trip/put-detail?id=" + detail.tripDetailsId,
+      headers: {
+        "Content-Type": "application/json",
+      },
+      data: detail,
+    })
+      .then((response) => {
+        this.updateDetail(detail.tripDetailsId, response.data);
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
+  };
+  //update an activity in the state
+  updateDetail = (oldDetailId, newDetail) => {
+    var oldDetail = this.state.trip.listTripDetails.find(
+      (el) => el.tripDetailsId == oldDetailId
+    );
+    var index = -1;
+    if (oldDetail) index = this.state.trip.listTripDetails.indexOf(oldDetail);
+    var newState = this.state;
+    newState.trip.listTripDetails[index] = newDetail;
+    this.setState(newState);
+  };
+  //insert an activity into the trip
   insertTripDetail = (event, input) => {
     var start = input.start_time.split(":");
     var startSeconds = +start[0] * 60 * 60 + +start[1] * 60;
@@ -172,7 +220,14 @@ class Timeline extends Component {
         console.log(error);
       });
   };
-
+  //gets the id of the next trip detail in the list, to get the distance between the 2 later
+  getNextTripDetail = (list, detail) => {
+    var index = list.indexOf(detail);
+    var nextItem;
+    if (index >= 0 && index < list.length - 1) nextItem = list[index + 1];
+    if (nextItem) return nextItem.masterActivity.activityId;
+    return -1;
+  };
   render() {
     if (!this.state.dataLoaded)
       return (
@@ -265,11 +320,19 @@ class Timeline extends Component {
                     <ul className="timeline">
                       {this.getTripDetailsByDate(date).map((tripDetail) => (
                         <TripDetail
-                          key={tripDetail.id}
+                          key={tripDetail.tripDetailsId}
                           tripDetail={tripDetail}
                           deleteEvent={(event, detailId) =>
                             this.deleteTripDetail(event, detailId)
                           }
+                          editEvent={(event, detail) =>
+                            this.editTripDetail(event, detail)
+                          }
+                          nextActivityId={this.getNextTripDetail(
+                            this.getTripDetailsByDate(date),
+                            tripDetail
+                          )}
+                          allDates={allDates}
                         ></TripDetail>
                       ))}
                     </ul>
@@ -298,8 +361,6 @@ class Timeline extends Component {
           show={this.state.showAddModal}
           onHide={this.toggleAddModal}
           allDates={allDates}
-          onSubmit={this.insertTripDetail}
-          tripName={this.state.trip.name}
           activityAdded={(event, input) => this.insertTripDetail(event, input)}
         />
       </div>

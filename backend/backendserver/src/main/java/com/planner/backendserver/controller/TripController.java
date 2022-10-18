@@ -41,6 +41,27 @@ private POIRepository poiRepository;
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+//    @GetMapping("/get-distance")
+//    public ResponseEntity<Double> getDistanceBetweenTwoPOIs(@RequestParam int from, @RequestParam int to){
+//        try{
+//            Optional<Double> distance = tripService.getDistanceBetweenTwoPOIs(from, to);
+//            if (distance.isEmpty()){
+//                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+//            }
+//            return new ResponseEntity<>(distance.get(), HttpStatus.OK);
+//        } catch (Exception e){
+//            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+//        }
+//    }
+    @GetMapping("/get-distance")
+    public ResponseEntity<Double> getDistanceBetweenTwoPOIs(@RequestParam int from, @RequestParam int to){
+
+            Optional<Double> distance = tripService.getDistanceBetweenTwoPOIs(from, to);
+            if (distance.isEmpty()){
+                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            }
+            return new ResponseEntity<>(distance.get(), HttpStatus.OK);
+    }
     @GetMapping("/master-activity/{id}")
     public ResponseEntity<MasterActivity> getMasterActivityById(@PathVariable int id){
         try{
@@ -64,6 +85,30 @@ private POIRepository poiRepository;
         } catch (Exception e){
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
+    }
+    @GetMapping("/get-detail")
+    public ResponseEntity<TripDetails> getTripDetail(@RequestParam int id){
+        try{
+            Optional<TripDetails> detail = tripService.getTripDetailById(id);
+            if (detail.isEmpty()){
+                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            }
+            return new ResponseEntity<>(detail.get(), HttpStatus.OK);
+        } catch (Exception e){
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+    @PutMapping("/put-detail")
+    public ResponseEntity<TripDetails> getTripDetail(@RequestBody TripDetails newDetail, @RequestParam int id){
+//        try{
+            Optional<TripDetails> detail = tripService.editTripDetailById(newDetail,id);
+            if (detail.isEmpty()){
+                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            }
+            return new ResponseEntity<>(detail.get(), HttpStatus.OK);
+//        } catch (Exception e){
+//            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+//        }
     }
     @DeleteMapping("/delete-detail")
     public ResponseEntity<TripDetails> deleteTripDetail(@RequestBody ObjectNode objectNode){

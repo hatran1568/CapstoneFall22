@@ -12,4 +12,7 @@ public interface TripService {
     public Optional<Trip> getTripById(int id);
     public TripDetails addTripDetail(Date date, int startTime, int endTime, int activityId, int tripId);
     public void deleteDetailById(int id);
+    public Optional<Double> getDistanceBetweenTwoPOIs(int from, int to);
+    public Optional<TripDetails> getTripDetailById(int id);
+    public Optional<TripDetails> editTripDetailById(TripDetails detail, int id);
 }

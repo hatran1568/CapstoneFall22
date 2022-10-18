@@ -1,22 +1,19 @@
-import React, { Component, useState } from "react";
+import React, { Component, useState, useEffect } from "react";
 import props from "prop-types";
 import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
 function AddActivityModal(props) {
-  const { activityAdded, allDates, ...rest } = props;
-  const inputField = {
-    date: props.allDates[0].toISOString().split("T")[0],
-    activity_id: "",
-    start_time: "",
-    end_time: "",
-  };
-  const handleChange = (event) => {
-    console.log("changing");
-    setInputField({
-      ...inputField,
-      [event.target.name]: event.target.value,
-    });
-    console.log(inputField);
+  const { activityEdited, allDates, tripDetail, ...rest } = props;
+  const inputField = { ...tripDetail };
+  useEffect(() => {
+    inputField.startTime = getTimeFromSecs(tripDetail.startTime);
+    inputField.endTime = getTimeFromSecs(tripDetail.endTime);
+  });
+  const getTimeFromSecs = (seconds) => {
+    var date = new Date(0);
+    date.setSeconds(seconds); // specify value for SECONDS here
+    var timeString = date.toISOString().substring(11, 16);
+    return timeString;
   };
   return (
     <Modal
@@ -27,11 +24,16 @@ function AddActivityModal(props) {
     >
       <Modal.Header closeButton>
         <Modal.Title id="contained-modal-title-vcenter">
-          Add an activity to your trip
+          Edit your activity
         </Modal.Title>
       </Modal.Header>
       <Modal.Body>
         <form>
+          <label>
+            Activity at:
+            <input disabled value={inputField.masterActivity.name} />
+          </label>
+          <br />
           <label>
             Date:
             <select
@@ -39,6 +41,7 @@ function AddActivityModal(props) {
               onChange={(e) => {
                 inputField.date = e.target.value;
               }}
+              defaultValue={inputField.date}
             >
               {allDates.map((date) => (
                 <option
@@ -52,22 +55,13 @@ function AddActivityModal(props) {
           </label>
           <br />
           <label>
-            Activity ID:
-            <input
-              name="activity_id"
-              onChange={(e) => {
-                inputField.activity_id = e.target.value;
-              }}
-            ></input>
-          </label>
-          <br />
-          <label>
             Start time:
             <input
               name="start_time"
               type="time"
+              defaultValue={getTimeFromSecs(tripDetail.startTime)}
               onChange={(e) => {
-                inputField.start_time = e.target.value;
+                inputField.startTime = e.target.value;
               }}
             />
           </label>
@@ -77,15 +71,16 @@ function AddActivityModal(props) {
             <input
               name="end_time"
               type="time"
+              defaultValue={getTimeFromSecs(inputField.endTime)}
               onChange={(e) => {
-                inputField.end_time = e.target.value;
+                inputField.endTime = e.target.value;
               }}
             />
           </label>
         </form>
       </Modal.Body>
       <Modal.Footer>
-        <Button onClick={(event) => activityAdded(event, inputField)}>
+        <Button onClick={(event) => props.activityEdited(event, inputField)}>
           Save
         </Button>
         <Button onClick={props.onHide}>Close</Button>

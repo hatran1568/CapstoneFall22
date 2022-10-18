@@ -21,6 +21,8 @@ public class TripServiceImpl implements TripService {
     private TripDetailRepository tripDetailRepository;
     @Autowired
     private MasterActivityRepository masterActivityRepository;
+    @Autowired
+    private POIRepository poiRepository;
 
     @Override
     public Optional<Trip> getTripById(int id) {
@@ -47,6 +49,30 @@ public class TripServiceImpl implements TripService {
     @Override
     public void deleteDetailById(int id) {
         tripDetailRepository.deleteById(id);
+    }
+
+    @Override
+    public Optional<Double> getDistanceBetweenTwoPOIs(int from, int to) {
+        return poiRepository.getDistanceBetweenTwoPOIs(from, to);
+    }
+
+    @Override
+    public Optional<TripDetails> getTripDetailById(int id) {
+        return tripDetailRepository.getTripDetailsById(id);
+    }
+
+    @Override
+    public Optional<TripDetails> editTripDetailById(TripDetails newDetail, int id) {
+        return Optional.ofNullable(tripDetailRepository.findById(id)
+                .map(detail -> {
+                    detail.setDate(newDetail.getDate());
+                    detail.setStartTime(newDetail.getStartTime());
+                    detail.setEndTime(newDetail.getEndTime());
+                    return tripDetailRepository.save(detail);
+                })
+                .orElseGet(() -> {
+                    return tripDetailRepository.save(newDetail);
+                }));
     }
 
 
