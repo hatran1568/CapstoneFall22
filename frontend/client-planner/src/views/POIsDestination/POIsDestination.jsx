@@ -2,12 +2,13 @@ import React from "react";
 import ReactDOM from "react-dom"
 import {useState} from 'react';
 import {useEffect} from 'react';
-import {useParams } from 'react-router-dom';
+import {Navigate, useParams } from 'react-router-dom';
 import POIBoxLarge from '../../components/POIBoxLarge.jsx';
 import axios from "../../api/axios";
 import poidata from "./poidata.json";
 import ReactPaginate from 'react-paginate';
 import cateData from "./category.json";
+import { useNavigate } from "react-router-dom";
 import {
     MDBBtn,
     MDBContainer,
@@ -20,7 +21,10 @@ import style from './POIsDestination.module.css';
 function POIsDestination(){
     const thumbImage = "../" + "../assets/images/hanoi.png";
     const queryParams = new URLSearchParams(window.location.search);
-    const desId = queryParams.get('id');
+    const desId = queryParams.get('desid');
+    const catId = queryParams.get('catid');
+    const page = queryParams.get('page');
+    const navigate = useNavigate();
     const [destination, setDestination] = useState([]);
     useEffect(() => {
         const listResp = async () => {
@@ -31,28 +35,55 @@ function POIsDestination(){
         listResp();
       }, []);
     //POI Data
-    const data = poidata;
-    const poiBox = [];
-    data.forEach((poi, index) => {
+    const [pois, setPOIs] = useState([]);
+    useEffect(() => {
+        const listResp = async () => {
+          await axios.get('http://localhost:8080/api/pois/' + desId + "/" + page + "/" + catId)
+          .then(
+            response => setPOIs(response.data))
+        }
+        listResp();
+      }, []);
+    const [poiscount, setPOICount] = useState([]);
+    useEffect(() => {
+        const listResp = async () => {
+          await axios.get('http://localhost:8080/api/pois/' + desId + "/" + catId + "/count")
+          .then(
+            response => setPOICount(response.data))
+        }
+        listResp();
+      }, []);
+    let poiBox = [];
+    pois.forEach((poi, index) => {
         poiBox.push(<POIBoxLarge data={poi}/>)
     });
+    const poiSet = document.getElementById("poiSet");
     //Filter
     const catData = cateData;
     const filterBox = [];
     const catBtnClick = (event) => {
         console.log(`${event.target.id}`);
+        navigate("./?desid=1&catid=" + event.target.id);
+        window.location.reload(false);
     };
     catData.forEach((cat, index) => {
         filterBox.push(<MDBBtn onClick={catBtnClick} id={cat.categoryId} color="secondary" className={style.catButton}>{cat.categoryName}</MDBBtn>)
     });
+    filterBox.push(<MDBBtn onClick={catBtnClick} id={0} color="secondary" className={style.removeFilterButton}>Show All</MDBBtn>)
     //Pagination   
-    const itemCount = 90;
-    const itemPerPage = 4;
+    const itemCount = poiscount;
+    const itemPerPage = 10;
     const pageCount = itemCount / itemPerPage;
     const handlePageClick = (event) => {
-        //const newOffset = event.selected * itemsPerPage % items.length;
-        //console.log(`User requested page number ${event.selected}, which is offset ${newOffset}`);
         console.log(`User requested page number ${event.selected}`);
+        axios.get('http://localhost:8080/api/pois/' + desId + "/" + event.selected + "/" + catId)
+          .then(response => setPOIs(response.data));
+        // poiBox = [];
+        // pois.forEach((poi, index) => {
+        //     poiBox.push(<POIBoxLarge data={poi}/>)
+        // });
+        // poiSet.innerHTML = '';
+        // ReactDOM.render(poiBox, poiSet);
         //setCurrentPage(event.selected);
     };
     return(
@@ -65,7 +96,7 @@ function POIsDestination(){
                 <h2>Find places by Category</h2>
                 {filterBox}<br/><br/>
                 <h2>Things to do in {destination.name}</h2>
-                {poiBox}<br/>
+                <MDBContainer id="poiSet">{poiBox}</MDBContainer><br/>
                 <ReactPaginate
                     nextLabel="next >"
                     onPageChange={handlePageClick}

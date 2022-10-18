@@ -21,30 +21,42 @@ function DestinationDetails(){
     const id = queryParams.get('id');
     const [imgs, setImages] = useState([]);
     useEffect(() => {
+      try{
         const listResp = async () => {
           await axios.get('http://localhost:8080/api/destination/images/' + id)
           .then(
             response => setImages(response.data))
         }
         listResp();
+      } catch (error){
+        console.log(error);
+      }
       }, []);
     const [destination, setDestination] = useState([]);
     useEffect(() => {
+      try{
         const listResp = async () => {
           await axios.get('http://localhost:8080/api/destination/' + id)
           .then(
             response => setDestination(response.data))
         }
         listResp();
+      } catch (error){
+        console.log(error);
+      }
       }, []);
     const [pois, setPOIs] = useState([]);
     useEffect(() => {
+      try{
         const listResp = async () => {
         await axios.get('http://localhost:8080/api/destination/first3POIs/' + id)
         .then(
             response => setPOIs(response.data))
         }
         listResp();
+      } catch (error){
+        console.log(error);
+      }
     }, []);
     const poiBox = [];
     pois.forEach((poi, index) => {

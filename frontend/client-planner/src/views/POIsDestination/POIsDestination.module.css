@@ -37,3 +37,10 @@
 .catButton:hover{
     background-color: rgb(253, 88, 201);
 }
+.removeFilterButton{
+    margin: 3px;
+    background-color: rgb(255, 43, 117);
+}
+.removeFilterButton:hover{
+    background-color: rgb(254, 18, 101);
+}
