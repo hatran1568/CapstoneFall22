@@ -19,3 +19,10 @@
     display: inline-block;
     width: 20px;
 }
+
+.resultList {
+    position: absolute;
+    top: 100%;
+    left: 0%;
+    transform: translate(-20px, 0%);
+}

@@ -11,7 +11,7 @@ function POIAndDestinationSearchBar(Children) {
         setText();
     };
     return (
-        <div>
+        <div className={style.container}>
             <MDBInputGroup className={style.searchBarGroup}>
                 <Input
                     inputProps={{
@@ -32,8 +32,8 @@ function POIAndDestinationSearchBar(Children) {
                     type='text'
                 />
             </MDBInputGroup>
-    
-            <ResultList text={text}></ResultList>
+
+            <ResultList text={text} className={style.resultList}></ResultList>
         </div>
     );
 }

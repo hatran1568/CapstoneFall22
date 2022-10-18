@@ -19,7 +19,7 @@ function ResultList(props) {
     };
     useEffect(getResult, [props.text]);
     return (
-        <MDBListGroup>
+        <MDBListGroup className={style.resultList}>
             {result &&
                 result.map((item, index) => (
                     <MDBListGroupItem

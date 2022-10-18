@@ -1,10 +1,8 @@
-import React, { useState } from "react";
+import React from "react";
 import {
     MDBContainer,
     MDBNavbar,
     MDBNavbarBrand,
-    MDBNavbarToggler,
-    MDBIcon,
     MDBNavbarNav,
     MDBNavbarItem,
     MDBNavbarLink,
@@ -14,20 +12,22 @@ import {
     MDBDropdownMenu,
     MDBDropdownItem,
 } from "mdb-react-ui-kit";
-import style from "./NavBar.module.css";
 import PersonIcon from "@mui/icons-material/Person";
 import SearchBar from "../searchBar/POIAndDestinationSearchBar";
 import RequireAuth from "../../components/RequireAuth";
+import style from "./NavBar.module.css";
 
 const NavBar = () => {
     const pathname = window.location.pathname;
-    const isLoggedIn = RequireAuth.curAccessToken;
+    const isLoggedIn = localStorage.getItem("token");
 
     return (
-        <MDBNavbar expand='lg' light bgColor='light'>
+        <MDBNavbar expand='lg' light>
             <MDBContainer fluid>
-                <MDBNavbarBrand className="fs-2" href='/homepage'>TPS</MDBNavbarBrand>
-                <MDBNavbarBrand className="fs-6 text-muted">Plan things right</MDBNavbarBrand>
+                <MDBNavbarBrand className='fs-2' href='/homepage'>
+                    TPS
+                </MDBNavbarBrand>
+                <MDBNavbarBrand className='fs-6 text-muted'>Plan things right</MDBNavbarBrand>
 
                 <MDBNavbarNav>
                     <MDBNavbarItem>
@@ -37,11 +37,13 @@ const NavBar = () => {
                     </MDBNavbarItem>
 
                     {/*<MDBNavbarItem>
-                        <MDBNavbarLink className={(pathname==="/login")?"active":""} href='/login'>Login</MDBNavbarLink>
+                        <MDBNavbarLink className={pathname === "/login" ? "active" : ""} href='/login'>
+                            Login
+                        </MDBNavbarLink>
                     </MDBNavbarItem>*/}
                 </MDBNavbarNav>
 
-                <MDBNavbarNav center>
+                <MDBNavbarNav>
                     <MDBNavbarItem>
                         <SearchBar />
                     </MDBNavbarItem>
