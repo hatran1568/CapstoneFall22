@@ -45,8 +45,8 @@ public class User {
     @UpdateTimestamp
     @Temporal(TemporalType.TIMESTAMP)
     private Date dateModified;
+
     @Column(name="provider")
     @Enumerated(EnumType.STRING)
     private Provider provider;
-
 }

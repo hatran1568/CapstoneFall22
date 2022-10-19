@@ -29,36 +29,27 @@ public class TripController {
     private POIRepository poiRepository;
     @GetMapping("/{id}")
     public ResponseEntity<Trip> getTripById(@PathVariable int id){
-//        try{
+        try{
             Optional<Trip> trip = tripService.getTripById(id);
             if (trip.isEmpty()){
                 return new ResponseEntity<>(HttpStatus.NOT_FOUND);
             }
             return new ResponseEntity<>(trip.get(), HttpStatus.OK);
-//        } catch (Exception e){
-//            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-//        }
+        } catch (Exception e){
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
-//    @GetMapping("/get-distance")
-//    public ResponseEntity<Double> getDistanceBetweenTwoPOIs(@RequestParam int from, @RequestParam int to){
-//        try{
-//            Optional<Double> distance = tripService.getDistanceBetweenTwoPOIs(from, to);
-//            if (distance.isEmpty()){
-//                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-//            }
-//            return new ResponseEntity<>(distance.get(), HttpStatus.OK);
-//        } catch (Exception e){
-//            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-//        }
-//    }
     @GetMapping("/get-distance")
     public ResponseEntity<Double> getDistanceBetweenTwoPOIs(@RequestParam int from, @RequestParam int to){
-
+        try{
             Optional<Double> distance = tripService.getDistanceBetweenTwoPOIs(from, to);
             if (distance.isEmpty()){
                 return new ResponseEntity<>(HttpStatus.NOT_FOUND);
             }
             return new ResponseEntity<>(distance.get(), HttpStatus.OK);
+    } catch (Exception e){
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
     @GetMapping("/master-activity/{id}")
     public ResponseEntity<MasterActivity> getMasterActivityById(@PathVariable int id){
@@ -118,6 +109,7 @@ public class TripController {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+
     @PreAuthorize("hasAuthority('Admin')")
     @RequestMapping(value="/test/{id}", method = RequestMethod.GET)
 

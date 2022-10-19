@@ -6,6 +6,7 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
@@ -37,6 +38,7 @@ public class Destination {
 
     @Column(name="date_modified")
     @Temporal(TemporalType.TIMESTAMP)
+
     @UpdateTimestamp
     private Date dateModified;
     @ManyToOne(cascade={CascadeType.ALL})
