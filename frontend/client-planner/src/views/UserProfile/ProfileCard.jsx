@@ -1,7 +1,7 @@
 import { MDBCard } from "mdb-react-ui-kit";
 import React from "react";
 import style from "./Profile.module.css";
-function Profile() {
+function ProfileCard() {
   return (
     <MDBCard className={`${style.card} p-3`}>
       <div
@@ -25,4 +25,4 @@ function Profile() {
   );
 }
 
-export default Profile;
+export default ProfileCard;

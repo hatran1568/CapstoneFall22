@@ -30,6 +30,7 @@ import org.springframework.security.web.authentication.AuthenticationFailureHand
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.util.UriComponentsBuilder;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -94,7 +95,8 @@ public class WebSercurityConfig extends WebSecurityConfigurerAdapter {
                 .csrf()
                 .disable()
                 .authorizeRequests()
-                .antMatchers("/api/login","/api/register","/login","/oauth/**","/api/loginByOAuth","/api/wrongUser", "/api/user/findById/**", "/api/destination/**", "/trip/**", "/api/pois/**").permitAll()
+
+                .antMatchers("/api/login","/api/register","/login","/oauth/**","/api/loginByOAuth","/api/wrongUser", "/api/user/findById/**","/search/both/*","/trip/**", "/trip/put-detail", "/api/pois/**").permitAll()
                 .anyRequest().authenticated().and().formLogin().loginPage("/api/wrongUser").failureHandler(new AuthenticationFailureHandler() {
 
                     @Override
@@ -122,11 +124,11 @@ public class WebSercurityConfig extends WebSecurityConfigurerAdapter {
                         response.setStatus(403);
                     }
                 })
-                .successHandler(new AuthenticationSuccessHandler() {
+                .successHandler(new AuthenticationSuccessHandler()  {
 
                     @Override
                     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response,
-                                                        Authentication authentication) throws IOException, ServletException {
+                                                        Authentication authentication)  throws IOException, ServletException {
 
                         OAuth2UserDTO oauthUser = (OAuth2UserDTO) authentication.getPrincipal();
                         String oauth2ClientName = oauthUser.getClientName();
@@ -136,15 +138,24 @@ public class WebSercurityConfig extends WebSecurityConfigurerAdapter {
                             userService.processOAuthPostLoginGoogle(oauthUser.getEmail());
                             String jwt = tokenProvider.generateToken(oauthUser);
                             User user = userRepository.findByEmail(oauthUser.getEmail());
-                            response.getWriter().write(new ObjectMapper().writeValueAsString(new LoginResponseDTO(jwt,user.getRole().getRoleName())));
-                            response.setStatus(200);
+
+                            String uri=  UriComponentsBuilder.fromUriString("http://localhost:3000/login")
+                                    .queryParam("token", jwt)
+                                    .queryParam("role",user.getRole().getRoleName())
+                                    .queryParam("id",user.getUserID())
+                                    .build().toUriString();
+                            response.sendRedirect(uri);
                         }
                         if(oauth2ClientName.equalsIgnoreCase("facebook")){
                             userService.processOAuthPostLoginFacebook(oauthUser.getEmail());
                             String jwt = tokenProvider.generateToken(oauthUser);
                             User user = userRepository.findByEmail(oauthUser.getEmail());
-                            response.getWriter().write(new ObjectMapper().writeValueAsString(new LoginResponseDTO(jwt,user.getRole().getRoleName())));
-                            response.setStatus(200);
+                            String uri=  UriComponentsBuilder.fromUriString("http://localhost:3000/login")
+                                    .queryParam("token", jwt)
+                                    .queryParam("role",user.getRole().getRoleName())
+                                    .queryParam("id",user.getUserID())
+                                    .build().toUriString();
+                            response.sendRedirect(uri);
                         }
 
 

@@ -17,7 +17,6 @@ public class Role {
     @Column(name = "role_name")
     private String roleName;
 
-
     public Role(int id, String name) {
         setRoleID(id);
         setRoleName(name);

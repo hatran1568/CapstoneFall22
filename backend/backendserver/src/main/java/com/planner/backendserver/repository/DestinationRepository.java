@@ -6,9 +6,12 @@ import com.planner.backendserver.entity.Destination;
 
 import java.util.ArrayList;
 
+import org.hibernate.sql.Select;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
+
+import java.util.ArrayList;
 
 @Repository
 public interface DestinationRepository extends JpaRepository<Destination,Integer> {
@@ -26,4 +29,6 @@ public interface DestinationRepository extends JpaRepository<Destination,Integer
         value = "SELECT di.url as original, di.url as thumbnail FROM destination_image di where di.destination_id = ?1",
         nativeQuery = true)
     ArrayList<GalleryImages> getDestinationImagesURL(int destinationId);
+    @Query("SELECT d from Destination d where d.name like  CONCAT('%',:keyword,'%')")
+    public ArrayList<Destination> getDestinationsByKeyword(String keyword);
 }

@@ -1,0 +1,21 @@
+.item {
+    list-style-type: none;
+    width: 50vw;
+    margin-left: 20px;
+    height: 6vh;
+    border-radius: 0 !important;
+    color: black;
+}
+
+.item {
+    cursor: pointer;
+}
+
+.active {
+    background-color: grey;
+}
+
+.icon {
+    display: inline-block;
+    width: 20px;
+}

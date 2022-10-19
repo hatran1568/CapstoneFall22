@@ -2,6 +2,7 @@ package com.planner.backendserver.repository;
 
 import com.planner.backendserver.DTO.GalleryImages;
 import com.planner.backendserver.entity.Trip;
+import com.planner.backendserver.entity.TripDetails;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -16,7 +17,8 @@ import java.util.Optional;
 @Repository
 @Transactional
 public interface TripRepository extends JpaRepository<Trip, Integer> {
-    Optional<Trip> findById(int id);
+    @Query("select t from Trip t where t.tripId = :id")
+    Optional<Trip> getTripById(int id);
     ArrayList<Trip> getTripsByUser(String email);
 
     @Modifying
