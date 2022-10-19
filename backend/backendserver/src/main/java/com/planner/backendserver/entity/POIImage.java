@@ -1,6 +1,5 @@
 package com.planner.backendserver.entity;
 
-
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 

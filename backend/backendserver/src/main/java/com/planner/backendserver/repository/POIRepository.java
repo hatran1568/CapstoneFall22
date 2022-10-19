@@ -1,5 +1,4 @@
 package com.planner.backendserver.repository;
-
 import com.planner.backendserver.entity.MasterActivity;
 import com.planner.backendserver.entity.POI;
 import com.planner.backendserver.entity.User;

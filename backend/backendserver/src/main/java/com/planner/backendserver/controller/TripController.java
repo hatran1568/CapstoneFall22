@@ -1,7 +1,5 @@
 package com.planner.backendserver.controller;
-
 import com.fasterxml.jackson.databind.node.ObjectNode;
-import com.planner.backendserver.DTO.GenerateTripUserInput;
 import com.planner.backendserver.DTO.UserDTO;
 import com.planner.backendserver.entity.MasterActivity;
 import com.planner.backendserver.entity.Trip;
@@ -27,19 +25,19 @@ public class TripController {
     private UserDTOServiceImplementer userDTOService;
     @Autowired
     private TripService tripService;
-@Autowired
-private POIRepository poiRepository;
+    @Autowired
+    private POIRepository poiRepository;
     @GetMapping("/{id}")
     public ResponseEntity<Trip> getTripById(@PathVariable int id){
-        try{
+//        try{
             Optional<Trip> trip = tripService.getTripById(id);
             if (trip.isEmpty()){
                 return new ResponseEntity<>(HttpStatus.NOT_FOUND);
             }
             return new ResponseEntity<>(trip.get(), HttpStatus.OK);
-        } catch (Exception e){
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-        }
+//        } catch (Exception e){
+//            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+//        }
     }
 //    @GetMapping("/get-distance")
 //    public ResponseEntity<Double> getDistanceBetweenTwoPOIs(@RequestParam int from, @RequestParam int to){
@@ -139,8 +137,4 @@ private POIRepository poiRepository;
         UserDTO userDetails = userDTOService.loadUserById(id);
         return  userDetails;
     }
-
-
-
-
 }

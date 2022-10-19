@@ -61,7 +61,6 @@ class TripDetail extends Component {
   //set distance again after props.nextActivityId changes
   componentDidUpdate(prevProps) {
     if (prevProps.nextActivityId !== this.props.nextActivityId) {
-      console.log("did updatte");
       this.setDistanceState();
     }
   }

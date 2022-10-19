@@ -30,6 +30,7 @@ public class Trip {
     @Type(type = "date")
     @Column(name="start_date")
     private Date startDate;
+
     @Type(type = "date")
     @Column(name="end_date")
     private Date endDate;
