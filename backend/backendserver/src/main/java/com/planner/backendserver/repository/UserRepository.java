@@ -1,5 +1,4 @@
 package com.planner.backendserver.repository;
-
 import com.planner.backendserver.entity.Provider;
 import com.planner.backendserver.entity.User;
 import org.springframework.data.jpa.repository.JpaRepository;
