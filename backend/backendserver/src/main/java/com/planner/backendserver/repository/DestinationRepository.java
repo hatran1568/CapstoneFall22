@@ -12,5 +12,4 @@ import java.util.ArrayList;
 public interface DestinationRepository extends JpaRepository<Destination,Integer> {
     @Query("SELECT d from Destination d where d.name like  CONCAT('%',:keyword,'%')")
     public ArrayList<Destination> getDestinationsByKeyword(String keyword);
-
 }

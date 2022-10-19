@@ -49,5 +49,4 @@ public class User {
     @Column(name="provider")
     @Enumerated(EnumType.STRING)
     private Provider provider;
-
 }

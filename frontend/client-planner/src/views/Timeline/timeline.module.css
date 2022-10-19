@@ -1,0 +1,119 @@
+
+.timeline-container{
+  min-width: 1000px;
+}
+.timeline {
+    border-left: 1px solid hsl(0, 0%, 90%);
+    position: relative;
+    list-style: none;
+    margin-bottom: 50px;
+}
+
+.timeline .timelineItem, .timelineTransport {
+  position: relative;
+}
+
+.timeline .timelineItem:after, .timelineTransport:after {
+  position: absolute;
+  display: block;
+  top: 0;
+}
+
+.timeline .timelineItem:after, .timelineTransport:after{
+  background-color: hsl(0, 0%, 90%);
+  left: -38px;
+  border-radius: 50%;
+  height: 11px;
+  width: 11px;
+  content: "";
+}
+
+.timeline .timelineItem {
+    flex-direction: row;
+}
+
+.page {
+    z-index: -1;
+}
+
+.timeline .btn-delete{
+  margin:auto
+}
+
+.timeline .timelineTransport{
+  margin: 30px 0px;
+}
+.edit-form, .add-form {
+    z-index: 1;
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    background-color: rgba(0, 0, 0, 0.2);
+    display: none;
+    transition: 1s;
+}
+
+.form-group {
+    margin: 10px;
+}
+
+#btnAdd {
+  border-radius: 50%;
+  height: 65px;
+  width: 65px;
+  background-color: #FF8005;
+  border: none;
+  font-size: 30px;
+  
+}
+.foreIcon{
+  margin-right: 10px;
+}
+#sticky-nav-first{
+  padding: 0;
+  background-color: #fff;
+  border: none;
+  padding-top: 15px;
+  margin-bottom: 50px;
+}
+.activityImg{
+  border-radius: 5px;
+  max-width: 100%;
+}
+.btnMore{
+  margin: 0;
+  float: right;
+  border: none;
+  background-color: #fff;
+  cursor: pointer;
+  padding: 5px;
+  padding-top: 0;
+}
+.daysBox{
+  position: fixed;
+  overflow-y: visible;
+  height: auto;
+}
+.detailsGroupDate{
+  font-weight: bold;
+  font-size: large;
+  margin-bottom: 50px;
+}
+.modal .display-block{
+  display: block;
+}
+.topleft {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  font-size: 18px;
+  color: red;
+}
+.timeText{
+  margin-top: 15px;
+}
+.ttip{
+  display: none;
+}
