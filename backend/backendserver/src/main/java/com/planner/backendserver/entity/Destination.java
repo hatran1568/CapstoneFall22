@@ -38,9 +38,9 @@ public class Destination {
 
     @Column(name="date_modified")
     @Temporal(TemporalType.TIMESTAMP)
+
     @UpdateTimestamp
     private Date dateModified;
-
     @ManyToOne(cascade={CascadeType.ALL})
     @JoinColumn(name="belong_to")
     @JsonIgnore
