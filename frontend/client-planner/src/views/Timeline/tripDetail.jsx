@@ -1,15 +1,28 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React, { Component } from "react";
-import { faCalendarDays, faCar } from "@fortawesome/free-solid-svg-icons";
+import {
+  faCalendarDays,
+  faCar,
+  faCircleExclamation,
+} from "@fortawesome/free-solid-svg-icons";
+import style from "./timeline.module.css";
 import {
   MDBDropdown,
   MDBDropdownMenu,
   MDBDropdownToggle,
   MDBDropdownItem,
+  MDBTooltip,
+  MDBPopover,
+  MDBPopoverBody,
+  MDBPopoverHeader,
+  MDBBtn,
 } from "mdb-react-ui-kit";
-
+import Button from "react-bootstrap/Button";
+import OverlayTrigger from "react-bootstrap/OverlayTrigger";
+import Popover from "react-bootstrap/Popover";
 import EditActivityModal from "./EditActivityModal";
 import axios from "axios";
+import { StyleOutlined } from "@mui/icons-material";
 class TripDetail extends Component {
   state = {};
   //set state of component based on props from timeline
@@ -86,10 +99,40 @@ class TripDetail extends Component {
     var moment = require("moment"); // require
     return (
       <React.Fragment>
-        <li className="timeline-item card">
+        <li className={`${style.timelineItem} card`}>
           <div className="card-body row">
             <div className="col-2">
-              <p className="text-muted card-text">
+              {this.props.isConflicting && (
+                <>
+                  {/* <FontAwesomeIcon
+                    icon={faCircleExclamation}
+                    className="topleft"
+                    onMouseOver={() => {
+                      console.log("hovering");
+                    }}
+                  />
+                  <div className="ttip">Hello</div> */}
+                  <OverlayTrigger
+                    trigger={["hover", "focus"]}
+                    placement={"bottom"}
+                    overlay={
+                      <Popover id={`popover-positioned-bottom`}>
+                        <Popover.Header as="h3">{`Popover bottom`}</Popover.Header>
+                        <Popover.Body>
+                          <strong>Holy guacamole!</strong> Check this info.
+                        </Popover.Body>
+                      </Popover>
+                    }
+                  >
+                    <FontAwesomeIcon
+                      variant="secondary"
+                      icon={faCircleExclamation}
+                      className="topleft"
+                    />
+                  </OverlayTrigger>
+                </>
+              )}
+              <p className={`text-muted card-text ${style.timeText}`}>
                 {moment(
                   this.getTimeFromSecs(this.state.tripDetail.startTime),
                   "HH:mm:ss"
@@ -110,11 +153,11 @@ class TripDetail extends Component {
                       : "https://picsum.photos/seed/picsum/300/200"
                     : "https://picsum.photos/seed/picsum/300/200"
                 }
-                className="activity-img"
+                className={style.activityImg}
               ></img>
             </div>
             <div className="col-6">
-              <MDBDropdown animation={false} className="btn-more">
+              <MDBDropdown animation={false} className={style.btnMore}>
                 <MDBDropdownToggle color="light"></MDBDropdownToggle>
                 <MDBDropdownMenu>
                   <MDBDropdownItem link>Details</MDBDropdownItem>
@@ -140,7 +183,10 @@ class TripDetail extends Component {
                   : ""}
               </div>
               <p className="text-muted card-text">
-                <FontAwesomeIcon icon={faCalendarDays} className="fore-icon" />
+                <FontAwesomeIcon
+                  icon={faCalendarDays}
+                  className={style.foreIcon}
+                />
                 <span className="date-value">{this.state.tripDetail.date}</span>
               </p>
 
@@ -157,7 +203,7 @@ class TripDetail extends Component {
             </div>
           </div>
         </li>
-        <li className="timeline-transport">
+        <li className={style.timelineTransport}>
           <FontAwesomeIcon icon={faCar} />{" "}
           {this.state.distanceToNext != -1
             ? this.state.distanceToNext + "km"

@@ -2,7 +2,6 @@ import React, { Component, useState } from "react";
 import { withRouter } from "react-router";
 import TripDetail from "./tripDetail";
 import AddActivityModal from "./AddActivityModal";
-import "./timeline.css";
 import axios from "axios";
 // import tripData from "./tripData.json";
 import {
@@ -18,6 +17,7 @@ import {
   MDBTabsPane,
 } from "mdb-react-ui-kit";
 import { useParams } from "react-router-dom";
+import style from "./timeline.module.css";
 class Timeline extends Component {
   state = {};
   //set state of component
@@ -228,6 +228,19 @@ class Timeline extends Component {
     if (nextItem) return nextItem.masterActivity.activityId;
     return -1;
   };
+  //gets the id of the next trip detail in the list, to get the distance between the 2 later
+  isConflicting = (list, detail) => {
+    var index = list.indexOf(detail);
+    if (index >= 1) {
+      var preDetail = list[index - 1];
+      if (detail.startTime < preDetail.endTime) return true;
+    }
+    if (index >= 0 && index < list.length - 1) {
+      var nextDetail = list[index + 1];
+      if (detail.endTime > nextDetail.startTime) return true;
+    }
+    return false;
+  };
   render() {
     if (!this.state.dataLoaded)
       return (
@@ -291,7 +304,7 @@ class Timeline extends Component {
         <div className="container ">
           <div className="timeline-container row ">
             <div className="col-2 days-col">
-              <div className="days-box">
+              <div className={style.daysBox}>
                 {allMonths.map((month) => (
                   <div key={month}>
                     <div>{month}</div>
@@ -314,10 +327,10 @@ class Timeline extends Component {
                   key={date.toISOString().split("T")[0]}
                 >
                   <div>
-                    <div className="details-group-date">
+                    <div className={style.detailsGroupDate}>
                       {date.toISOString().split("T")[0]}
                     </div>
-                    <ul className="timeline">
+                    <ul className={style.timeline}>
                       {this.getTripDetailsByDate(date).map((tripDetail) => (
                         <TripDetail
                           key={tripDetail.tripDetailsId}
@@ -333,6 +346,10 @@ class Timeline extends Component {
                             tripDetail
                           )}
                           allDates={allDates}
+                          isConflicting={this.isConflicting(
+                            this.getTripDetailsByDate(date),
+                            tripDetail
+                          )}
                         ></TripDetail>
                       ))}
                     </ul>
@@ -343,13 +360,13 @@ class Timeline extends Component {
             <div className="col-2"></div>
           </div>
           <div
-            className="form-group add-btn"
+            className={`form-group`}
             style={{ position: "fixed", bottom: 0, right: "20px" }}
           >
             <button
               type="button"
               className="btn btn-primary btn-md"
-              id="btnAdd"
+              id={style.btnAdd}
               variant="primary"
               onClick={this.toggleAddModal}
             >
