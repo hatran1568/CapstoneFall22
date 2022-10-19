@@ -11,11 +11,7 @@ import cateData from "./category.json";
 import { useNavigate } from "react-router-dom";
 import {
     MDBBtn,
-    MDBContainer,
-    MDBCard,
-    MDBCardBody,
-    MDBRow,
-    MDBCol,
+    MDBContainer
   } from "mdb-react-ui-kit";
 import style from './POIsDestination.module.css';
 function POIsDestination(){
@@ -23,7 +19,6 @@ function POIsDestination(){
     const queryParams = new URLSearchParams(window.location.search);
     const desId = queryParams.get('desid');
     const catId = queryParams.get('catid');
-    const page = queryParams.get('page');
     const navigate = useNavigate();
     const [destination, setDestination] = useState([]);
     useEffect(() => {
@@ -38,7 +33,7 @@ function POIsDestination(){
     const [pois, setPOIs] = useState([]);
     useEffect(() => {
         const listResp = async () => {
-          await axios.get('http://localhost:8080/api/pois/' + desId + "/" + page + "/" + catId)
+          await axios.get('http://localhost:8080/api/pois/' + desId + "/" + 0 + "/" + catId)
           .then(
             response => setPOIs(response.data))
         }
