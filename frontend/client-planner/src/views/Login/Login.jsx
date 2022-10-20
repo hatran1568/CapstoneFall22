@@ -12,7 +12,7 @@ import {
 import style from "./Login.module.css";
 import useAuth from "../../hooks/useAuth";
 import axios from "../../api/axios";
-
+import POIAndDestinationSearchBar from "../../components/searchBar/POIAndDestinationSearchBar";
 const LOGIN_URL = "/api/login";
 
 function Login() {
@@ -62,6 +62,7 @@ function Login() {
   };
   return (
     <MDBContainer className="my-5 ">
+      <POIAndDestinationSearchBar></POIAndDestinationSearchBar>
       <MDBCard>
         <MDBRow className="g-0">
           <MDBCol md="6">

@@ -1,0 +1,21 @@
+.poi {
+    -moz-animation-delay: 3.5s;
+    -webkit-animation-delay: 3.5s;
+    -o-animation-delay: 3.5s;
+    animation-delay: 3.5s;
+    padding-left: 30px;
+}
+
+.active {
+    background-color: #c7c7c7;
+}
+
+.show {
+    display: block;
+    -webkit-transition: 0.5s linear;
+}
+
+.hide {
+    display: none;
+    -webkit-transition: 0.5s linear;
+}

@@ -96,7 +96,7 @@ public class WebSercurityConfig extends WebSecurityConfigurerAdapter {
                 .disable()
                 .authorizeRequests()
 
-                .antMatchers("/api/login","/api/register","/login","/oauth/**","/api/loginByOAuth","/api/wrongUser", "/api/user/findById/**","/search/both/*").permitAll()
+                .antMatchers("/api/login","/api/register","/login","/oauth/**","/api/loginByOAuth","/api/wrongUser", "/api/user/findById/**","/search/**").permitAll()
 
                 .anyRequest().authenticated().and().formLogin().loginPage("/api/wrongUser").failureHandler(new AuthenticationFailureHandler() {
 

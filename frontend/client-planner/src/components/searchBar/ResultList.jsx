@@ -1,6 +1,6 @@
 import { useState,useEffect } from "react";
 import axios from "../../api/axios";
-import { MDBInput ,MDBListGroup,MDBListGroupItem} from 'mdb-react-ui-kit';
+import { MDBDropdownMenu, MDBInput ,MDBListGroup,MDBListGroupItem} from 'mdb-react-ui-kit';
 import style from './ResultList.module.css'
 import './override.css'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
@@ -10,12 +10,12 @@ function ResultList(props){
     const [select,setSelect] = useState(0);
     const getResult = ()=>{
         
-        axios.get("http://localhost:8080/search/both/"+props.text,{
+        axios.get("http://localhost:8080/search/all/"+props.text,{
             headers: { "Content-Type": "application/json"}
         }).then((response) => response.data).catch(()=> setResult(false)).then((data)=>setResult(data))
     }
     useEffect(getResult,[props.text])
-    return <MDBListGroup  >
+    return <MDBListGroup className={style.list} >
         
         {result && result.map((item,index)=><MDBListGroupItem onMouseOver={()=>setSelect(index)} onMouseLeave={()=>setSelect(0)} active={select==index} className={style.item +" px-3 square border"} color='light'  key ={index}> <div className={style.icon}><FontAwesomeIcon icon={item.type=="DESTINATION"?faLocationDot:item.type=="POI"?faMapLocationDot:faBlog} /></div>	&nbsp;	&nbsp;	{item.name}</MDBListGroupItem>)}
            {
