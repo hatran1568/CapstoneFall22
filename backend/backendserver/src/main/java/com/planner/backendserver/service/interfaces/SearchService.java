@@ -6,4 +6,5 @@ import java.util.ArrayList;
 
 public interface SearchService {
     public ArrayList<SearchPOIAndDestinationDTO> searchPOIAndDestinationByKeyword(String keyword);
+    public ArrayList<SearchPOIAndDestinationDTO> searchPOIByKeyword(String keyword);
 }

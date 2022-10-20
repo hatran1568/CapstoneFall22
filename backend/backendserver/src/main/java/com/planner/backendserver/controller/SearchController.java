@@ -20,11 +20,10 @@ import java.util.Optional;
 @RequestMapping("/search")
 public class SearchController {
     @Autowired
-    DestinationService destinationService;
-    @Autowired
     SearchService searchService;
+
     @GetMapping("/both/{keyword}")
-    public ResponseEntity<ArrayList<SearchPOIAndDestinationDTO>> searchPOIAndDestinationByKeyword(@PathVariable String keyword){
+    public ResponseEntity<ArrayList<SearchPOIAndDestinationDTO>> searchPOIAndDestinationByKeyword(@PathVariable String keyword) {
         ArrayList<SearchPOIAndDestinationDTO> results = searchService.searchPOIAndDestinationByKeyword(keyword);
         return new ResponseEntity<ArrayList<SearchPOIAndDestinationDTO>>(results, HttpStatus.OK);
 //        try{
@@ -36,5 +35,11 @@ public class SearchController {
 //        } catch (Exception e){
 //            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
 //        }
+    }
+
+    @GetMapping("/poi/{keyword}")
+    public ResponseEntity<ArrayList<SearchPOIAndDestinationDTO>> searchPOIByKeyword(@PathVariable String keyword) {
+        ArrayList<SearchPOIAndDestinationDTO> results = searchService.searchPOIByKeyword(keyword);
+        return new ResponseEntity<ArrayList<SearchPOIAndDestinationDTO>>(results, HttpStatus.OK);
     }
 }

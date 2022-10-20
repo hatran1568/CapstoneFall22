@@ -7,9 +7,7 @@ import SearchIcon from "@mui/icons-material/Search";
 
 function POIAndDestinationSearchBar(Children) {
     const [text, setText] = useState("");
-    const handle = () => {
-        setText();
-    };
+    
     return (
         <div className={style.container}>
             <MDBInputGroup className={style.searchBarGroup}>
@@ -34,7 +32,7 @@ function POIAndDestinationSearchBar(Children) {
                 />
             </MDBInputGroup>
 
-            <ResultList text={text} className={style.resultList}></ResultList>
+            <ResultList text={text}></ResultList>
         </div>
     );
 }

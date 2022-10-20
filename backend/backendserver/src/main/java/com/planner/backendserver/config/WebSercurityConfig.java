@@ -51,16 +51,17 @@ public class WebSercurityConfig extends WebSecurityConfigurerAdapter {
     UserService userService;
     @Autowired
     UserRepository userRepository;
+
     @Bean
     public JwtAuthenticationFilter jwtAuthenticationFilter() {
         return new JwtAuthenticationFilter();
     }
+
     @Bean
     public PasswordEncoder passwordEncoder() {
         // Password encoder, để Spring Security sử dụng mã hóa mật khẩu người dùng
         return new BCryptPasswordEncoder();
     }
-
 
 
     @Override
@@ -76,13 +77,14 @@ public class WebSercurityConfig extends WebSecurityConfigurerAdapter {
         // Get AuthenticationManager Bean
         return super.authenticationManagerBean();
     }
+
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
                 .cors().configurationSource(request -> {
                     var cors = new CorsConfiguration();
                     cors.setAllowedOrigins(List.of("http://localhost:3000/"));
-                    cors.setAllowedMethods(List.of("GET","POST", "PUT", "DELETE", "OPTIONS"));
+                    cors.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
                     cors.setAllowedHeaders(List.of("Authorization",
                             "Content-Type",
                             "X-Requested-With",
@@ -96,13 +98,12 @@ public class WebSercurityConfig extends WebSecurityConfigurerAdapter {
                 .disable()
                 .authorizeRequests()
 
-                .antMatchers("/api/login","/api/register","/login","/oauth/**","/api/loginByOAuth","/api/wrongUser", "/api/user/findById/**","/search/both/*","/trip/**", "/trip/put-detail").permitAll()
+                .antMatchers("/api/login", "/api/register", "/login", "/oauth/**", "/api/loginByOAuth", "/api/wrongUser", "/api/user/findById/**", "/search/both/*", "/search/poi/*", "/trip/**", "/trip/put-detail").permitAll()
                 .anyRequest().authenticated().and().formLogin().loginPage("/api/wrongUser").failureHandler(new AuthenticationFailureHandler() {
 
                     @Override
                     public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response,
                                                         AuthenticationException exception) throws IOException, ServletException {
-
 
 
                         response.sendRedirect("/api/wrongUser");
@@ -124,41 +125,39 @@ public class WebSercurityConfig extends WebSecurityConfigurerAdapter {
                         response.setStatus(403);
                     }
                 })
-                .successHandler(new AuthenticationSuccessHandler()  {
+                .successHandler(new AuthenticationSuccessHandler() {
 
                     @Override
                     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response,
-                                                        Authentication authentication)  throws IOException, ServletException {
+                                                        Authentication authentication) throws IOException, ServletException {
 
                         OAuth2UserDTO oauthUser = (OAuth2UserDTO) authentication.getPrincipal();
                         String oauth2ClientName = oauthUser.getClientName();
 
                         String username = oauthUser.getEmail();
-                        if(oauth2ClientName.equalsIgnoreCase("google")){
+                        if (oauth2ClientName.equalsIgnoreCase("google")) {
                             userService.processOAuthPostLoginGoogle(oauthUser.getEmail());
                             String jwt = tokenProvider.generateToken(oauthUser);
                             User user = userRepository.findByEmail(oauthUser.getEmail());
 
-                            String uri=  UriComponentsBuilder.fromUriString("http://localhost:3000/login")
+                            String uri = UriComponentsBuilder.fromUriString("http://localhost:3000/login")
                                     .queryParam("token", jwt)
-                                    .queryParam("role",user.getRole().getRoleName())
-                                    .queryParam("id",user.getUserID())
+                                    .queryParam("role", user.getRole().getRoleName())
+                                    .queryParam("id", user.getUserID())
                                     .build().toUriString();
                             response.sendRedirect(uri);
                         }
-                        if(oauth2ClientName.equalsIgnoreCase("facebook")){
+                        if (oauth2ClientName.equalsIgnoreCase("facebook")) {
                             userService.processOAuthPostLoginFacebook(oauthUser.getEmail());
                             String jwt = tokenProvider.generateToken(oauthUser);
                             User user = userRepository.findByEmail(oauthUser.getEmail());
-                            String uri=  UriComponentsBuilder.fromUriString("http://localhost:3000/login")
+                            String uri = UriComponentsBuilder.fromUriString("http://localhost:3000/login")
                                     .queryParam("token", jwt)
-                                    .queryParam("role",user.getRole().getRoleName())
-                                    .queryParam("id",user.getUserID())
+                                    .queryParam("role", user.getRole().getRoleName())
+                                    .queryParam("id", user.getUserID())
                                     .build().toUriString();
                             response.sendRedirect(uri);
                         }
-
-
 
 
                     }
@@ -167,9 +166,6 @@ public class WebSercurityConfig extends WebSecurityConfigurerAdapter {
         http.addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
 
     }
-
-
-
 
 
 }

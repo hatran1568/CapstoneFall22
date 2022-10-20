@@ -30,7 +30,6 @@ function ResultList(props) {
                         color='light'
                         key={index}
                     >
-                        {" "}
                         <div className={style.icon}>
                             <FontAwesomeIcon
                                 icon={
@@ -41,7 +40,7 @@ function ResultList(props) {
                                         : faBlog
                                 }
                             />
-                        </div>{" "}
+                        </div>
                         &nbsp; &nbsp; {item.name}
                     </MDBListGroupItem>
                 ))}

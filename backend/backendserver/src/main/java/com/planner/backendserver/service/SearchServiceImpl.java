@@ -23,35 +23,50 @@ public class SearchServiceImpl implements SearchService {
     DestinationRepository destinationRepository;
     @Autowired
     BlogRepository blogRepository;
+
     @Override
     public ArrayList<SearchPOIAndDestinationDTO> searchPOIAndDestinationByKeyword(String keyword) {
         ArrayList<SearchPOIAndDestinationDTO> list = new ArrayList<>();
         ArrayList<Destination> destinations = destinationRepository.getDestinationsByKeyword(keyword);
         ArrayList<POI> pois = poiRepository.findPOISByKeyword(keyword);
         ArrayList<Blog> blogs = blogRepository.getBlogsByKeyword(keyword);
-        for (Destination destination: destinations) {
-            SearchPOIAndDestinationDTO destinationDTO = new SearchPOIAndDestinationDTO(destination.getDestinationId(),destination.getName(), SearchType.DESTINATION);
+        for (Destination destination : destinations) {
+            SearchPOIAndDestinationDTO destinationDTO = new SearchPOIAndDestinationDTO(destination.getDestinationId(), destination.getName(), SearchType.DESTINATION);
             list.add(destinationDTO);
         }
-        for (POI poi: pois) {
-            SearchPOIAndDestinationDTO PoiDTO = new SearchPOIAndDestinationDTO(poi.getActivityId(),poi.getName(), SearchType.POI);
+        for (POI poi : pois) {
+            SearchPOIAndDestinationDTO PoiDTO = new SearchPOIAndDestinationDTO(poi.getActivityId(), poi.getName(), SearchType.POI);
             list.add(PoiDTO);
         }
 
-        for(Blog blog :blogs){
-            SearchPOIAndDestinationDTO blogDTO = new SearchPOIAndDestinationDTO(blog.getBlogId(),blog.getTitle(), SearchType.BLOG);
+        for (Blog blog : blogs) {
+            SearchPOIAndDestinationDTO blogDTO = new SearchPOIAndDestinationDTO(blog.getBlogId(), blog.getTitle(), SearchType.BLOG);
             list.add(blogDTO);
         }
 
+        return resultsListTruncate(list);
 
-       if(list.size()>9){
-           ArrayList<SearchPOIAndDestinationDTO> finalList = new ArrayList<>();
-           for(int i=0;i<9;i++){
+    }
+
+    public ArrayList<SearchPOIAndDestinationDTO> searchPOIByKeyword(String keyword) {
+        ArrayList<SearchPOIAndDestinationDTO> list = new ArrayList<>();
+        ArrayList<POI> pois = poiRepository.findPOISByKeyword(keyword);
+        for (POI poi : pois) {
+            SearchPOIAndDestinationDTO PoiDTO = new SearchPOIAndDestinationDTO(poi.getActivityId(), poi.getName(), SearchType.POI);
+            list.add(PoiDTO);
+        }
+
+        return resultsListTruncate(list);
+    }
+
+    private ArrayList<SearchPOIAndDestinationDTO> resultsListTruncate(ArrayList<SearchPOIAndDestinationDTO> list) {
+        if (list.size() > 9) {
+            ArrayList<SearchPOIAndDestinationDTO> finalList = new ArrayList<>();
+            for (int i = 0; i < 9; i++) {
                 finalList.add(list.get(i));
-           }
-           return  finalList;
-       }
-       return  list;
-
+            }
+            return finalList;
+        }
+        return list;
     }
 }
