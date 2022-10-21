@@ -5,6 +5,13 @@
     height: 6vh;
     border-radius: 0 !important;
     color: black;
+    z-index: 1000;
+}
+
+.list {
+    position: absolute;
+    z-index: 1000;
+    top: 55px;
 }
 
 .item {
@@ -26,4 +33,7 @@
     top: 100%;
     left: 0%;
     transform: translate(-20px, 0%);
+}
+.link {
+    text-decoration: none;
 }

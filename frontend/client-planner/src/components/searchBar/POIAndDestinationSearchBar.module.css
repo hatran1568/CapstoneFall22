@@ -3,7 +3,8 @@
     margin-left: 20px;
     height: 6vh;*/
     border-radius: 15%;
-    width: 50em;
+    height: 6vh;
+    position: absolute;
 }
 
 .icon {
@@ -11,9 +12,13 @@
 }
 
 .searchBar {
-    width: 25em;
+    width: 50%;
 }
 
 .container {
     position: relative;
+}
+
+.link {
+    text-decoration: none;
 }
