@@ -103,22 +103,18 @@ class TripDetail extends Component {
             <div className="col-2">
               {this.props.isConflicting && (
                 <>
-                  {/* <FontAwesomeIcon
-                    icon={faCircleExclamation}
-                    className="topleft"
-                    onMouseOver={() => {
-                      console.log("hovering");
-                    }}
-                  />
-                  <div className="ttip">Hello</div> */}
                   <OverlayTrigger
                     trigger={["hover", "focus"]}
                     placement={"bottom"}
                     overlay={
                       <Popover id={`popover-positioned-bottom`}>
-                        <Popover.Header as="h3">{`Popover bottom`}</Popover.Header>
-                        <Popover.Body>
-                          <strong>Holy guacamole!</strong> Check this info.
+                        <Popover.Body className={style.popover}>
+                          <FontAwesomeIcon
+                            variant="secondary"
+                            icon={faCircleExclamation}
+                            className={style.popoverIcon}
+                          />
+                          <div>This conflicts with other activities</div>
                         </Popover.Body>
                       </Popover>
                     }
@@ -126,7 +122,7 @@ class TripDetail extends Component {
                     <FontAwesomeIcon
                       variant="secondary"
                       icon={faCircleExclamation}
-                      className="topleft"
+                      className={style.topLeft}
                     />
                   </OverlayTrigger>
                 </>
