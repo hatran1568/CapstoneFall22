@@ -28,6 +28,10 @@ public class TripController {
     private TripService tripService;
     @Autowired
     private POIRepository poiRepository;
+    @Autowired
+    private TripRepository tripRepo;
+
+
     @GetMapping("/{id}")
     public ResponseEntity<Trip> getTripById(@PathVariable int id){
         try{
