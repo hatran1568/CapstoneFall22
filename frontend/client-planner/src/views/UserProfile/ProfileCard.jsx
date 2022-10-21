@@ -27,7 +27,7 @@ function ProfileCard(props) {
         <span className={style.email}>{props.user.email}</span>
 
         <div className={`px-2 rounded mt-4 ${style.date}`}>
-          <span className={style.join}>Joined May,2021</span>
+          <span className={style.join}>Joined May,2022</span>
         </div>
       </div>
     </MDBCard>
