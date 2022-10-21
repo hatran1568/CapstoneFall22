@@ -12,9 +12,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
-import com.planner.backendserver.repository.TripRepository;
-
-import javax.annotation.security.RolesAllowed;
 import java.sql.Date;
 import java.util.Optional;
 
@@ -89,15 +86,15 @@ public class TripController {
     }
     @PutMapping("/put-detail")
     public ResponseEntity<TripDetails> getTripDetail(@RequestBody TripDetails newDetail, @RequestParam int id){
-//        try{
+        try{
             Optional<TripDetails> detail = tripService.editTripDetailById(newDetail,id);
             if (detail.isEmpty()){
                 return new ResponseEntity<>(HttpStatus.NOT_FOUND);
             }
             return new ResponseEntity<>(detail.get(), HttpStatus.OK);
-//        } catch (Exception e){
-//            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-//        }
+        } catch (Exception e){
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
     @DeleteMapping("/delete-detail")
     public ResponseEntity<TripDetails> deleteTripDetail(@RequestBody ObjectNode objectNode){
@@ -122,10 +119,8 @@ public class TripController {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
-
     @GetMapping("/test1/{id}")
     public UserDTO getUser(@PathVariable int id){
-
         UserDTO userDetails = userDTOService.loadUserById(id);
         return  userDetails;
     }
