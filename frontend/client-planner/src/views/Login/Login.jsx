@@ -12,7 +12,6 @@ import {
 import style from "./Login.module.css";
 import useAuth from "../../hooks/useAuth";
 import axios from "../../api/axios";
-
 const LOGIN_URL = "/api/login";
 
 function Login() {
