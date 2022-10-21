@@ -10,7 +10,6 @@ function AddActivityModal(props) {
     start_time: "",
     end_time: "",
   };
-  
   return (
     <Modal
       {...rest}

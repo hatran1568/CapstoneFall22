@@ -71,12 +71,15 @@
 .foreIcon{
   margin-right: 10px;
 }
-#sticky-nav-first{
+.stickyNavFirst{
   padding: 0;
   background-color: #fff;
   border: none;
   padding-top: 15px;
   margin-bottom: 50px;
+  position: sticky;
+  top: 0;
+  z-index: 1020;
 }
 .activityImg{
   border-radius: 5px;
@@ -104,10 +107,18 @@
 .modal .display-block{
   display: block;
 }
-.topleft {
+.topLeft {
   position: absolute;
   top: 10px;
   left: 10px;
+  font-size: 18px;
+  color: red;
+}
+.popover{
+  text-align: center;
+}
+.popoverIcon {
+  margin: auto;
   font-size: 18px;
   color: red;
 }
@@ -116,4 +127,9 @@
 }
 .ttip{
   display: none;
+}
+.scrollspyExample {
+  position: relative;
+  height: 200px;
+  overflow: auto;
 }
