@@ -1,0 +1,57 @@
+@media screen and (min-width: 730px) {
+  .img {
+    transform: scaleX(-1);
+    clip-path: polygon(0% 0%, 60% 0%, 60% 100%, 0% 100%);
+  }
+
+  .splash {
+    position: absolute;
+    width: 40%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+
+  #splash-text {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    font-size: 2.5vh;
+  }
+}
+
+@media screen and (max-width: 730px) {
+  .img {
+    clip-path: polygon(100% 0%, 100% 0%, 100% 100%, 100% 100%);
+  }
+
+  .splash {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+
+  #splash-text {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    font-size: 2.5vh;
+  }
+}
+
+@media screen and (max-width: 300px) {
+  .btn {
+  }
+}
+
+.splashContainer {
+  position: relative;
+  height: 100%;
+  width: 100%;
+}

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import {
   MDBBtn,
@@ -22,9 +22,6 @@ function Login() {
 
   const from = location.state?.from?.pathname || "/";
 
-  if (localStorage.getItem("token") != null) {
-    window.location.href = "http://localhost:3000/";
-  }
   const [user, setUser] = useState({ username: "", password: "" });
 
   const handleLogin = async (e) => {
@@ -42,7 +39,7 @@ function Login() {
         localStorage.setItem("token", accessToken);
         localStorage.setItem("role", role);
         localStorage.setItem("id", id);
-        navigate(from, { replace: true });
+        window.location.href = "http://localhost:3000/";
       }
       setUser({ ...user, username: "", password: "" });
     } catch (error) {
@@ -51,6 +48,12 @@ function Login() {
       }
     }
   };
+
+  useEffect(() => {
+    if (localStorage.getItem("token") != null) {
+      navigate("/");
+    }
+  }, []);
 
   const handleLoginGoogle = (e) => {
     window.location.href = "http://localhost:8080/oauth2/authorization/google";

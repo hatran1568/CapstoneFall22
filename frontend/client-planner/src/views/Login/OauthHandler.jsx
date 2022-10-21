@@ -25,9 +25,9 @@ function OAuthHandler() {
       localStorage.setItem("token", token);
       localStorage.setItem("role", role);
       localStorage.setItem("id", id);
-      navigate("/");
+      window.location.href = "http://localhost:3000/";
     } else {
-      navigate("/login");
+      window.location.href = "http://localhost:3000/login";
     }
   }, []);
 }
