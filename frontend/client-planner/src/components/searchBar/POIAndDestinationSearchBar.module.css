@@ -13,3 +13,7 @@
 .searchBar {
     width: 50%
 }
+
+.link {
+    text-decoration: none;
+}
