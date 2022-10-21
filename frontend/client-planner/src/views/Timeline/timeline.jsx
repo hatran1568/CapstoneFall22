@@ -1,22 +1,9 @@
-import React, { Component, useState } from "react";
-import { withRouter } from "react-router";
+import React, { Component } from "react";
+import { withRouter } from "react-router-dom";
 import TripDetail from "./tripDetail";
 import AddActivityModal from "./AddActivityModal";
 import axios from "axios";
-// import tripData from "./tripData.json";
-import {
-  MDBNavbar,
-  MDBContainer,
-  MDBNavbarBrand,
-  MDBBtn,
-  MDBIcon,
-  MDBTabs,
-  MDBTabsItem,
-  MDBTabsLink,
-  MDBTabsContent,
-  MDBTabsPane,
-} from "mdb-react-ui-kit";
-import { useParams } from "react-router-dom";
+import TripDetailTabs from "./TripDetailTabs";
 import style from "./timeline.module.css";
 class Timeline extends Component {
   state = {};
@@ -33,6 +20,8 @@ class Timeline extends Component {
   }
   //get request to get trip info
   componentDidMount() {
+    //const id = this.props.match.params.id;
+    //console.log("id:", id);
     axios.get(`http://localhost:8080/trip/1`).then((res) => {
       const tripData = res.data;
       this.setState({
@@ -119,7 +108,7 @@ class Timeline extends Component {
   //delete an activirty
   deleteTripDetail = (event, detailId) => {
     if (
-      confirm(
+      window.confirm(
         "Do you really want to delete this event from your trip?" + detailId
       )
     ) {
@@ -255,52 +244,8 @@ class Timeline extends Component {
     var allMonths = this.getAllMonths(allDates);
     return (
       <div>
-        <MDBNavbar light bgColor="light">
-          <MDBContainer fluid>
-            <MDBNavbarBrand href="#">
-              <img
-                src="https://mdbootstrap.com/img/logo/mdb-transaprent-noshadows.webp"
-                height="30"
-                alt=""
-                loading="lazy"
-              />
-              {this.state.trip.name}
-            </MDBNavbarBrand>
-            <form className="d-flex input-group w-auto">
-              <input
-                type="search"
-                className="form-control"
-                placeholder="Type query"
-                aria-label="Search"
-              />
-              <MDBBtn color="primary">Search</MDBBtn>
-            </form>
-          </MDBContainer>
-        </MDBNavbar>
-        <MDBNavbar sticky light bgColor="light" id="sticky-nav-first">
-          <MDBContainer
-            fluid
-            className="justify-content-center sticky-nav-second"
-          >
-            <MDBTabs className="mb-3">
-              <MDBTabsItem>
-                <MDBTabsLink active>
-                  <MDBIcon fas icon="list-ul" className="me-2" /> Timeline
-                </MDBTabsLink>
-              </MDBTabsItem>
-              <MDBTabsItem>
-                <MDBTabsLink>
-                  <MDBIcon fas icon="calendar-day" className="me-2" /> Timetable
-                </MDBTabsLink>
-              </MDBTabsItem>
-              <MDBTabsItem>
-                <MDBTabsLink>
-                  <MDBIcon fas icon="map" className="me-2" /> Map
-                </MDBTabsLink>
-              </MDBTabsItem>
-            </MDBTabs>
-          </MDBContainer>
-        </MDBNavbar>
+        <TripDetailTabs />
+
         <div className="container ">
           <div className="timeline-container row ">
             <div className="col-2 days-col">
@@ -322,8 +267,8 @@ class Timeline extends Component {
             </div>
             <div className="col-8">
               {allDates.map((date) => (
-                <a
-                  name={date.toISOString().split("T")[0]}
+                <section
+                  id={date.toISOString().split("T")[0]}
                   key={date.toISOString().split("T")[0]}
                 >
                   <div>
@@ -354,7 +299,7 @@ class Timeline extends Component {
                       ))}
                     </ul>
                   </div>
-                </a>
+                </section>
               ))}
             </div>
             <div className="col-2"></div>
