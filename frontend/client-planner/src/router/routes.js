@@ -8,7 +8,7 @@ import RequireAuth from "../components/RequireAuth";
 import Timeline from "../views/Timeline/timeline";
 import DestinationDetails from "../views/DestinationDetails/DestinationDetails";
 import POIsDestination from "../views/POIsDestination/POIsDestination";
-import CreateEmptyPlan from "./CreateEmptyPlan";
+import CreateEmptyPlan from "../views/CreateEmptyPlan/CreateEmptyPlan";
 import  POIAndDestinationSearchBar from "../components/searchBar/POIAndDestinationSearchBar"
 export default function RootRoutes() {
   return (
