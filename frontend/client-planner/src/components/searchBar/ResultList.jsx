@@ -1,20 +1,10 @@
 import { useState, useEffect } from "react";
 import axios from "../../api/axios";
-import {
-  MDBDropdownMenu,
-  MDBInput,
-  MDBListGroup,
-  MDBListGroupItem,
-} from "mdb-react-ui-kit";
+import { MDBDropdownMenu, MDBInput, MDBListGroup, MDBListGroupItem } from "mdb-react-ui-kit";
 import style from "./ResultList.module.css";
 import "./override.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  faLocationDot,
-  faMapLocationDot,
-  faBlog,
-  faSearch,
-} from "@fortawesome/free-solid-svg-icons";
+import { faLocationDot, faMapLocationDot, faBlog, faSearch } from "@fortawesome/free-solid-svg-icons";
 function ResultList(props) {
   const [result, setResult] = useState(false);
   const [select, setSelect] = useState(0);
@@ -37,19 +27,13 @@ function ResultList(props) {
             onMouseLeave={() => setSelect(0)}
             active={select == index}
             className={style.item + "px-3 mx-0 square border"}
-            color="light"
+            color='light'
             key={index}
           >
             {" "}
             <div className={style.icon}>
               <FontAwesomeIcon
-                icon={
-                  item.type == "DESTINATION"
-                    ? faLocationDot
-                    : item.type == "POI"
-                    ? faMapLocationDot
-                    : faBlog
-                }
+                icon={item.type == "DESTINATION" ? faLocationDot : item.type == "POI" ? faMapLocationDot : faBlog}
               />
             </div>{" "}
             &nbsp; &nbsp; {item.name}
@@ -63,11 +47,8 @@ function ResultList(props) {
             active={select == -1}
             className={style.item + " px-3 mx-0 square border"}
           >
-            <FontAwesomeIcon
-              className={style.icon}
-              icon={faSearch}
-            ></FontAwesomeIcon>{" "}
-            &nbsp; &nbsp; See more result for "{props.text}"
+            <FontAwesomeIcon className={style.icon} icon={faSearch}></FontAwesomeIcon> &nbsp; &nbsp; See more result for
+            "{props.text}"
           </MDBListGroupItem>
         </a>
       )}

@@ -9,29 +9,24 @@ export default function Tabs() {
   // console.log(useParams());
   return (
     <div className={style.stickyNavFirst}>
-      <ul className="nav nav-tabs justify-content-center">
-        <li className="nav-item">
-          <a className="nav-link active" aria-current="page" href="#">
+      <ul className='nav nav-tabs justify-content-center'>
+        <li className='nav-item'>
+          <a className='nav-link active' aria-current='page' href='#'>
             Active
           </a>
         </li>
-        <li className="nav-item">
-          <a className="nav-link" href="#">
+        <li className='nav-item'>
+          <a className='nav-link' href='#'>
             Link
           </a>
         </li>
-        <li className="nav-item">
-          <a className="nav-link" href="#">
+        <li className='nav-item'>
+          <a className='nav-link' href='#'>
             Link
           </a>
         </li>
-        <li className="nav-item">
-          <a
-            className="nav-link disabled"
-            href="#"
-            tabIndex="-1"
-            aria-disabled="true"
-          >
+        <li className='nav-item'>
+          <a className='nav-link disabled' href='#' tabIndex='-1' aria-disabled='true'>
             Disabled
           </a>
         </li>
