@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import {
     MDBContainer,
     MDBNavbar,
@@ -15,15 +15,25 @@ import {
 import PersonIcon from "@mui/icons-material/Person";
 import SearchBar from "../searchBar/POIAndDestinationSearchBar";
 import style from "./NavBar.module.css";
+import useAuth from "../../hooks/useAuth";
 
 const NavBar = () => {
     const pathname = window.location.pathname;
-    const isLoggedIn = localStorage.getItem("token");
+    const [isLogged, setIslogged] = useState(localStorage.getItem("token") !== null);
+
+    const handleLogout = () => {
+        localStorage.removeItem("id");
+        localStorage.removeItem("token");
+        localStorage.removeItem("role");
+        setIslogged(false);
+    };
+    const auth = useAuth();
+    useEffect(() => {}, [auth]);
 
     return (
         <MDBNavbar expand='lg' light className={style.navBar}>
             <MDBContainer fluid>
-                <MDBNavbarBrand href='/homepage' className="me-0">
+                <MDBNavbarBrand href='/homepage' className='me-0'>
                     <p className='mb-0 d-flex align-items-center'>
                         <span className='fs-3 me-2'>TPS</span>
                         <span className='fs-5 text-muted'>Itinerary planner</span>
@@ -52,7 +62,7 @@ const NavBar = () => {
                 </MDBNavbarNav>
 
                 <MDBNavbarNav right fullWidth={false}>
-                    {isLoggedIn ? (
+                    {auth ? (
                         <MDBNavbarItem>
                             <MDBDropdown>
                                 <MDBDropdownToggle tag='a' className='nav-link link-dark'>
@@ -65,7 +75,7 @@ const NavBar = () => {
                                     <MDBDropdownItem link href='#'>
                                         Another action
                                     </MDBDropdownItem>
-                                    <MDBDropdownItem link href='/logout'>
+                                    <MDBDropdownItem link href="/homepage" onClick={handleLogout}>
                                         Logout
                                     </MDBDropdownItem>
                                 </MDBDropdownMenu>

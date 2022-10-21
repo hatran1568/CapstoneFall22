@@ -9,7 +9,7 @@ export default function SearchRoutes() {
             <Route
                 path='/search'
                 element={
-                    <div className="d-flex">
+                    <div>
                         <POIAndDestinationSearchBar />
                         <POISearchBar />
                     </div>

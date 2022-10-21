@@ -14,6 +14,7 @@ import style from "./POISearchBar.module.css";
 import axios from "../../api/axios";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faMapLocationDot } from "@fortawesome/free-solid-svg-icons";
+import { Input, OutlinedInput } from "@mui/material";
 
 const POISearchBar = () => {
     const [searchInput, setSearchInput] = useState("");
@@ -31,19 +32,21 @@ const POISearchBar = () => {
     useEffect(getResults, [searchInput]);
 
     return (
-        <div>
+        <div className={style.container}>
             <MDBInputGroup>
-                <MDBInput
+                <OutlinedInput
                     type='text'
-                    placeholder='Search'
-                    color='light'
+                    placeholder='Find a place of interest'
                     onChange={(e) => {
                         setSearchInput(e.target.value);
                     }}
+                    className={style.input}
+                    fullWidth={true}
+                    size="small"
                 />
             </MDBInputGroup>
 
-            <MDBListGroup>
+            <MDBListGroup className={style.list}>
                 {results &&
                     results.map((item, index) => (
                         <MDBListGroupItem
