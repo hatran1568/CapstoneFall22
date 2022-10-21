@@ -36,7 +36,7 @@ function ResultList(props) {
             onMouseOver={() => setSelect(index)}
             onMouseLeave={() => setSelect(0)}
             active={select == index}
-            className={style.item + " px-3 square border"}
+            className={style.item + "px-3 mx-0 square border"}
             color="light"
             key={index}
           >
@@ -61,7 +61,7 @@ function ResultList(props) {
             onMouseOver={() => setSelect(-1)}
             onMouseLeave={() => setSelect(0)}
             active={select == -1}
-            className={style.item + " px-3 square border"}
+            className={style.item + " px-3 mx-0 square border"}
           >
             <FontAwesomeIcon
               className={style.icon}
