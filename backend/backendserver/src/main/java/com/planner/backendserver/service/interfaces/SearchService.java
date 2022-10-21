@@ -4,6 +4,7 @@ import com.planner.backendserver.DTO.SearchPOIAndDestinationDTO;
 import com.planner.backendserver.DTO.SearchType;
 import org.springframework.data.domain.Page;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public interface SearchService {

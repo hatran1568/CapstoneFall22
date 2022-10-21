@@ -14,22 +14,19 @@ import {
 } from "mdb-react-ui-kit";
 import PersonIcon from "@mui/icons-material/Person";
 import SearchBar from "../searchBar/POIAndDestinationSearchBar";
+import AuthProvider from "../../context/AuthProvider";
 import style from "./NavBar.module.css";
 import useAuth from "../../hooks/useAuth";
 
 const NavBar = () => {
     const pathname = window.location.pathname;
-    const [isLogged, setIslogged] = useState(localStorage.getItem("token") !== null);
-
+    const isLogged = localStorage.getItem("token");
     const handleLogout = () => {
-        localStorage.removeItem("id");
         localStorage.removeItem("token");
         localStorage.removeItem("role");
-        setIslogged(false);
+        localStorage.removeItem("id");
+        window.location.href = "/";
     };
-    const auth = useAuth();
-    useEffect(() => {}, [auth]);
-
     return (
         <MDBNavbar expand='lg' light className={style.navBar}>
             <MDBContainer fluid>
@@ -62,7 +59,7 @@ const NavBar = () => {
                 </MDBNavbarNav>
 
                 <MDBNavbarNav right fullWidth={false}>
-                    {auth ? (
+                    {isLogged ? (
                         <MDBNavbarItem>
                             <MDBDropdown>
                                 <MDBDropdownToggle tag='a' className='nav-link link-dark'>
@@ -72,10 +69,7 @@ const NavBar = () => {
                                     <MDBDropdownItem link href='/profile'>
                                         Profile
                                     </MDBDropdownItem>
-                                    <MDBDropdownItem link href='#'>
-                                        Another action
-                                    </MDBDropdownItem>
-                                    <MDBDropdownItem link href="/homepage" onClick={handleLogout}>
+                                    <MDBDropdownItem link href='/' onClick={handleLogout}>
                                         Logout
                                     </MDBDropdownItem>
                                 </MDBDropdownMenu>

@@ -2,6 +2,7 @@ package com.planner.backendserver.DTO;
 
 public enum SearchType {
     DESTINATION,
+    POI,
     BLOG,
     ART_AND_CULTURE,
     OUTDOORS, RELIGION,
