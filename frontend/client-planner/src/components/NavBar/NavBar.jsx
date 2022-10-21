@@ -17,6 +17,7 @@ import SearchBar from "../searchBar/POIAndDestinationSearchBar";
 import AuthProvider from "../../context/AuthProvider";
 import style from "./NavBar.module.css";
 import useAuth from "../../hooks/useAuth";
+import "bootstrap/dist/css/bootstrap.min.css";
 
 const NavBar = () => {
     const pathname = window.location.pathname;
@@ -30,7 +31,7 @@ const NavBar = () => {
     return (
         <MDBNavbar expand='lg' light className={style.navBar}>
             <MDBContainer fluid>
-                <MDBNavbarBrand href='/homepage' className='me-0'>
+                <MDBNavbarBrand href='/' className='me-0'>
                     <p className='mb-0 d-flex align-items-center'>
                         <span className='fs-3 me-2'>TPS</span>
                         <span className='fs-5 text-muted'>Itinerary planner</span>
@@ -39,10 +40,7 @@ const NavBar = () => {
 
                 <MDBNavbarNav>
                     <MDBNavbarItem>
-                        <MDBNavbarLink
-                            className={pathname === "/homepage" ? "active" : ""}
-                            href='/homepage'
-                        ></MDBNavbarLink>
+                        <MDBNavbarLink className={pathname === "/homepage" ? "active" : ""} href='/'></MDBNavbarLink>
                     </MDBNavbarItem>
 
                     {/*<MDBNavbarItem>

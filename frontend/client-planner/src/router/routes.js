@@ -9,6 +9,7 @@ import Timeline from "../views/Timeline/timeline";
 import POIAndDestinationSearchBar from "../components/searchBar/POIAndDestinationSearchBar";
 import HomePage from "../views/HomePage/HomePage";
 import LayoutsWithNavbar from "../components/NavBar/LayoutsWithNavbar";
+import SearchResults from "../views/SearchResults/SearchResults";
 export default function RootRoutes() {
     return (
         <Router>
@@ -24,6 +25,7 @@ export default function RootRoutes() {
                     <Route path='/timeline/:id' element={<Timeline />} />
                     <Route path='/search' element={<POIAndDestinationSearchBar />} />
                     <Route path='/' element={<HomePage />} />
+                    <Route path='/SearchResults' element={<SearchResults />} />
                 </Route>
 
                 {/*Routes that don't need a nav bar go out here.*/}
