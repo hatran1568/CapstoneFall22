@@ -1,0 +1,16 @@
+.icon {
+    display: inline-block;
+    width: 20px;
+}
+
+.container {
+    position: relative;
+    width: 25em;
+}
+
+.list{
+    position: absolute;
+    top: 100%;
+    left: 0%;
+    width: 100%;
+}
