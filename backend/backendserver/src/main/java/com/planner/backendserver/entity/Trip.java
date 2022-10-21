@@ -4,6 +4,7 @@ package com.planner.backendserver.entity;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.Type;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
@@ -26,9 +27,11 @@ public class Trip {
     @Column(name="budget")
     private double budget;
 
+    @Type(type = "date")
     @Column(name="start_date")
     private Date startDate;
 
+    @Type(type = "date")
     @Column(name="end_date")
     private Date endDate;
 

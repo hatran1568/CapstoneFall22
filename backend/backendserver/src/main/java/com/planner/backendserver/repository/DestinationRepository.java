@@ -15,4 +15,5 @@ public interface DestinationRepository extends JpaRepository<Destination,Integer
 
     @Query(value = "SELECT i.image_id from destination  d join destination_image  i on d.destination_id=i.image_id where d.destination_id=:id Limit 1",nativeQuery = true)
     public String getThumbnailById(int id);
+
 }
