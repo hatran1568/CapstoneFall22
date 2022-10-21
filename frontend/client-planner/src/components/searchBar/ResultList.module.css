@@ -1,6 +1,6 @@
 .item {
     list-style-type: none;
-    width: 50vw;
+    width: 20em;
     margin-left: 20px;
     height: 6vh;
     border-radius: 0 !important;
@@ -11,11 +11,13 @@
 .list {
     position: absolute;
     z-index: 1000;
-    top: 55px;
+    top: 100%;
+    width: 100%;
 }
 
 .item {
     cursor: pointer;
+    width: 100%;
 }
 
 .active {
