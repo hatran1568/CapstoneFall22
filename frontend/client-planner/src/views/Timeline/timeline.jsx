@@ -37,21 +37,13 @@ class Timeline extends Component {
     var newState = this.state;
     var sortedDetails = this.state.trip.listTripDetails
       .sort((a, b) =>
-        new Date("1970-01-01T" + a.startTime) >
-        new Date("1970-01-01T" + b.startTime)
+        new Date("1970-01-01T" + a.startTime) > new Date("1970-01-01T" + b.startTime)
           ? 1
-          : new Date("1970-01-01T" + b.startTime) >
-            new Date("1970-01-01T" + a.startTime)
+          : new Date("1970-01-01T" + b.startTime) > new Date("1970-01-01T" + a.startTime)
           ? -1
-          : 0
+          : 0,
       )
-      .sort((a, b) =>
-        Date.parse(a.date) > Date.parse(b.date)
-          ? 1
-          : Date.parse(b.date) > Date.parse(a.date)
-          ? -1
-          : 0
-      );
+      .sort((a, b) => (Date.parse(a.date) > Date.parse(b.date) ? 1 : Date.parse(b.date) > Date.parse(a.date) ? -1 : 0));
     newState.trip.listTripDetails = sortedDetails;
     this.setState(newState);
   };
@@ -66,11 +58,7 @@ class Timeline extends Component {
   };
   //get all dates in the trip
   getAllDates = (start, end) => {
-    for (
-      var arr = [], dt = new Date(start);
-      dt <= new Date(end);
-      dt.setDate(dt.getDate() + 1)
-    ) {
+    for (var arr = [], dt = new Date(start); dt <= new Date(end); dt.setDate(dt.getDate() + 1)) {
       arr.push(new Date(dt));
     }
     return arr;
@@ -94,9 +82,7 @@ class Timeline extends Component {
         detailsArr.push(detail);
       }
     });
-    var sortedArr = detailsArr.sort((a, b) =>
-      a.startTime > b.startTime ? 1 : b.startTime > a.startTime ? -1 : 0
-    );
+    var sortedArr = detailsArr.sort((a, b) => (a.startTime > b.startTime ? 1 : b.startTime > a.startTime ? -1 : 0));
     return sortedArr;
   };
   //toggle add modal
@@ -107,11 +93,7 @@ class Timeline extends Component {
   };
   //delete an activirty
   deleteTripDetail = (event, detailId) => {
-    if (
-      window.confirm(
-        "Do you really want to delete this event from your trip?" + detailId
-      )
-    ) {
+    if (window.confirm("Do you really want to delete this event from your trip?" + detailId)) {
       axios
         .delete(`http://localhost:8080/trip/delete-detail`, {
           data: { id: detailId },
@@ -119,9 +101,7 @@ class Timeline extends Component {
         .then((response) => {
           if (response.status == 200) {
             var newTrip = this.state.trip;
-            newTrip.listTripDetails = newTrip.listTripDetails.filter(function (
-              detail
-            ) {
+            newTrip.listTripDetails = newTrip.listTripDetails.filter(function (detail) {
               return detail.tripDetailsId !== detailId;
             });
             this.setState(
@@ -131,7 +111,7 @@ class Timeline extends Component {
                 showEditModal: false,
                 dataLoaded: true,
               },
-              this.render
+              this.render,
             );
           }
         });
@@ -168,9 +148,7 @@ class Timeline extends Component {
   };
   //update an activity in the state
   updateDetail = (oldDetailId, newDetail) => {
-    var oldDetail = this.state.trip.listTripDetails.find(
-      (el) => el.tripDetailsId == oldDetailId
-    );
+    var oldDetail = this.state.trip.listTripDetails.find((el) => el.tripDetailsId == oldDetailId);
     var index = -1;
     if (oldDetail) index = this.state.trip.listTripDetails.indexOf(oldDetail);
     var newState = this.state;
@@ -202,7 +180,7 @@ class Timeline extends Component {
             showEditModal: false,
             dataLoaded: true,
           },
-          this.render
+          this.render,
         );
       })
       .catch(function (error) {
@@ -237,27 +215,21 @@ class Timeline extends Component {
           <h1> Pleses wait some time.... </h1>{" "}
         </div>
       );
-    var allDates = this.getAllDates(
-      this.state.trip.startDate,
-      this.state.trip.endDate
-    );
+    var allDates = this.getAllDates(this.state.trip.startDate, this.state.trip.endDate);
     var allMonths = this.getAllMonths(allDates);
     return (
       <div>
         <TripDetailTabs />
 
-        <div className="container ">
-          <div className="timeline-container row ">
-            <div className="col-2 days-col">
+        <div className='container '>
+          <div className='timeline-container row '>
+            <div className='col-2 days-col'>
               <div className={style.daysBox}>
                 {allMonths.map((month) => (
                   <div key={month}>
                     <div>{month}</div>
                     {this.getAllDatesOfMonth(allDates, month).map((date) => (
-                      <a
-                        href={"#" + date.toISOString().split("T")[0]}
-                        key={date}
-                      >
+                      <a href={"#" + date.toISOString().split("T")[0]} key={date}>
                         <div>{date.getDate()}</div>
                       </a>
                     ))}
@@ -265,36 +237,21 @@ class Timeline extends Component {
                 ))}
               </div>
             </div>
-            <div className="col-8">
+            <div className='col-8'>
               {allDates.map((date) => (
-                <section
-                  id={date.toISOString().split("T")[0]}
-                  key={date.toISOString().split("T")[0]}
-                >
+                <section id={date.toISOString().split("T")[0]} key={date.toISOString().split("T")[0]}>
                   <div>
-                    <div className={style.detailsGroupDate}>
-                      {date.toISOString().split("T")[0]}
-                    </div>
+                    <div className={style.detailsGroupDate}>{date.toISOString().split("T")[0]}</div>
                     <ul className={style.timeline}>
                       {this.getTripDetailsByDate(date).map((tripDetail) => (
                         <TripDetail
                           key={tripDetail.tripDetailsId}
                           tripDetail={tripDetail}
-                          deleteEvent={(event, detailId) =>
-                            this.deleteTripDetail(event, detailId)
-                          }
-                          editEvent={(event, detail) =>
-                            this.editTripDetail(event, detail)
-                          }
-                          nextActivityId={this.getNextTripDetail(
-                            this.getTripDetailsByDate(date),
-                            tripDetail
-                          )}
+                          deleteEvent={(event, detailId) => this.deleteTripDetail(event, detailId)}
+                          editEvent={(event, detail) => this.editTripDetail(event, detail)}
+                          nextActivityId={this.getNextTripDetail(this.getTripDetailsByDate(date), tripDetail)}
                           allDates={allDates}
-                          isConflicting={this.isConflicting(
-                            this.getTripDetailsByDate(date),
-                            tripDetail
-                          )}
+                          isConflicting={this.isConflicting(this.getTripDetailsByDate(date), tripDetail)}
                         ></TripDetail>
                       ))}
                     </ul>
@@ -302,17 +259,14 @@ class Timeline extends Component {
                 </section>
               ))}
             </div>
-            <div className="col-2"></div>
+            <div className='col-2'></div>
           </div>
-          <div
-            className={`form-group`}
-            style={{ position: "fixed", bottom: 0, right: "20px" }}
-          >
+          <div className={`form-group`} style={{ position: "fixed", bottom: 0, right: "20px" }}>
             <button
-              type="button"
-              className="btn btn-primary btn-md"
+              type='button'
+              className='btn btn-primary btn-md'
               id={style.btnAdd}
-              variant="primary"
+              variant='primary'
               onClick={this.toggleAddModal}
             >
               +
