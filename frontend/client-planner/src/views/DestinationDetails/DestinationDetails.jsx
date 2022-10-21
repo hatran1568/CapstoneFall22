@@ -83,7 +83,7 @@ function DestinationDetails(){
                   </MDBRow>
                 </MDBCardBody>
                 <MDBCardBody className={style.container2}>
-                    <MDBBtn className={style.button2} id="poiList">Find more places in {destination.name}</MDBBtn><br/><br/>
+                    <a href="./POIs/"></a><MDBBtn className={style.button2} id="poiList">Find more places in {destination.name}</MDBBtn><br/><br/>
                 </MDBCardBody>
             </MDBCard>
         </MDBContainer>

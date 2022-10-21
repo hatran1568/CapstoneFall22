@@ -119,7 +119,7 @@ class Timeline extends Component {
   //delete an activirty
   deleteTripDetail = (event, detailId) => {
     if (
-      confirm(
+      window.confirm(
         "Do you really want to delete this event from your trip?" + detailId
       )
     ) {
