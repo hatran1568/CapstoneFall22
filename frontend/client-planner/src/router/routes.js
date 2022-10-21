@@ -4,6 +4,7 @@ import LoginRoutes from "../views/Login/LoginRoutes";
 import ProfileRoute from "../views/UserProfile/ProfileRoute";
 import TimelineRoute from "../views/Timeline/timelineRoute";
 import SearchRoutes from "../components/searchBar/SearchRoutes"
+import SearchResultsRoutes from "../views/SearchResults/SearchResultsRoutes";
 export default function RootRoutes() {
   return (
     <BrowserRouter>
@@ -11,6 +12,7 @@ export default function RootRoutes() {
       <ProfileRoute />
       <TimelineRoute/>
       <SearchRoutes/>
+      <SearchResultsRoutes/>
     </BrowserRouter>
   );
 }

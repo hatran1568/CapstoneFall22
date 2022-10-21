@@ -10,14 +10,7 @@ function AddActivityModal(props) {
     start_time: "",
     end_time: "",
   };
-  const handleChange = (event) => {
-    console.log("changing");
-    setInputField({
-      ...inputField,
-      [event.target.name]: event.target.value,
-    });
-    console.log(inputField);
-  };
+  
   return (
     <Modal
       {...rest}
