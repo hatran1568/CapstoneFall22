@@ -5,6 +5,13 @@
     height: 6vh;
     border-radius: 0 !important;
     color: black;
+    z-index: 1000;
+}
+
+.list {
+    position: absolute;
+    z-index: 1000;
+    top: 55px;
 }
 
 .item {
@@ -18,4 +25,8 @@
 .icon {
     display: inline-block;
     width: 20px;
+}
+
+.link {
+    text-decoration: none;
 }
