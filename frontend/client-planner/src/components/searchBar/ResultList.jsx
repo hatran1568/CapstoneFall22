@@ -19,10 +19,11 @@ function ResultList(props){
         
         {result && result.map((item,index)=><MDBListGroupItem onMouseOver={()=>setSelect(index)} onMouseLeave={()=>setSelect(0)} active={select==index} className={style.item +" px-3 square border"} color='light'  key ={index}> <div className={style.icon}><FontAwesomeIcon icon={item.type=="DESTINATION"?faLocationDot:item.type=="POI"?faMapLocationDot:faBlog} /></div>	&nbsp;	&nbsp;	{item.name}</MDBListGroupItem>)}
            {
-            props.text && <MDBListGroupItem className={style.item +" px-3 square border"} >
+            props.text &&  <a className={style.link} href={"/searchResults?search="+props.text}><MDBListGroupItem onMouseOver={()=>setSelect(-1)} onMouseLeave={()=>setSelect(0)} active={select==-1} className={style.item +" px-3 square border"} >
                 <FontAwesomeIcon className={style.icon} icon={faSearch}></FontAwesomeIcon>	&nbsp;	&nbsp;	
-            See more result for "{props.text}"
+          See more result for "{props.text}"
            </MDBListGroupItem>
+           </a>
            }
            
     </MDBListGroup>
