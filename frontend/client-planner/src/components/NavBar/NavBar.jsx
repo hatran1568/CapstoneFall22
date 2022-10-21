@@ -40,7 +40,7 @@ const NavBar = () => {
 
         <MDBNavbarNav>
           <MDBNavbarItem>
-            <MDBNavbarLink className={pathname === "/homepage" ? "active" : ""} href='/'></MDBNavbarLink>
+            <MDBNavbarLink className={pathname === "/" ? "active" : ""} href='/'></MDBNavbarLink>
           </MDBNavbarItem>
 
           {/*<MDBNavbarItem>
