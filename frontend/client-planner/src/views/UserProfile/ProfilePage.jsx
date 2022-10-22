@@ -72,7 +72,9 @@ function ProfilePage() {
             </MDBTabsItem>
           </MDBTabs>
           <MDBTabsContent>
-            <MDBTabsPane show={basicActive === "myTrips"}></MDBTabsPane>
+            <MDBTabsPane show={basicActive === "myTrips"}>
+              <TripInfoCard></TripInfoCard>
+            </MDBTabsPane>
             <MDBTabsPane show={basicActive === "myCollection"}>
               Tab 2 content
             </MDBTabsPane>

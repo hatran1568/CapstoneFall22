@@ -1,22 +1,54 @@
-import React from "react";
-import { ButtonRibbon, Caption, Card, CardMedia } from "./TripInfoCardStyle";
-import { MDBBtn, MDBIcon } from "mdb-react-ui-kit";
+import React, { useEffect } from "react";
+import style from "./TripInfoCard.module.css";
+import {
+  MDBIcon,
+  MDBCardImage,
+  MDBCard,
+  MDBRow,
+  MDBCol,
+  MDBBtn,
+} from "mdb-react-ui-kit";
+import { green, grey } from "@mui/material/colors";
+
 function TripInfoCard(trip) {
+  useEffect(() => {
+    document.title = "Profile | Tripplanner";
+  }, []);
+
   return (
-    <Card>
-      <CardMedia>
-        <img src="https://picsum.photos/id/10/600/400"></img>
-        <Caption>
-          <p>{trip.name}</p>
-          <p style={{ fontSize: "1.1vw" }}>Aug 8, 2022 - Aug 10, 2022</p>
-        </Caption>
-        <ButtonRibbon>
-          <MDBBtn tag="a" color="none" style={{ color: "white" }}>
-            <i className="fas fa-solid fa-trash fa-lg"></i>
-          </MDBBtn>
-        </ButtonRibbon>
-      </CardMedia>
-    </Card>
+    <MDBRow>
+      <MDBCol sm="12">
+        <MDBCard>
+          <MDBRow>
+            <MDBCol sm="3">
+              <MDBCardImage
+                className={style.cropped}
+                src="https://i.picsum.photos/id/1000/5626/3635.jpg?hmac=qWh065Fr_M8Oa3sNsdDL8ngWXv2Jb-EE49ZIn6c0P-g"
+                fluid
+              />
+            </MDBCol>
+            <MDBCol sm="8">
+              <h5 className="mt-4">Trip to Hanoi</h5>
+              <p className="mt-2">
+                <MDBIcon far icon="calendar-alt" /> 22/10/2022 - 24/10/2022
+              </p>
+              <small className={style.lastUpdated}>
+                <i>Last updated: 22/10/2022</i>
+              </small>
+            </MDBCol>
+            <MDBCol sm="1">
+              <MDBBtn
+                tag="a"
+                color="none"
+                className={`${style.deleteButton} m-1 mt-4`}
+              >
+                <MDBIcon far icon="trash-alt" size="lg" />
+              </MDBBtn>
+            </MDBCol>
+          </MDBRow>
+        </MDBCard>
+      </MDBCol>
+    </MDBRow>
   );
 }
 
