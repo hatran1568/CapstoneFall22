@@ -22,7 +22,7 @@ function ResultList(props) {
     <MDBListGroup className={style.list}>
       {result &&
         result.map((item, index) => (
-          <MDBListGroupItem
+         <a className={style.link} href={item.type=="DESTINATION"?("Destination?id="+item.id):"#"}> <MDBListGroupItem
             onMouseOver={() => setSelect(index)}
             onMouseLeave={() => setSelect(0)}
             active={select == index}
@@ -38,7 +38,7 @@ function ResultList(props) {
             </div>{" "}
             &nbsp; &nbsp; {item.name}
           </MDBListGroupItem>
-        ))}
+          </a> ))}
       {props.text && (
         <a className={style.link} href={"/searchResults?search=" + props.text}>
           <MDBListGroupItem

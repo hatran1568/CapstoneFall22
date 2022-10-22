@@ -1,4 +1,7 @@
 import React from "react";
+import axios from "../../api/axios";
+import {useState} from 'react';
+import { useNavigate } from "react-router-dom";
 import {
   MDBBtn,
   MDBBtnGroup,
@@ -11,10 +14,41 @@ import {
   MDBCol,
   MDBContainer,
   MDBRow,
+  MDBInput,
+  MDBModal,
+  MDBModalDialog,
+  MDBModalContent,
+  MDBModalHeader,
+  MDBModalTitle,
+  MDBModalBody,
+  MDBModalFooter,
 } from "mdb-react-ui-kit";
 import style from "./HomePage.module.css";
 
 function HomePage() {
+    const navigate = useNavigate();
+    const [basicModal, setBasicModal] = useState(false);
+
+  const toggleShow = () => setBasicModal(!basicModal);
+    const submitTrip = event => {
+        axios({
+            method: 'post',
+            url: 'http://localhost:8080/trip/createTrip',
+            data: {
+                userId: localStorage.getItem("id"),
+                budget: document.getElementById("budgetInput").value,
+                name: document.getElementById("tripNameInput").value,
+                startDate: document.getElementById("startDateInput").value,
+                endDate: document.getElementById("endDateInput").value
+            },
+            headers: {
+                'Content-Type': 'application/json'
+            }
+          }).then(function (response) {
+            navigate("../Timeline/" + response.data);
+            window.location.reload(false);
+          });
+    };
   return (
     <>
       <div className='bg-image'>
@@ -33,13 +67,54 @@ function HomePage() {
                 <p className='text-muted text-center'>Ease your head on decisions.</p>
                 <MDBBtnGroup className={style.btn}>
                   <MDBBtn color='info'>Generate&nbsp;trip</MDBBtn>
-                  <MDBBtn color='info'>Create&nbsp;trip</MDBBtn>
+                  {/* <MDBBtn color='info'>Create&nbsp;trip</MDBBtn> */}
+                  <MDBBtn color='info' onClick={toggleShow}>Create Trip</MDBBtn>
                 </MDBBtnGroup>
               </div>
             </div>
           </div>
         </div>
       </div>
+      <MDBModal show={basicModal} setShow={setBasicModal} tabIndex='-1'>
+        <MDBModalDialog>
+          <MDBModalContent>
+            <MDBModalHeader>
+              <MDBModalTitle>Create an Empty trip</MDBModalTitle>
+              <MDBBtn className='btn-close' color='none' onClick={toggleShow}></MDBBtn>
+            </MDBModalHeader>
+            <MDBModalBody>
+              <div className={style.emptyTripInfo}>Creates an Empty trip. After creation, you will be redirected to your trip, where you can customize it all you want.</div><br/>
+              <MDBRow className={style.modalInput}>
+                  <div className={style.formgroup}>
+                      <MDBInput label="Trip name" type="text" id="tripNameInput" className={style.modalInput}/>
+                  </div>
+              </MDBRow><br/>
+              <MDBRow className={style.modalInput}>
+                  <div className={style.formgroup}>
+                      <MDBInput label="Budget" id="budgetInput" type="text" className={style.modalInput}/>
+                  </div>
+              </MDBRow><br/>
+              <MDBRow className={style.modalInput}>
+                  <MDBCol className={style.formgroup}>
+                      <h6>Start date</h6>
+                      <MDBInput placeholder="Select date" type="date" id="startDateInput" className={style.datepicker} value="2022-10-01"/>
+                  </MDBCol>
+                  <MDBCol className={style.formgroup}>
+                      <h6>End date</h6>
+                      <MDBInput placeholder="Select date" type="date" id="endDateInput" className={style.datepicker} value="2022-10-02"/>
+                  </MDBCol>
+              </MDBRow><br/>
+            </MDBModalBody>
+
+            <MDBModalFooter>
+              <MDBBtn color='secondary' onClick={toggleShow}>
+                Close
+              </MDBBtn>
+              <MDBBtn onClick={submitTrip}>Create Trip</MDBBtn>
+            </MDBModalFooter>
+          </MDBModalContent>
+        </MDBModalDialog>
+      </MDBModal>
       <MDBContainer>
         <h2 className='text-center mt-5 mb-3'>Goodies from our services</h2>
         <MDBRow className='gx-0'>

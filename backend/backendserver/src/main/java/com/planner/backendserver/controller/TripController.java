@@ -1,5 +1,7 @@
 package com.planner.backendserver.controller;
+
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import com.planner.backendserver.DTO.TripDTO;
 import com.planner.backendserver.DTO.UserDTO;
 import com.planner.backendserver.entity.MasterActivity;
 import com.planner.backendserver.entity.Trip;
@@ -7,6 +9,7 @@ import com.planner.backendserver.entity.TripDetails;
 import com.planner.backendserver.repository.POIRepository;
 import com.planner.backendserver.service.UserDTOServiceImplementer;
 import com.planner.backendserver.service.interfaces.TripService;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,6 +19,7 @@ import com.planner.backendserver.repository.TripRepository;
 
 import javax.annotation.security.RolesAllowed;
 import java.sql.Date;
+import java.util.Calendar;
 import java.util.Optional;
 
 @RestController
@@ -27,6 +31,11 @@ public class TripController {
     private TripService tripService;
     @Autowired
     private POIRepository poiRepository;
+    @Autowired
+    private TripRepository tripRepo;
+    @Autowired
+    ModelMapper mapper;
+
     @GetMapping("/{id}")
     public ResponseEntity<Trip> getTripById(@PathVariable int id){
         try{
@@ -128,5 +137,23 @@ public class TripController {
 
         UserDTO userDetails = userDTOService.loadUserById(id);
         return  userDetails;
+    }
+
+//    @PostMapping(
+//            value = "/createTrip", consumes = "application/json", produces = "application/json")
+//    public Trip createEmptyTrip(@RequestBody EmptyTripDTO trip) {
+//        return tripRepo.createEmptyTrip(null, trip.getBudget(), trip.getName(), 1, trip.getStartDate(), trip.getEndDate());
+//    }
+    @RequestMapping(value = "/createTrip", consumes = "application/json", produces = { "*/*" }, method = RequestMethod.POST)
+    public ResponseEntity<?> createEmptyTrip(@RequestBody TripDTO tripDTO) {
+        try{
+            java.sql.Date date = new java.sql.Date(Calendar.getInstance().getTime().getTime());
+            tripRepo.createEmptyTrip(date, date, false, tripDTO.getBudget(), tripDTO.getName(), tripDTO.getUserId(), tripDTO.getStartDate(), tripDTO.getEndDate());
+            return new ResponseEntity<>(tripRepo.getNewestTripId(), HttpStatus.OK);
+        }
+        catch (Exception e){
+            return  new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+
     }
 }
