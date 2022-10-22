@@ -1,10 +1,6 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React, { Component } from "react";
-import {
-  faCalendarDays,
-  faCar,
-  faCircleExclamation,
-} from "@fortawesome/free-solid-svg-icons";
+import { faCalendarDays, faCar, faCircleExclamation } from "@fortawesome/free-solid-svg-icons";
 import style from "./timeline.module.css";
 import {
   MDBDropdown,
@@ -99,51 +95,37 @@ class TripDetail extends Component {
     return (
       <React.Fragment>
         <li className={`${style.timelineItem} card`}>
-          <div className="card-body row">
-            <div className="col-2">
+          <div className='card-body row'>
+            <div className='col-2'>
               {this.props.isConflicting && (
                 <>
-                  {/* <FontAwesomeIcon
-                    icon={faCircleExclamation}
-                    className="topleft"
-                    onMouseOver={() => {
-                      console.log("hovering");
-                    }}
-                  />
-                  <div className="ttip">Hello</div> */}
                   <OverlayTrigger
                     trigger={["hover", "focus"]}
                     placement={"bottom"}
                     overlay={
                       <Popover id={`popover-positioned-bottom`}>
-                        <Popover.Header as="h3">{`Popover bottom`}</Popover.Header>
-                        <Popover.Body>
-                          <strong>Holy guacamole!</strong> Check this info.
+                        <Popover.Body className={style.popover}>
+                          <FontAwesomeIcon
+                            variant='secondary'
+                            icon={faCircleExclamation}
+                            className={style.popoverIcon}
+                          />
+                          <div>This conflicts with other activities</div>
                         </Popover.Body>
                       </Popover>
                     }
                   >
-                    <FontAwesomeIcon
-                      variant="secondary"
-                      icon={faCircleExclamation}
-                      className="topleft"
-                    />
+                    <FontAwesomeIcon variant='secondary' icon={faCircleExclamation} className={style.topLeft} />
                   </OverlayTrigger>
                 </>
               )}
               <p className={`text-muted card-text ${style.timeText}`}>
-                {moment(
-                  this.getTimeFromSecs(this.state.tripDetail.startTime),
-                  "HH:mm:ss"
-                ).format("hh:mm a")}
+                {moment(this.getTimeFromSecs(this.state.tripDetail.startTime), "HH:mm:ss").format("hh:mm a")}
                 <br />
-                {moment(
-                  this.getTimeFromSecs(this.state.tripDetail.endTime),
-                  "HH:mm:ss"
-                ).format("hh:mm a")}
+                {moment(this.getTimeFromSecs(this.state.tripDetail.endTime), "HH:mm:ss").format("hh:mm a")}
               </p>
             </div>
-            <div className="col-4">
+            <div className='col-4'>
               <img
                 src={
                   this.state.tripDetail.masterActivity.listImages
@@ -155,9 +137,9 @@ class TripDetail extends Component {
                 className={style.activityImg}
               ></img>
             </div>
-            <div className="col-6">
+            <div className='col-6'>
               <MDBDropdown animation={false} className={style.btnMore}>
-                <MDBDropdownToggle color="light"></MDBDropdownToggle>
+                <MDBDropdownToggle color='light'></MDBDropdownToggle>
                 <MDBDropdownMenu>
                   <MDBDropdownItem link>Details</MDBDropdownItem>
                   <MDBDropdownItem link onClick={this.toggleEditModal}>
@@ -165,35 +147,23 @@ class TripDetail extends Component {
                   </MDBDropdownItem>
                   <MDBDropdownItem
                     link
-                    onClick={(event) =>
-                      this.props.deleteEvent(
-                        event,
-                        this.state.tripDetail.tripDetailsId
-                      )
-                    }
+                    onClick={(event) => this.props.deleteEvent(event, this.state.tripDetail.tripDetailsId)}
                   >
                     Delete event
                   </MDBDropdownItem>
                 </MDBDropdownMenu>
               </MDBDropdown>
-              <div className="fw-bold card-title name-value">
-                {this.state.tripDetail.masterActivity.name
-                  ? this.state.tripDetail.masterActivity.name
-                  : ""}
+              <div className='fw-bold card-title name-value'>
+                {this.state.tripDetail.masterActivity.name ? this.state.tripDetail.masterActivity.name : ""}
               </div>
-              <p className="text-muted card-text">
-                <FontAwesomeIcon
-                  icon={faCalendarDays}
-                  className={style.foreIcon}
-                />
-                <span className="date-value">{this.state.tripDetail.date}</span>
+              <p className='text-muted card-text'>
+                <FontAwesomeIcon icon={faCalendarDays} className={style.foreIcon} />
+                <span className='date-value'>{this.state.tripDetail.date}</span>
               </p>
 
-              <p className="text-muted card-text address-value">
-                {this.state.tripDetail.masterActivity.address}
-              </p>
-              <p className="category-name">
-                <span href="" className="text-muted card-text">
+              <p className='text-muted card-text address-value'>{this.state.tripDetail.masterActivity.address}</p>
+              <p className='category-name'>
+                <span href='' className='text-muted card-text'>
                   {this.state.tripDetail.masterActivity.category
                     ? this.state.tripDetail.masterActivity.category.name
                     : ""}
@@ -203,10 +173,7 @@ class TripDetail extends Component {
           </div>
         </li>
         <li className={style.timelineTransport}>
-          <FontAwesomeIcon icon={faCar} />{" "}
-          {this.state.distanceToNext != -1
-            ? this.state.distanceToNext + "km"
-            : ""}
+          <FontAwesomeIcon icon={faCar} /> {this.state.distanceToNext != -1 ? this.state.distanceToNext + "km" : ""}
         </li>
 
         <EditActivityModal
