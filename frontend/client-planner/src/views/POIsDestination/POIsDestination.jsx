@@ -57,7 +57,6 @@ function POIsDestination(){
     const catData = cateData;
     const filterBox = [];
     const catBtnClick = (event) => {
-        console.log(`${event.target.id}`);
         navigate("./?desid=1&catid=" + event.target.id);
         window.location.reload(false);
     };

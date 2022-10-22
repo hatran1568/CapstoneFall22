@@ -1,6 +1,7 @@
 import React from "react";
 import axios from "../../api/axios";
 import {useState} from 'react';
+import { useNavigate } from "react-router-dom";
 import {
     MDBBtn,
     MDBContainer,
@@ -14,7 +15,7 @@ import style from './CreateEmptyPlan.module.css';
 function CreateEmptyPlan() {
     // Get the modal
     const [isShown, setIsShown] = useState(false);
-
+    const navigate = useNavigate();
     const handleClick = event => {
         // toggle visibility
         setIsShown(current => !current);
@@ -28,6 +29,7 @@ function CreateEmptyPlan() {
             method: 'post',
             url: 'http://localhost:8080/trip/createTrip',
             data: {
+                userId: localStorage.getItem("id"),
                 budget: document.getElementById("budgetInput").value,
                 name: document.getElementById("tripNameInput").value,
                 startDate: document.getElementById("startDateInput").value,
@@ -36,6 +38,9 @@ function CreateEmptyPlan() {
             headers: {
                 'Content-Type': 'application/json'
             }
+          }).then(function (response) {
+            navigate("../Timeline/" + response.data);
+            window.location.reload(false);
           });
     };
     return (
@@ -61,13 +66,13 @@ function CreateEmptyPlan() {
                         </div>
                     </MDBRow><br/>
                     <MDBRow className={style.row}>
-                        <MDBCol md="2"></MDBCol>
-                        <MDBCol md="3" className={style.formgroup}>
+                        <MDBCol md="1"></MDBCol>
+                        <MDBCol md="5" className={style.formgroup}>
                             <h6>Start date</h6>
                             <MDBInput placeholder="Select date" type="date" id="startDateInput" className={style.datepicker} value="2022-10-01"/>
                         </MDBCol>
-                        <MDBCol md="2"></MDBCol>
-                        <MDBCol md="3" className={style.formgroup}>
+                        <MDBCol md="1"></MDBCol>
+                        <MDBCol md="5" className={style.formgroup}>
                             <h6>End date</h6>
                             <MDBInput placeholder="Select date" type="date" id="endDateInput" className={style.datepicker} value="2022-10-02"/>
                         </MDBCol>

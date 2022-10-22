@@ -62,6 +62,7 @@ function DestinationDetails(){
     pois.forEach((poi, index) => {
             poiBox.push(<POIBox name={poi.name} url={poi.image} rating={poi.googleRate} category={poi.categoryName} activityId={poi.activityId}/>)
         });
+    const poiLink = "./POIs/?desid=" + id + "&catid=0";
     return(
         <MDBContainer className={style.container}>
             <br/>
@@ -83,7 +84,7 @@ function DestinationDetails(){
                   </MDBRow>
                 </MDBCardBody>
                 <MDBCardBody className={style.container2}>
-                    <a href="./POIs/"></a><MDBBtn className={style.button2} id="poiList">Find more places in {destination.name}</MDBBtn><br/><br/>
+                    <a href={poiLink}><MDBBtn className={style.button2} id="poiList">Find more places in {destination.name}</MDBBtn></a><br/><br/>
                 </MDBCardBody>
             </MDBCard>
         </MDBContainer>
