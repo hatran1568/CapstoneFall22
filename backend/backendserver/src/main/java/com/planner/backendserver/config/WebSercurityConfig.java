@@ -141,8 +141,7 @@ public class WebSercurityConfig extends WebSecurityConfigurerAdapter {
                             userService.processOAuthPostLoginGoogle(oauthUser.getEmail());
                             String jwt = tokenProvider.generateToken(oauthUser);
                             User user = userRepository.findByEmail(oauthUser.getEmail());
-
-                            String uri = UriComponentsBuilder.fromUriString("http://localhost:3000/login")
+                            String uri=  UriComponentsBuilder.fromUriString("http://localhost:3000/oauth2/redirect")
                                     .queryParam("token", jwt)
                                     .queryParam("role", user.getRole().getRoleName())
                                     .queryParam("id", user.getUserID())
@@ -153,7 +152,7 @@ public class WebSercurityConfig extends WebSecurityConfigurerAdapter {
                             userService.processOAuthPostLoginFacebook(oauthUser.getEmail());
                             String jwt = tokenProvider.generateToken(oauthUser);
                             User user = userRepository.findByEmail(oauthUser.getEmail());
-                            String uri = UriComponentsBuilder.fromUriString("http://localhost:3000/login")
+                            String uri=  UriComponentsBuilder.fromUriString("http://localhost:3000/oauth2/redirect")
                                     .queryParam("token", jwt)
                                     .queryParam("role", user.getRole().getRoleName())
                                     .queryParam("id", user.getUserID())

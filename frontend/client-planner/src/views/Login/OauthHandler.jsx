@@ -11,7 +11,9 @@ function OAuthHandler() {
     var regex = new RegExp("[\\?&]" + name + "=([^&#]*)");
 
     var results = regex.exec(location.search);
-    return results === null ? "" : decodeURIComponent(results[1].replace(/\+/g, " "));
+    return results === null
+      ? ""
+      : decodeURIComponent(results[1].replace(/\+/g, " "));
   };
 
   const token = getUrlParameter("token");
@@ -23,9 +25,9 @@ function OAuthHandler() {
       localStorage.setItem("token", token);
       localStorage.setItem("role", role);
       localStorage.setItem("id", id);
-      window.location.href("http://localhost:3000/");
+      window.location.href = "http://localhost:3000/";
     } else {
-      window.location.href("http://localhost:3000/login");
+      window.location.href = "http://localhost:3000/login";
     }
   }, []);
 }
