@@ -11,32 +11,22 @@ function AddActivityModal(props) {
     end_time: "",
   };
   return (
-    <Modal
-      {...rest}
-      size="md"
-      aria-labelledby="contained-modal-title-vcenter"
-      centered
-    >
+    <Modal {...rest} size='md' aria-labelledby='contained-modal-title-vcenter' centered>
       <Modal.Header closeButton>
-        <Modal.Title id="contained-modal-title-vcenter">
-          Add an activity to your trip
-        </Modal.Title>
+        <Modal.Title id='contained-modal-title-vcenter'>Add an activity to your trip</Modal.Title>
       </Modal.Header>
       <Modal.Body>
         <form>
           <label>
             Date:
             <select
-              name="date"
+              name='date'
               onChange={(e) => {
                 inputField.date = e.target.value;
               }}
             >
               {allDates.map((date) => (
-                <option
-                  value={date.toISOString().split("T")[0]}
-                  key={date.toISOString().split("T")[0]}
-                >
+                <option value={date.toISOString().split("T")[0]} key={date.toISOString().split("T")[0]}>
                   {date.toISOString().split("T")[0]}
                 </option>
               ))}
@@ -46,7 +36,7 @@ function AddActivityModal(props) {
           <label>
             Activity ID:
             <input
-              name="activity_id"
+              name='activity_id'
               onChange={(e) => {
                 inputField.activity_id = e.target.value;
               }}
@@ -56,8 +46,8 @@ function AddActivityModal(props) {
           <label>
             Start time:
             <input
-              name="start_time"
-              type="time"
+              name='start_time'
+              type='time'
               onChange={(e) => {
                 inputField.start_time = e.target.value;
               }}
@@ -67,8 +57,8 @@ function AddActivityModal(props) {
           <label>
             End time:
             <input
-              name="end_time"
-              type="time"
+              name='end_time'
+              type='time'
               onChange={(e) => {
                 inputField.end_time = e.target.value;
               }}
@@ -77,9 +67,7 @@ function AddActivityModal(props) {
         </form>
       </Modal.Body>
       <Modal.Footer>
-        <Button onClick={(event) => activityAdded(event, inputField)}>
-          Save
-        </Button>
+        <Button onClick={(event) => activityAdded(event, inputField)}>Save</Button>
         <Button onClick={props.onHide}>Close</Button>
       </Modal.Footer>
     </Modal>
