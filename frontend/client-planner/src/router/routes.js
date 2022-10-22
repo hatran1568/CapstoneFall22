@@ -8,8 +8,6 @@ import RequireAuth from "../components/RequireAuth";
 import Timeline from "../views/Timeline/timeline";
 import DestinationDetails from "../views/DestinationDetails/DestinationDetails";
 import POIsDestination from "../views/POIsDestination/POIsDestination";
-import CreateEmptyPlan from "../views/CreateEmptyPlan/CreateEmptyPlan";
-import POIAndDestinationSearchBar from "../components/searchBar/POIAndDestinationSearchBar"
 import POIAndDestinationSearchBar from "../components/searchBar/POIAndDestinationSearchBar";
 import HomePage from "../views/HomePage/HomePage";
 import LayoutsWithNavbar from "../components/NavBar/LayoutsWithNavbar";
@@ -35,7 +33,6 @@ export default function RootRoutes() {
         <Route path="/search" element={<POIAndDestinationSearchBar />}></Route>
         <Route exact path="/Destination" element={<DestinationDetails />} />
       <Route exact path="/Destination/POIs" element={<POIsDestination />} />
-      <Route exact path="/EmptyPlan" element={<CreateEmptyPlan />} />
 
         {/*Routes that don't need a nav bar go out here.*/}
       </Routes>

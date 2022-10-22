@@ -1,6 +1,7 @@
 package com.planner.backendserver.repository;
 
 import com.planner.backendserver.DTO.GalleryImages;
+import com.planner.backendserver.entity.Destination;
 import com.planner.backendserver.entity.Trip;
 import com.planner.backendserver.entity.TripDetails;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -23,8 +24,12 @@ public interface TripRepository extends JpaRepository<Trip, Integer> {
 
     @Modifying
     @Query(
-            value = "INSERT INTO trip (date_created, budget, `name`, user_id, start_date, end_date) VALUES (?1, ?2, ?3, ?4, ?5, ?6)",
+            value = "INSERT INTO trip (date_created, date_modified, is_deleted, budget, `name`, user_id, start_date, end_date) VALUES (?1, ?2, ?3, ?4, ?5, ?6, ?7, ?8)",
             nativeQuery = true)
-    void createEmptyTrip(Date dateCreated, double budget, String name, int userId, Date startDate, Date endDate);
+    void createEmptyTrip(Date dateCreated, Date dateModified, boolean isDeleted, double budget, String name, int userId, Date startDate, Date endDate);
 
+    @Query(
+            value = "select MAX(trip_id) from trip",
+            nativeQuery = true)
+    int getNewestTripId();
 }
