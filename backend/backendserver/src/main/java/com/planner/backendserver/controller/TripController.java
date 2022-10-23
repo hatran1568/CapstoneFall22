@@ -17,10 +17,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
-<<<<<<< HEAD
-=======
-
->>>>>>> 58f639a4034511dd6befae59cf02b056e2a2fbe0
 import java.sql.Date;
 import java.util.ArrayList;
 import java.util.Calendar;
