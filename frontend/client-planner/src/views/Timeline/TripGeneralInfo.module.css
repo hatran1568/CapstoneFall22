@@ -1,0 +1,100 @@
+.tripImage{
+    width: 100%;
+    height: 500px;
+    background-image:url('https://twimg0-a.akamaihd.net/a/1350072692/t1/img/front_page/jp-mountain@2x.jpg');
+    background-size: cover;
+    background-attachment:fixed;
+    margin: 0;
+    padding: 0;
+    position: relative;
+}
+.tripImage:after {
+    background-image: linear-gradient(to top,rgba(0,0,0,0),#000);
+    opacity: .6;
+}
+.infoBox{
+    margin: 0;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+.planTitle{
+    color: #FFFAB0;
+    margin: 0 auto 13px;
+    overflow: visible;
+    max-height: 207px;
+    display: block;
+    border-bottom: 1px dashed transparent;
+    -webkit-font-smoothing: antialiased;
+    text-shadow: 0 15px 40px rgb(0 0 0 / 20%);
+    font-family: Klarna Display,Helvetica Neue,Arial,Helvetica,sans-serif;
+    font-size: 66px;
+    font-weight: 700;
+    line-height: 1.05;
+    letter-spacing: .1px;
+    margin-bottom: 16px;
+    text-align: center;
+}
+.dates{
+    color: #FFFAB0;
+    margin: 0 auto 13px;
+    overflow: visible;
+    max-height: 207px;
+    display: block;
+    border-bottom: 1px dashed transparent;
+    -webkit-font-smoothing: antialiased;
+    text-shadow: 0 15px 40px rgb(0 0 0 / 20%);
+    font-family: Klarna Display,Helvetica Neue,Arial,Helvetica,sans-serif;
+    font-size: 20px;
+    font-weight: 700;
+    line-height: 1.05;
+    letter-spacing: .1px;
+    margin-bottom: 16px;
+    text-align: center;
+}
+
+.stickyNavFirst {
+    padding: 0;
+    background-color: #fff;
+    border: none;
+    padding-top: 15px;
+    margin-bottom: 50px;
+    position: sticky;
+    top: 0;
+    z-index: 900;
+  }
+.dropdownContent{
+    display: none;
+  position: absolute;
+  background-color: #f9f9f9;
+  min-width: 160px;
+  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+  z-index: 1;
+  }
+  .dropDown:hover .dropdownContent {
+    display: block;
+  }
+  .dropdownContent a:hover {background-color: #f1f1f1}
+  .dropdownContent a {
+    color: black;
+    padding: 12px 15px;
+    text-decoration: none;
+    display: block;
+  }
+  .icons{
+    width: 20px;
+    margin-left: 0;
+    margin-right: 10px;
+  }
+  .dropDownIcon{
+    margin-left: 5px;
+    margin-right: 0;
+  }
+  .active{
+    background-color: #f1f1f1
+  }
+  .checkIcons{
+    float: right;
+    color: green;
+  }

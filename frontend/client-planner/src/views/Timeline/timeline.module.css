@@ -73,16 +73,6 @@
 .foreIcon {
   margin-right: 10px;
 }
-.stickyNavFirst {
-  padding: 0;
-  background-color: #fff;
-  border: none;
-  padding-top: 15px;
-  margin-bottom: 50px;
-  position: sticky;
-  top: 0;
-  z-index: 1020;
-}
 .activityImg {
   border-radius: 5px;
   max-width: 100%;
@@ -134,4 +124,12 @@
   position: relative;
   height: 200px;
   overflow: auto;
+}
+.formField{
+  margin-top: 10px;
+}
+.customBtn{
+  font-size: 12px;
+  width: 100%;
+  height: 100%;
 }

@@ -6,6 +6,7 @@ import OAuthHandler from "../views/Login/OauthHandler";
 import ProfilePage from "../views/UserProfile/ProfilePage";
 import RequireAuth from "../components/RequireAuth";
 import Timeline from "../views/Timeline/timeline";
+import TripGeneralInfo from "../views/Timeline/TripGeneralInfo";
 import DestinationDetails from "../views/DestinationDetails/DestinationDetails";
 import POIsDestination from "../views/POIsDestination/POIsDestination";
 import POIAndDestinationSearchBar from "../components/searchBar/POIAndDestinationSearchBar";
@@ -24,12 +25,13 @@ export default function RootRoutes() {
           <Route element={<RequireAuth allowedRoles={["User", "Admin"]} />}>
             <Route path="/profile" element={<ProfilePage />} />
           </Route>
+          <Route exact path="/Destination" element={<DestinationDetails />} />
+          <Route exact path="/Destination/POIs" element={<POIsDestination />} />
           <Route path="/timeline/:id" element={<Timeline />} />
+          <Route path="/trip/:id" element={<TripGeneralInfo />} />
           <Route path="/search" element={<POIAndDestinationSearchBar />} />
           <Route path="/" element={<HomePage />} />
           <Route path="/SearchResults" element={<SearchResults />} />
-          <Route exact path="/Destination" element={<DestinationDetails />} />
-          <Route exact path="/Destination/POIs" element={<POIsDestination />} />
         </Route>
 
         {/*Routes that don't need a nav bar go out here.*/}

@@ -18,7 +18,7 @@ function AddActivityModal(props) {
   return (
     <Modal
       {...rest}
-      size="md"
+      size="lg"
       aria-labelledby="contained-modal-title-vcenter"
       centered
     >
@@ -34,56 +34,63 @@ function AddActivityModal(props) {
             <input disabled value={inputField.masterActivity.name} />
           </label>
           <br />
-          <label>
-            Date:
-            <select
-              name="date"
-              onChange={(e) => {
-                inputField.date = e.target.value;
-              }}
-              defaultValue={inputField.date}
-            >
-              {allDates.map((date) => (
-                <option
-                  value={date.toISOString().split("T")[0]}
-                  key={date.toISOString().split("T")[0]}
-                >
-                  {date.toISOString().split("T")[0]}
-                </option>
-              ))}
-            </select>
-          </label>
-          <br />
-          <label>
-            Start time:
-            <input
-              name="start_time"
-              type="time"
-              defaultValue={getTimeFromSecs(tripDetail.startTime)}
-              onChange={(e) => {
-                inputField.startTime = e.target.value;
-              }}
-            />
-          </label>
-          <br />
-          <label>
-            End time:
-            <input
-              name="end_time"
-              type="time"
-              defaultValue={getTimeFromSecs(inputField.endTime)}
-              onChange={(e) => {
-                inputField.endTime = e.target.value;
-              }}
-            />
-          </label>
+          <div className="row">
+            <label className="col-4">
+              Date:
+              <select
+                className="form-select"
+                name="date"
+                onChange={(e) => {
+                  inputField.date = e.target.value;
+                }}
+                defaultValue={inputField.date}
+              >
+                {allDates.map((date) => (
+                  <option
+                    value={date.toISOString().split("T")[0]}
+                    key={date.toISOString().split("T")[0]}
+                  >
+                    {date.toISOString().split("T")[0]}
+                  </option>
+                ))}
+              </select>
+            </label>
+            <br />
+            <label className="col-4">
+              Start time:
+              <input
+                className="form-control"
+                name="start_time"
+                type="time"
+                defaultValue={getTimeFromSecs(tripDetail.startTime)}
+                onChange={(e) => {
+                  inputField.startTime = e.target.value;
+                }}
+              />
+            </label>
+            <br />
+            <label className="col-4">
+              End time:
+              <input
+                className="form-control"
+                name="end_time"
+                type="time"
+                defaultValue={getTimeFromSecs(inputField.endTime)}
+                onChange={(e) => {
+                  inputField.endTime = e.target.value;
+                }}
+              />
+            </label>
+          </div>
         </form>
       </Modal.Body>
       <Modal.Footer>
         <Button onClick={(event) => props.activityEdited(event, inputField)}>
           Save
         </Button>
-        <Button onClick={props.onHide}>Close</Button>
+        <Button onClick={props.onHide} variant="secondary">
+          Close
+        </Button>
       </Modal.Footer>
     </Modal>
   );
