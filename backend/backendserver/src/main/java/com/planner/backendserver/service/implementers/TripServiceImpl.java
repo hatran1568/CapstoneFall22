@@ -2,6 +2,7 @@ package com.planner.backendserver.service.implementers;
 
 import com.planner.backendserver.dto.response.TripGeneralDTO;
 import com.planner.backendserver.entity.MasterActivity;
+import com.planner.backendserver.entity.POI;
 import com.planner.backendserver.entity.Trip;
 import com.planner.backendserver.entity.TripDetails;
 import com.planner.backendserver.repository.MasterActivityRepository;
@@ -14,7 +15,10 @@ import org.springframework.stereotype.Service;
 
 import java.sql.Date;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
+
 @Service
 public class TripServiceImpl implements TripService {
     @Autowired
@@ -78,9 +82,34 @@ public class TripServiceImpl implements TripService {
     }
 
     @Override
-    public Optional<ArrayList<TripGeneralDTO>> getTripsByUser(int userId) {
-        return Optional.empty();
+    public List<TripGeneralDTO> getTripsByUser(int userId) {
+        ArrayList<Trip> trips = tripRepository.getTripsByUser(userId);
+
+        return trips.stream().map(trip -> {
+            TripGeneralDTO tripDTO = new TripGeneralDTO();
+            tripDTO.setTripId(trip.getTripId());
+            tripDTO.setName(trip.getName());
+            tripDTO.setBudget(trip.getBudget());
+            tripDTO.setStartDate(trip.getStartDate());
+            tripDTO.setEndDate(trip.getEndDate());
+            tripDTO.setImage(getTripThumbnail(trip.getTripId()));
+            tripDTO.setDateModified(trip.getDateModified());
+            return tripDTO;
+        }).collect(Collectors.toList());
+
     }
 
-
+    private String getTripThumbnail(int tripId){
+        List<TripDetails> tripDetails = tripRepository.getTripById(tripId).get().getListTripDetails();
+        if (tripDetails.size() == 0){
+            return null;
+        }
+        int masterActivityId = tripDetails.get(0).getMasterActivity().getActivityId();
+        Optional<POI> poi = poiRepository.getPOIByMasterActivity(masterActivityId);
+        if (poi.isPresent()){
+            if (poi.get().getImages().size() > 0)
+            return poi.get().getImages().get(0).getUrl();
+        }
+        return null;
+    }
 }

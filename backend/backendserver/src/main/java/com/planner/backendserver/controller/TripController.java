@@ -142,13 +142,13 @@ public class TripController {
 
     @GetMapping("/getTripsByUser/{userId}")
     public ResponseEntity<?> getTripsByUser(@PathVariable int userId) {
-        try {
-            Optional<ArrayList<TripGeneralDTO>> optTrips = tripService.getTripsByUser(userId);
-            return new ResponseEntity<>(HttpStatus.OK);
+//        try {
 
-        } catch (Exception e) {
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-        }
+            return new ResponseEntity<>(tripService.getTripsByUser(userId), HttpStatus.OK);
+
+//        } catch (Exception e) {
+//            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+//        }
     }
 //    @PostMapping(
 //            value = "/createTrip", consumes = "application/json", produces = "application/json")

@@ -53,6 +53,7 @@ function Login() {
     if (localStorage.getItem("token") != null) {
       navigate("/");
     }
+    document.title = "Login | Tripplanner";
   }, []);
 
   const handleLoginGoogle = (e) => {
