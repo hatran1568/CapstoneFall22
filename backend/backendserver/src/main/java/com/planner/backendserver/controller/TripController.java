@@ -142,19 +142,14 @@ public class TripController {
 
     @GetMapping("/getTripsByUser/{userId}")
     public ResponseEntity<?> getTripsByUser(@PathVariable int userId) {
-//        try {
+        try {
 
             return new ResponseEntity<>(tripService.getTripsByUser(userId), HttpStatus.OK);
 
-//        } catch (Exception e) {
-//            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-//        }
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
-//    @PostMapping(
-//            value = "/createTrip", consumes = "application/json", produces = "application/json")
-//    public Trip createEmptyTrip(@RequestBody EmptyTripDTO trip) {
-//        return tripRepo.createEmptyTrip(null, trip.getBudget(), trip.getName(), 1, trip.getStartDate(), trip.getEndDate());
-//    }
     @RequestMapping(value = "/createTrip", consumes = "application/json", produces = { "*/*" }, method = RequestMethod.POST)
     public ResponseEntity<?> createEmptyTrip(@RequestBody TripDTO tripDTO) {
         try{
