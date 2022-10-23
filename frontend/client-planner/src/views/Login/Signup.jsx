@@ -1,6 +1,14 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { MDBBtn, MDBContainer, MDBRow, MDBCol, MDBCard, MDBCardBody, MDBInput } from "mdb-react-ui-kit";
+import {
+  MDBBtn,
+  MDBContainer,
+  MDBRow,
+  MDBCol,
+  MDBCard,
+  MDBCardBody,
+  MDBInput,
+} from "mdb-react-ui-kit";
 import axios from "../../api/axios";
 import { useState } from "react";
 
@@ -62,7 +70,7 @@ function Signup() {
           {
             headers: { "Content-Type": "application/json" },
             withCredentials: true,
-          },
+          }
         );
         const response = await axios.post(
           LOGIN_URL,
@@ -73,7 +81,7 @@ function Signup() {
           {
             headers: { "Content-Type": "application/json" },
             withCredentials: true,
-          },
+          }
         );
         const accessToken = response?.data?.accessToken;
         const role = response?.data?.role;
@@ -93,79 +101,108 @@ function Signup() {
     }
   };
 
+  useEffect(() => {
+    document.title = "Register | Tripplanner";
+  }, []);
+
   return (
-    <MDBContainer className='my-5 '>
+    <MDBContainer className="my-5 ">
       <MDBCard>
-        <MDBRow className='g-0'>
-          <MDBCol md='6'>
-            <div className='d-flex flex-column justify-content-center gradient-custom-2 h-100 mb-4'></div>
+        <MDBRow className="g-0">
+          <MDBCol md="6">
+            <div className="d-flex flex-column justify-content-center gradient-custom-2 h-100 mb-4"></div>
           </MDBCol>
 
-          <MDBCol md='6'>
-            <MDBCardBody className='d-flex flex-column'>
-              <h3 className='fw-normal my-3 pb-3 text-center'>Register</h3>
+          <MDBCol md="6">
+            <MDBCardBody className="d-flex flex-column">
+              <h3 className="fw-normal my-3 pb-3 text-center">Register</h3>
               <MDBInput
-                wrapperClass='mt-4 mx-5'
-                label='Username'
-                id='formUsername'
-                type='text'
-                size='lg'
+                wrapperClass="mt-4 mx-5"
+                label="Username"
+                id="formUsername"
+                type="text"
+                size="lg"
                 onChange={(e) => setUser({ ...user, username: e.target.value })}
               />
-              <span style={{ color: "red", display: "none" }} className='mx-5' id='errUsername'>
+              <span
+                style={{ color: "red", display: "none" }}
+                className="mx-5"
+                id="errUsername"
+              >
                 Username must not be empty
               </span>
 
               <MDBInput
-                wrapperClass='mt-4 mx-5'
-                label='Email address'
-                id='formEmail'
-                type='email'
-                size='lg'
+                wrapperClass="mt-4 mx-5"
+                label="Email address"
+                id="formEmail"
+                type="email"
+                size="lg"
                 onChange={(e) => setUser({ ...user, email: e.target.value })}
               />
-              <span style={{ color: "red", display: "none" }} className='mx-5' id='errEmail'>
+              <span
+                style={{ color: "red", display: "none" }}
+                className="mx-5"
+                id="errEmail"
+              >
                 Please check your email
               </span>
 
               <MDBInput
-                wrapperClass='mt-4 mx-5'
-                label='Password'
-                id='formPwd'
-                type='password'
-                size='lg'
+                wrapperClass="mt-4 mx-5"
+                label="Password"
+                id="formPwd"
+                type="password"
+                size="lg"
                 onChange={(e) => setUser({ ...user, password: e.target.value })}
               />
-              <span style={{ color: "red", display: "none" }} className='mx-5' id='errPwd'>
+              <span
+                style={{ color: "red", display: "none" }}
+                className="mx-5"
+                id="errPwd"
+              >
                 Password cannot be empty
               </span>
 
               <MDBInput
-                wrapperClass='mt-4 mx-5'
-                label='Confirm password'
-                id='formPwdCf'
-                type='password'
-                size='lg'
-                onChange={(e) => setUser({ ...user, confirmPassword: e.target.value })}
+                wrapperClass="mt-4 mx-5"
+                label="Confirm password"
+                id="formPwdCf"
+                type="password"
+                size="lg"
+                onChange={(e) =>
+                  setUser({ ...user, confirmPassword: e.target.value })
+                }
               />
-              <span style={{ color: "red", display: "none" }} className='mx-5' id='errCfPwd'>
+              <span
+                style={{ color: "red", display: "none" }}
+                className="mx-5"
+                id="errCfPwd"
+              >
                 Confirm password doesn't match password
               </span>
-              <span style={{ color: "red", display: "none" }} className='mx-5' id='invalidWarning'>
+              <span
+                style={{ color: "red", display: "none" }}
+                className="mx-5"
+                id="invalidWarning"
+              >
                 Email already in use!
               </span>
               <MDBBtn
-                className='my-4 px-5 col-6 mx-auto mb-2'
-                color='dark'
-                size='lg'
-                type='button'
+                className="my-4 px-5 col-6 mx-auto mb-2"
+                color="dark"
+                size="lg"
+                type="button"
                 onClick={handleRegister}
               >
                 Register
               </MDBBtn>
 
-              <p className='mt-5 mb-0 pb-lg-2 text-center' style={{ color: "#393f81" }}>
-                Already have an account? <Link to='/login'>Login</Link>
+              <p
+                className="mt-5 mb-0 pb-lg-2 text-center"
+                style={{ color: "#393f81" }}
+              >
+                Already have an account? <Link to="/login">Login</Link>
               </p>
             </MDBCardBody>
           </MDBCol>
