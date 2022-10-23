@@ -24,9 +24,9 @@ class TripGeneralInfo extends Component {
   }
   toLongDate = (date) => {
     var options = {
-      year: "numeric",
       month: "short",
       day: "numeric",
+      year: "numeric",
     };
     var today = new Date(date);
     return today.toLocaleDateString("en-US", options);

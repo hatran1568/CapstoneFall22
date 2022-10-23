@@ -11,14 +11,9 @@ import {
 import { Route, Link, Routes, useLocation, useParams } from "react-router-dom";
 import { getPath } from "@mui/system";
 export default function Tabs() {
-  // 👇️ with React router
   const location = useLocation();
-  // console.log("hash", location.hash);
-  // console.log("pathname", location.pathname);
-  // console.log(useParams());
   var path = location.pathname.slice(0, location.pathname.lastIndexOf("/"));
   var params = useParams();
-  console.log(path);
   return (
     <div className={style.stickyNavFirst}>
       <ul className="nav nav-tabs justify-content-center">
@@ -43,7 +38,7 @@ export default function Tabs() {
             <FontAwesomeIcon
               icon={faCaretDown}
               className={style.dropDownIcon}
-              size="md"
+              size="lg"
             />
           </a>
           <div className={style.dropdownContent}>
@@ -85,7 +80,7 @@ export default function Tabs() {
         <li className="nav-item">
           <a
             className={path == "/checklist" ? "nav-link active" : "nav-link"}
-            href="#"
+            href={"../checklist/" + params.id}
           >
             Checklist
           </a>
@@ -93,7 +88,7 @@ export default function Tabs() {
         <li className="nav-item">
           <a
             className={path == "/budget" ? "nav-link active" : "nav-link"}
-            href="#"
+            href={"../budget/" + params.id}
           >
             Budget
           </a>
