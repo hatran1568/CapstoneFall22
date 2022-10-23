@@ -5,7 +5,7 @@
 
 .container {
   position: relative;
-  width: 25em;
+  width: 100%;
 }
 
 .list {
@@ -13,4 +13,7 @@
   top: 100%;
   left: 0%;
   width: 100%;
+}
+.listItem{
+  cursor: pointer;
 }
