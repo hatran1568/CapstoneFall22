@@ -3,10 +3,12 @@ package com.planner.backendserver.controller;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.planner.backendserver.DTO.TripDTO;
 import com.planner.backendserver.DTO.UserDTO;
+import com.planner.backendserver.dto.response.TripGeneralDTO;
 import com.planner.backendserver.entity.MasterActivity;
 import com.planner.backendserver.entity.Trip;
 import com.planner.backendserver.entity.TripDetails;
 import com.planner.backendserver.repository.POIRepository;
+import com.planner.backendserver.repository.TripRepository;
 import com.planner.backendserver.service.UserDTOServiceImplementer;
 import com.planner.backendserver.service.interfaces.TripService;
 import org.modelmapper.ModelMapper;
@@ -15,10 +17,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
-import com.planner.backendserver.repository.TripRepository;
 
-import javax.annotation.security.RolesAllowed;
 import java.sql.Date;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Optional;
 
@@ -139,6 +140,16 @@ public class TripController {
         return  userDetails;
     }
 
+    @GetMapping("/getTripsByUser/{userId}")
+    public ResponseEntity<?> getTripsByUser(@PathVariable int userId) {
+//        try {
+
+            return new ResponseEntity<>(tripService.getTripsByUser(userId), HttpStatus.OK);
+
+//        } catch (Exception e) {
+//            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+//        }
+    }
 //    @PostMapping(
 //            value = "/createTrip", consumes = "application/json", produces = "application/json")
 //    public Trip createEmptyTrip(@RequestBody EmptyTripDTO trip) {
