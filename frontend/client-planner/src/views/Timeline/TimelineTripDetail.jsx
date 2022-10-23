@@ -11,18 +11,11 @@ import {
   MDBDropdownMenu,
   MDBDropdownToggle,
   MDBDropdownItem,
-  MDBTooltip,
-  MDBPopover,
-  MDBPopoverBody,
-  MDBPopoverHeader,
-  MDBBtn,
 } from "mdb-react-ui-kit";
-import Button from "react-bootstrap/Button";
 import OverlayTrigger from "react-bootstrap/OverlayTrigger";
 import Popover from "react-bootstrap/Popover";
 import EditActivityModal from "./EditActivityModal";
 import axios from "axios";
-import { StyleOutlined } from "@mui/icons-material";
 class TripDetail extends Component {
   state = {};
   //set state of component based on props from timeline

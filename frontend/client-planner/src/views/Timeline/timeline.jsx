@@ -1,10 +1,11 @@
 import React, { Component } from "react";
 import { withRouter } from "react-router-dom";
-import TripDetail from "./tripDetail";
+import TripDetail from "./TimelineTripDetail";
 import AddActivityModal from "./AddActivityModal";
 import axios from "axios";
 import TripDetailTabs from "./TripDetailTabs";
 import style from "./timeline.module.css";
+import { useParams } from "react-router-dom";
 class Timeline extends Component {
   state = {};
   //set state of component
@@ -20,9 +21,8 @@ class Timeline extends Component {
   }
   //get request to get trip info
   componentDidMount() {
-    //const id = this.props.match.params.id;
-    //console.log("id:", id);
-    axios.get(`http://localhost:8080/trip/1`).then((res) => {
+    const { id } = this.props.params;
+    axios.get(`http://localhost:8080/trip/` + id).then((res) => {
       const tripData = res.data;
       this.setState({
         trip: tripData,
@@ -108,9 +108,7 @@ class Timeline extends Component {
   //delete an activirty
   deleteTripDetail = (event, detailId) => {
     if (
-      window.confirm(
-        "Do you really want to delete this event from your trip?" + detailId
-      )
+      window.confirm("Do you really want to delete this event from your trip?")
     ) {
       axios
         .delete(`http://localhost:8080/trip/delete-detail`, {
@@ -330,4 +328,7 @@ class Timeline extends Component {
   }
 }
 
-export default Timeline;
+function withParams(Component) {
+  return (props) => <Component {...props} params={useParams()} />;
+}
+export default withParams(Timeline);

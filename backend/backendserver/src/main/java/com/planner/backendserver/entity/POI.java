@@ -6,6 +6,7 @@ import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
 import java.util.Date;
+import java.util.List;
 
 @Data
 @Entity
@@ -65,4 +66,7 @@ public class POI extends MasterActivity {
 
     @Column(name="is_deleted")
     private boolean isDeleted;
+    
+    @OneToMany(targetEntity = POIImage.class,fetch = FetchType.LAZY, mappedBy = "poi", cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
+    private List<POIImage> images;
 }
