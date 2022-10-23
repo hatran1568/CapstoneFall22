@@ -13,8 +13,6 @@ import {
   MDBContainer,
   MDBRow,
 } from "mdb-react-ui-kit";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faStar } from "@fortawesome/free-solid-svg-icons";
 import StarRatings from "react-star-ratings";
 import style from "./POIDetails.module.css";
 
