@@ -15,6 +15,7 @@ import TripInfoCard from "../../components/Trips/TripInfoCard";
 
 function ProfilePage() {
   const [curUser, setCurUser] = useState();
+  const [myTrips, setMyTrips] = useState();
   const [basicActive, setBasicActive] = useState("myTrips");
 
   const handleBasicClick = (value: string) => {
@@ -37,11 +38,21 @@ function ProfilePage() {
       setCurUser(response.data);
     }
 
+    async function getTripList() {
+      const response = await axios.get("/trip/getTripsByUser/" + id, {
+        headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+        withCredentials: true,
+      });
+
+      setMyTrips(response.data);
+    }
+    document.title = "Profile | Tripplanner";
     getUserProfile();
+    getTripList();
   }, []);
 
   return curUser ? (
-    <MDBContainer>
+    <MDBContainer className="mt-4">
       <MDBRow>
         <MDBCol md="3">
           <ProfileCard user={curUser} />
@@ -72,10 +83,14 @@ function ProfilePage() {
             </MDBTabsItem>
           </MDBTabs>
           <MDBTabsContent>
-            <MDBTabsPane show={basicActive === "myTrips"}></MDBTabsPane>
-            <MDBTabsPane show={basicActive === "myCollection"}>
-              Tab 2 content
+            <MDBTabsPane show={basicActive === "myTrips"}>
+              {myTrips
+                ? myTrips.map((trip) => (
+                    <TripInfoCard trip={trip}></TripInfoCard>
+                  ))
+                : null}
             </MDBTabsPane>
+            <MDBTabsPane show={basicActive === "myCollection"}></MDBTabsPane>
           </MDBTabsContent>
         </MDBCol>
       </MDBRow>

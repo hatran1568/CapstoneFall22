@@ -15,5 +15,5 @@ public class UserDetailResponseDTO {
     private String email;
     private String name;
     private RoleDTO role;
-
+    private Date dateCreated;
 }
