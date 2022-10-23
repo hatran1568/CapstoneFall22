@@ -7,6 +7,8 @@ import ProfilePage from "../views/UserProfile/ProfilePage";
 import RequireAuth from "../components/RequireAuth";
 import Timeline from "../views/Timeline/timeline";
 import TripGeneralInfo from "../views/Timeline/TripGeneralInfo";
+import DestinationDetails from "../views/DestinationDetails/DestinationDetails";
+import POIsDestination from "../views/POIsDestination/POIsDestination";
 import POIAndDestinationSearchBar from "../components/searchBar/POIAndDestinationSearchBar";
 import HomePage from "../views/HomePage/HomePage";
 import LayoutsWithNavbar from "../components/NavBar/LayoutsWithNavbar";
@@ -29,6 +31,10 @@ export default function RootRoutes() {
           <Route path='/' element={<HomePage />} />
           <Route path='/SearchResults' element={<SearchResults />} />
         </Route>
+        <Route path="/timeline/:id" element={<Timeline />} />
+        <Route path="/search" element={<POIAndDestinationSearchBar />}></Route>
+        <Route exact path="/Destination" element={<DestinationDetails />} />
+      <Route exact path="/Destination/POIs" element={<POIsDestination />} />
 
         {/*Routes that don't need a nav bar go out here.*/}
       </Routes>

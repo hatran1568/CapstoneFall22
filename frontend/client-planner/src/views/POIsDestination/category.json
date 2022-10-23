@@ -1,0 +1,39 @@
+[
+    {
+        "categoryId": 1,
+        "categoryName": "Art and Culture"
+    },{
+        "categoryId": 2,
+        "categoryName": "Outdoors"
+    },{
+        "categoryId": 3,
+        "categoryName": "Religion"
+    },{
+        "categoryId": 4,
+        "categoryName": "Historic sights"
+    },{
+        "categoryId": 5,
+        "categoryName": "Museums"
+    },{
+        "categoryId": 6,
+        "categoryName": "Spas & Wellness"
+    },{
+        "categoryId": 7,
+        "categoryName": "Shopping"
+    },{
+        "categoryId": 8,
+        "categoryName": "Beaches"
+    },{
+        "categoryId": 9,
+        "categoryName": "Nightlife"
+    },{
+        "categoryId": 10,
+        "categoryName": "Hotels"
+    },{
+        "categoryId": 11,
+        "categoryName": "Restaurants"
+    },{
+        "categoryId": 12,
+        "categoryName": "Entertainment"
+    }
+]
