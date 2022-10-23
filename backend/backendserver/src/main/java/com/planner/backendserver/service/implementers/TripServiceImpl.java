@@ -1,5 +1,6 @@
 package com.planner.backendserver.service.implementers;
 
+import com.planner.backendserver.dto.response.TripGeneralDTO;
 import com.planner.backendserver.entity.MasterActivity;
 import com.planner.backendserver.entity.Trip;
 import com.planner.backendserver.entity.TripDetails;
@@ -12,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.sql.Date;
+import java.util.ArrayList;
 import java.util.Optional;
 @Service
 public class TripServiceImpl implements TripService {
@@ -73,6 +75,11 @@ public class TripServiceImpl implements TripService {
                 .orElseGet(() -> {
                     return tripDetailRepository.save(newDetail);
                 }));
+    }
+
+    @Override
+    public Optional<ArrayList<TripGeneralDTO>> getTripsByUser(int userId) {
+        return Optional.empty();
     }
 
 

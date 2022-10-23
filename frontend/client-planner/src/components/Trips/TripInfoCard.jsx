@@ -28,7 +28,7 @@ function TripInfoCard(trip) {
               />
             </MDBCol>
             <MDBCol sm="8">
-              <h5 className="mt-4">Trip to Hanoi</h5>
+              <h5 className="mt-4">3 days Trip to Hanoi</h5>
               <p className="mt-2">
                 <MDBIcon far icon="calendar-alt" /> 22/10/2022 - 24/10/2022
               </p>

@@ -1,6 +1,7 @@
 package com.planner.backendserver.controller;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.planner.backendserver.DTO.UserDTO;
+import com.planner.backendserver.dto.response.TripGeneralDTO;
 import com.planner.backendserver.entity.MasterActivity;
 import com.planner.backendserver.entity.Trip;
 import com.planner.backendserver.entity.TripDetails;
@@ -12,10 +13,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
-import com.planner.backendserver.repository.TripRepository;
 
-import javax.annotation.security.RolesAllowed;
 import java.sql.Date;
+import java.util.ArrayList;
 import java.util.Optional;
 
 @RestController
@@ -128,5 +128,16 @@ public class TripController {
 
         UserDTO userDetails = userDTOService.loadUserById(id);
         return  userDetails;
+    }
+
+    @GetMapping("/getTripsByUser/{userId}")
+    public ResponseEntity<?> getTripsByUser(@PathVariable int userId){
+        try{
+            Optional<ArrayList<TripGeneralDTO>> optTrips = tripService.getTripsByUser(userId);
+            return new ResponseEntity<>(HttpStatus.OK);
+
+        } catch (Exception e){
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 }
