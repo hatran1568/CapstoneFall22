@@ -64,3 +64,8 @@
   margin: auto;
   text-align: center;
 }
+.errorEmptyPlan{
+  margin: auto;
+  text-align: center;
+  color: red;
+}

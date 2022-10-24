@@ -11,6 +11,7 @@ import {
 } from "mdb-react-ui-kit";
 import axios from "../../api/axios";
 import { useState } from "react";
+import style from "./Login.module.css";
 
 const REGISTER_URL = "/api/register";
 const LOGIN_URL = "/api/login";
@@ -110,7 +111,9 @@ function Signup() {
       <MDBCard>
         <MDBRow className="g-0">
           <MDBCol md="6">
-            <div className="d-flex flex-column justify-content-center gradient-custom-2 h-100 mb-4"></div>
+            <div
+              className={`${style.customGradient} d-flex flex-column justify-content-center h-100 mb-4`}
+            ></div>
           </MDBCol>
 
           <MDBCol md="6">
