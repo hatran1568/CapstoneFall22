@@ -137,7 +137,7 @@ class TripDetail extends Component {
                 src={
                   this.state.tripDetail.masterActivity.images
                     ? this.state.tripDetail.masterActivity.images[0]
-                      ? this.state.tripDetail.masterActivity.images[0].url
+                      ? `../${this.state.tripDetail.masterActivity.images[0].url}`
                       : "https://picsum.photos/seed/picsum/300/200"
                     : "https://picsum.photos/seed/picsum/300/200"
                 }
