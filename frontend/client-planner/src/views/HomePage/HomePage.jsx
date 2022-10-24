@@ -1,6 +1,6 @@
 import React from "react";
 import axios from "../../api/axios";
-import {useState} from 'react';
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import {
   MDBBtn,
@@ -26,8 +26,8 @@ import {
 import style from "./HomePage.module.css";
 
 function HomePage() {
-    const navigate = useNavigate();
-    const [basicModal, setBasicModal] = useState(false);
+  const navigate = useNavigate();
+  const [basicModal, setBasicModal] = useState(false);
 
   const toggleShow = () => {
     setBasicModal(!basicModal);
@@ -83,7 +83,9 @@ function HomePage() {
                 <MDBBtnGroup className={style.btn}>
                   <MDBBtn color='info'>Generate&nbsp;trip</MDBBtn>
                   {/* <MDBBtn color='info'>Create&nbsp;trip</MDBBtn> */}
-                  <MDBBtn color='info' onClick={toggleShow}>Create Trip</MDBBtn>
+                  <MDBBtn color='info' onClick={toggleShow}>
+                    Create Trip
+                  </MDBBtn>
                 </MDBBtnGroup>
               </div>
             </div>
@@ -98,12 +100,17 @@ function HomePage() {
               <MDBBtn className='btn-close' color='none' onClick={toggleShow}></MDBBtn>
             </MDBModalHeader>
             <MDBModalBody>
-              <div className={style.emptyTripInfo}>Creates an Empty trip. After creation, you will be redirected to your trip, where you can customize it all you want.</div><br/>
+              <div className={style.emptyTripInfo}>
+                Creates an Empty trip. After creation, you will be redirected to your trip, where you can customize it
+                all you want.
+              </div>
+              <br />
               <MDBRow className={style.modalInput}>
-                  <div className={style.formgroup}>
-                      <MDBInput label="Trip name" type="text" id="tripNameInput" className={style.modalInput}/>
-                  </div>
-              </MDBRow><br/>
+                <div className={style.formgroup}>
+                  <MDBInput label='Trip name' type='text' id='tripNameInput' className={style.modalInput} />
+                </div>
+              </MDBRow>
+              <br />
               <MDBRow className={style.modalInput}>
                   <div className={style.formgroup}>
                       <MDBInput label="Budget" id="budgetInput" type="number" className={style.modalInput}/>
