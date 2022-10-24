@@ -1,20 +1,6 @@
 import React, { useEffect, useState } from "react";
 import axios from "../../api/axios";
-import {
-  MDBBtn,
-  MDBBtnGroup,
-  MDBCard,
-  MDBCardBody,
-  MDBCardFooter,
-  MDBCardHeader,
-  MDBCardText,
-  MDBCardTitle,
-  MDBCarousel,
-  MDBCarouselItem,
-  MDBCol,
-  MDBContainer,
-  MDBRow,
-} from "mdb-react-ui-kit";
+import { MDBCarousel, MDBCarouselItem, MDBCol, MDBContainer, MDBRow } from "mdb-react-ui-kit";
 import StarRatings from "react-star-ratings";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faGoogle } from "@fortawesome/free-brands-svg-icons";
@@ -57,6 +43,50 @@ const POIDetails = () => {
     e.preventDefault();
   };
 
+  const poiImages = [];
+  if (images.length > 1) {
+    images.forEach((image) => poiImages.push(<MDBCarouselItem className='w-100 d-block' src={image} alt='...' />));
+  } else if (images.length == 1) {
+    poiImages.push(
+      <>
+        <MDBCarouselItem className='w-100 d-block' src={images[0]} alt='...' />
+        <MDBCarouselItem className='w-100 d-block' src={images[0]} alt='...' />
+      </>,
+    );
+  }
+
+  const poiRatings = [];
+  if (ratings.length > 0 && ratings !== undefined) {
+    ratings.forEach((rating, index) =>
+      poiRatings.push(
+        <>
+          <MDBRow>
+            <MDBCol size='auto' className='pe-0'>
+              <StarRatings rating={rating.rate} starDimension='1em' starSpacing='0.1em' starRatedColor='orange' />
+            </MDBCol>
+            <MDBCol size='auto' className='pt-1'>
+              <p>
+                {" "}
+                by <strong>{rating.user.name}</strong>
+              </p>
+            </MDBCol>
+          </MDBRow>
+          <MDBRow>
+            <div>
+              <p>{rating.comment}</p>
+            </div>
+          </MDBRow>
+        </>,
+      ),
+    );
+  } else if (ratings.length == 0) {
+    poiRatings.push(
+      <div>
+        <p>There is still nothing yet</p>
+      </div>,
+    );
+  }
+
   const timeConverter = (seconds, format) => {
     var dateObj = new Date(seconds * 1000);
     var hours = dateObj.getUTCHours();
@@ -76,9 +106,6 @@ const POIDetails = () => {
     return timeString;
   };
 
-  console.log(ratings);
-  console.log(images);
-
   if (curPOI !== undefined) {
     return (
       <MDBContainer className='px-5'>
@@ -97,24 +124,10 @@ const POIDetails = () => {
         </MDBRow>
         <MDBRow className='mb-4'>
           <MDBCol size='8'>
-            <div>
-              <MDBCarousel showControls className='mb-3'>
-                {images.map((item, index) => (
-                  <MDBCarouselItem key={index} className='w-100 d-block' itemId={index} src={item} alt='...' />
-                ))}
-              </MDBCarousel>
-            </div>
+            <MDBCarousel showControls className='mb-3'>
+              {poiImages}
+            </MDBCarousel>
             <p>{curPOI.description}</p>
-            {/*<p>
-              Lorem ipsum dolor, sit amet consectetur adipisicing elit. Libero, ea! Quam deserunt cumque tenetur
-              doloremque et nostrum nisi beatae ratione. Laudantium deleniti ea similique unde nobis eum error, mollitia
-              quo sunt perspiciatis qui consectetur doloremque fugit nulla ipsum blanditiis quos magni quidem ex ipsam
-              exercitationem eligendi fuga molestiae! Harum quis eligendi aliquid facilis similique reiciendis ducimus,
-              cumque dignissimos neque aperiam nesciunt dolorem quibusdam labore? Cumque provident doloremque, unde
-              iste, voluptates odit nisi et dicta nobis facere nulla tempora quos excepturi explicabo illum vero.
-              Consequuntur omnis aperiam, nihil corrupti consectetur, ipsum enim quam fugit, quas illo est dolore
-              explicabo impedit libero?
-            </p>*/}
           </MDBCol>
           <MDBCol size='4'>
             <p className='fs-5 fw-bold'>Open hours:</p>
@@ -158,68 +171,7 @@ const POIDetails = () => {
         <MDBRow className='mb-3'>
           <h2 className='fw-bold'>{curPOI.name} reviews</h2>
         </MDBRow>
-        <MDBRow className='mb-4'>
-          {ratings.length > 0 ? (
-            ratings.map((item) => {
-              <div className='mb-2'>
-                <h4>{item.user.name}</h4>
-                <div>
-                  <StarRatings rating={item.rate} starDimension='1em' starSpacing='0.1em' starRatedColor='orange' />
-                  <p>{item.comment}</p>
-                </div>
-                <p className='text-muted'>{item.dateCreated}</p>
-              </div>;
-            })
-          ) : (
-            <div>
-              <p>There is still nothing yet</p>
-            </div>
-          )}
-          {/*<div className='mb-2'>
-            <h4>Tourist A</h4>
-            <div>
-              <StarRatings rating={4} starDimension='1em' starSpacing='0.1em' starRatedColor='orange' />
-              <p>
-                Lorem ipsum dolor, sit amet consectetur adipisicing elit. Libero, ea! Quam deserunt cumque tenetur
-                doloremque et nostrum nisi beatae ratione.
-              </p>
-            </div>
-            <p className='text-muted'>20/10/2022</p>
-          </div>
-          <div className='mb-2'>
-            <h4>Tourist B</h4>
-            <div>
-              <StarRatings rating={3} starDimension='1em' starSpacing='0.1em' starRatedColor='orange' />
-              <p>
-                Lorem ipsum dolor, sit amet consectetur adipisicing elit. Libero, ea! Quam deserunt cumque tenetur
-                doloremque et nostrum nisi beatae ratione.
-              </p>
-            </div>
-            <p className='text-muted'>20/10/2022</p>
-          </div>
-          <div className='mb-2'>
-            <h4>Tourist C</h4>
-            <div>
-              <StarRatings rating={5} starDimension='1em' starSpacing='0.1em' starRatedColor='orange' />
-              <p>
-                Lorem ipsum dolor, sit amet consectetur adipisicing elit. Libero, ea! Quam deserunt cumque tenetur
-                doloremque et nostrum nisi beatae ratione.
-              </p>
-            </div>
-            <p className='text-muted'>20/10/2022</p>
-          </div>
-          <div className='mb-2'>
-            <h4>Tourist D</h4>
-            <div>
-              <StarRatings rating={4} starDimension='1em' starSpacing='0.1em' starRatedColor='orange' />
-              <p>
-                Lorem ipsum dolor, sit amet consectetur adipisicing elit. Libero, ea! Quam deserunt cumque tenetur
-                doloremque et nostrum nisi beatae ratione.
-              </p>
-            </div>
-            <p className='text-muted'>20/10/2022</p>
-          </div>*/}
-        </MDBRow>
+        <MDBRow className='mb-4'>{poiRatings}</MDBRow>
       </MDBContainer>
     );
   }
