@@ -159,4 +159,15 @@ public class TripController {
         }
 
     }
+
+    @DeleteMapping("/delete-trip")
+    public ResponseEntity<?> deleteTrip(@RequestBody ObjectNode objectNode){
+        try{
+            int id = objectNode.get("id").asInt();
+            tripService.deleteTripById(id);
+            return new ResponseEntity<>(HttpStatus.OK);
+        } catch(Exception e){
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
 }

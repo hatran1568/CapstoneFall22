@@ -20,9 +20,11 @@ import java.util.Optional;
 public interface TripRepository extends JpaRepository<Trip, Integer> {
     @Query("select t from Trip t where t.tripId = :id")
     Optional<Trip> getTripById(int id);
-    @Query("select t from Trip t where t.user.userID = :id")
+    @Query("select t from Trip t where t.user.userID = :id and t.isDeleted = false order by t.dateModified desc")
     ArrayList<Trip> getTripsByUser(int id);
-
+    @Modifying
+    @Query("update Trip t set t.isDeleted = true where t.tripId = :id")
+    void deleteTripById(int id);
     @Modifying
     @Query(
             value = "INSERT INTO trip (date_created, date_modified, is_deleted, budget, `name`, user_id, start_date, end_date) VALUES (?1, ?2, ?3, ?4, ?5, ?6, ?7, ?8)",
