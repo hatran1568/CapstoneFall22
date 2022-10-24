@@ -24,6 +24,8 @@ function POIsDestination(){
     const desId = queryParams.get('desid');
     const catId = queryParams.get('catid');
     const rating = queryParams.get('rating');
+    if (rating==null)
+      rating = 0;
     const navigate = useNavigate();
     const [destination, setDestination] = useState([]);
     useEffect(() => {
@@ -67,7 +69,7 @@ function POIsDestination(){
     };
     catData.forEach((cat, index) => {
       if (cat.categoryId == catId)
-        filterBox.push(<div className={style.catButtonSelected}><a onClick={catBtnClick} id={cat.categoryId}>{cat.categoryName}</a></div>)
+        filterBox.push(<b><div className={style.catButtonSelected}><a onClick={catBtnClick} id={cat.categoryId}>{cat.categoryName}</a></div></b>)
       else
         filterBox.push(<div className={style.catButton}><a onClick={catBtnClick} id={cat.categoryId}>{cat.categoryName}</a></div>)
     });

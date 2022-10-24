@@ -10,7 +10,21 @@
   display: inline-block !important;
   margin: auto !important;
   padding: 0px !important;
+  text-decoration: none;
 }
 .catText {
   color: grey !important;
+  text-decoration: none;
+}
+.boxName{
+  color: black;
+  text-decoration: none;
+}
+.boxName:hover{
+  color: black;
+  text-decoration: underline;
+}
+.poiBoxLink{
+  text-decoration: none;
+
 }

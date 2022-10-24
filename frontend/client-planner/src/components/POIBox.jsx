@@ -19,7 +19,7 @@ class POIBox extends React.Component {
     const link = "link here/" + this.props.activityId;
     return (
       <MDBCard className={style.poiBox}>
-        <a href={link}>
+        <a href={link} className={style.poiBoxLink}>
           <img className={style.boxImg} src={this.props.url}/>
           <MDBCardBody>
             <h4 className={style.boxName}>{this.props.name}</h4>

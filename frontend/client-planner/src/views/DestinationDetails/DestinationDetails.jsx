@@ -70,11 +70,11 @@ function DestinationDetails() {
       />
     );
   });
-  const poiLink = "./Destination/POIs?desid=" + id + "&catid=0";
+  const poiLink = "./POIs?desid=" + id + "&catid=0&rating=0";
   return (
     <MDBContainer className={style.container}>
       <br />
-      <MDBCard className={style.contentbox}>
+      <MDBContainer className={style.contentbox}>
         <br />
         <h1>Explore {destination.name}</h1>
         <br />
@@ -96,7 +96,7 @@ function DestinationDetails() {
         <MDBCardBody>
           <MDBRow className={style.row}>{poiBox}</MDBRow>
         </MDBCardBody>
-        <MDBCardBody className={style.container2}>
+        <MDBCardBody className={style.container2}><br/>
           <a href={poiLink}>
             <MDBBtn className={style.button2} id="poiList">
               Find more places in {destination.name}
@@ -105,7 +105,7 @@ function DestinationDetails() {
           <br />
           <br />
         </MDBCardBody>
-      </MDBCard>
+      </MDBContainer>
     </MDBContainer>
   );
 }

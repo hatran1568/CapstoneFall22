@@ -43,6 +43,8 @@ function HomePage() {
         {
           document.getElementById("errorEmptyPlan").innerHTML = "Please enter all fields.";
         }
+      else if (document.getElementById("startDateInput").value > document.getElementById("endDateInput").value)
+      document.getElementById("errorEmptyPlan").innerHTML = "Please enter valid dates.";
       else
       axios({
           method: 'post',
