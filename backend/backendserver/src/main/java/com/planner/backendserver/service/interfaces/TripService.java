@@ -18,4 +18,5 @@ public interface TripService {
     public Optional<TripDetails> getTripDetailById(int id);
     public Optional<TripDetails> editTripDetailById(TripDetails detail, int id);
     public List<TripGeneralDTO> getTripsByUser(int userId);
+    public void deleteTripById(int id);
 }

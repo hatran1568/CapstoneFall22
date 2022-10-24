@@ -1,30 +1,27 @@
-
-.poiLargeBox{
-    margin-top: 2vh;
-    width: 100%;
+.poiLargeBox {
+  margin-top: 2vh !important;
+  width: 100% !important;
 }
-.poiThumb{
-    border-radius: 10px;
-    width: 100%;
-    height: 20vh;
-    object-fit: cover;
+.poiThumb {
+  border-radius: 10px !important;
+  width: 100% !important;
+  height: 20vh !important;
+  object-fit: cover !important;
 }
-.poiThumbBox{
-    width: 30%;
-    align-content: center;
-    text-align: center;
+.poiThumbBox {
+  width: 30% !important;
+  align-content: center !important;
+  text-align: center !important;
 }
-.exploreBtn{
-    border-radius: 50px;
-    background-color: rgb(255, 123, 196);
+.poiPrice {
+  color: rgb(0, 0, 0) !important;
+  font-style: italic !important;
 }
-.exploreBtn:hover {
-    background-color: rgb(255, 86, 179);
+.poiName{
+  color: black;
+  text-decoration: none;
 }
-.exploreBtn:active {
-    background-color: rgb(255, 76, 174);
-}
-.poiPrice{
-    color: rgb(223, 61, 172);
-    font-style: italic;
+.poiName:hover{
+  color: black;
+  text-decoration: underline;
 }

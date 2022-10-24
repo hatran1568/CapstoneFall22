@@ -91,8 +91,8 @@ public class TripController {
             int startTime = objectNode.get("startTime").asInt();
             int endTime = objectNode.get("endTime").asInt();
             int tripId = objectNode.get("tripId").asInt();
-            String name = String.valueOf(objectNode.get("name").asText());
-            String address = String.valueOf(objectNode.get("address").asText());
+            String name = objectNode.get("name").asText();
+            String address = objectNode.get("address").asText();
             TripDetails result = tripService.addCustomTripDetail(date, startTime, endTime, tripId, name, address);
             return new ResponseEntity<>(result, HttpStatus.OK);
         } catch (Exception e){
@@ -173,5 +173,16 @@ public class TripController {
             return  new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
 
+    }
+
+    @DeleteMapping("/delete-trip")
+    public ResponseEntity<?> deleteTrip(@RequestBody ObjectNode objectNode){
+        try{
+            int id = objectNode.get("id").asInt();
+            tripService.deleteTripById(id);
+            return new ResponseEntity<>(HttpStatus.OK);
+        } catch(Exception e){
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 }

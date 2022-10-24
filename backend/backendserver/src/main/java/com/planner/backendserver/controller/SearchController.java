@@ -42,8 +42,9 @@ public class SearchController {
 
     @GetMapping("/{keyword}/{page}")
     public ResponseEntity<SearchRespondeDTO> searchByKeyword(@PathVariable String keyword, @PathVariable int page){
+        List<SearchPOIAndDestinationDTO> results = searchService.searchPOIAndDestinationByKeyword(keyword);
         try{
-            List<SearchPOIAndDestinationDTO> results = searchService.searchPOIAndDestinationByKeyword(keyword);
+           // List<SearchPOIAndDestinationDTO> results = searchService.searchPOIAndDestinationByKeyword(keyword);
             Page<SearchPOIAndDestinationDTO> paging = searchService.listToPage(results,page,10);
 
 

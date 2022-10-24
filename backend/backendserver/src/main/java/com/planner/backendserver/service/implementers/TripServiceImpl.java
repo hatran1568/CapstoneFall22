@@ -117,6 +117,11 @@ public class TripServiceImpl implements TripService {
 
     }
 
+    @Override
+    public void deleteTripById(int id) {
+        tripRepository.deleteTripById(id);
+    }
+
     private String getTripThumbnail(int tripId){
         List<TripDetails> tripDetails = tripRepository.getTripById(tripId).get().getListTripDetails();
         if (tripDetails.size() == 0){

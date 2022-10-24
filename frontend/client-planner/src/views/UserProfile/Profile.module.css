@@ -23,12 +23,12 @@
 }
 
 .name {
-  font-size: 22px;
+  font-size: 1.2vw;
   font-weight: bold;
 }
 
 .email {
-  font-size: 14px;
+  font-size: 1vw;
   font-weight: 600;
 }
 
