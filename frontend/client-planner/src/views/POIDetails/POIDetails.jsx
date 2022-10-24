@@ -173,7 +173,7 @@ const POIDetails = () => {
           <h2 className='fw-bold'>{curPOI.name} reviews</h2>
         </MDBRow>
         <MDBRow className='mb-4'>
-          {/*{ratings &&
+          {ratings &&
             ratings.map((item, index) => {
               <div className='mb-2'>
                 <h4>{item.name}</h4>
@@ -183,8 +183,8 @@ const POIDetails = () => {
                 </div>
                 <p className='text-muted'>{item.dateCreated}</p>
               </div>;
-            })}*/}
-          <div className='mb-2'>
+            })}
+          {/*<div className='mb-2'>
             <h4>Tourist A</h4>
             <div>
               <StarRatings rating={4} starDimension='1em' starSpacing='0.1em' starRatedColor='orange' />
@@ -227,7 +227,7 @@ const POIDetails = () => {
               </p>
             </div>
             <p className='text-muted'>20/10/2022</p>
-          </div>
+          </div>*/}
         </MDBRow>
       </MDBContainer>
     );

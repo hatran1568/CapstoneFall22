@@ -54,10 +54,10 @@ public interface POIRepository extends JpaRepository<POI, Integer> {
     @Query("SELECT COUNT(p.activityId) FROM POI p join Rating r on p.activityId=r.POI.activityId GROUP BY p.activityId HAVING p.activityId=:id")
     Optional<Integer> getNumberOfRateByActivityId(int id);
 
-    @Query(value = "select r.rateId, r.Comment, r.dateCreated, r.isDeleted, r.rate, u.userID, u.avatar, u.name from Rating r join User u on r.user.userID = u.userID where r.POI.activityId = :id order by r.rateId asc limit 10", nativeQuery = true)
+    @Query(value = "select r from Rating r join User u on r.user.userID = u.userID where r.POI.activityId = :id")
     ArrayList<Rating> getRatingsByPOIId(int id);
 
-    @Query("select i from POIImage i where i.poi.activityId = :id")
+    @Query("select pi from POIImage pi where pi.poi.activityId = :id")
     ArrayList<Image> getImagesByPOIId(int id);
 
 

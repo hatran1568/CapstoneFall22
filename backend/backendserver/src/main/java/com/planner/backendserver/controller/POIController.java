@@ -102,29 +102,21 @@ public class POIController {
 
     @GetMapping("/{poiId}/ratings")
     public ResponseEntity<ArrayList<Rating>> getPOIRatings(@PathVariable("poiId") int poiId) {
-        try {
-            ArrayList<Rating> rate;
-            rate = poiRepo.getRatingsByPOIId(poiId);
-            if (rate.isEmpty()) {
-                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-            }
-            return new ResponseEntity<>(rate, HttpStatus.OK);
-        } catch (Exception e) {
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        ArrayList<Rating> rate;
+        rate = poiRepo.getRatingsByPOIId(poiId);
+        if (rate.isEmpty()) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
+        return new ResponseEntity<>(rate, HttpStatus.OK);
     }
 
     @GetMapping("/{poiId}/images")
     public ResponseEntity<ArrayList<Image>> getPOIImages(@PathVariable("poiId") int poiId) {
-        try {
-            ArrayList<Image> img;
-            img = poiRepo.getImagesByPOIId(poiId);
-            if (img.isEmpty()) {
-                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-            }
-            return new ResponseEntity<>(img, HttpStatus.OK);
-        } catch (Exception e) {
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        ArrayList<Image> img;
+        img = poiRepo.getImagesByPOIId(poiId);
+        if (img.isEmpty()) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
+        return new ResponseEntity<>(img, HttpStatus.OK);
     }
 }
