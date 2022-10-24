@@ -64,7 +64,7 @@ const POIDetails = () => {
     var timeString;
 
     if (format === "hh:mm") {
-      if (hours >= 12) {
+      if (hours > 12) {
         timeString = (hours - 12).toString().padStart(2, "0") + ":" + minutes.toString().padStart(2, "0") + " pm";
       } else {
         timeString = hours.toString().padStart(2, "0") + ":" + minutes.toString().padStart(2, "0") + " am";
@@ -97,11 +97,13 @@ const POIDetails = () => {
         </MDBRow>
         <MDBRow className='mb-4'>
           <MDBCol size='8'>
-            <MDBCarousel showControls className='mb-3'>
-              {images.map((item) => (
-                <MDBCarouselItem className='w-100 d-block' src={item} alt='...' />
-              ))}
-            </MDBCarousel>
+            <div>
+              <MDBCarousel showControls className='mb-3'>
+                {images.map((item, index) => (
+                  <MDBCarouselItem key={index} className='w-100 d-block' itemId={index} src={item} alt='...' />
+                ))}
+              </MDBCarousel>
+            </div>
             <p>{curPOI.description}</p>
             {/*<p>
               Lorem ipsum dolor, sit amet consectetur adipisicing elit. Libero, ea! Quam deserunt cumque tenetur
@@ -157,7 +159,7 @@ const POIDetails = () => {
           <h2 className='fw-bold'>{curPOI.name} reviews</h2>
         </MDBRow>
         <MDBRow className='mb-4'>
-          {ratings.length >= 0 ? (
+          {ratings.length > 0 ? (
             ratings.map((item) => {
               <div className='mb-2'>
                 <h4>{item.user.name}</h4>
