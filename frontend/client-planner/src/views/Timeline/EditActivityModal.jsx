@@ -2,6 +2,8 @@ import React, { Component, useState, useEffect } from "react";
 import props from "prop-types";
 import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
+import style from "./timeline.module.css";
+import Rating from "../../components/Rating";
 function AddActivityModal(props) {
   const { activityEdited, allDates, tripDetail, ...rest } = props;
   const inputField = { ...tripDetail };
@@ -22,19 +24,56 @@ function AddActivityModal(props) {
       aria-labelledby="contained-modal-title-vcenter"
       centered
     >
-      <Modal.Header closeButton>
-        <Modal.Title id="contained-modal-title-vcenter">
-          Edit your activity
-        </Modal.Title>
-      </Modal.Header>
       <Modal.Body>
-        <form>
-          <label>
-            Activity at:
-            <input disabled value={inputField.masterActivity.name} />
-          </label>
-          <br />
-          <div className="row">
+        <button
+          className={`btn-close ${style.closeBtn}`}
+          onClick={props.onHide}
+        ></button>
+        <div className={style.activityInfo}>
+          <div className={style.poiDiv}>
+            <img
+              src="https://picsum.photos/seed/picsum/200/200"
+              alt=""
+              className={style.poiImage}
+            />
+          </div>
+          <div>
+            <div>
+              {tripDetail.masterActivity.name
+                ? tripDetail.masterActivity.name
+                : ""}
+            </div>
+            <div className={style.ratingDiv}>
+              {tripDetail.masterActivity.googleRate ? (
+                <div>
+                  <span>
+                    <Rating ratings={tripDetail.masterActivity.googleRate} />
+                  </span>
+                  <span className={style.ratingNum}>
+                    {tripDetail.masterActivity.googleRate}
+                  </span>
+                </div>
+              ) : (
+                ""
+              )}{" "}
+            </div>
+          </div>
+          <p className={style.poiDescription}>
+            {tripDetail.masterActivity.description
+              ? tripDetail.masterActivity.description
+              : ""}
+          </p>
+          <div className={style.linkDiv}>
+            <a
+              href={"../poi?id=" + tripDetail.masterActivity.activityId}
+              className={style.detailLink}
+            >
+              See full attraction detail
+            </a>
+          </div>
+        </div>
+        <form className={style.editForm}>
+          <div className={`container row ${style.timeGroupDiv}`}>
             <label className="col-4">
               Date:
               <select
