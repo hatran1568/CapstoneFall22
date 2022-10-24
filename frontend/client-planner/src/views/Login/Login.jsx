@@ -77,6 +77,7 @@ function Login() {
             <MDBCardBody className="d-flex flex-column">
               <h3 className="fw-normal my-4 pb-3 text-center">Login</h3>
               <MDBInput
+                autocomplete="new-password"
                 wrapperClass="mb-4 mx-5"
                 label="Email address"
                 id="loginEmail"
@@ -123,7 +124,11 @@ function Login() {
 
               <MDBBtn
                 className="btn btn-lg col-6 mx-auto btn-primary mb-2"
-                style={{ backgroundColor: "#dd4b39" }}
+                style={{
+                  backgroundColor: "#dd4b39",
+                  border: 0,
+                  fontSize: "16px",
+                }}
                 type="submit"
                 onClick={handleLoginGoogle}
               >
@@ -131,7 +136,11 @@ function Login() {
               </MDBBtn>
               <MDBBtn
                 className="btn btn-lg col-6 mx-auto btn-primary mb-5"
-                style={{ backgroundColor: "#3b5998" }}
+                style={{
+                  backgroundColor: "#3b5998",
+                  border: 0,
+                  fontSize: "16px",
+                }}
                 type="submit"
                 onClick={handleLoginFacebook}
               >

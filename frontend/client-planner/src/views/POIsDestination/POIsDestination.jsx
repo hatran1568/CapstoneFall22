@@ -24,6 +24,8 @@ function POIsDestination(){
     const desId = queryParams.get('desid');
     const catId = queryParams.get('catid');
     const rating = queryParams.get('rating');
+    if (rating==null)
+      rating = 0;
     const navigate = useNavigate();
     const [destination, setDestination] = useState([]);
     useEffect(() => {
@@ -62,19 +64,19 @@ function POIsDestination(){
     const catData = cateData;
     const filterBox = [];
     const catBtnClick = (event) => {
-        navigate("./?desid=" + desId + "&catid=" + event.target.id + "&rating=" + rating);
+        navigate("?desid=" + desId + "&catid=" + event.target.id + "&rating=" + rating);
         window.location.reload(false);
     };
     catData.forEach((cat, index) => {
       if (cat.categoryId == catId)
-        filterBox.push(<div className={style.catButtonSelected}><a onClick={catBtnClick} id={cat.categoryId}>{cat.categoryName}</a></div>)
+        filterBox.push(<b><div className={style.catButtonSelected}><a onClick={catBtnClick} id={cat.categoryId}>{cat.categoryName}</a></div></b>)
       else
         filterBox.push(<div className={style.catButton}><a onClick={catBtnClick} id={cat.categoryId}>{cat.categoryName}</a></div>)
     });
     filterBox.push(<div><b><a onClick={catBtnClick} id={0} className={style.removeFilterButton}>Show All</a></b></div>)
     //FilterRating
     const ratingBtnClick = (event) => {
-      navigate("./?desid=" + desId + "&catid=" + catId + "&rating=" + event.currentTarget.id);
+      navigate("?desid=" + desId + "&catid=" + catId + "&rating=" + event.currentTarget.id);
       window.location.reload(false);
     };
     const filterRatingBox = [];
@@ -142,12 +144,12 @@ function POIsDestination(){
                     <h2>Things to do in {destination.name}</h2>
                     <MDBContainer id="poiSet">{poiBox}</MDBContainer><br/>
                     <ReactPaginate
-                        nextLabel="next >"
+                        nextLabel=" >"
                         onPageChange={handlePageClick}
                         pageRangeDisplayed={3}
                         marginPagesDisplayed={2}
                         pageCount={pageCount}
-                        previousLabel="< previous"
+                        previousLabel="<"
                         pageClassName="page-item"
                         pageLinkClassName="page-link"
                         previousClassName="page-item"
