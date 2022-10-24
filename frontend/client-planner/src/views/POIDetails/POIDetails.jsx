@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react";
 import axios from "../../api/axios";
 import {
+  MDBBtn,
+  MDBBtnGroup,
   MDBCard,
   MDBCardBody,
   MDBCardFooter,
@@ -48,6 +50,10 @@ const POIDetails = () => {
     };
     getImages();
   }, []);
+
+  const handleClick = (e) => {
+    e.preventDefault();
+  };
 
   const timeConverter = (seconds) => {
     var dateObj = new Date(seconds * 1000);
@@ -120,9 +126,39 @@ const POIDetails = () => {
             <p className='fs-5 fw-bold'>Recommended duration:</p>
             <p>{timeConverter(curPOI.duration)}</p>
             <br />
-            <p className='fs-5 fw-bold'>Address:</p>
+            <p className='fs-5 fw-boldfs-5 fw-bold'>Address:</p>
             <p>{curPOI.address}</p>
             <br />
+            {curPOI.phone ? (
+              <>
+                <p className='fs-5 fw-bold'>Phone number:</p>
+                <p>{curPOI.phone}</p>
+                <br />
+              </>
+            ) : (
+              <></>
+            )}
+            {curPOI.businessEmail ? (
+              <>
+                <p className='fs-5 fw-bold'>Business email:</p>
+                <p>{curPOI.businessEmail}</p>
+                <br />
+              </>
+            ) : (
+              <></>
+            )}
+            {curPOI.website ? (
+              <>
+                <p className='fs-5 fw-bold'>Website:</p>
+                <p>{curPOI.website}</p>
+                <br />
+              </>
+            ) : (
+              <></>
+            )}
+            <button className='btn btn-link' onClick={handleClick}>
+              Generate plans to this place &gt;&gt;.
+            </button>
           </MDBCol>
         </MDBRow>
 
@@ -132,71 +168,59 @@ const POIDetails = () => {
         <MDBRow className='mb-4'>
           {/*{ratings &&
             ratings.map((item, index) => {
-              <MDBCard className='mb-2'>
-                <MDBCardHeader>{item.name}</MDBCardHeader>
-                <MDBCardBody>
-                  <MDBCardTitle>
-                    <StarRatings rating={item.rate} starDimension='1em' starSpacing='0.1em' starRatedColor='orange' />
-                  </MDBCardTitle>
-                  <MDBCardText>
-                    {item.Comment}
-                  </MDBCardText>
-                </MDBCardBody>
-                <MDBCardFooter className='text-muted'>{item.dateCreated}</MDBCardFooter>
-              </MDBCard>;
+              <div className='mb-2'>
+                <h4>{item.name}</h4>
+                <div>
+                  <StarRatings rating={item.rate} starDimension='1em' starSpacing='0.1em' starRatedColor='orange' />
+                  <p>{item.Comment}</p>
+                </div>
+                <p className='text-muted'>{item.dateCreated}</p>
+              </div>;
             })}*/}
-          <MDBCard className='mb-2'>
-            <MDBCardHeader>Tourist A</MDBCardHeader>
-            <MDBCardBody>
-              <MDBCardTitle>
-                <StarRatings rating={4} starDimension='1em' starSpacing='0.1em' starRatedColor='orange' />
-              </MDBCardTitle>
-              <MDBCardText>
+          <div className='mb-2'>
+            <h4>Tourist A</h4>
+            <div>
+              <StarRatings rating={4} starDimension='1em' starSpacing='0.1em' starRatedColor='orange' />
+              <p>
                 Lorem ipsum dolor, sit amet consectetur adipisicing elit. Libero, ea! Quam deserunt cumque tenetur
                 doloremque et nostrum nisi beatae ratione.
-              </MDBCardText>
-            </MDBCardBody>
-            <MDBCardFooter className='text-muted'>20/10/2022</MDBCardFooter>
-          </MDBCard>
-          <MDBCard className='mb-2'>
-            <MDBCardHeader>Tourist B</MDBCardHeader>
-            <MDBCardBody>
-              <MDBCardTitle>
-                <StarRatings rating={4} starDimension='1em' starSpacing='0.1em' starRatedColor='orange' />
-              </MDBCardTitle>
-              <MDBCardText>
+              </p>
+            </div>
+            <p className='text-muted'>20/10/2022</p>
+          </div>
+          <div className='mb-2'>
+            <h4>Tourist B</h4>
+            <div>
+              <StarRatings rating={3} starDimension='1em' starSpacing='0.1em' starRatedColor='orange' />
+              <p>
                 Lorem ipsum dolor, sit amet consectetur adipisicing elit. Libero, ea! Quam deserunt cumque tenetur
                 doloremque et nostrum nisi beatae ratione.
-              </MDBCardText>
-            </MDBCardBody>
-            <MDBCardFooter className='text-muted'>20/10/2022</MDBCardFooter>
-          </MDBCard>
-          <MDBCard className='mb-2'>
-            <MDBCardHeader>Tourist C</MDBCardHeader>
-            <MDBCardBody>
-              <MDBCardTitle>
-                <StarRatings rating={4} starDimension='1em' starSpacing='0.1em' starRatedColor='orange' />
-              </MDBCardTitle>
-              <MDBCardText>
+              </p>
+            </div>
+            <p className='text-muted'>20/10/2022</p>
+          </div>
+          <div className='mb-2'>
+            <h4>Tourist C</h4>
+            <div>
+              <StarRatings rating={5} starDimension='1em' starSpacing='0.1em' starRatedColor='orange' />
+              <p>
                 Lorem ipsum dolor, sit amet consectetur adipisicing elit. Libero, ea! Quam deserunt cumque tenetur
                 doloremque et nostrum nisi beatae ratione.
-              </MDBCardText>
-            </MDBCardBody>
-            <MDBCardFooter className='text-muted'>20/10/2022</MDBCardFooter>
-          </MDBCard>
-          <MDBCard className='mb-2'>
-            <MDBCardHeader>Tourist D</MDBCardHeader>
-            <MDBCardBody>
-              <MDBCardTitle>
-                <StarRatings rating={4} starDimension='1em' starSpacing='0.1em' starRatedColor='orange' />
-              </MDBCardTitle>
-              <MDBCardText>
+              </p>
+            </div>
+            <p className='text-muted'>20/10/2022</p>
+          </div>
+          <div className='mb-2'>
+            <h4>Tourist D</h4>
+            <div>
+              <StarRatings rating={4} starDimension='1em' starSpacing='0.1em' starRatedColor='orange' />
+              <p>
                 Lorem ipsum dolor, sit amet consectetur adipisicing elit. Libero, ea! Quam deserunt cumque tenetur
                 doloremque et nostrum nisi beatae ratione.
-              </MDBCardText>
-            </MDBCardBody>
-            <MDBCardFooter className='text-muted'>20/10/2022</MDBCardFooter>
-          </MDBCard>
+              </p>
+            </div>
+            <p className='text-muted'>20/10/2022</p>
+          </div>
         </MDBRow>
       </MDBContainer>
     );

@@ -53,16 +53,15 @@ public interface POIRepository extends JpaRepository<POI, Integer> {
     @Query("SELECT COUNT(p.activityId) FROM POI p join Rating r on p.activityId=r.POI.activityId GROUP BY p.activityId HAVING p.activityId=:id")
     Optional<Integer> getNumberOfRateByActivityId(int id);
 
-    @Query(value = "SELECT pi.image_id from poi p join poi_image pi on p.activity_id=pi.poi_id  where p.activity_id=:id limit 1", nativeQuery = true)
-    String getThumbnailById(int id);
-
-    @Query("select r.rateId, r.Comment, r.dateCreated, r.isDeleted, r.rate, u.userID, u.avatar, u.name from Rating r join User u on r.user.userID = u.userID where r.POI.activityId = :id")
+    @Query(value = "select r.rateId, r.Comment, r.dateCreated, r.isDeleted, r.rate, u.userID, u.avatar, u.name from Rating r join User u on r.user.userID = u.userID where r.POI.activityId = :id order by r.rateId asc limit 10", nativeQuery = true)
     ArrayList<Rating> getRatingsByPOIId(int id);
 
     @Query("select i from POIImage i where i.poi.activityId = :id")
     ArrayList<Image> getImagesByPOIId(int id);
+
     @Query(value = "SELECT pi.image_id  from poi p join poi_image pi on p.activity_id=pi.poi_id  where p.activity_id=:id limit 1", nativeQuery = true)
-    public String getThumbnailById(int id);
+    String getThumbnailById(int id);
+
     @Query("SELECT p FROM POI p left join MasterActivity m on p.activityId = m.activityId where p.activityId = :masterActivityId")
     Optional<POI> getPOIByMasterActivity(int masterActivityId);
 }
