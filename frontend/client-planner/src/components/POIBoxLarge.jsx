@@ -14,6 +14,7 @@ class POIBoxLarge extends React.Component {
     render() {
         const data = this.props.data;
         const str = data.description;
+        const poiLink = "../../poi?id=" + data.activityId;
         let substr = "";
         if (str != null)
             substr = str.substring(0,300) + "...";
@@ -28,14 +29,13 @@ class POIBoxLarge extends React.Component {
                     <MDBRow>
                         <MDBCol md='2' className={style.poiThumbBox}>
                             <img className={style.poiThumb} src={imgstr}/><br/><br/>
-                            <MDBBtn color="secondary" className={style.exploreBtn}>See More about {data.name}</MDBBtn>
                         </MDBCol>
                         <MDBCol className={style.poiInfoBox}>
                             <i>{data.categoryName}</i><br/>
-                            <b>{data.name}</b><br/>
+                            <a href={poiLink} className={style.poiName}><b>{data.name}</b></a><br/>
                             <Rating ratings={data.googleRating}/><br/>
                             <span>{substr}</span><br/>
-                            <span className={style.poiPrice}>Other travelers usually spends {data.typicalPrice}VND here</span>
+                            <b><span className={style.poiPrice}>Other travelers usually spends {data.typicalPrice}VND here</span></b>
                         </MDBCol>
                     </MDBRow>
                 </MDBCardBody>

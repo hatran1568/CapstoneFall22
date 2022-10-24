@@ -29,25 +29,38 @@ function HomePage() {
     const navigate = useNavigate();
     const [basicModal, setBasicModal] = useState(false);
 
-  const toggleShow = () => setBasicModal(!basicModal);
+  const toggleShow = () => {
+    setBasicModal(!basicModal);
+    document.getElementById("budgetInput").value = "";
+    document.getElementById("tripNameInput").value = "";
+    document.getElementById("startDateInput").value = null;
+    document.getElementById("endDateInput").value = null;
+    document.getElementById("errorEmptyPlan").innerHTML = "";
+  };
     const submitTrip = event => {
-        axios({
-            method: 'post',
-            url: 'http://localhost:8080/trip/createTrip',
-            data: {
-                userId: localStorage.getItem("id"),
-                budget: document.getElementById("budgetInput").value,
-                name: document.getElementById("tripNameInput").value,
-                startDate: document.getElementById("startDateInput").value,
-                endDate: document.getElementById("endDateInput").value
-            },
-            headers: {
-                'Content-Type': 'application/json'
-            }
-          }).then(function (response) {
-            navigate("../Timeline/" + response.data);
-            window.location.reload(false);
-          });
+      if (document.getElementById("budgetInput").value=="" || document.getElementById("tripNameInput").value=="" ||
+      !document.getElementById("startDateInput").value || !document.getElementById("endDateInput").value)
+        {
+          document.getElementById("errorEmptyPlan").innerHTML = "Please enter all fields.";
+        }
+      else
+      axios({
+          method: 'post',
+          url: 'http://localhost:8080/trip/createTrip',
+          data: {
+              userId: localStorage.getItem("id"),
+              budget: document.getElementById("budgetInput").value,
+              name: document.getElementById("tripNameInput").value,
+              startDate: document.getElementById("startDateInput").value,
+              endDate: document.getElementById("endDateInput").value
+          },
+          headers: {
+              'Content-Type': 'application/json'
+          }
+        }).then(function (response) {
+          navigate("../Timeline/" + response.data);
+          window.location.reload(false);
+        });
     };
   return (
     <>
@@ -91,18 +104,19 @@ function HomePage() {
               </MDBRow><br/>
               <MDBRow className={style.modalInput}>
                   <div className={style.formgroup}>
-                      <MDBInput label="Budget" id="budgetInput" type="text" className={style.modalInput}/>
+                      <MDBInput label="Budget" id="budgetInput" type="number" className={style.modalInput}/>
                   </div>
               </MDBRow><br/>
               <MDBRow className={style.modalInput}>
                   <MDBCol className={style.formgroup}>
                       <h6>Start date</h6>
-                      <MDBInput placeholder="Select date" type="date" id="startDateInput" className={style.datepicker} value="2022-10-01"/>
+                      <MDBInput placeholder="Select date" type="date" id="startDateInput" className={style.datepicker}/>
                   </MDBCol>
                   <MDBCol className={style.formgroup}>
                       <h6>End date</h6>
-                      <MDBInput placeholder="Select date" type="date" id="endDateInput" className={style.datepicker} value="2022-10-02"/>
+                      <MDBInput placeholder="Select date" type="date" id="endDateInput" className={style.datepicker}/>
                   </MDBCol>
+                  <div id="errorEmptyPlan" className={style.errorEmptyPlan}></div>
               </MDBRow><br/>
             </MDBModalBody>
 
