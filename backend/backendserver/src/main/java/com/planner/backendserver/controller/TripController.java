@@ -76,9 +76,24 @@ public class TripController {
             Date date = Date.valueOf(objectNode.get("date").asText());
             int startTime = objectNode.get("startTime").asInt();
             int endTime = objectNode.get("endTime").asInt();
-            int activityId = objectNode.get("activityId").asInt();
             int tripId = objectNode.get("tripId").asInt();
+            int activityId = objectNode.get("activityId").asInt();
             TripDetails result = tripService.addTripDetail(date, startTime, endTime, activityId, tripId);
+            return new ResponseEntity<>(result, HttpStatus.OK);
+        } catch (Exception e){
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+    @PostMapping("/add-custom-detail")
+    public ResponseEntity<TripDetails> addCustomTripDetail(@RequestBody ObjectNode objectNode){
+        try{
+            Date date = Date.valueOf(objectNode.get("date").asText());
+            int startTime = objectNode.get("startTime").asInt();
+            int endTime = objectNode.get("endTime").asInt();
+            int tripId = objectNode.get("tripId").asInt();
+            String name = String.valueOf(objectNode.get("name").asText());
+            String address = String.valueOf(objectNode.get("address").asText());
+            TripDetails result = tripService.addCustomTripDetail(date, startTime, endTime, tripId, name, address);
             return new ResponseEntity<>(result, HttpStatus.OK);
         } catch (Exception e){
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);

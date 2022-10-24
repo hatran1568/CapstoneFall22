@@ -33,9 +33,7 @@ function AddActivityModal(props) {
               <POISearchBar POISelected={setSelectedPOI} />
             </div>
             <div className="col-3">
-              <Button variant="outline-dark" className={style.customBtn}>
-                Add custom activity
-              </Button>
+              <button className={style.customBtn}>ADD CUSTOM ACTIVITY</button>
             </div>
           </div>
           <br />
@@ -66,6 +64,7 @@ function AddActivityModal(props) {
                 name="start_time"
                 className="form-control"
                 type="time"
+                defaultValue={"08:00"}
                 onChange={(e) => {
                   inputField.start_time = e.target.value;
                 }}
@@ -77,6 +76,7 @@ function AddActivityModal(props) {
               <input
                 className="form-control"
                 name="end_time"
+                defaultValue={"09:00"}
                 type="time"
                 onChange={(e) => {
                   inputField.end_time = e.target.value;
@@ -87,7 +87,15 @@ function AddActivityModal(props) {
         </form>
       </Modal.Body>
       <Modal.Footer>
-        <Button onClick={(event) => activityAdded(event, inputField)}>
+        <Button
+          onClick={(event) => {
+            if (inputField.activity_id == "") {
+              alert("Please choose a place or add a custom activity name");
+              return;
+            }
+            activityAdded(event, inputField);
+          }}
+        >
           Save
         </Button>
         <Button onClick={props.onHide} variant="secondary">

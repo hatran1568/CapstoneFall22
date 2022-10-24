@@ -135,9 +135,9 @@ class TripDetail extends Component {
             <div className="col-4">
               <img
                 src={
-                  this.state.tripDetail.masterActivity.listImages
-                    ? this.state.tripDetail.masterActivity.listImages[0]
-                      ? this.state.tripDetail.masterActivity.listImages[0].url
+                  this.state.tripDetail.masterActivity.images
+                    ? this.state.tripDetail.masterActivity.images[0]
+                      ? this.state.tripDetail.masterActivity.images[0].url
                       : "https://picsum.photos/seed/picsum/300/200"
                     : "https://picsum.photos/seed/picsum/300/200"
                 }
@@ -148,7 +148,15 @@ class TripDetail extends Component {
               <MDBDropdown animation={false} className={style.btnMore}>
                 <MDBDropdownToggle color="light"></MDBDropdownToggle>
                 <MDBDropdownMenu>
-                  <MDBDropdownItem link>Details</MDBDropdownItem>
+                  <MDBDropdownItem
+                    link
+                    href={
+                      "../poi?id=" +
+                      this.state.tripDetail.masterActivity.activityId
+                    }
+                  >
+                    Details
+                  </MDBDropdownItem>
                   <MDBDropdownItem link onClick={this.toggleEditModal}>
                     Edit Event
                   </MDBDropdownItem>
