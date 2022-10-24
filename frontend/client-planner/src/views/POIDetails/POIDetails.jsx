@@ -16,6 +16,8 @@ import {
   MDBRow,
 } from "mdb-react-ui-kit";
 import StarRatings from "react-star-ratings";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faGoogle } from "@fortawesome/free-brands-svg-icons";
 import style from "./POIDetails.module.css";
 
 const POIDetails = () => {
@@ -55,38 +57,49 @@ const POIDetails = () => {
     e.preventDefault();
   };
 
-  const timeConverter = (seconds) => {
+  const timeConverter = (seconds, format) => {
     var dateObj = new Date(seconds * 1000);
     var hours = dateObj.getUTCHours();
     var minutes = dateObj.getUTCMinutes();
+    var timeString;
 
-    var timeString = hours.toString().padStart(2, "0") + ":" + minutes.toString().padStart(2, "0");
+    if (format === "hh:mm") {
+      if (hours >= 12) {
+        timeString = (hours - 12).toString().padStart(2, "0") + ":" + minutes.toString().padStart(2, "0") + " pm";
+      } else {
+        timeString = hours.toString().padStart(2, "0") + ":" + minutes.toString().padStart(2, "0") + " am";
+      }
+    } else if (format === "x hours y minutes") {
+      timeString = hours.toString() + " hours " + minutes.toString() + " minutes";
+    }
+
     return timeString;
   };
 
   if (curPOI !== undefined /*&& !images.isEmpty() && !ratings.isEmpty()*/) {
     return (
-      <MDBContainer>
+      <MDBContainer className='px-5'>
         <MDBRow className='mb-3'>
           <h2 className='fw-bold'>{curPOI.name}</h2>
-          <StarRatings rating={curPOI.googleRate} starDimension='1em' starSpacing='0.1em' starRatedColor='orange' />
-          <p>
-            {curPOI.googleRate} on Google Maps | {curPOI.category.categoryName}
-          </p>
+          <MDBRow className='m-0'>
+            <MDBCol size='auto' className='p-0'>
+              <StarRatings rating={curPOI.googleRate} starDimension='1em' starSpacing='0.1em' starRatedColor='orange' />
+            </MDBCol>
+            <MDBCol size='auto' className='pt-1'>
+              <p>
+                {curPOI.googleRate} stars on <FontAwesomeIcon icon={faGoogle} /> Maps | {curPOI.category.categoryName}
+              </p>
+            </MDBCol>
+          </MDBRow>
         </MDBRow>
         <MDBRow className='mb-4'>
           <MDBCol size='8'>
             <MDBCarousel showControls className='mb-3'>
-              {/*{images &&
+              {images &&
                 images.map((item, index) => {
-                  <MDBCarouselItem
-                    className='w-100 d-block'
-                    itemId={index}
-                    src={item.url}
-                    alt='...'
-                  />;
-                })}*/}
-              <MDBCarouselItem
+                  <MDBCarouselItem className='w-100 d-block' itemId={index} src={item.url} alt='...' />;
+                })}
+              {/*<MDBCarouselItem
                 className='w-100 d-block'
                 itemId={1}
                 src='https://mdbootstrap.com/img/new/slides/041.jpg'
@@ -103,10 +116,10 @@ const POIDetails = () => {
                 itemId={3}
                 src='https://mdbootstrap.com/img/new/slides/043.jpg'
                 alt='...'
-              />
+              />*/}
             </MDBCarousel>
-            {/*<p>{curPOI.description}</p>*/}
-            <p>
+            <p>{curPOI.description}</p>
+            {/*<p>
               Lorem ipsum dolor, sit amet consectetur adipisicing elit. Libero, ea! Quam deserunt cumque tenetur
               doloremque et nostrum nisi beatae ratione. Laudantium deleniti ea similique unde nobis eum error, mollitia
               quo sunt perspiciatis qui consectetur doloremque fugit nulla ipsum blanditiis quos magni quidem ex ipsam
@@ -115,25 +128,21 @@ const POIDetails = () => {
               iste, voluptates odit nisi et dicta nobis facere nulla tempora quos excepturi explicabo illum vero.
               Consequuntur omnis aperiam, nihil corrupti consectetur, ipsum enim quam fugit, quas illo est dolore
               explicabo impedit libero?
-            </p>
+            </p>*/}
           </MDBCol>
           <MDBCol size='4'>
             <p className='fs-5 fw-bold'>Open hours:</p>
             <p>
-              {timeConverter(curPOI.openTime)} - {timeConverter(curPOI.closeTime)}
+              {timeConverter(curPOI.openTime, "hh:mm")} - {timeConverter(curPOI.closeTime, "hh:mm")}
             </p>
-            <br />
             <p className='fs-5 fw-bold'>Recommended duration:</p>
-            <p>{timeConverter(curPOI.duration)}</p>
-            <br />
+            <p>{timeConverter(curPOI.duration, "x hours y minutes")}</p>
             <p className='fs-5 fw-boldfs-5 fw-bold'>Address:</p>
             <p>{curPOI.address}</p>
-            <br />
             {curPOI.phone ? (
               <>
                 <p className='fs-5 fw-bold'>Phone number:</p>
                 <p>{curPOI.phone}</p>
-                <br />
               </>
             ) : (
               <></>
@@ -142,7 +151,6 @@ const POIDetails = () => {
               <>
                 <p className='fs-5 fw-bold'>Business email:</p>
                 <p>{curPOI.businessEmail}</p>
-                <br />
               </>
             ) : (
               <></>
@@ -151,13 +159,12 @@ const POIDetails = () => {
               <>
                 <p className='fs-5 fw-bold'>Website:</p>
                 <p>{curPOI.website}</p>
-                <br />
               </>
             ) : (
               <></>
             )}
-            <button className='btn btn-link' onClick={handleClick}>
-              Generate plans to this place &gt;&gt;.
+            <button className='btn btn-info' onClick={handleClick}>
+              Generate plans to this place
             </button>
           </MDBCol>
         </MDBRow>
