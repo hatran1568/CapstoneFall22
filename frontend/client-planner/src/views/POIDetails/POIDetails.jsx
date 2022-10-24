@@ -76,7 +76,10 @@ const POIDetails = () => {
     return timeString;
   };
 
-  if (curPOI !== undefined /*&& !images.isEmpty() && !ratings.isEmpty()*/) {
+  console.log(ratings);
+  console.log(images);
+
+  if (curPOI !== undefined) {
     return (
       <MDBContainer className='px-5'>
         <MDBRow className='mb-3'>
@@ -95,28 +98,9 @@ const POIDetails = () => {
         <MDBRow className='mb-4'>
           <MDBCol size='8'>
             <MDBCarousel showControls className='mb-3'>
-              {images &&
-                images.map((item, index) => {
-                  <MDBCarouselItem className='w-100 d-block' itemId={index} src={item.url} alt='...' />;
-                })}
-              {/*<MDBCarouselItem
-                className='w-100 d-block'
-                itemId={1}
-                src='https://mdbootstrap.com/img/new/slides/041.jpg'
-                alt='...'
-              />
-              <MDBCarouselItem
-                className='w-100 d-block'
-                itemId={2}
-                src='https://mdbootstrap.com/img/new/slides/042.jpg'
-                alt='...'
-              />
-              <MDBCarouselItem
-                className='w-100 d-block'
-                itemId={3}
-                src='https://mdbootstrap.com/img/new/slides/043.jpg'
-                alt='...'
-              />*/}
+              {images.map((item) => (
+                <MDBCarouselItem className='w-100 d-block' src={item} alt='...' />
+              ))}
             </MDBCarousel>
             <p>{curPOI.description}</p>
             {/*<p>
@@ -173,17 +157,22 @@ const POIDetails = () => {
           <h2 className='fw-bold'>{curPOI.name} reviews</h2>
         </MDBRow>
         <MDBRow className='mb-4'>
-          {ratings &&
-            ratings.map((item, index) => {
+          {ratings.length >= 0 ? (
+            ratings.map((item) => {
               <div className='mb-2'>
-                <h4>{item.name}</h4>
+                <h4>{item.user.name}</h4>
                 <div>
                   <StarRatings rating={item.rate} starDimension='1em' starSpacing='0.1em' starRatedColor='orange' />
-                  <p>{item.Comment}</p>
+                  <p>{item.comment}</p>
                 </div>
                 <p className='text-muted'>{item.dateCreated}</p>
               </div>;
-            })}
+            })
+          ) : (
+            <div>
+              <p>There is still nothing yet</p>
+            </div>
+          )}
           {/*<div className='mb-2'>
             <h4>Tourist A</h4>
             <div>

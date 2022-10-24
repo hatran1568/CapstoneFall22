@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.awt.*;
 import java.util.ArrayList;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/pois")
@@ -111,8 +112,8 @@ public class POIController {
     }
 
     @GetMapping("/{poiId}/images")
-    public ResponseEntity<ArrayList<Image>> getPOIImages(@PathVariable("poiId") int poiId) {
-        ArrayList<Image> img;
+    public ResponseEntity<ArrayList<String>> getPOIImages(@PathVariable("poiId") int poiId) {
+        ArrayList<String> img;
         img = poiRepo.getImagesByPOIId(poiId);
         if (img.isEmpty()) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
