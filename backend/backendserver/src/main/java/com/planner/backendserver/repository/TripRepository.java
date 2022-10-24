@@ -20,7 +20,8 @@ import java.util.Optional;
 public interface TripRepository extends JpaRepository<Trip, Integer> {
     @Query("select t from Trip t where t.tripId = :id")
     Optional<Trip> getTripById(int id);
-    ArrayList<Trip> getTripsByUser(String email);
+    @Query("select t from Trip t where t.user.userID = :id")
+    ArrayList<Trip> getTripsByUser(int id);
 
     @Modifying
     @Query(

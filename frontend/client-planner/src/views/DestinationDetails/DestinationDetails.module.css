@@ -1,52 +1,54 @@
-        #destinationName{
-          margin:auto;
-          width: 90%;
-          display:inline-block
-        }
-        #description{
-            width: 90%;
-            margin: auto;
-            display: inline-block;
-        }
-        .destinationbox{
-            width: 300px; 
-            height: 300px;
-        }
-        .contentbox{
-            width:90%; 
-            height:40%;
-            margin-top: 5%;
-            margin-left: 15%;
-        }
-        .container {
-          font-family: "Roboto", sans-serif;
-          position: relative;
-          float:left;
-          width: 85%;
-        }
-        .container2 {
-          width:100%; text-align:center
-        }
+#destinationName {
+  margin: auto !important;
+  width: 90% !important;
+  display: inline-block !important;
+}
+#description {
+  width: 90% !important;
+  margin: auto !important;
+  display: inline-block !important;
+}
+.destinationbox {
+  width: 300px !important;
+  height: 300px !important;
+}
+.contentbox {
+  width: 90% !important;
+  height: 40% !important;
+  margin-top: 5% !important;
+  margin-left: 15% !important;
+}
+.container {
+  font-family: "Roboto", sans-serif !important;
+  position: relative !important;
+  float: left !important;
+  width: 85% !important;
+}
+.container2 {
+  width: 100% !important;
+  text-align: center !important;
+}
 
-        .button2 {
-          background-color: rgba(51, 51, 51, 0.05);
-          border-radius: 8px;
-          border-width: 0;
-          color: #333333;
-          cursor: pointer;
-          display: inline-block;
-          font-family: "Haas Grot Text R Web", "Helvetica Neue", Helvetica, Arial, sans-serif;
-          font-size: 14px;
-          font-weight: 500;
-          line-height: 20px;
-          list-style: none;
-          margin: 0;
-          padding: 10px 12px;
-          text-align: center;
-          transition: all 200ms;
-          vertical-align: baseline;
-          white-space: nowrap;
-          user-select: none;
-          -webkit-user-select: none;
-          touch-action: manipulation;
-        }
+.button2 {
+  background-color: rgba(51, 51, 51, 0.05) !important;
+  border-radius: 8px !important;
+  border-width: 0 !important;
+  color: #333333 !important;
+  cursor: pointer !important;
+  display: inline-block !important;
+  font-family: "Haas Grot Text R Web", "Helvetica Neue", Helvetica, Arial,
+    sans-serif !important;
+  font-size: 14px !important;
+  font-weight: 500 !important;
+  line-height: 20px !important;
+  list-style: none !important;
+  margin: 0 !important;
+  padding: 10px 12px !important;
+  text-align: center !important;
+  transition: all 200ms !important;
+  vertical-align: baseline !important;
+  white-space: nowrap !important;
+  user-select: none !important;
+  -webkit-user-select: none !important;
+  touch-action: manipulation !important;
+}

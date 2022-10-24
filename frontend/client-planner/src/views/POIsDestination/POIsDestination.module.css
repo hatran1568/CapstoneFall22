@@ -1,46 +1,46 @@
-.headContainer{
-    width: 100vw;
-    height: 60vh;
-    padding: 0;
-    margin: auto;
-    text-align: center;
+.headContainer {
+  width: 100vw !important;
+  height: 60vh !important;
+  padding: 0 !important;
+  margin: auto !important;
+  text-align: center !important;
 }
-.mainContainer{
-    padding: 0;
-    margin: 0;
+.mainContainer {
+  padding: 0 !important;
+  margin: 0 !important;
 }
-.thumbnail{
-    position: absolute;
-    width: 100vw;
-    height: 60vh;
-    object-fit: cover;
-    z-index: -1;
-    margin: 0;
-    padding: 0;
+.thumbnail {
+  position: absolute !important;
+  width: 100vw !important;
+  height: 60vh !important;
+  object-fit: cover !important;
+  z-index: -1 !important;
+  margin: 0 !important;
+  padding: 0 !important;
 }
-.title{
-    margin-top: 15vh;
-    position: absolute;
-    width: 100%;
-    color: rgb(255, 255, 104);
-    font-size: 6vw;
+.title {
+  margin-top: 15vh !important;
+  position: absolute !important;
+  width: 100% !important;
+  color: rgb(255, 255, 104) !important;
+  font-size: 6vw !important;
 }
-.bodyContainer{
-    margin: auto;
-    margin-top: 5vh;
-    width: 60vw;
+.bodyContainer {
+  margin: auto !important;
+  margin-top: 5vh !important;
+  width: 60vw !important;
 }
-.catButton{
-    margin: 3px;
-    background-color: rgb(255, 128, 215);
+.catButton {
+  margin: 3px !important;
+  background-color: rgb(255, 128, 215) !important;
 }
-.catButton:hover{
-    background-color: rgb(253, 88, 201);
+.catButton:hover {
+  background-color: rgb(253, 88, 201) !important;
 }
-.removeFilterButton{
-    margin: 3px;
-    background-color: rgb(255, 43, 117);
+.removeFilterButton {
+  margin: 3px !important;
+  background-color: rgb(255, 43, 117) !important;
 }
-.removeFilterButton:hover{
-    background-color: rgb(254, 18, 101);
+.removeFilterButton:hover {
+  background-color: rgb(254, 18, 101) !important;
 }
