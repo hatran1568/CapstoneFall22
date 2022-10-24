@@ -40,17 +40,17 @@ const NavBar = () => {
 
         <MDBNavbarNav>
           <MDBNavbarItem>
-            <MDBNavbarLink className={pathname === "/homepage" ? "active" : ""} href='/'></MDBNavbarLink>
+            <MDBNavbarLink className={pathname === "/" ? "active" : ""} href='/'></MDBNavbarLink>
           </MDBNavbarItem>
 
           {/*<MDBNavbarItem>
-                        <MDBNavbarLink className={pathname === "/login" ? "active" : ""} href='/login'>
-                            Login
-                        </MDBNavbarLink>
-                    </MDBNavbarItem>*/}
+            <MDBNavbarLink className={pathname === "/login" ? "active" : ""} href='/login'>
+              Login
+            </MDBNavbarLink>
+          </MDBNavbarItem>*/}
         </MDBNavbarNav>
 
-        <MDBNavbarNav center>
+        <MDBNavbarNav center='true'>
           <MDBNavbarItem>
             <SearchBar />
           </MDBNavbarItem>

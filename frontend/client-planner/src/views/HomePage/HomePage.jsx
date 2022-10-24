@@ -1,6 +1,6 @@
 import React from "react";
 import axios from "../../api/axios";
-import {useState} from 'react';
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import {
   MDBBtn,
@@ -26,29 +26,29 @@ import {
 import style from "./HomePage.module.css";
 
 function HomePage() {
-    const navigate = useNavigate();
-    const [basicModal, setBasicModal] = useState(false);
+  const navigate = useNavigate();
+  const [basicModal, setBasicModal] = useState(false);
 
   const toggleShow = () => setBasicModal(!basicModal);
-    const submitTrip = event => {
-        axios({
-            method: 'post',
-            url: 'http://localhost:8080/trip/createTrip',
-            data: {
-                userId: localStorage.getItem("id"),
-                budget: document.getElementById("budgetInput").value,
-                name: document.getElementById("tripNameInput").value,
-                startDate: document.getElementById("startDateInput").value,
-                endDate: document.getElementById("endDateInput").value
-            },
-            headers: {
-                'Content-Type': 'application/json'
-            }
-          }).then(function (response) {
-            navigate("../Timeline/" + response.data);
-            window.location.reload(false);
-          });
-    };
+  const submitTrip = (event) => {
+    axios({
+      method: "post",
+      url: "http://localhost:8080/trip/createTrip",
+      data: {
+        userId: localStorage.getItem("id"),
+        budget: document.getElementById("budgetInput").value,
+        name: document.getElementById("tripNameInput").value,
+        startDate: document.getElementById("startDateInput").value,
+        endDate: document.getElementById("endDateInput").value,
+      },
+      headers: {
+        "Content-Type": "application/json",
+      },
+    }).then(function (response) {
+      navigate("../Timeline/" + response.data);
+      window.location.reload(false);
+    });
+  };
   return (
     <>
       <div className='bg-image'>
@@ -68,7 +68,9 @@ function HomePage() {
                 <MDBBtnGroup className={style.btn}>
                   <MDBBtn color='info'>Generate&nbsp;trip</MDBBtn>
                   {/* <MDBBtn color='info'>Create&nbsp;trip</MDBBtn> */}
-                  <MDBBtn color='info' onClick={toggleShow}>Create Trip</MDBBtn>
+                  <MDBBtn color='info' onClick={toggleShow}>
+                    Create Trip
+                  </MDBBtn>
                 </MDBBtnGroup>
               </div>
             </div>
@@ -83,27 +85,46 @@ function HomePage() {
               <MDBBtn className='btn-close' color='none' onClick={toggleShow}></MDBBtn>
             </MDBModalHeader>
             <MDBModalBody>
-              <div className={style.emptyTripInfo}>Creates an Empty trip. After creation, you will be redirected to your trip, where you can customize it all you want.</div><br/>
+              <div className={style.emptyTripInfo}>
+                Creates an Empty trip. After creation, you will be redirected to your trip, where you can customize it
+                all you want.
+              </div>
+              <br />
               <MDBRow className={style.modalInput}>
-                  <div className={style.formgroup}>
-                      <MDBInput label="Trip name" type="text" id="tripNameInput" className={style.modalInput}/>
-                  </div>
-              </MDBRow><br/>
+                <div className={style.formgroup}>
+                  <MDBInput label='Trip name' type='text' id='tripNameInput' className={style.modalInput} />
+                </div>
+              </MDBRow>
+              <br />
               <MDBRow className={style.modalInput}>
-                  <div className={style.formgroup}>
-                      <MDBInput label="Budget" id="budgetInput" type="text" className={style.modalInput}/>
-                  </div>
-              </MDBRow><br/>
+                <div className={style.formgroup}>
+                  <MDBInput label='Budget' id='budgetInput' type='text' className={style.modalInput} />
+                </div>
+              </MDBRow>
+              <br />
               <MDBRow className={style.modalInput}>
-                  <MDBCol className={style.formgroup}>
-                      <h6>Start date</h6>
-                      <MDBInput placeholder="Select date" type="date" id="startDateInput" className={style.datepicker} value="2022-10-01"/>
-                  </MDBCol>
-                  <MDBCol className={style.formgroup}>
-                      <h6>End date</h6>
-                      <MDBInput placeholder="Select date" type="date" id="endDateInput" className={style.datepicker} value="2022-10-02"/>
-                  </MDBCol>
-              </MDBRow><br/>
+                <MDBCol className={style.formgroup}>
+                  <h6>Start date</h6>
+                  <MDBInput
+                    placeholder='Select date'
+                    type='date'
+                    id='startDateInput'
+                    className={style.datepicker}
+                    value='2022-10-01'
+                  />
+                </MDBCol>
+                <MDBCol className={style.formgroup}>
+                  <h6>End date</h6>
+                  <MDBInput
+                    placeholder='Select date'
+                    type='date'
+                    id='endDateInput'
+                    className={style.datepicker}
+                    value='2022-10-02'
+                  />
+                </MDBCol>
+              </MDBRow>
+              <br />
             </MDBModalBody>
 
             <MDBModalFooter>

@@ -3,10 +3,12 @@ package com.planner.backendserver.controller;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.planner.backendserver.DTO.TripDTO;
 import com.planner.backendserver.DTO.UserDTO;
+import com.planner.backendserver.dto.response.TripGeneralDTO;
 import com.planner.backendserver.entity.MasterActivity;
 import com.planner.backendserver.entity.Trip;
 import com.planner.backendserver.entity.TripDetails;
 import com.planner.backendserver.repository.POIRepository;
+import com.planner.backendserver.repository.TripRepository;
 import com.planner.backendserver.service.UserDTOServiceImplementer;
 import com.planner.backendserver.service.interfaces.TripService;
 import org.modelmapper.ModelMapper;
@@ -15,10 +17,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
-import com.planner.backendserver.repository.TripRepository;
-
-import javax.annotation.security.RolesAllowed;
 import java.sql.Date;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Optional;
 
@@ -98,15 +98,15 @@ public class TripController {
     }
     @PutMapping("/put-detail")
     public ResponseEntity<TripDetails> getTripDetail(@RequestBody TripDetails newDetail, @RequestParam int id){
-//        try{
+        try{
             Optional<TripDetails> detail = tripService.editTripDetailById(newDetail,id);
             if (detail.isEmpty()){
                 return new ResponseEntity<>(HttpStatus.NOT_FOUND);
             }
             return new ResponseEntity<>(detail.get(), HttpStatus.OK);
-//        } catch (Exception e){
-//            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-//        }
+        } catch (Exception e){
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
     @DeleteMapping("/delete-detail")
     public ResponseEntity<TripDetails> deleteTripDetail(@RequestBody ObjectNode objectNode){
@@ -131,19 +131,22 @@ public class TripController {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
-
     @GetMapping("/test1/{id}")
     public UserDTO getUser(@PathVariable int id){
-
         UserDTO userDetails = userDTOService.loadUserById(id);
         return  userDetails;
     }
 
-//    @PostMapping(
-//            value = "/createTrip", consumes = "application/json", produces = "application/json")
-//    public Trip createEmptyTrip(@RequestBody EmptyTripDTO trip) {
-//        return tripRepo.createEmptyTrip(null, trip.getBudget(), trip.getName(), 1, trip.getStartDate(), trip.getEndDate());
-//    }
+    @GetMapping("/getTripsByUser/{userId}")
+    public ResponseEntity<?> getTripsByUser(@PathVariable int userId) {
+        try {
+
+            return new ResponseEntity<>(tripService.getTripsByUser(userId), HttpStatus.OK);
+
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
     @RequestMapping(value = "/createTrip", consumes = "application/json", produces = { "*/*" }, method = RequestMethod.POST)
     public ResponseEntity<?> createEmptyTrip(@RequestBody TripDTO tripDTO) {
         try{
