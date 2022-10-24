@@ -1,14 +1,8 @@
 package com.planner.backendserver.service.implementers;
 
 import com.planner.backendserver.dto.response.TripGeneralDTO;
-import com.planner.backendserver.entity.MasterActivity;
-import com.planner.backendserver.entity.POI;
-import com.planner.backendserver.entity.Trip;
-import com.planner.backendserver.entity.TripDetails;
-import com.planner.backendserver.repository.MasterActivityRepository;
-import com.planner.backendserver.repository.POIRepository;
-import com.planner.backendserver.repository.TripDetailRepository;
-import com.planner.backendserver.repository.TripRepository;
+import com.planner.backendserver.entity.*;
+import com.planner.backendserver.repository.*;
 import com.planner.backendserver.service.interfaces.TripService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -29,6 +23,8 @@ public class TripServiceImpl implements TripService {
     private MasterActivityRepository masterActivityRepository;
     @Autowired
     private POIRepository poiRepository;
+    @Autowired
+    private CustomActivityRepository customActivityRepository;
 
     @Override
     public Optional<Trip> getTripById(int id) {
@@ -49,6 +45,28 @@ public class TripServiceImpl implements TripService {
         tripDetails.setTrip(trip);
         TripDetails saved = tripDetailRepository.save(tripDetails);
         saved.setMasterActivity(masterActivityRepository.getMasterActivityByActivityId(saved.getMasterActivity().getActivityId()));
+        return saved;
+    }
+
+    @Override
+    public TripDetails addCustomTripDetail(Date date, int startTime, int endTime, int tripId, String name, String address) {
+        MasterActivity masterActivity = new MasterActivity();
+        masterActivity.setName(name);
+        masterActivity.setAddress(address);
+        masterActivity = masterActivityRepository.save(masterActivity);
+        CustomActivity customActivity = new CustomActivity();
+        customActivityRepository.save(customActivity);
+        customActivity.setActivityId(masterActivity.getActivityId());
+        TripDetails tripDetails = new TripDetails();
+        tripDetails.setDate(date);
+        tripDetails.setStartTime(startTime);
+        tripDetails.setEndTime(endTime);
+
+        Trip trip = new Trip();
+        trip.setTripId(tripId);
+        tripDetails.setTrip(trip);
+        TripDetails saved = tripDetailRepository.save(tripDetails);
+        saved.setMasterActivity(masterActivity);
         return saved;
     }
 

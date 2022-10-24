@@ -17,3 +17,7 @@
 .listItem{
   cursor: pointer;
 }
+.input ::placeholder{
+  font-weight: 700;
+  color: black;
+}

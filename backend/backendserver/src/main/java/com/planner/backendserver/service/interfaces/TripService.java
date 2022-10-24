@@ -12,6 +12,7 @@ import java.util.Optional;
 public interface TripService {
     public Optional<Trip> getTripById(int id);
     public TripDetails addTripDetail(Date date, int startTime, int endTime, int activityId, int tripId);
+    public TripDetails addCustomTripDetail(Date date, int startTime, int endTime, int tripId, String name, String address);
     public void deleteDetailById(int id);
     public Optional<Double> getDistanceBetweenTwoPOIs(int from, int to);
     public Optional<TripDetails> getTripDetailById(int id);
