@@ -16,7 +16,7 @@ import "react-image-gallery/styles/css/image-gallery.css";
 
 class POIBox extends React.Component {
   render() {    
-    const link = "link here/" + this.props.activityId;
+    const link = "../poi?id=" + this.props.activityId;
     return (
       <MDBCard className={style.poiBox}>
         <a href={link} className={style.poiBoxLink}>

@@ -70,7 +70,7 @@ function DestinationDetails() {
       />
     );
   });
-  const poiLink = "./POIs?desid=" + id + "&catid=0&rating=0";
+  const poiLink = "./Destination/POIs?desid=" + id + "&catid=0&rating=0";
   return (
     <MDBContainer className={style.container}>
       <br />

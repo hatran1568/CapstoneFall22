@@ -64,7 +64,7 @@ function POIsDestination(){
     const catData = cateData;
     const filterBox = [];
     const catBtnClick = (event) => {
-        navigate("./?desid=" + desId + "&catid=" + event.target.id + "&rating=" + rating);
+        navigate("?desid=" + desId + "&catid=" + event.target.id + "&rating=" + rating);
         window.location.reload(false);
     };
     catData.forEach((cat, index) => {
@@ -76,7 +76,7 @@ function POIsDestination(){
     filterBox.push(<div><b><a onClick={catBtnClick} id={0} className={style.removeFilterButton}>Show All</a></b></div>)
     //FilterRating
     const ratingBtnClick = (event) => {
-      navigate("./?desid=" + desId + "&catid=" + catId + "&rating=" + event.currentTarget.id);
+      navigate("?desid=" + desId + "&catid=" + catId + "&rating=" + event.currentTarget.id);
       window.location.reload(false);
     };
     const filterRatingBox = [];
@@ -144,12 +144,12 @@ function POIsDestination(){
                     <h2>Things to do in {destination.name}</h2>
                     <MDBContainer id="poiSet">{poiBox}</MDBContainer><br/>
                     <ReactPaginate
-                        nextLabel="next >"
+                        nextLabel=" >"
                         onPageChange={handlePageClick}
                         pageRangeDisplayed={3}
                         marginPagesDisplayed={2}
                         pageCount={pageCount}
-                        previousLabel="< previous"
+                        previousLabel="<"
                         pageClassName="page-item"
                         pageLinkClassName="page-link"
                         previousClassName="page-item"
