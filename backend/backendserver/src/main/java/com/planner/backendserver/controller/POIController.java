@@ -42,15 +42,17 @@ public class POIController {
 //        }
 //    }
 
-    @GetMapping("/{desid}/{page}/{catid}")
-    public ResponseEntity<ArrayList<POIofDestinationDTO>> getPOIsOfDestinationFilter(@PathVariable("desid") int desid, @PathVariable("page") int page, @PathVariable("catid") int catid) {
-        try {
+
+    @GetMapping("/{desid}/{page}/{catid}/{rating}")
+    public ResponseEntity<ArrayList<POIofDestinationDTO>> getPOIsOfDestinationFilter(@PathVariable("desid") int desid, @PathVariable("page") int page, @PathVariable("catid") int catid, @PathVariable("rating") int rating){
+        try{
             ArrayList<POIofDestinationDTO> pois;
             if (catid == 0)
-                pois = poiRepo.getPOIOfDestination(desid, page * 10, 10);
+                pois = poiRepo.getPOIOfDestination(desid, page*10, 10, rating);
             else
-                pois = poiRepo.getPOIOfDestinationFilter(desid, catid, page * 10, 10);
-            if (pois.isEmpty()) {
+                pois = poiRepo.getPOIOfDestinationFilter(desid, catid, page*10, 10, rating);
+            if (pois.isEmpty()){
+
                 return new ResponseEntity<>(HttpStatus.NOT_FOUND);
             }
             return new ResponseEntity<>(pois, HttpStatus.OK);
@@ -68,14 +70,16 @@ public class POIController {
 //            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
 //        }
 //    }
-    @GetMapping("/{desid}/{catid}/count")
-    public ResponseEntity<Integer> getCountPOIsOfDestination(@PathVariable("desid") int desid, @PathVariable("catid") int catid) {
-        try {
+
+    @GetMapping("/{desid}/{catid}/{rating}/count")
+    public ResponseEntity<Integer> getCountPOIsOfDestination(@PathVariable("desid") int desid, @PathVariable("catid") int catid, @PathVariable("rating") int rating){
+        try{
+
             int count;
             if (catid == 0)
-                count = poiRepo.getCountPOIOfDestination(desid);
+                count = poiRepo.getCountPOIOfDestination(desid, rating);
             else
-                count = poiRepo.getCountPOIOfDestinationFilter(desid, catid);
+                count = poiRepo.getCountPOIOfDestinationFilter(desid, catid, rating);
             return new ResponseEntity<>(count, HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);

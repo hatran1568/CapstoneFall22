@@ -13,17 +13,15 @@
   align-content: center !important;
   text-align: center !important;
 }
-.exploreBtn {
-  border-radius: 50px !important;
-  background-color: rgb(255, 123, 196) !important;
-}
-.exploreBtn:hover {
-  background-color: rgb(255, 86, 179) !important;
-}
-.exploreBtn:active {
-  background-color: rgb(255, 76, 174) !important;
-}
 .poiPrice {
-  color: rgb(223, 61, 172) !important;
+  color: rgb(0, 0, 0) !important;
   font-style: italic !important;
+}
+.poiName{
+  color: black;
+  text-decoration: none;
+}
+.poiName:hover{
+  color: black;
+  text-decoration: underline;
 }

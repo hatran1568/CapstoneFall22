@@ -9,8 +9,8 @@ class Rating extends React.Component {
             rating={this.props.ratings}
             starDimension="20px"
             starSpacing="3px"
-            starRatedColor='rgb(255, 133, 222)'
-            starEmptyColor='rgb(255, 235, 254)'
+            starRatedColor='rgb(255, 162, 0)'
+            starEmptyColor='rgb(255, 231, 189)'
           />
         );
       }

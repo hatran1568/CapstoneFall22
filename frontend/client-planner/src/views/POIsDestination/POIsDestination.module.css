@@ -28,19 +28,26 @@
 .bodyContainer {
   margin: auto !important;
   margin-top: 5vh !important;
-  width: 60vw !important;
+  width: 80vw !important;
 }
 .catButton {
   margin: 3px !important;
-  background-color: rgb(255, 128, 215) !important;
+  color: rgb(0, 0, 0) !important;
+  text-decoration: none;
 }
-.catButton:hover {
-  background-color: rgb(253, 88, 201) !important;
+.catButtonSelected{
+  margin: 3px !important;
+  color: rgb(0, 0, 0) !important;
+  text-decoration: underline;
 }
 .removeFilterButton {
   margin: 3px !important;
-  background-color: rgb(255, 43, 117) !important;
+  color: rgb(0, 0, 0) !important;
 }
-.removeFilterButton:hover {
-  background-color: rgb(254, 18, 101) !important;
+.filterBox{
+  width: 20vw;
+}
+.filterRatingButton{
+  vertical-align: middle;
+  padding-top: 5px;
 }
