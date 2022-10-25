@@ -28,7 +28,9 @@ import style from "./HomePage.module.css";
 function HomePage() {
   const navigate = useNavigate();
   const [basicModal, setBasicModal] = useState(false);
-
+  let loggedInUser = localStorage.getItem("id");
+  if (loggedInUser == null)
+    loggedInUser = -1;
   const toggleShow = () => {
     setBasicModal(!basicModal);
     document.getElementById("budgetInput").value = "";
@@ -50,7 +52,7 @@ function HomePage() {
           method: 'post',
           url: 'http://localhost:8080/trip/createTrip',
           data: {
-              userId: localStorage.getItem("id"),
+              userId: loggedInUser,
               budget: document.getElementById("budgetInput").value,
               name: document.getElementById("tripNameInput").value,
               startDate: document.getElementById("startDateInput").value,
@@ -60,6 +62,16 @@ function HomePage() {
               'Content-Type': 'application/json'
           }
         }).then(function (response) {
+          if (loggedInUser == -1){
+            var storedTrips = JSON.parse(localStorage.getItem("tripId"));
+            if (storedTrips == null){
+              storedTrips = [];
+              storedTrips[0] = response.data;
+            }
+            else
+              storedTrips[storedTrips.length] = response.data
+            localStorage.setItem("tripId", JSON.stringify(storedTrips));
+          }
           navigate("../Timeline/" + response.data);
           window.location.reload(false);
         });
