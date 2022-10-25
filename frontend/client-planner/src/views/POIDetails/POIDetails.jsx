@@ -185,7 +185,7 @@ const POIDetails = () => {
               <MDBCol size='auto' className='pt-md-1'>
                 <StarRatings rating={avgRate} starDimension='1em' starSpacing='0.1em' starRatedColor='orange' />
               </MDBCol>
-              <MDBCol size="auto" className="pt-md-2 px-lg-0">
+              <MDBCol size='auto' className='pt-md-2 px-lg-0'>
                 <p>
                   {ratings.length} {ratings.length > 1 ? "reviews" : "review"}
                 </p>
