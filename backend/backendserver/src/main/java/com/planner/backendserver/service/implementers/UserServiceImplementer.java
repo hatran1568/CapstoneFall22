@@ -1,4 +1,4 @@
-package com.planner.backendserver.service;
+package com.planner.backendserver.service.implementers;
 
 import com.planner.backendserver.dto.response.UserDetailResponseDTO;
 import com.planner.backendserver.entity.Provider;
@@ -7,10 +7,16 @@ import com.planner.backendserver.entity.User;
 import com.planner.backendserver.entity.UserStatus;
 import com.planner.backendserver.repository.UserRepository;
 import com.planner.backendserver.service.interfaces.UserService;
+import com.planner.backendserver.utils.GoogleDriveManager;
 import org.hibernate.annotations.SQLInsert;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
 @Service
 public class UserServiceImplementer implements UserService  {
@@ -20,7 +26,8 @@ public class UserServiceImplementer implements UserService  {
     @Autowired
     ModelMapper mapper;
 
-
+    @Autowired
+    GoogleDriveManager driveManager;
 
     @Override
     public void processOAuthPostLoginGoogle(String email) {
@@ -78,5 +85,23 @@ public class UserServiceImplementer implements UserService  {
         }
         UserDetailResponseDTO userDTO = mapper.map(user, UserDetailResponseDTO.class);
         return userDTO;
+    }
+
+    //return old avatar
+    @Override
+    public String editAvatar(int userId, MultipartFile file) {
+        User user = userRepository.findByUserID(userId);
+        String webViewLink = null;
+        try {
+            webViewLink = driveManager.uploadFile(file, "tripplanner/img");
+
+        } catch (Exception e) {
+            throw new RuntimeException("Could not store the file. Error: " + e.getMessage());
+        } finally {
+            userRepository.updateAvatar(userId, webViewLink);
+
+        }
+
+        return user.getAvatar();
     }
 }

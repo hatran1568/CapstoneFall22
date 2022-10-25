@@ -1,7 +1,32 @@
-import { MDBCard, MDBCardLink } from "mdb-react-ui-kit";
-import React from "react";
+import axios from "../../api/axios";
+import { MDBCard, MDBCardLink, MDBIcon, MDBBtn } from "mdb-react-ui-kit";
+import { React, useEffect, useRef, useState } from "react";
 import style from "./Profile.module.css";
 function ProfileCard(props) {
+  const ref = useRef();
+
+  const [avatar, setAvatar] = useState(props.user.avatar);
+  const handleClick = (e) => {
+    ref.current.click();
+  };
+  const formData = new FormData();
+
+  const onFileChange = (e) => {
+    console.log(e.target.files[0]);
+    const objectUrl = URL.createObjectURL(e.target.files[0]);
+    setAvatar(objectUrl);
+    const id = localStorage.getItem("id");
+    formData.append("File", e.target.files[0]);
+
+    axios.post("/api/user/edit-avatar/" + id, formData, {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+        "Content-Type": "multipart/form-data",
+      },
+      withCredentials: true,
+    });
+  };
+
   return (
     <MDBCard className={`${style.card} p-3`}>
       <div className={`${style.link} text-end mb-4`}>
@@ -16,12 +41,24 @@ function ProfileCard(props) {
         <div className={style.btn}>
           <img
             className={`${style.avatar} hover-shadow`}
-            src={
-              props.user.avatar
-                ? props.user.avatar
-                : "http://www.gravatar.com/avatar/?d=mp"
-            }
+            src={avatar ? avatar : "http://www.gravatar.com/avatar/?d=mp"}
           />
+          <MDBBtn
+            tag="a"
+            color="none"
+            className={style.imageButton}
+            onClick={handleClick}
+          >
+            <MDBIcon fas icon="camera" size="lg" />
+            <input
+              type="file"
+              id="file"
+              accept=".jpg,.jpeg,.png"
+              ref={ref}
+              onChange={onFileChange}
+              style={{ display: "none" }}
+            />
+          </MDBBtn>
         </div>
         <span className={`${style.name} mt-3 mx-auto`}>{props.user.name}</span>
         <span className={style.email}>{props.user.email}</span>

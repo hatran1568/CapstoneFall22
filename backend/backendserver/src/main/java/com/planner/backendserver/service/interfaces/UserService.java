@@ -3,6 +3,7 @@ package com.planner.backendserver.service.interfaces;
 import com.planner.backendserver.dto.response.UserDetailResponseDTO;
 import com.planner.backendserver.entity.Provider;
 import com.planner.backendserver.entity.User;
+import org.springframework.web.multipart.MultipartFile;
 
 public interface UserService {
     public void processOAuthPostLoginGoogle(String email);
@@ -11,4 +12,5 @@ public interface UserService {
     public void register(User user);
     public boolean checkExistByEmail(String email);
     public UserDetailResponseDTO getUserProfileById(int userId);
+    public String editAvatar(int userId, MultipartFile file);
 }
