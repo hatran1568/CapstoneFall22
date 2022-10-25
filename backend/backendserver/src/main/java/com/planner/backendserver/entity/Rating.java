@@ -21,7 +21,7 @@ public class Rating {
     private User user;
 
     @ManyToOne
-    @JoinColumn(name = "poi_id", nullable = false,unique = true)
+    @JoinColumn(name = "poi_id", nullable = false)
     private POI POI;
 
     @JoinColumn(name = "rate")
