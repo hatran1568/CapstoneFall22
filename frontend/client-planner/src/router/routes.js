@@ -6,6 +6,7 @@ import OAuthHandler from "../views/Login/OauthHandler";
 import ProfilePage from "../views/UserProfile/ProfilePage";
 import RequireAuth from "../components/RequireAuth";
 import Timeline from "../views/Timeline/timeline";
+import TripBudget from "../views/Timeline/TripBudget";
 import TripGeneralInfo from "../views/Timeline/TripGeneralInfo";
 import DestinationDetails from "../views/DestinationDetails/DestinationDetails";
 import POIsDestination from "../views/POIsDestination/POIsDestination";
@@ -30,6 +31,7 @@ export default function RootRoutes() {
           <Route exact path='/Destination' element={<DestinationDetails />} />
           <Route exact path='/Destination/POIs' element={<POIsDestination />} />
           <Route path='/timeline/:id' element={<Timeline />} />
+          <Route path='/budget/:id' element={<TripBudget />} />
           <Route path='/trip/:id' element={<TripGeneralInfo />} />
           <Route path='/search' element={<POIAndDestinationSearchBar />} />
           <Route path='/' element={<HomePage />} />

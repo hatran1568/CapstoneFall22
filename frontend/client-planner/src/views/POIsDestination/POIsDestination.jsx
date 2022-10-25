@@ -5,7 +5,6 @@ import {useEffect} from 'react';
 import {Navigate, useParams } from 'react-router-dom';
 import POIBoxLarge from '../../components/POIBoxLarge.jsx';
 import axios from "../../api/axios";
-import poidata from "./poidata.json";
 import ReactPaginate from 'react-paginate';
 import cateData from "./category.json";
 import { useNavigate } from "react-router-dom";
