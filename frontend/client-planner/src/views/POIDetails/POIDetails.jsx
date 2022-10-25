@@ -55,12 +55,14 @@ const POIDetails = () => {
     );
   }
 
+  const avgRate = ratings.reduce((sum, cur) => sum + Number(cur.rate), 0) / ratings.length;
   const poiRatings = [];
-  if (ratings.length > 0 && ratings !== undefined) {
-    ratings.forEach((rating, index) =>
+  if (ratings.length > 0) {
+    ratings.forEach((rating) => {
+      var formattedDate = new Date(rating.dateCreated).toLocaleDateString("vi-VN");
       poiRatings.push(
         <>
-          <MDBRow>
+          <MDBRow className='border-top'>
             <MDBCol size='auto' className='pe-0'>
               <StarRatings rating={rating.rate} starDimension='1em' starSpacing='0.1em' starRatedColor='orange' />
             </MDBCol>
@@ -76,9 +78,12 @@ const POIDetails = () => {
               <p>{rating.comment}</p>
             </div>
           </MDBRow>
+          <MDBRow className='border-bottom'>
+            <p>Commented on {formattedDate}</p>
+          </MDBRow>
         </>,
-      ),
-    );
+      );
+    });
   } else if (ratings.length == 0) {
     poiRatings.push(
       <div>
@@ -108,8 +113,8 @@ const POIDetails = () => {
 
   if (curPOI !== undefined) {
     return (
-      <MDBContainer className='px-5'>
-        <MDBRow className='mb-3'>
+      <MDBContainer className={style.container}>
+        <MDBRow className='pb-3'>
           <h2 className='fw-bold'>{curPOI.name}</h2>
           <MDBRow className='m-0'>
             <MDBCol size='auto' className='p-0'>
@@ -122,9 +127,9 @@ const POIDetails = () => {
             </MDBCol>
           </MDBRow>
         </MDBRow>
-        <MDBRow className='mb-4'>
+        <MDBRow className='pb-4'>
           <MDBCol size='8'>
-            <MDBCarousel showControls className='mb-3'>
+            <MDBCarousel showControls className='pb-3'>
               {poiImages}
             </MDBCarousel>
             <p>{curPOI.description}</p>
@@ -168,10 +173,28 @@ const POIDetails = () => {
           </MDBCol>
         </MDBRow>
 
-        <MDBRow className='mb-3'>
+        <MDBRow className='pb-3'>
           <h2 className='fw-bold'>{curPOI.name} reviews</h2>
         </MDBRow>
-        <MDBRow className='mb-4'>{poiRatings}</MDBRow>
+        <MDBRow className='pb-4'>
+          <MDBCol size='4'>
+            <MDBRow>
+              <MDBCol size='auto'>
+                <p className={style.text}>{avgRate.toString().padEnd(3, ".0")}</p>
+              </MDBCol>
+              <MDBCol size='auto' className='pt-md-1'>
+                <StarRatings rating={avgRate} starDimension='1em' starSpacing='0.1em' starRatedColor='orange' />
+              </MDBCol>
+              <MDBCol size="auto" className="pt-md-2 px-lg-0">
+                <p>
+                  {ratings.length} {ratings.length > 1 ? "reviews" : "review"}
+                </p>
+              </MDBCol>
+            </MDBRow>
+            <MDBRow></MDBRow>
+          </MDBCol>
+          <MDBCol>{poiRatings}</MDBCol>
+        </MDBRow>
       </MDBContainer>
     );
   }
