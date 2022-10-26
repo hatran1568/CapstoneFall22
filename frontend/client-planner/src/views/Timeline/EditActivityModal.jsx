@@ -45,13 +45,19 @@ function AddActivityModal(props) {
           <div className={style.activityInfo}>
             <div className={style.poiDiv}>
               <img
-                src="https://picsum.photos/seed/picsum/200/200"
+                src={
+                  tripDetail.masterActivity.images
+                    ? tripDetail.masterActivity.images[0]
+                      ? `../${tripDetail.masterActivity.images[0].url}`
+                      : "https://picsum.photos/seed/picsum/300/200"
+                    : "https://picsum.photos/seed/picsum/300/200"
+                }
                 alt=""
                 className={style.poiImage}
               />
             </div>
             <div>
-              <div>
+              <div style={{ fontWeight: "700", fontSize: "20px" }}>
                 {tripDetail.masterActivity.name
                   ? tripDetail.masterActivity.name
                   : ""}

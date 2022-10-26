@@ -94,12 +94,6 @@ class TripDetail extends Component {
     var moment = require("moment"); // require
     var isCustom =
       typeof this.state.tripDetail.masterActivity.category !== "undefined";
-    // if (this.state.tripDetail.tripDetailsId == 47)
-    //   console.log(
-    //     "isCustom: ",
-    //     isCustom,
-    //     this.state.tripDetail.masterActivity.category
-    //   );
     return (
       <React.Fragment>
         <li className={`${style.timelineItem} card`}>
@@ -149,8 +143,7 @@ class TripDetail extends Component {
                   src={
                     this.state.tripDetail.masterActivity.images
                       ? this.state.tripDetail.masterActivity.images[0]
-                        ? "../" +
-                          this.state.tripDetail.masterActivity.images[0].url
+                        ? `../${this.state.tripDetail.masterActivity.images[0].url}`
                         : "https://picsum.photos/seed/picsum/300/200"
                       : "https://picsum.photos/seed/picsum/300/200"
                   }
