@@ -1,0 +1,35 @@
+java:
+    runtime:
+        version: 11
+server:
+    port: 8080
+spring:
+    datasource:
+        driver-class-name: com.mysql.cj.jdbc.Driver
+        password: 123456
+        url: jdbc:mysql://localhost:3306/TripPlanner
+        username: root
+    jpa:
+        hibernate:
+            ddl-auto: update
+        properties:
+            hibernate:
+                dialect: org.hibernate.dialect.MySQL57InnoDBDialect
+                format_sql: true
+        show-sql: true
+    security:
+        oauth2:
+            client:
+                registration:
+                    facebook:
+                        clientId: 2420754624738461
+                        clientSecret: 941207a07d94fca45caee8f0aee29d58
+                        scope:
+                            - email
+                            - public_profile
+                    google:
+                        clientId: 146372595454-6hdtcdi6krh7bvcmc3v4n8mc85qd2rmk.apps.googleusercontent.com
+                        clientSecret: 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
+                        scope:
+                            - email
+                            - profile
