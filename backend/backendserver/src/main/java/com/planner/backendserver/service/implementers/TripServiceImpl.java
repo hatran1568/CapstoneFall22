@@ -53,20 +53,21 @@ public class TripServiceImpl implements TripService {
         MasterActivity masterActivity = new MasterActivity();
         masterActivity.setName(name);
         masterActivity.setAddress(address);
-        masterActivity = masterActivityRepository.save(masterActivity);
+        MasterActivity savedMasterActivity = masterActivityRepository.save(masterActivity);
         CustomActivity customActivity = new CustomActivity();
+        customActivity.setActivityId(savedMasterActivity.getActivityId());
         customActivityRepository.save(customActivity);
-        customActivity.setActivityId(masterActivity.getActivityId());
+
         TripDetails tripDetails = new TripDetails();
         tripDetails.setDate(date);
         tripDetails.setStartTime(startTime);
         tripDetails.setEndTime(endTime);
+        tripDetails.setMasterActivity(savedMasterActivity);
 
         Trip trip = new Trip();
         trip.setTripId(tripId);
         tripDetails.setTrip(trip);
         TripDetails saved = tripDetailRepository.save(tripDetails);
-        saved.setMasterActivity(masterActivity);
         return saved;
     }
 
@@ -92,7 +93,31 @@ public class TripServiceImpl implements TripService {
                     detail.setDate(newDetail.getDate());
                     detail.setStartTime(newDetail.getStartTime());
                     detail.setEndTime(newDetail.getEndTime());
-                    return tripDetailRepository.save(detail);
+                    TripDetails saved = tripDetailRepository.save(detail);
+                    return saved;
+                })
+                .orElseGet(() -> {
+                    return tripDetailRepository.save(newDetail);
+                }));
+    }
+
+    @Override
+    public Optional<TripDetails> editCustomTripDetailById(TripDetails newDetail, int id) {
+        MasterActivity masterActivity = newDetail.getMasterActivity();
+        int maId = masterActivity.getActivityId();
+        masterActivityRepository.findById(maId)
+                .map(activity -> {
+                    activity.setName(masterActivity.getName());
+                    activity.setAddress(masterActivity.getAddress());
+                    return masterActivityRepository.save(activity);
+                }).orElseGet(() -> masterActivityRepository.save(masterActivity));
+        return Optional.ofNullable(tripDetailRepository.findById(id)
+                .map(detail -> {
+                    detail.setDate(newDetail.getDate());
+                    detail.setStartTime(newDetail.getStartTime());
+                    detail.setEndTime(newDetail.getEndTime());
+                    TripDetails saved = tripDetailRepository.save(detail);
+                    return saved;
                 })
                 .orElseGet(() -> {
                     return tripDetailRepository.save(newDetail);

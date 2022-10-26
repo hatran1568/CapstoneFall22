@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { Component, useRef } from "react";
 import { withRouter } from "react-router-dom";
 import TripDetail from "./TimelineTripDetail";
 import AddActivityModal from "./AddActivityModal";
@@ -16,7 +16,7 @@ class Timeline extends Component {
       showAddModal: false,
       showEditModal: false,
       dataLoaded: false,
-      detailInEdit: -1,
+      showAddCustomModal: false,
     };
   }
   //get request to get trip info
@@ -101,9 +101,23 @@ class Timeline extends Component {
   };
   //toggle add modal
   toggleAddModal = () => {
-    var newState = this.state;
-    newState.showAddModal = !newState.showAddModal;
-    this.setState(newState);
+    var newShow = this.state.showAddModal;
+    this.setState({ showAddModal: !newShow });
+  };
+  //toggle custom modal
+  toggleAddCustomModal = () => {
+    this.setState({ showAddCustomModal: true });
+  };
+  //change add type
+  changeAddType = () => {
+    var newShow = this.state.showAddModal;
+    var newShowCustom = this.state.showAddCustomModal;
+    this.setState({
+      showAddModal: !newShow,
+    });
+    this.setState({
+      showAddCustomModal: !newShowCustom,
+    });
   };
   //delete an activirty
   deleteTripDetail = (event, detailId) => {
@@ -143,8 +157,37 @@ class Timeline extends Component {
     if (arr.length > 0) return arr[0];
     return {};
   };
+  //put request to edit a custom detail
+  editCustomDetail = (event, detail) => {
+    console.log("calling custom");
+    delete detail.custom;
+    var start = detail.startTime.split(":");
+    detail.startTime = +start[0] * 60 * 60 + +start[1] * 60;
+    var end = detail.endTime.split(":");
+    detail.endTime = +end[0] * 60 * 60 + +end[1] * 60;
+    axios({
+      method: "put",
+      url:
+        "http://localhost:8080/trip/put-custom-detail?id=" +
+        detail.tripDetailsId,
+      headers: {
+        "Content-Type": "application/json",
+      },
+      data: detail,
+    })
+      .then((response) => {
+        this.updateDetail(detail.tripDetailsId, response.data);
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
+  };
   //put request to edit a detail
   editTripDetail = (event, detail) => {
+    if (detail.custom == true) {
+      this.editCustomDetail(event, detail);
+      return;
+    }
     var start = detail.startTime.split(":");
     detail.startTime = +start[0] * 60 * 60 + +start[1] * 60;
     var end = detail.endTime.split(":");
@@ -175,8 +218,45 @@ class Timeline extends Component {
     newState.trip.listTripDetails[index] = newDetail;
     this.setState(newState);
   };
+  //insert custom trip detail
+  insertCustomDetail = (input) => {
+    var start = input.start_time.split(":");
+    var startSeconds = +start[0] * 60 * 60 + +start[1] * 60;
+    var end = input.end_time.split(":");
+    var endSeconds = +end[0] * 60 * 60 + +end[1] * 60;
+    axios
+      .post(`http://localhost:8080/trip/add-custom-detail`, {
+        date: input.date,
+        startTime: startSeconds,
+        endTime: endSeconds,
+        name: input.name,
+        address: input.address,
+        tripId: this.state.trip.tripId,
+      })
+      .then((response) => {
+        console.log("custom response: ", response);
+        var newDetail = response.data;
+        var newTrip = this.state.trip;
+        newTrip.listTripDetails.push(newDetail);
+        this.setState(
+          {
+            trip: newTrip,
+            showAddModal: false,
+            dataLoaded: true,
+          },
+          this.render
+        );
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
+  };
   //insert an activity into the trip
   insertTripDetail = (event, input) => {
+    if (input.custom == true) {
+      this.insertCustomDetail(input);
+      return;
+    }
     var start = input.start_time.split(":");
     var startSeconds = +start[0] * 60 * 60 + +start[1] * 60;
     var end = input.end_time.split(":");
@@ -197,7 +277,6 @@ class Timeline extends Component {
           {
             trip: newTrip,
             showAddModal: false,
-            showEditModal: false,
             dataLoaded: true,
           },
           this.render
@@ -329,6 +408,8 @@ class Timeline extends Component {
 }
 
 function withParams(Component) {
-  return (props) => <Component {...props} params={useParams()} />;
+  return (props) => {
+    return <Component {...props} params={useParams()} />;
+  };
 }
 export default withParams(Timeline);

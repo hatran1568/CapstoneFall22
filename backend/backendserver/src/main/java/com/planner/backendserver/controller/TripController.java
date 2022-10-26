@@ -86,7 +86,7 @@ public class TripController {
     }
     @PostMapping("/add-custom-detail")
     public ResponseEntity<TripDetails> addCustomTripDetail(@RequestBody ObjectNode objectNode){
-        try{
+//        try{
             Date date = Date.valueOf(objectNode.get("date").asText());
             int startTime = objectNode.get("startTime").asInt();
             int endTime = objectNode.get("endTime").asInt();
@@ -95,9 +95,9 @@ public class TripController {
             String address = objectNode.get("address").asText();
             TripDetails result = tripService.addCustomTripDetail(date, startTime, endTime, tripId, name, address);
             return new ResponseEntity<>(result, HttpStatus.OK);
-        } catch (Exception e){
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-        }
+//        } catch (Exception e){
+//            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+//        }
     }
     @GetMapping("/get-detail")
     public ResponseEntity<TripDetails> getTripDetail(@RequestParam int id){
@@ -112,7 +112,7 @@ public class TripController {
         }
     }
     @PutMapping("/put-detail")
-    public ResponseEntity<TripDetails> getTripDetail(@RequestBody TripDetails newDetail, @RequestParam int id){
+    public ResponseEntity<TripDetails> editTripDetail(@RequestBody TripDetails newDetail, @RequestParam int id){
         try{
             Optional<TripDetails> detail = tripService.editTripDetailById(newDetail,id);
             if (detail.isEmpty()){
@@ -122,6 +122,18 @@ public class TripController {
         } catch (Exception e){
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
+    }
+    @PutMapping("/put-custom-detail")
+    public ResponseEntity<TripDetails> editCustomTripDetail(@RequestBody TripDetails newDetail, @RequestParam int id){
+//        try{
+            Optional<TripDetails> detail = tripService.editCustomTripDetailById(newDetail,id);
+            if (detail.isEmpty()){
+                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            }
+            return new ResponseEntity<>(detail.get(), HttpStatus.OK);
+//        } catch (Exception e){
+//            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+//        }
     }
     @DeleteMapping("/delete-detail")
     public ResponseEntity<TripDetails> deleteTripDetail(@RequestBody ObjectNode objectNode){
