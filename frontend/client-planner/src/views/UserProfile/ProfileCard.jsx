@@ -6,6 +6,8 @@ function ProfileCard(props) {
   const ref = useRef();
 
   const [avatar, setAvatar] = useState(props.user.avatar);
+  const [curUsername, setUsername] = useState(props.user.name);
+  const [isEditing, setIsEditing] = useState(false);
   const handleClick = (e) => {
     ref.current.click();
   };
@@ -27,6 +29,24 @@ function ProfileCard(props) {
     });
   };
 
+  const handleInput = (e) => {
+    if (e.key === "Enter") {
+      setIsEditing(false);
+      console.log(curUsername);
+
+      const newUser = {
+        id: localStorage.getItem("id"),
+        username: curUsername,
+      };
+      axios.post("/api/user/edit-username", newUser, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+        withCredentials: true,
+      });
+    }
+  };
+
   return (
     <MDBCard className={`${style.card} p-3`}>
       <div className={`${style.link} text-end mb-4`}>
@@ -40,7 +60,7 @@ function ProfileCard(props) {
       >
         <div className={style.btn}>
           <img
-            className={`${style.avatar} hover-shadow`}
+            className={`${style.avatar}`}
             src={avatar ? avatar : "http://www.gravatar.com/avatar/?d=mp"}
           />
           <MDBBtn
@@ -60,9 +80,33 @@ function ProfileCard(props) {
             />
           </MDBBtn>
         </div>
-        <span className={`${style.name} mt-3 mx-auto`}>{props.user.name}</span>
-        <span className={style.email}>{props.user.email}</span>
+        {isEditing ? (
+          <input
+            autoFocus
+            onInput={(e) => setUsername(e.target.value)}
+            onKeyDown={handleInput}
+            defaultValue={curUsername}
+            className={`${style.editInput} mt-3`}
+            type="text"
+          />
+        ) : (
+          <span className={`${style.name} mt-3 mx-auto`}>
+            {curUsername}
+            <MDBBtn
+              tag="a"
+              color="none"
+              style={{
+                position: "absolute",
+                marginLeft: "5px",
+              }}
+              onClick={() => setIsEditing(true)}
+            >
+              <MDBIcon fas icon="pen" size="xs" />
+            </MDBBtn>
+          </span>
+        )}
 
+        <span className={style.email}>{props.user.email}</span>
         <div className={`px-2 rounded mt-4 ${style.date}`}>
           <span className={style.join}>Joined May,2022</span>
         </div>

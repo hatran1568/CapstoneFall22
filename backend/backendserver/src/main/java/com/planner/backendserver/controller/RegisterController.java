@@ -1,6 +1,6 @@
 package com.planner.backendserver.controller;
 
-import com.planner.backendserver.DTO.RegisterRequestDTO;
+import com.planner.backendserver.dto.request.RegisterRequestDTO;
 import com.planner.backendserver.entity.Provider;
 import com.planner.backendserver.entity.Role;
 import com.planner.backendserver.entity.User;

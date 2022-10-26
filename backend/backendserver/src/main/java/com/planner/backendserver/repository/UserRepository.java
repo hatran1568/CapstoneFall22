@@ -22,4 +22,9 @@ public interface UserRepository extends JpaRepository<User,Integer> {
     @Transactional
     @Query("UPDATE User u SET u.avatar=:newAvatar WHERE u.userID=:userID")
     public void updateAvatar(int userID, String newAvatar);
+
+    @Modifying
+    @Transactional
+    @Query("UPDATE User u SET u.name=:newUsername WHERE u.userID=:userId")
+    public void updateUsername(int userId, String newUsername);
 }

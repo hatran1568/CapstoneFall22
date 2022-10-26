@@ -1,7 +1,6 @@
 package com.planner.backendserver.controller;
 
 import com.fasterxml.jackson.databind.node.ObjectNode;
-import com.planner.backendserver.entity.Trip;
 import com.planner.backendserver.service.interfaces.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -24,15 +23,31 @@ public class UserController {
 
     @PostMapping("/edit-avatar/{userId}")
     public ResponseEntity<?> updateAvatar(@PathVariable int userId, @RequestPart("File") MultipartFile file){
-//        try{
+        try{
             if (userService.getUserProfileById(userId) == null) {
                 return new ResponseEntity<>(HttpStatus.NOT_FOUND);
             }
             String oldAvatar = userService.editAvatar(userId, file);
-            return new ResponseEntity<>(oldAvatar, HttpStatus.OK);
-//        } catch (Exception e){
-//            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-//        }
+            return new ResponseEntity<>(HttpStatus.OK);
+        } catch (Exception e){
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @PostMapping("/edit-username")
+    public ResponseEntity<?> updateUsername(@RequestBody ObjectNode request){
+        try{
+            int id = request.get("id").asInt();
+            String newName = request.get("username").asText();
+            if (userService.getUserProfileById(id) == null) {
+                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            }
+            userService.editUsername(id, newName);
+            return new ResponseEntity<>(HttpStatus.OK);
+
+        } catch (Exception e){
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
 }

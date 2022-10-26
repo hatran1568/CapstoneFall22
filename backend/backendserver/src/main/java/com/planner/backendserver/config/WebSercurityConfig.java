@@ -1,14 +1,9 @@
 package com.planner.backendserver.config;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.planner.backendserver.DTO.LoginResponseDTO;
 import com.planner.backendserver.DTO.OAuth2UserDTO;
-import com.planner.backendserver.DTO.UserDTO;
-import com.planner.backendserver.controller.LoginController;
 import com.planner.backendserver.entity.User;
 import com.planner.backendserver.repository.UserRepository;
 import com.planner.backendserver.service.UserDTOServiceImplementer;
-import com.planner.backendserver.service.interfaces.UserDTOService;
 import com.planner.backendserver.service.interfaces.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -18,14 +13,12 @@ import org.springframework.security.config.annotation.authentication.builders.Au
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.annotation.web.configuration.WebSecurityConfiguration;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.client.userinfo.OAuth2UserService;
-import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
@@ -98,7 +91,7 @@ public class WebSercurityConfig extends WebSecurityConfigurerAdapter {
                 .disable()
                 .authorizeRequests()
 
-                .antMatchers("/api/login","/api/register","/login","/oauth/**","/api/loginByOAuth","/api/wrongUser", "/api/user/findById/**","/search/**","/trip/**", "/trip/put-detail", "/api/pois/**", "/api/destination/**", "/api/user/edit-avatar").permitAll()
+                .antMatchers("/api/login","/api/register","/login","/oauth/**","/api/loginByOAuth","/api/wrongUser", "/api/user/findById/**","/search/**","/trip/**", "/trip/put-detail", "/api/pois/**", "/api/destination/**", "/api/user/edit-username").permitAll()
                 .anyRequest().authenticated().and().formLogin().loginPage("/api/wrongUser").failureHandler(new AuthenticationFailureHandler() {
 
                     @Override

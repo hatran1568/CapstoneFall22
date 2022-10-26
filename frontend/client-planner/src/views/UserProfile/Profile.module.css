@@ -88,3 +88,15 @@ hr .new1 {
 .imageButton:hover {
   color: gray;
 }
+
+.editInput {
+  border: none;
+  border-bottom: 1px solid gray;
+  text-align: center;
+}
+
+.editInput :active,
+.editInput :focus-within {
+  border: none;
+  border-bottom: 1px solid black;
+}

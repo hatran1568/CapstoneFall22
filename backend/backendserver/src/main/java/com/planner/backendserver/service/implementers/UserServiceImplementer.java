@@ -104,4 +104,9 @@ public class UserServiceImplementer implements UserService  {
 
         return user.getAvatar();
     }
+
+    @Override
+    public void editUsername(int userId, String newUsername) {
+        userRepository.updateUsername(userId, newUsername);
+    }
 }

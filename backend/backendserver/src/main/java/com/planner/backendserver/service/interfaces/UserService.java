@@ -13,4 +13,5 @@ public interface UserService {
     public boolean checkExistByEmail(String email);
     public UserDetailResponseDTO getUserProfileById(int userId);
     public String editAvatar(int userId, MultipartFile file);
+    public void editUsername(int userId, String newUsername);
 }
