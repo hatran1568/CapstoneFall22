@@ -17,6 +17,7 @@ public interface TripService {
     public Optional<Double> getDistanceBetweenTwoPOIs(int from, int to);
     public Optional<TripDetails> getTripDetailById(int id);
     public Optional<TripDetails> editTripDetailById(TripDetails detail, int id);
+    public Optional<TripDetails> editCustomTripDetailById(TripDetails detail, int id);
     public List<TripGeneralDTO> getTripsByUser(int userId);
     public void deleteTripById(int id);
 }
