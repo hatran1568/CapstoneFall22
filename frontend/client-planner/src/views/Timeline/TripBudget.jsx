@@ -3,7 +3,7 @@ import TripDetailTabs from "./TripDetailTabs";
 import style from "./TripBudget.module.css";
 import axios from "axios";
 import { useParams } from "react-router-dom";
-import ProgressBar from 'react-bootstrap/ProgressBar';
+import { Progress } from 'antd';
 import ModalGraph from "../../components/Trips/ModalGraph";
 import AddExpenseModal from "../../components/Trips/AddExpenseModal";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -176,15 +176,15 @@ class TripBudget extends Component {
     const exceedExpense = Math.round((expenseRate - 100) * 100) / 100;
     const progressBar = [];
     if (expenseRate >= 100) {
-      progressBar.push(<ProgressBar animated striped variant="danger" now={expenseRate}/>)
+      progressBar.push(<Progress className={style.progressBar} trailColor="rgb(219, 219, 219)" strokeColor="rgb(255, 99, 132)" showInfo={false} percent={expenseRate}/>)
       progressBar.push(<span className={style.budgetExceed}>You have exceeded the budget by {exceedExpense}%</span>)
     }
     else if (expenseRate > 80) {
-      progressBar.push(<ProgressBar animated striped variant="warning" now={expenseRate}/>)
+      progressBar.push(<Progress className={style.progressBar} trailColor="rgb(219, 219, 219)" strokeColor="rgb(255, 182, 10)" showInfo={false} percent={expenseRate}/>)
       progressBar.push(<span className={style.budgetWarning}>You are at {expenseRate}% of the set budget</span>)
     }
     else if (expenseRate <= 80) {
-      progressBar.push(<ProgressBar animated striped variant="success" now={expenseRate}/>)
+      progressBar.push(<Progress className={style.progressBar} trailColor="rgb(219, 219, 219)" strokeColor="rgb(82, 196, 26)" showInfo={false} percent={expenseRate}/>)
       progressBar.push(<span className={style.budgetNormal}>You are at {expenseRate}% of the set budget</span>)
     }
     //Expenses
