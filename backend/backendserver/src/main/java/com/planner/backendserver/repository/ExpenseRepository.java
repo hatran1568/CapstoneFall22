@@ -1,9 +1,6 @@
 package com.planner.backendserver.repository;
 
-import com.planner.backendserver.DTO.ExpenseGraphDTO;
-import com.planner.backendserver.DTO.GalleryImages;
-import com.planner.backendserver.DTO.POIBoxDTO;
-import com.planner.backendserver.DTO.TripExpenseDTO;
+import com.planner.backendserver.DTO.*;
 import com.planner.backendserver.entity.Destination;
 
 import java.util.ArrayList;
@@ -13,34 +10,37 @@ import com.planner.backendserver.entity.Trip;
 import com.planner.backendserver.entity.TripExpense;
 import org.hibernate.sql.Select;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Optional;
 
 @Repository
 public interface ExpenseRepository extends JpaRepository<ExpenseCategory,Double> {
     @Query(
-            value = "SELECT te.trip_expense_id as expenseId, te.trip_id as tripId, te.amount, te.description, ec.name, ec.icon from trip_expense te LEFT JOIN expense_category ec on te.expense_category_id = ec.expense_category_id where te.trip_id = ?1\n",
+            value = "SELECT te.trip_expense_id as expenseId, te.trip_id as tripId, te.expense_category_id as expenseCategoryId, te.amount, te.description, ec.name, ec.icon from trip_expense te LEFT JOIN expense_category ec on te.expense_category_id = ec.expense_category_id where te.trip_id = ?1\n",
             nativeQuery = true)
     ArrayList<TripExpenseDTO> getExpensesOfTrip(int tripId);
     @Query(
-            value = "SELECT te.trip_expense_id as expenseId, te.trip_id as tripId, te.amount, te.description, ec.name, ec.icon from trip_expense te LEFT JOIN expense_category ec on te.expense_category_id = ec.expense_category_id where te.trip_id = ?1 ORDER BY te.amount DESC\n",
+            value = "SELECT te.trip_expense_id as expenseId, te.trip_id as tripId, te.expense_category_id as expenseCategoryId, te.amount, te.description, ec.name, ec.icon from trip_expense te LEFT JOIN expense_category ec on te.expense_category_id = ec.expense_category_id where te.trip_id = ?1 ORDER BY te.amount DESC\n",
             nativeQuery = true)
     ArrayList<TripExpenseDTO> getExpensesOfTripAmountDesc(int tripId);
     @Query(
-            value = "SELECT te.trip_expense_id as expenseId, te.trip_id as tripId, te.amount, te.description, ec.name, ec.icon from trip_expense te LEFT JOIN expense_category ec on te.expense_category_id = ec.expense_category_id where te.trip_id = ?1 ORDER BY te.amount ASC\n",
+            value = "SELECT te.trip_expense_id as expenseId, te.trip_id as tripId, te.expense_category_id as expenseCategoryId, te.amount, te.description, ec.name, ec.icon from trip_expense te LEFT JOIN expense_category ec on te.expense_category_id = ec.expense_category_id where te.trip_id = ?1 ORDER BY te.amount ASC\n",
             nativeQuery = true)
     ArrayList<TripExpenseDTO> getExpensesOfTripAmountAsc(int tripId);
     @Query(
-            value = "SELECT te.trip_expense_id as expenseId, te.trip_id as tripId, te.amount, te.description, ec.name, ec.icon from trip_expense te LEFT JOIN expense_category ec on te.expense_category_id = ec.expense_category_id where te.trip_id = ?1 ORDER BY ec.name\n",
+            value = "SELECT te.trip_expense_id as expenseId, te.trip_id as tripId, te.expense_category_id as expenseCategoryId, te.amount, te.description, ec.name, ec.icon from trip_expense te LEFT JOIN expense_category ec on te.expense_category_id = ec.expense_category_id where te.trip_id = ?1 ORDER BY ec.name\n",
             nativeQuery = true)
     ArrayList<TripExpenseDTO> getExpensesOfTripName(int tripId);
     @Query(
-            value = "SELECT * FROM expense_category",
+            value = "SELECT ec.expense_category_id as value, ec.name as label FROM expense_category ec",
             nativeQuery = true)
-    ArrayList<ExpenseCategory> getExpenseCategories();
+    ArrayList<ExpenseCategorySelectDTO> getExpenseCategories();
 
     @Query(
             value = "SELECT ec.expense_category_id as expenseCategoryId, ec.name as name, SUM(te.amount) as amount\n" +
@@ -54,4 +54,18 @@ public interface ExpenseRepository extends JpaRepository<ExpenseCategory,Double>
             value = "SELECT SUM(te.amount) FROM trip_expense te WHERE te.trip_id = ?1",
             nativeQuery = true)
     double getTotalExpense(int tripId);
+
+    @Modifying
+    @Transactional
+    @Query(
+            value = "DELETE FROM trip_expense te WHERE te.trip_expense_id = ?1",
+            nativeQuery = true)
+    int deleteExpense(int expenseId);
+    @Modifying
+    @Transactional
+    @Query(
+            value = "INSERT INTO trip_expense (amount, description, expense_category_id, trip_id) VALUE (?1, ?2, ?3, ?4)",
+            nativeQuery = true)
+    void addExpense(double amount, String description, int expenseCategoryId, int tripId);
+
 }

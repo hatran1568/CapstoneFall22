@@ -4,21 +4,21 @@ import style from "./TripBudget.module.css";
 import axios from "axios";
 import { useParams } from "react-router-dom";
 import ProgressBar from 'react-bootstrap/ProgressBar';
-import ModalGraph from "../../components/ModalGraph"
+import ModalGraph from "../../components/Trips/ModalGraph";
+import AddExpenseModal from "../../components/Trips/AddExpenseModal";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import fontawesome from '@fortawesome/fontawesome'
-import { faPlane, faBed, faTaxi, faBus, faUtensils, faWineGlass, faMonument, faTicketAlt, faShoppingBag, faGasPump, faShoppingBasket, faStickyNote } from "@fortawesome/free-solid-svg-icons";
+import { faFilter, faTrash, faPlane, faBed, faTaxi, faBus, faUtensils, faWineGlass, faMonument, faTicket, faBagShopping, faGasPump, faBasketShopping, faNoteSticky } from "@fortawesome/free-solid-svg-icons";
 import {
     MDBContainer,
     MDBCard,
     MDBCardBody,
     MDBRow,
     MDBCol,
-    MDBRadio,
-    MDBBtnGroup
+    MDBBtn
   } from "mdb-react-ui-kit";
 import Dropdown from 'react-bootstrap/Dropdown';
-fontawesome.library.add(faPlane, faBed, faTaxi, faBus, faUtensils, faWineGlass, faMonument, faTicketAlt, faShoppingBag, faGasPump, faShoppingBasket, faStickyNote);
+fontawesome.library.add(faFilter, faTrash, faPlane, faBed, faTaxi, faBus, faUtensils, faWineGlass, faMonument, faTicket, faBagShopping, faGasPump, faBasketShopping, faNoteSticky);
 class TripBudget extends Component {
   state = {};
   constructor(props) {
@@ -29,6 +29,7 @@ class TripBudget extends Component {
       graphData: [],
       expenseData: [],
       dataLoaded: false,
+      currentFilter: 0
     };
   }
   componentDidMount() {
@@ -94,17 +95,56 @@ class TripBudget extends Component {
   //Filter
   filterChanged = (event) => {
     const id = window.location.href.split('/')[4];
+    const filterId = event.currentTarget.id;
     const filterDropdown = document.getElementById("filterDropdown");
-    filterDropdown.innerHTML = "Filter: " + event.currentTarget.name;
+    filterDropdown.innerHTML = " Filter: " + event.currentTarget.name;
     var elems = document.querySelectorAll(".active");
     [].forEach.call(elems, function(el) {
       el.classList.remove("active");
     });
     event.currentTarget.className += " active";
-    axios.get(`http://localhost:8080/api/expense/` + id + "/" + event.currentTarget.id).then((res) => {
+    axios.get(`http://localhost:8080/api/expense/` + id + "/" + filterId).then((res) => {
+      const data = res.data;
+      this.setState({
+        expenseData: data,
+        currentFilter: filterId
+      });
+    }).catch(
+      function (error) {
+        return Promise.reject(error)
+      }
+    );
+  }
+
+  //Delete Expense
+  deleteExpense = async (event) => {
+    const id = window.location.href.split('/')[4];
+    await axios.delete(`http://localhost:8080/api/expense/` + event.currentTarget.id, {});
+    await axios.get(`http://localhost:8080/api/expense/` + id + "/" + this.state.currentFilter).then((res) => {
       const data = res.data;
       this.setState({
         expenseData: data
+      });
+    }).catch(
+      function (error) {
+        return Promise.reject(error)
+      }
+    );
+    await axios.get(`http://localhost:8080/api/expense/total/` + id).then((res) => {
+      const totalExpense = res.data;
+      this.setState({
+        totalBudget: totalExpense
+      });
+    }).catch(
+      function (error) {
+        console.log(error)
+        return Promise.reject(error)
+      }
+    );
+    await axios.get(`http://localhost:8080/api/expense/graph/` + id).then((res) => {
+      const data = res.data;
+      this.setState({
+        graphData: data
       });
     }).catch(
       function (error) {
@@ -113,7 +153,7 @@ class TripBudget extends Component {
       }
     );
   }
-  
+
   render() {
     const formatter = new Intl.NumberFormat('vi', {
       style: 'currency',
@@ -157,11 +197,14 @@ class TripBudget extends Component {
             <MDBCol md={1} className={style.expenseBoxIcon}>
               <FontAwesomeIcon icon={entry.icon}/>
             </MDBCol>
-            <MDBCol md={8} className={style.expenseBoxMid}>
+            <MDBCol md={7} className={style.expenseBoxMid}>
               <b>{entry.name}</b><br/>{entry.description}
             </MDBCol>
             <MDBCol md={3} className={style.expenseBoxAmount}>
               {formatter.format(entry.amount)}
+            </MDBCol>
+            <MDBCol md={1} onClick={this.deleteExpense} id={entry.expenseId} className={style.expenseBoxDelete}>
+              <FontAwesomeIcon icon="trash"/>
             </MDBCol>
           </MDBRow>
         </MDBCardBody>
@@ -198,20 +241,25 @@ class TripBudget extends Component {
             </MDBCardBody>
           </MDBCard><br/>
           <h2>Expenses</h2>
-          <MDBContainer className={style.expenseFilter}>
-            <Dropdown>
-              <Dropdown.Toggle variant="info" id="filterDropdown">
-                Filter: By Date
-              </Dropdown.Toggle>
+          <MDBRow className={style.btnGroup}>
+            <MDBCol md={4} className={style.expenseAdd}>
+              <AddExpenseModal/>
+            </MDBCol>
+            <MDBCol md={4} className={style.expenseFilter}>            
+              <Dropdown>
+                <Dropdown.Toggle variant="info">
+                  <FontAwesomeIcon icon="filter"/><span id="filterDropdown"> Filter: By Date</span>
+                </Dropdown.Toggle>
 
-              <Dropdown.Menu>
-                <Dropdown.Item onClick={this.filterChanged} id={0} active name="By date">By date</Dropdown.Item>
-                <Dropdown.Item onClick={this.filterChanged} id={1} name="Amount: High to low">Amount: High to low</Dropdown.Item>
-                <Dropdown.Item onClick={this.filterChanged} id={2} name="Amount: Low to high">Amount: Low to high</Dropdown.Item>
-                <Dropdown.Item onClick={this.filterChanged} id={3} name="By category">By category</Dropdown.Item>
-              </Dropdown.Menu>
-            </Dropdown>
-          </MDBContainer>
+                <Dropdown.Menu>
+                  <Dropdown.Item onClick={this.filterChanged} id={0} active name="By date">By date</Dropdown.Item>
+                  <Dropdown.Item onClick={this.filterChanged} id={1} name="Amount: High to low">Amount: High to low</Dropdown.Item>
+                  <Dropdown.Item onClick={this.filterChanged} id={2} name="Amount: Low to high">Amount: Low to high</Dropdown.Item>
+                  <Dropdown.Item onClick={this.filterChanged} id={3} name="By category">By category</Dropdown.Item>
+                </Dropdown.Menu>
+              </Dropdown>
+            </MDBCol>
+          </MDBRow><br/>
           {expenseBox}
         </MDBContainer>
       </div>

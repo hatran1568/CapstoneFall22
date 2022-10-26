@@ -3,7 +3,7 @@ import ReactDOM from "react-dom"
 import {useState} from 'react';
 import {useEffect} from 'react';
 import {Navigate, useParams } from 'react-router-dom';
-import POIBoxLarge from '../../components/POIBoxLarge.jsx';
+import POIBoxLarge from '../../components/POIs/POIBoxLarge.jsx';
 import axios from "../../api/axios";
 import ReactPaginate from 'react-paginate';
 import cateData from "./category.json";

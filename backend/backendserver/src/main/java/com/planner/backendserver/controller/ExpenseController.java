@@ -1,23 +1,19 @@
 package com.planner.backendserver.controller;
 
-import com.planner.backendserver.DTO.ExpenseGraphDTO;
-import com.planner.backendserver.DTO.GalleryImages;
-import com.planner.backendserver.DTO.POIBoxDTO;
-import com.planner.backendserver.DTO.TripExpenseDTO;
+import com.planner.backendserver.DTO.*;
 import com.planner.backendserver.entity.Destination;
 import com.planner.backendserver.entity.ExpenseCategory;
+import com.planner.backendserver.entity.TripExpense;
 import com.planner.backendserver.repository.DestinationRepository;
 import com.planner.backendserver.repository.ExpenseRepository;
 import com.planner.backendserver.service.UserDTOServiceImplementer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 
 @RestController
 @RequestMapping("/api")
@@ -56,9 +52,9 @@ public class ExpenseController {
         }
     }
     @GetMapping("/expense/categories")
-    public ResponseEntity<ArrayList<ExpenseCategory>> getExpenseCategories(){
+    public ResponseEntity<ArrayList<ExpenseCategorySelectDTO>> getExpenseCategories(){
         try{
-            ArrayList<ExpenseCategory> expenseCategories = expenseRepo.getExpenseCategories();
+            ArrayList<ExpenseCategorySelectDTO> expenseCategories = expenseRepo.getExpenseCategories();
             if (expenseCategories.isEmpty()){
                 return new ResponseEntity<>(HttpStatus.NOT_FOUND);
             }
@@ -87,5 +83,25 @@ public class ExpenseController {
         } catch (Exception e){
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
+    }
+
+    @DeleteMapping(value = "/expense/{id}")
+    public ResponseEntity<Integer> deleteExpense(@PathVariable Integer id) {
+        var isRemoved = expenseRepo.deleteExpense(id);
+        if (isRemoved == 0) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        return new ResponseEntity<>(id, HttpStatus.OK);
+    }
+    @RequestMapping(value = "/expense/new", consumes = "application/json", produces = { "*/*" }, method = RequestMethod.POST)
+    public ResponseEntity<?> addExpense(@RequestBody TripExpenseAddDTO expense) {
+        try{
+            expenseRepo.addExpense(expense.getAmount(), expense.getDescription(), expense.getExpenseCategoryId(), expense.getTripId());
+            return new ResponseEntity<>(HttpStatus.OK);
+        }
+        catch (Exception e){
+            return  new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+
     }
 }
