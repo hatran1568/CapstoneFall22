@@ -1,6 +1,7 @@
 package com.planner.backendserver.controller;
 
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import com.planner.backendserver.dto.request.ChangePwdRequestDTO;
 import com.planner.backendserver.service.interfaces.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -48,6 +49,23 @@ public class UserController {
         } catch (Exception e){
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
+    }
+
+    @PostMapping("/edit-password")
+    public ResponseEntity<?> updatePassword(@RequestBody ChangePwdRequestDTO request){
+//        try{
+            if (userService.getUserProfileById(request.getId()) == null) {
+                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            }
+            boolean result = userService.editPassword(request);
+            if (result == false){
+                return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+            } else {
+                return new ResponseEntity<>(HttpStatus.OK);
+            }
+//        } catch (Exception e){
+//            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+//        }
     }
 
 }

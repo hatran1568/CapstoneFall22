@@ -1,5 +1,6 @@
 package com.planner.backendserver.service.implementers;
 
+import com.planner.backendserver.dto.request.ChangePwdRequestDTO;
 import com.planner.backendserver.dto.response.UserDetailResponseDTO;
 import com.planner.backendserver.entity.Provider;
 import com.planner.backendserver.entity.Role;
@@ -8,15 +9,12 @@ import com.planner.backendserver.entity.UserStatus;
 import com.planner.backendserver.repository.UserRepository;
 import com.planner.backendserver.service.interfaces.UserService;
 import com.planner.backendserver.utils.GoogleDriveManager;
-import org.hibernate.annotations.SQLInsert;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
-
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 
 @Service
 public class UserServiceImplementer implements UserService  {
@@ -108,5 +106,16 @@ public class UserServiceImplementer implements UserService  {
     @Override
     public void editUsername(int userId, String newUsername) {
         userRepository.updateUsername(userId, newUsername);
+    }
+
+    @Override
+    public boolean editPassword(ChangePwdRequestDTO request) {
+        User user = userRepository.findByUserID(request.getId());
+        PasswordEncoder encoder = new BCryptPasswordEncoder();
+        if (!encoder.matches(request.getOldPassword(), user.getPassword())){
+            return false;
+        }
+        userRepository.updatePassword(request.getId(), encoder.encode(request.getNewPassword()));
+        return true;
     }
 }

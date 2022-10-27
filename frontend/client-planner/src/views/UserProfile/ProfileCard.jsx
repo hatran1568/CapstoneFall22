@@ -49,12 +49,6 @@ function ProfileCard(props) {
 
   return (
     <MDBCard className={`${style.card} p-3`}>
-      <div className={`${style.link} text-end mb-4`}>
-        <MDBCardLink href="#">
-          <i className="fas fa-pen-alt mx-1"></i>
-          Edit profile
-        </MDBCardLink>
-      </div>
       <div
         className={` d-flex flex-column justify-content-center align-items-center`}
       >
