@@ -16,7 +16,6 @@ import SearchResults from "../views/SearchResults/SearchResults";
 import POIDetails from "../views/POIDetails/POIDetails";
 import ChangePassword from "../views/UserProfile/ChangePassword";
 import TestTripcard from "../components/Trips/TestTripcard";
-
 export default function RootRoutes() {
   return (
     <Router>
