@@ -92,7 +92,10 @@ public class UserServiceImplementer implements UserService  {
         String webViewLink = null;
         try {
             webViewLink = driveManager.uploadFile(file, "tripplanner/img");
-
+            String oldAvatar = user.getAvatar();
+            if (oldAvatar != null){
+                driveManager.deleteFile(oldAvatar.split("id=")[1]);
+            }
         } catch (Exception e) {
             throw new RuntimeException("Could not store the file. Error: " + e.getMessage());
         } finally {

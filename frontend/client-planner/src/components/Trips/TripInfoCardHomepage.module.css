@@ -65,6 +65,10 @@
   transition: 0.2s;
 }
 
+.deleteButton:hover {
+  color: white;
+}
+
 .card:hover .deleteButton {
   opacity: 1;
 }

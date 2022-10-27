@@ -17,6 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.parameters.P;
 import org.springframework.web.bind.annotation.*;
 import java.sql.Date;
 import java.util.ArrayList;
@@ -206,6 +207,24 @@ public class TripController {
             int id = objectNode.get("id").asInt();
             tripService.deleteTripById(id);
             return new ResponseEntity<>(HttpStatus.OK);
+        } catch(Exception e){
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @GetMapping("/get-trip-3/{userId}")
+    public ResponseEntity<?> getTripsForHomepage(@PathVariable int userId){
+        try{
+            return new ResponseEntity<>(tripService.getLast3TripsByUser(userId), HttpStatus.OK);
+        } catch(Exception e){
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @GetMapping("/get-total-trip/{userId}")
+    public ResponseEntity<?> getTotalTrips(@PathVariable int userId){
+        try{
+            return new ResponseEntity<>(tripService.countTripByUser(userId), HttpStatus.OK);
         } catch(Exception e){
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }

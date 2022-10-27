@@ -135,5 +135,7 @@ public class GoogleDriveManager {
         }
         return null;
     }
-
+    public void deleteFile(String fileId) throws Exception {
+        this.getInstance().files().delete(fileId).execute();
+    }
 }

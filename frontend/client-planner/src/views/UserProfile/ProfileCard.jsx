@@ -1,6 +1,6 @@
 import axios from "../../api/axios";
-import { MDBCard, MDBCardLink, MDBIcon, MDBBtn } from "mdb-react-ui-kit";
-import { React, useEffect, useRef, useState } from "react";
+import { MDBCard, MDBIcon, MDBBtn } from "mdb-react-ui-kit";
+import { React, useRef, useState } from "react";
 import style from "./Profile.module.css";
 function ProfileCard(props) {
   const ref = useRef();
@@ -27,6 +27,11 @@ function ProfileCard(props) {
       },
       withCredentials: true,
     });
+  };
+
+  const toLongDate = (date) => {
+    var today = new Date(date);
+    return today.toLocaleDateString("en-IE");
   };
 
   const handleInput = (e) => {
@@ -56,6 +61,7 @@ function ProfileCard(props) {
           <img
             className={`${style.avatar}`}
             src={avatar ? avatar : "http://www.gravatar.com/avatar/?d=mp"}
+            alt="avatar"
           />
           <MDBBtn
             tag="a"
@@ -95,14 +101,16 @@ function ProfileCard(props) {
               }}
               onClick={() => setIsEditing(true)}
             >
-              <MDBIcon fas icon="pen" size="xs" />
+              <MDBIcon fas icon="pen" size="xs" style={{ color: "gray" }} />
             </MDBBtn>
           </span>
         )}
 
         <span className={style.email}>{props.user.email}</span>
         <div className={`px-2 rounded mt-4 ${style.date}`}>
-          <span className={style.join}>Joined May,2022</span>
+          <span className={style.join}>
+            Joined {toLongDate(props.user.dateCreated.split("T")[0])}
+          </span>
         </div>
       </div>
     </MDBCard>
