@@ -5,7 +5,6 @@ import style from "./CollectionInfoCard.module.css";
 import { Modal } from "antd";
 
 const CollectionInfoCard = (prop) => {
-  console.log(prop.prop.collectionId);
   const [isDeleted, setIsDeleted] = useState(prop.prop.isDeleted);
   const { confirm } = Modal;
 
@@ -35,35 +34,33 @@ const CollectionInfoCard = (prop) => {
   };
 
   return isDeleted ? null : (
-    <MDBRow>
-      <MDBCard border='0'>
-        <MDBRow className='g-0'>
-          <MDBCol sm='3'>
-            <MDBCardImage
-              src={
-                prop.prop.image
-                  ? prop.prop.image
-                  : "https://i.picsum.photos/id/1000/5626/3635.jpg?hmac=qWh065Fr_M8Oa3sNsdDL8ngWXv2Jb-EE49ZIn6c0P-g"
-              }
-              fluid
-            />
-          </MDBCol>
-          <MDBCol sm='8'>
-            <MDBCardBody>
-              <a href={"/collection?id=" + prop.prop.collectionId}>
-                <h5>{prop.prop.title}</h5>
-                <p>{prop.prop.description}</p>
-              </a>
-            </MDBCardBody>
-          </MDBCol>
-          <MDBCol sm='1'>
-            <MDBBtn color='none' onClick={handleDelete}>
-              <MDBIcon far icon='trash-alt' size='lg' />
-            </MDBBtn>
-          </MDBCol>
-        </MDBRow>
-      </MDBCard>
-    </MDBRow>
+    <MDBCard border='dark' shadow='0' className='p-0 mb-3'>
+      <MDBRow className='g-0'>
+        <MDBCol sm='4'>
+          <MDBCardImage
+            src={
+              prop.prop.image
+                ? prop.prop.image
+                : "https://i.picsum.photos/id/1000/5626/3635.jpg?hmac=qWh065Fr_M8Oa3sNsdDL8ngWXv2Jb-EE49ZIn6c0P-g"
+            }
+            fluid
+          />
+        </MDBCol>
+        <MDBCol sm='7'>
+          <MDBCardBody>
+            <a className={style.link} href={"/collection?id=" + prop.prop.collectionId}>
+              <h5>{prop.prop.title}</h5>
+              <p>{prop.prop.description}</p>
+            </a>
+          </MDBCardBody>
+        </MDBCol>
+        <MDBCol sm='1'>
+          <MDBBtn tag='a' color='none' className={style.deleteButton} onClick={handleDelete}>
+            <MDBIcon far icon='trash-alt' size='lg' />
+          </MDBBtn>
+        </MDBCol>
+      </MDBRow>
+    </MDBCard>
   );
 };
 

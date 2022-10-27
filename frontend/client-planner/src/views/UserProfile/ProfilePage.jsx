@@ -8,11 +8,14 @@ import {
   MDBTabsContent,
   MDBTabsPane,
   MDBRow,
+  MDBBtn,
+  MDBIcon,
 } from "mdb-react-ui-kit";
 import axios from "../../api/axios";
 import ProfileCard from "./ProfileCard";
 import TripInfoCard from "../../components/Trips/TripInfoCard";
 import CollectionInfoCard from "../../components/Collections/CollectionInfoCard";
+import AddCollectionModal from "../../components/Collections/AddCollectionModal";
 
 function ProfilePage() {
   const [curUser, setCurUser] = useState();
@@ -99,6 +102,7 @@ function ProfilePage() {
                     <CollectionInfoCard prop={collection} key={collection.collectionId} />
                   ))
                 : null}
+              <AddCollectionModal />
             </MDBTabsPane>
           </MDBTabsContent>
         </MDBCol>

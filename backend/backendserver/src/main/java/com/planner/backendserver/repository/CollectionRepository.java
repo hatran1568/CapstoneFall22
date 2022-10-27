@@ -17,7 +17,7 @@ public interface CollectionRepository extends JpaRepository<Collection, Integer>
             " from Collection c" +
             " left join CollectionPOI cp on c.collectionId = cp.collection.collectionId" +
             " left join MasterActivity m on cp.poi.activityId = m.activityId" +
-            " where c.user.userID = :id")
+            " where c.user.userID = :id and c.isDeleted = false")
     ArrayList<Collection> getCollectionDetailsByUserID(int id);
 
     @Modifying
