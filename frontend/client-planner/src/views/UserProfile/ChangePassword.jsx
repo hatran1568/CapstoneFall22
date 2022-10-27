@@ -11,7 +11,8 @@ import axios from "../../api/axios";
 import style from "./changePassword.module.css";
 import { message } from "antd";
 function ChangePassword() {
-  const [avatar, setAvatar] = useState();
+  const [errMsg, setErrMsg] = useState("");
+  const [curUser, setCurUser] = useState();
   const [user, setUser] = useState({
     id: localStorage.getItem("id"),
     oldPassword: "",
@@ -20,23 +21,51 @@ function ChangePassword() {
   });
 
   const handleChangePwd = () => {
-    axios
-      .post("/api/user/edit-password", user, {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
-        },
-        withCredentials: true,
-      })
-      .then((response) => {
-        if (response.status == 400) {
-          console.log("wrong password");
-        }
-        if (response.status == 200) {
-          message.success("Password changed successfully!");
-        }
-      });
+    if (
+      user.oldPassword == null ||
+      user.newPassword == null ||
+      user.confirmPassword == null
+    ) {
+      setErrMsg("Please enter all fields");
+    } else if (user.newPassword != user.confirmPassword) {
+      setErrMsg("New password and confirm password doesn't match");
+    } else {
+      axios
+        .post("/api/user/edit-password", user, {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+          withCredentials: true,
+        })
+        .catch((err) => {
+          if (err.response.status == 400) {
+            setErrMsg("Wrong password!");
+          }
+        })
+        .then((response) => {
+          if (response.status == 200) {
+            message.success("Password changed successfully!");
+            window.location.href = "http://localhost:3000/";
+          }
+        });
+    }
   };
-  return (
+
+  useEffect(() => {
+    async function getUserProfile() {
+      const response = await axios.get("/api/user/findById/" + user.id, {
+        headers: { "Content-Type": "application/json" },
+        withCredentials: true,
+      });
+
+      setCurUser(response.data);
+    }
+
+    document.title = "Change password | Tripplanner";
+    getUserProfile();
+  }, []);
+
+  return curUser ? (
     <MDBContainer className={style.container}>
       <MDBCard alignment="center" style={{ marginTop: "50px" }}>
         <MDBCardBody>
@@ -47,11 +76,21 @@ function ChangePassword() {
             <div className={style.btn}>
               <img
                 className={`${style.avatar}`}
-                src={avatar ? avatar : "http://www.gravatar.com/avatar/?d=mp"}
+                src={
+                  curUser.avatar
+                    ? curUser.avatar
+                    : "http://www.gravatar.com/avatar/?d=mp"
+                }
               />
             </div>
-            <h6>Username</h6>
+            <h6>{curUser.name}</h6>
           </div>
+          <p className="mt-4">
+            Please enter your old password and new password
+          </p>
+          <p id="invalidWarning" className="text-danger my-1 mx-5">
+            {errMsg}
+          </p>
           <form>
             <MDBInput
               wrapperClass="my-4 mx-5"
@@ -81,14 +120,19 @@ function ChangePassword() {
                 setUser({ ...user, confirmPassword: e.target.value })
               }
             />
-            <MDBBtn className="mb-4" type="button" onClick={handleChangePwd}>
+            <MDBBtn
+              className="mb-4"
+              style={{ fontSize: "14px" }}
+              type="button"
+              onClick={handleChangePwd}
+            >
               Change password
             </MDBBtn>
           </form>
         </MDBCardBody>
       </MDBCard>
     </MDBContainer>
-  );
+  ) : null;
 }
 
 export default ChangePassword;

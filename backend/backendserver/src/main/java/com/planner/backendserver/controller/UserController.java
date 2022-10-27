@@ -9,6 +9,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.security.Principal;
+
 @RestController
 @RequestMapping("/api/user")
 public class UserController {
@@ -53,7 +55,8 @@ public class UserController {
 
     @PostMapping("/edit-password")
     public ResponseEntity<?> updatePassword(@RequestBody ChangePwdRequestDTO request){
-//        try{
+        try{
+
             if (userService.getUserProfileById(request.getId()) == null) {
                 return new ResponseEntity<>(HttpStatus.NOT_FOUND);
             }
@@ -63,9 +66,9 @@ public class UserController {
             } else {
                 return new ResponseEntity<>(HttpStatus.OK);
             }
-//        } catch (Exception e){
-//            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-//        }
+        } catch (Exception e){
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
 }
