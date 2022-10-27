@@ -1,15 +1,11 @@
 package com.planner.backendserver.service.implementers;
 
+import com.planner.backendserver.DTO.response.TripDetailedDTO;
 import com.planner.backendserver.dto.response.TripGeneralDTO;
-import com.planner.backendserver.entity.MasterActivity;
-import com.planner.backendserver.entity.POI;
-import com.planner.backendserver.entity.Trip;
-import com.planner.backendserver.entity.TripDetails;
-import com.planner.backendserver.repository.MasterActivityRepository;
-import com.planner.backendserver.repository.POIRepository;
-import com.planner.backendserver.repository.TripDetailRepository;
-import com.planner.backendserver.repository.TripRepository;
+import com.planner.backendserver.entity.*;
+import com.planner.backendserver.repository.*;
 import com.planner.backendserver.service.interfaces.TripService;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -24,15 +20,33 @@ public class TripServiceImpl implements TripService {
     @Autowired
     private TripRepository tripRepository;
     @Autowired
+    ModelMapper mapper;
+    @Autowired
     private TripDetailRepository tripDetailRepository;
     @Autowired
     private MasterActivityRepository masterActivityRepository;
     @Autowired
     private POIRepository poiRepository;
+    @Autowired
+    private CustomActivityRepository customActivityRepository;
+    @Autowired
+    private POIImageRepository poiImageRepository;
 
     @Override
-    public Optional<Trip> getTripById(int id) {
-        return tripRepository.getTripById(id);
+    public TripDetailedDTO getTripDetailedById(int tripId) {
+        Trip trip = tripRepository.findById(tripId);
+        if(trip == null) return null;
+        TripDetailedDTO tripDetailedDTO = mapper.map(trip, TripDetailedDTO.class);
+        tripDetailedDTO.setListTripDetails(tripDetailRepository.getListByTripId(tripId));
+        return tripDetailedDTO;
+    }
+    @Override
+    public TripGeneralDTO getTripGeneralById(int id) {
+        Trip trip = tripRepository.findById(id);
+        if(trip == null) return null;
+        TripGeneralDTO tripGeneralDTO = mapper.map(trip, TripGeneralDTO.class);
+        tripGeneralDTO.setImage(getFirstPOIImage(trip.getTripId()));
+        return tripGeneralDTO;
     }
 
     @Override
@@ -49,6 +63,29 @@ public class TripServiceImpl implements TripService {
         tripDetails.setTrip(trip);
         TripDetails saved = tripDetailRepository.save(tripDetails);
         saved.setMasterActivity(masterActivityRepository.getMasterActivityByActivityId(saved.getMasterActivity().getActivityId()));
+        return saved;
+    }
+
+    @Override
+    public TripDetails addCustomTripDetail(Date date, int startTime, int endTime, int tripId, String name, String address) {
+        MasterActivity masterActivity = new MasterActivity();
+        masterActivity.setName(name);
+        masterActivity.setAddress(address);
+        MasterActivity savedMasterActivity = masterActivityRepository.save(masterActivity);
+        CustomActivity customActivity = new CustomActivity();
+        customActivity.setActivityId(savedMasterActivity.getActivityId());
+        customActivityRepository.save(customActivity);
+
+        TripDetails tripDetails = new TripDetails();
+        tripDetails.setDate(date);
+        tripDetails.setStartTime(startTime);
+        tripDetails.setEndTime(endTime);
+        tripDetails.setMasterActivity(savedMasterActivity);
+
+        Trip trip = new Trip();
+        trip.setTripId(tripId);
+        tripDetails.setTrip(trip);
+        TripDetails saved = tripDetailRepository.save(tripDetails);
         return saved;
     }
 
@@ -74,7 +111,31 @@ public class TripServiceImpl implements TripService {
                     detail.setDate(newDetail.getDate());
                     detail.setStartTime(newDetail.getStartTime());
                     detail.setEndTime(newDetail.getEndTime());
-                    return tripDetailRepository.save(detail);
+                    TripDetails saved = tripDetailRepository.save(detail);
+                    return saved;
+                })
+                .orElseGet(() -> {
+                    return tripDetailRepository.save(newDetail);
+                }));
+    }
+
+    @Override
+    public Optional<TripDetails> editCustomTripDetailById(TripDetails newDetail, int id) {
+        MasterActivity masterActivity = newDetail.getMasterActivity();
+        int maId = masterActivity.getActivityId();
+        masterActivityRepository.findById(maId)
+                .map(activity -> {
+                    activity.setName(masterActivity.getName());
+                    activity.setAddress(masterActivity.getAddress());
+                    return masterActivityRepository.save(activity);
+                }).orElseGet(() -> masterActivityRepository.save(masterActivity));
+        return Optional.ofNullable(tripDetailRepository.findById(id)
+                .map(detail -> {
+                    detail.setDate(newDetail.getDate());
+                    detail.setStartTime(newDetail.getStartTime());
+                    detail.setEndTime(newDetail.getEndTime());
+                    TripDetails saved = tripDetailRepository.save(detail);
+                    return saved;
                 })
                 .orElseGet(() -> {
                     return tripDetailRepository.save(newDetail);
@@ -92,24 +153,35 @@ public class TripServiceImpl implements TripService {
             tripDTO.setBudget(trip.getBudget());
             tripDTO.setStartDate(trip.getStartDate());
             tripDTO.setEndDate(trip.getEndDate());
-            tripDTO.setImage(getTripThumbnail(trip.getTripId()));
+            tripDTO.setImage(getFirstPOIImage(trip.getTripId()));
             tripDTO.setDateModified(trip.getDateModified());
             return tripDTO;
         }).collect(Collectors.toList());
-
     }
 
-    private String getTripThumbnail(int tripId){
-        List<TripDetails> tripDetails = tripRepository.getTripById(tripId).get().getListTripDetails();
+    @Override
+    public void deleteTripById(int id) {
+        tripRepository.deleteTripById(id);
+    }
+
+    private String getTripThumbnail(List<TripDetails> tripDetails){
         if (tripDetails.size() == 0){
             return null;
         }
         int masterActivityId = tripDetails.get(0).getMasterActivity().getActivityId();
         Optional<POI> poi = poiRepository.getPOIByMasterActivity(masterActivityId);
         if (poi.isPresent()){
-            if (poi.get().getImages().size() > 0)
-            return poi.get().getImages().get(0).getUrl();
+            ArrayList<POIImage> poiImages = poiImageRepository.findAllByPOIId(poi.get().getActivityId());
+            if (poiImages.size() > 0)
+            return poiImages.get(0).getUrl();
         }
         return null;
+    }
+    private String getFirstPOIImage(int tripId){
+        TripDetails tripDetails = tripDetailRepository.findFirstInTrip(tripId);
+        if(tripDetails == null) return null;
+        POIImage poiImage = poiImageRepository.findFirstByPoiId(tripDetails.getMasterActivity().getActivityId());
+        if(poiImage == null) return null;
+        return poiImage.getUrl();
     }
 }

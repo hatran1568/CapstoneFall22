@@ -2,10 +2,15 @@ import React, { Component, useState, useEffect } from "react";
 import props from "prop-types";
 import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
+import style from "./timeline.module.css";
+import Rating from "../../components/Rating";
+import { ContactSupport } from "@mui/icons-material";
 function AddActivityModal(props) {
   const { activityEdited, allDates, tripDetail, ...rest } = props;
   const inputField = { ...tripDetail };
   useEffect(() => {
+    inputField.custom =
+      typeof tripDetail.masterActivity.category === "undefined";
     inputField.startTime = getTimeFromSecs(tripDetail.startTime);
     inputField.endTime = getTimeFromSecs(tripDetail.endTime);
   });
@@ -15,6 +20,15 @@ function AddActivityModal(props) {
     var timeString = date.toISOString().substring(11, 16);
     return timeString;
   };
+  const validateInput = (event) => {
+    if (inputField.custom) {
+      if (inputField.masterActivity.name == "") {
+        alert("Please enter an activity name!");
+        return;
+      }
+    }
+    activityEdited(event, inputField);
+  };
   return (
     <Modal
       {...rest}
@@ -22,19 +36,93 @@ function AddActivityModal(props) {
       aria-labelledby="contained-modal-title-vcenter"
       centered
     >
-      <Modal.Header closeButton>
-        <Modal.Title id="contained-modal-title-vcenter">
-          Edit your activity
-        </Modal.Title>
-      </Modal.Header>
       <Modal.Body>
-        <form>
-          <label>
-            Activity at:
-            <input disabled value={inputField.masterActivity.name} />
-          </label>
-          <br />
-          <div className="row">
+        <button
+          className={`btn-close ${style.closeBtn}`}
+          onClick={props.onHide}
+        ></button>
+        {!(typeof tripDetail.masterActivity.category === "undefined") && (
+          <div className={style.activityInfo}>
+            <div className={style.poiDiv}>
+              <img
+                src={
+                  tripDetail.masterActivity.images
+                    ? tripDetail.masterActivity.images[0]
+                      ? `../${tripDetail.masterActivity.images[0].url}`
+                      : "https://picsum.photos/seed/picsum/300/200"
+                    : "https://picsum.photos/seed/picsum/300/200"
+                }
+                alt=""
+                className={style.poiImage}
+              />
+            </div>
+            <div>
+              <div style={{ fontWeight: "700", fontSize: "20px" }}>
+                {tripDetail.masterActivity.name
+                  ? tripDetail.masterActivity.name
+                  : ""}
+              </div>
+              <div className={style.ratingDiv}>
+                {tripDetail.masterActivity.googleRate ? (
+                  <div>
+                    <span>
+                      <Rating ratings={tripDetail.masterActivity.googleRate} />
+                    </span>
+                    <span className={style.ratingNum}>
+                      {tripDetail.masterActivity.googleRate}
+                    </span>
+                  </div>
+                ) : (
+                  ""
+                )}{" "}
+              </div>
+            </div>
+            <p className={style.poiDescription}>
+              {tripDetail.masterActivity.description
+                ? tripDetail.masterActivity.description
+                : ""}
+            </p>
+            <div className={style.linkDiv}>
+              <a
+                href={"../poi?id=" + tripDetail.masterActivity.activityId}
+                className={style.detailLink}
+              >
+                See full attraction detail
+              </a>
+            </div>
+          </div>
+        )}
+        <form className={style.editForm}>
+          {typeof tripDetail.masterActivity.category === "undefined" ? (
+            <>
+              <label className={style.customLabel}>
+                Name:
+                <input
+                  className={`form-control`}
+                  name="name"
+                  required
+                  defaultValue={inputField.masterActivity.name}
+                  onChange={(e) => {
+                    inputField.masterActivity.name = e.target.value;
+                  }}
+                />
+              </label>
+              <label className={style.customLabel}>
+                Address:
+                <input
+                  className={`form-control`}
+                  name="address"
+                  defaultValue={inputField.masterActivity.address}
+                  onChange={(e) => {
+                    inputField.masterActivity.address = e.target.value;
+                  }}
+                />
+              </label>
+            </>
+          ) : (
+            <></>
+          )}
+          <div className={`container row ${style.timeGroupDiv}`}>
             <label className="col-4">
               Date:
               <select
@@ -85,10 +173,13 @@ function AddActivityModal(props) {
         </form>
       </Modal.Body>
       <Modal.Footer>
-        <Button onClick={(event) => props.activityEdited(event, inputField)}>
+        <Button
+          onClick={(event) => validateInput(event)}
+          className={style.submitBtn}
+        >
           Save
         </Button>
-        <Button onClick={props.onHide} variant="secondary">
+        <Button onClick={props.onHide} variant="outline-secondary">
           Close
         </Button>
       </Modal.Footer>

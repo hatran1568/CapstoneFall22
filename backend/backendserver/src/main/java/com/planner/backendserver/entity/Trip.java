@@ -50,10 +50,4 @@ public class Trip {
 
     @Column(name="is_deleted")
     private boolean isDeleted;
-
-    @OneToMany(targetEntity = TripDetails.class,fetch = FetchType.LAZY, mappedBy = "trip", cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
-    private List<TripDetails> listTripDetails;
-
-
-
 }

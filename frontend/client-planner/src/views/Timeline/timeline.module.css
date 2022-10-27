@@ -75,7 +75,9 @@
 }
 .activityImg {
   border-radius: 5px;
-  max-width: 100%;
+  width: 100%;
+  height: 150px;
+  object-fit: cover;
 }
 .btnMore {
   margin: 0;
@@ -129,7 +131,102 @@
   margin-top: 10px;
 }
 .customBtn{
-  font-size: 12px;
+  font-size: 13px !important;
+  text-transform: none !important;
   width: 100%;
-  height: 100%;
+  max-height: 100%;
+  border: solid 1px #267A9C !important;
+  border-radius: 10px;
+  color: #267A9C !important;
+  background-color: #fff !important;
+  font-weight: 500 !important;
+}
+.submitBtn{
+  border: solid 1px #34a9d9 !important;
+  background-color: #34a9d9 !important;
+  color: #fff !important;
+}
+.submitBtn:hover{
+  color: #fff !important;
+  background-color: #267A9C !important;
+  border-color: #267A9C !important;
+}
+.customBtn:hover{
+  color: #fff !important;
+  background-color: #267A9C !important;
+}
+.editForm{
+  display: block;
+  margin-left: 40px;
+  margin-right: 40px;
+  padding-top: 40px !important;
+}
+.timeGroupDiv{
+  padding: 0 !important;
+  /* padding-top: 30px ; */
+}
+.timeGroupDiv label{
+  font-size: large;
+}
+.timeGroupDiv select{
+  margin-top: 5px;
+}
+.timeGroupDiv input{
+  margin-top: 5px;
+}
+.closeBtn{
+  float: right;
+}
+.activityInfo{
+  display: block;
+  margin-left: 40px;
+  margin-right: 40px;
+  padding-top: 30px;
+  max-height: 600px;
+  overflow: auto;
+}
+.poiImage{
+  width: 200px;
+  height: 200px;
+  border-radius: 5px;
+  text-align: center;
+  font-size: 30px;
+  font-weight: bold;
+  margin-top: 5px;
+  margin-right: 15px;
+}
+.poiDiv{
+  float: left;
+}
+.poiDescription{
+  text-align: justify;
+  font-size: 16px;
+  margin-top: 5px;
+}
+.ratingNum{
+  position: relative;
+  bottom: 0px;
+  margin-left: 10px;
+  font-size: 12px;
+}
+.detailLink{
+  color: #267A9C;
+  text-decoration: none;
+  font-size: 16px;
+  font-weight: 500;
+  text-align: right;
+}
+.linkDiv{
+  text-align: right;
+}
+.detailLink:hover{
+  color: #267A9C;
+  text-decoration: underline;
+}
+.modalBody{
+  margin: 40px;
+}
+.customLabel{
+  margin-bottom: 15px;
+  display: block;
 }

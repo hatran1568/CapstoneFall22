@@ -15,7 +15,6 @@ import HomePage from "../views/HomePage/HomePage";
 import LayoutsWithNavbar from "../components/NavBar/LayoutsWithNavbar";
 import SearchResults from "../views/SearchResults/SearchResults";
 import POIDetails from "../views/POIDetails/POIDetails";
-
 export default function RootRoutes() {
   return (
     <Router>
