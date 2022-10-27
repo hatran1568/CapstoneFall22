@@ -75,7 +75,9 @@
 }
 .activityImg {
   border-radius: 5px;
-  max-width: 100%;
+  width: 100%;
+  height: 150px;
+  object-fit: cover;
 }
 .btnMore {
   margin: 0;

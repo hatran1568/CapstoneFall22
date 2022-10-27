@@ -91,10 +91,14 @@ function ProfilePage() {
           </MDBTabs>
           <MDBTabsContent>
             <MDBTabsPane show={basicActive === "myTrips"}>
-              {myTrips ? myTrips.map((trip) => <TripInfoCard trip={trip} />) : null}
+              {myTrips ? myTrips.map((trip) => <TripInfoCard trip={trip} key={trip.tripId} />) : null}
             </MDBTabsPane>
             <MDBTabsPane show={basicActive === "myCollection"}>
-              {myCollections ? myCollections.map((collection) => <CollectionInfoCard prop={collection} />) : null}
+              {myCollections
+                ? myCollections.map((collection) => (
+                    <CollectionInfoCard prop={collection} key={collection.collectionId} />
+                  ))
+                : null}
             </MDBTabsPane>
           </MDBTabsContent>
         </MDBCol>

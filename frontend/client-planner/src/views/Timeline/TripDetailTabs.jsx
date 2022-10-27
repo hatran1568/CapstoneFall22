@@ -16,10 +16,14 @@ export default function Tabs() {
   var params = useParams();
   return (
     <div className={style.stickyNavFirst}>
-      <ul className="nav nav-tabs justify-content-center">
-        <li className="nav-item">
+      <ul className={`nav nav-tabs justify-content-center ${style.navTabs} `}>
+        <li className={`nav-item`}>
           <a
-            className={path == "/trip" ? "nav-link active" : "nav-link"}
+            className={
+              path.toLowerCase() == "/trip"
+                ? `nav-link active ${style.navItem} ${style.navItemActive}`
+                : `nav-link ${style.navItem}`
+            }
             aria-current="page"
             href={"../trip/" + params.id}
           >
@@ -29,9 +33,9 @@ export default function Tabs() {
         <li className={`nav-item ${style.dropDown}`}>
           <a
             className={
-              path == ("/timeline" || "/timetable" || "/map")
-                ? "nav-link active"
-                : "nav-link"
+              path.toLowerCase() == ("/timeline" || "/timetable" || "/map")
+                ? `nav-link active ${style.navItem} ${style.navItemActive}`
+                : `nav-link ${style.navItem}`
             }
           >
             Day by day{" "}
@@ -48,7 +52,7 @@ export default function Tabs() {
             >
               <FontAwesomeIcon icon={faMapPin} className={style.icons} />
               Timeline{" "}
-              {path == "/timeline" && (
+              {path.toLowerCase() == "/timeline" && (
                 <FontAwesomeIcon icon={faCheck} className={style.checkIcons} />
               )}
             </a>
@@ -58,7 +62,7 @@ export default function Tabs() {
             >
               <FontAwesomeIcon icon={faCalendar} className={style.icons} />
               Calendar
-              {path == "/timetable" && (
+              {path.toLowerCase() == "/timetable" && (
                 <FontAwesomeIcon icon={faCheck} className={style.checkIcons} />
               )}
             </a>
@@ -71,7 +75,7 @@ export default function Tabs() {
                 className={style.icons}
               />
               Map
-              {path == "/map" && (
+              {path.toLowerCase() == "/map" && (
                 <FontAwesomeIcon icon={faCheck} className={style.checkIcons} />
               )}
             </a>
@@ -79,7 +83,11 @@ export default function Tabs() {
         </li>
         <li className="nav-item">
           <a
-            className={path == "/checklist" ? "nav-link active" : "nav-link"}
+            className={
+              path == "/checklist"
+                ? `nav-link active ${style.navItem} ${style.navItemActive}`
+                : `nav-link ${style.navItem}`
+            }
             href={"../checklist/" + params.id}
           >
             Checklist
@@ -87,7 +95,11 @@ export default function Tabs() {
         </li>
         <li className="nav-item">
           <a
-            className={path == "/budget" ? "nav-link active" : "nav-link"}
+            className={
+              path == "/budget"
+                ? `nav-link active ${style.navItem} ${style.navItemActive}`
+                : `nav-link ${style.navItem}`
+            }
             href={"../budget/" + params.id}
           >
             Budget
