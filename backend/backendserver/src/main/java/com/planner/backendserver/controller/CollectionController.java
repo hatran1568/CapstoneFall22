@@ -2,6 +2,7 @@ package com.planner.backendserver.controller;
 
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.planner.backendserver.entity.Collection;
+import com.planner.backendserver.entity.CollectionPOI;
 import com.planner.backendserver.repository.CollectionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -17,6 +18,7 @@ public class CollectionController {
     @Autowired
     private CollectionRepository collectionRepository;
 
+    // getting collections here
     @GetMapping("/newest")
     public ResponseEntity<Collection> getNewCollection() {
         try {
@@ -30,12 +32,12 @@ public class CollectionController {
         }
     }
 
-    @GetMapping("/detail/{uid}")
-    public ResponseEntity<ArrayList<Collection>> getCollectionDetails(@PathVariable int uid) {
+    @GetMapping("/list/{uid}")
+    public ResponseEntity<ArrayList<Collection>> getCollections(@PathVariable int uid) {
         try {
-            ArrayList<Collection> collections = collectionRepository.getCollectionDetailsByUserID(uid);
+            ArrayList<Collection> collections = collectionRepository.getCollectionsByUserID(uid);
             if (collections.isEmpty()) {
-                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+                return new ResponseEntity<>(HttpStatus.NO_CONTENT);
             }
             return new ResponseEntity<>(collections, HttpStatus.OK);
         } catch (Exception e) {
@@ -43,6 +45,21 @@ public class CollectionController {
         }
     }
 
+    // getting POI list here
+    @GetMapping("/poiList/{colId}")
+    public ResponseEntity<ArrayList<CollectionPOI>> getPOIList(@PathVariable int colId) {
+        try {
+            ArrayList<CollectionPOI> pois = collectionRepository.getPOIListOfCollectionByID(colId);
+            if (pois.isEmpty()) {
+                return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+            }
+            return new ResponseEntity<>(pois, HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    // modifying collection list here
     @PostMapping("/create")
     public ResponseEntity<Collection> createNewCollection(@RequestBody ObjectNode objectNode) {
         try {
@@ -64,6 +81,47 @@ public class CollectionController {
         try {
             int colId = objectNode.get("id").asInt();
             collectionRepository.deleteCollectionById(colId);
+            return new ResponseEntity<>(HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    // modifying POI list here
+    @PostMapping("/addPoi")
+    public ResponseEntity<?> addPOI(@RequestBody ObjectNode objectNode) {
+        try {
+            int poiId = objectNode.get("poiId").asInt();
+            int colId = objectNode.get("colId").asInt();
+            collectionRepository.addPOIIntoCollection(poiId, colId);
+            return new ResponseEntity<>(HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @DeleteMapping("/deletePoi")
+    public ResponseEntity<?> deletePOI(@RequestBody ObjectNode objectNode) {
+        try {
+            int poiId = objectNode.get("poiId").asInt();
+            int colId = objectNode.get("colId").asInt();
+            collectionRepository.removePOIFromCollection(poiId, colId);
+            return new ResponseEntity<>(HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @PutMapping("/updatePoi")
+    public ResponseEntity<?> updatePOI(@RequestBody ObjectNode objectNode) {
+        try {
+            int poiId = objectNode.get("poiId").asInt();
+            int colId = objectNode.get("colId").asInt();
+            CollectionPOI poi = collectionRepository.getPOIFromCollection(poiId, colId);
+            if (poi == null) {
+                return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+            }
+            collectionRepository.updatePOIInCollection(poiId, colId);
             return new ResponseEntity<>(HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);

@@ -53,7 +53,7 @@ function ProfilePage() {
     }
 
     async function getCollectionList() {
-      const response = await axios.get("/api/collection/detail/" + id, {
+      const response = await axios.get("/api/collection/list/" + id, {
         headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
         withCredentials: true,
       });

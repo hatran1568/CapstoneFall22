@@ -84,7 +84,7 @@ public class POIController {
             MasterActivity poi;
             poi = poiRepo.getPOIByActivityId(poiId);
             if (poi == null) {
-                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+                return new ResponseEntity<>(HttpStatus.NO_CONTENT);
             }
             return new ResponseEntity<>(poi, HttpStatus.OK);
         } catch (Exception e) {
@@ -97,7 +97,7 @@ public class POIController {
         ArrayList<Rating> rate;
         rate = poiRepo.getRatingsByPOIId(poiId);
         if (rate.isEmpty()) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
         return new ResponseEntity<>(rate, HttpStatus.OK);
     }
@@ -107,7 +107,7 @@ public class POIController {
         ArrayList<String> img;
         img = poiRepo.getImagesByPOIId(poiId);
         if (img.isEmpty()) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
         return new ResponseEntity<>(img, HttpStatus.OK);
     }

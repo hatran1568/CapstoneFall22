@@ -24,8 +24,6 @@ public class SearchController {
 
     @GetMapping("/all/{keyword}")
     public ResponseEntity<List<SearchPOIAndDestinationDTO>> searchPOIAndDestinationByKeyword(@PathVariable String keyword) {
-
-
         try {
             List<SearchPOIAndDestinationDTO> results = searchService.suggestSearchPOIAndDestinationByKeyword(keyword);
             if (results.isEmpty()) {
@@ -43,8 +41,6 @@ public class SearchController {
         try {
             // List<SearchPOIAndDestinationDTO> results = searchService.searchPOIAndDestinationByKeyword(keyword);
             Page<SearchPOIAndDestinationDTO> paging = searchService.listToPage(results, page, 10);
-
-
             if (paging.getContent().isEmpty()) {
                 return new ResponseEntity<>(HttpStatus.NOT_FOUND);
             }
@@ -93,6 +89,6 @@ public class SearchController {
     @GetMapping("/poi/{keyword}")
     public ResponseEntity<ArrayList<SearchPOIAndDestinationDTO>> searchPOIByKeyword(@PathVariable String keyword) {
         ArrayList<SearchPOIAndDestinationDTO> results = searchService.searchPOIByKeyword(keyword);
-        return new ResponseEntity<ArrayList<SearchPOIAndDestinationDTO>>(results, HttpStatus.OK);
+        return new ResponseEntity<>(results, HttpStatus.OK);
     }
 }
