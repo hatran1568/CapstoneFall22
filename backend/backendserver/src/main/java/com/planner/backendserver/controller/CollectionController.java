@@ -17,14 +17,14 @@ public class CollectionController {
     @Autowired
     private CollectionRepository collectionRepository;
 
-    @GetMapping("/user/{uid}")
-    public ResponseEntity<ArrayList<Collection>> getCollectionsByUID(@PathVariable int uid) {
+    @GetMapping("/newest")
+    public ResponseEntity<Collection> getNewCollection() {
         try {
-            ArrayList<Collection> collections = collectionRepository.getCollectionsByUserID(uid);
-            if (collections.isEmpty()) {
-                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            Collection newest = collectionRepository.getNewestCollectionID();
+            if (newest == null) {
+                return new ResponseEntity<>(HttpStatus.NO_CONTENT);
             }
-            return new ResponseEntity<>(collections, HttpStatus.OK);
+            return new ResponseEntity<>(newest, HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
@@ -52,18 +52,20 @@ public class CollectionController {
             String title = objectNode.get("title").asText();
             int uid = objectNode.get("uid").asInt();
             collectionRepository.createNewCollection(dateCreated, dateCreated, description, isDeleted, title, uid);
-            return new ResponseEntity<>(HttpStatus.OK);
+            Collection newest = collectionRepository.getNewestCollectionID();
+            return new ResponseEntity<>(newest, HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
     @PutMapping("/delete")
-    public ResponseEntity<?> deleteCollection(@PathVariable int colId) {
+    public ResponseEntity<?> deleteCollection(@RequestBody ObjectNode objectNode) {
         try {
+            int colId = objectNode.get("id").asInt();
             collectionRepository.deleteCollectionById(colId);
             return new ResponseEntity<>(HttpStatus.OK);
-        }catch (Exception e) {
+        } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }

@@ -20,6 +20,9 @@ public interface CollectionRepository extends JpaRepository<Collection, Integer>
             " where c.user.userID = :id and c.isDeleted = false")
     ArrayList<Collection> getCollectionDetailsByUserID(int id);
 
+    @Query("select c from Collection c where c.collectionId = (select max(c.collectionId) from Collection c)")
+    Collection getNewestCollectionID();
+
     @Modifying
     @Transactional
     @Query(value = "insert into" +

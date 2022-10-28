@@ -17,18 +17,19 @@ const CollectionInfoCard = (prop) => {
       cancelText: "No",
       onOk() {
         axios
-          .delete("/api/collection/delete", {
-            headers: {
-              Authorization: `Bearer ${localStorage.getItem("token")}`,
-            },
-            withCredentials: true,
-            data: {
+          .put(
+            "/api/collection/delete",
+            {
               id: prop.prop.collectionId,
             },
-          })
+            {
+              headers: {
+                Authorization: `Bearer ${localStorage.getItem("token")}`,
+              },
+              withCredentials: true,
+            },
+          )
           .then(setIsDeleted(true));
-
-        console.log("OK");
       },
     });
   };
