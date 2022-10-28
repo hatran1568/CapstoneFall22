@@ -214,7 +214,7 @@ function HomePage() {
         </MDBModalDialog>
       </MDBModal>
 
-      {trips ? (
+      {tripCount != 0 && trips ? (
         <MDBContainer className="mt-5" style={{ width: "70%" }}>
           <h3 className="mx-5">My trips ({tripCount})</h3>
 

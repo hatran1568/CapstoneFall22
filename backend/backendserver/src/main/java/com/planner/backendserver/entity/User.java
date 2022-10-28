@@ -49,4 +49,7 @@ public class User {
     @Column(name="provider")
     @Enumerated(EnumType.STRING)
     private Provider provider;
+
+    @Column(name="reset_password_token")
+    private String resetPasswordToken;
 }

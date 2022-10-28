@@ -15,6 +15,8 @@ import LayoutsWithNavbar from "../components/NavBar/LayoutsWithNavbar";
 import SearchResults from "../views/SearchResults/SearchResults";
 import POIDetails from "../views/POIDetails/POIDetails";
 import ChangePassword from "../views/UserProfile/ChangePassword";
+import RequestResetPassword from "../views/Login/RequestResetPassword";
+import ResetPasswordConfirm from "../views/Login/ResetPasswordConfirm";
 export default function RootRoutes() {
   return (
     <Router>
@@ -28,6 +30,11 @@ export default function RootRoutes() {
             <Route path="/profile" element={<ProfilePage />} />
             <Route path="/change-password" element={<ChangePassword />} />
           </Route>
+          <Route path="/forgot-password" element={<RequestResetPassword />} />
+          <Route
+            path="/reset-password-confirm"
+            element={<ResetPasswordConfirm />}
+          />
           <Route exact path="/Destination" element={<DestinationDetails />} />
           <Route exact path="/Destination/POIs" element={<POIsDestination />} />
           <Route path="/timeline/:id" element={<Timeline />} />
