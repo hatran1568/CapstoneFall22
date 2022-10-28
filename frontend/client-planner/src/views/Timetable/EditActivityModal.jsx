@@ -2,11 +2,10 @@ import React, { Component, useState, useEffect } from "react";
 import props from "prop-types";
 import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
-import style from "./timeline.module.css";
+import style from "./timetable.module.css";
 import Rating from "../../components/Rating";
-import { ContactSupport } from "@mui/icons-material";
 function EditActivityModal(props) {
-  const { activityEdited, allDates, tripDetail, ...rest } = props;
+  const { activityEdited, tripDetail, ...rest } = props;
   const inputField = { ...tripDetail };
   useEffect(() => {
     inputField.custom =

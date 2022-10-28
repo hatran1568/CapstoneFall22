@@ -273,14 +273,11 @@ class Timeline extends Component {
         var newDetail = response.data;
         var newTrip = this.state.trip;
         newTrip.listTripDetails.push(newDetail);
-        this.setState(
-          {
-            trip: newTrip,
-            showAddModal: false,
-            dataLoaded: true,
-          },
-          this.render
-        );
+        this.setState({
+          strip: newTrip,
+          showAddModal: false,
+          dataLoaded: true,
+        });
       })
       .catch(function (error) {
         console.log(error);
@@ -325,7 +322,7 @@ class Timeline extends Component {
 
         <div className="container ">
           <div className="timeline-container row ">
-            <div className="col-2 days-col">
+            <div className="col-2">
               <div className={style.daysBox}>
                 {allMonths.map((month) => (
                   <div key={month}>
