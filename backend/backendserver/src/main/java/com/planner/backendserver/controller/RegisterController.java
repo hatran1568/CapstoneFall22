@@ -1,11 +1,9 @@
 package com.planner.backendserver.controller;
 
-import com.planner.backendserver.DTO.LoginRequestDTO;
-import com.planner.backendserver.DTO.RegisterRequestDTO;
+import com.planner.backendserver.dto.request.RegisterRequestDTO;
 import com.planner.backendserver.entity.Provider;
 import com.planner.backendserver.entity.Role;
 import com.planner.backendserver.entity.User;
-import com.planner.backendserver.service.UserServiceImplementer;
 import com.planner.backendserver.service.interfaces.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

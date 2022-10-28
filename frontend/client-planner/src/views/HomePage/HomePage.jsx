@@ -32,6 +32,7 @@ import {
 import { over } from "stompjs";
 import SockJS from "sockjs-client";
 import style from "./HomePage.module.css";
+import TripInfoCardHomepage from "../../components/Trips/TripInfoCardHomepage";
 
 function HomePage() {
   const navigate = useNavigate();
@@ -40,7 +41,8 @@ function HomePage() {
   const [isGenerating, setIsGenerating] = useState(false);
   const [progress, setProgress] = useState(0);
   const [showShow, setShowShow] = useState(false);
-
+  const [tripCount, setTripCount] = useState(0);
+  const [trips, setTrips] = useState();
   const toggleShowMore = () => setShowShow(!showShow);
 
   var stompClient = null;
@@ -67,6 +69,44 @@ function HomePage() {
       onPrivateMessage
     );
   };
+
+  useEffect(() => {
+    async function getExistingTrips() {
+      if (localStorage.getItem("token")) {
+        await axios
+          .get(
+            "http://localhost:8080/trip/get-total-trip/" +
+              localStorage.getItem("id"),
+            {
+              headers: {
+                "Content-Type": "application/json",
+              },
+            }
+          )
+          .then((response) => {
+            console.log(response.data);
+            setTripCount(response.data);
+          });
+        await axios
+          .get(
+            "http://localhost:8080/trip/get-trip-3/" +
+              localStorage.getItem("id"),
+            {
+              headers: {
+                "Content-Type": "application/json",
+              },
+            }
+          )
+          .then((response) => {
+            console.log("COunt" + response.data);
+
+            setTrips(response.data);
+          });
+      }
+    }
+
+    getExistingTrips();
+  }, []);
 
   const onMessageReceived = (payload) => {
     console.log(payload.body);
@@ -460,6 +500,37 @@ function HomePage() {
           </MDBModalContent>
         </MDBModalDialog>
       </MDBModal>
+
+      {trips ? (
+        <MDBContainer className="mt-5" style={{ width: "70%" }}>
+          <h3 className="mx-5">My trips ({tripCount})</h3>
+
+          <MDBContainer className="d-flex flex-row item-align-center">
+            {trips.map((trip) => (
+              <TripInfoCardHomepage
+                trip={trip}
+                key={trip.tripId}
+              ></TripInfoCardHomepage>
+            ))}
+          </MDBContainer>
+          <div className="d-flex justify-content-center">
+            <MDBBtn
+              onClick={() => {
+                window.location.href = "http://localhost:3000/profile";
+              }}
+              style={{
+                backgroundColor: "black",
+                border: "none",
+                borderRadius: "20px",
+                padding: "10px 20px",
+              }}
+            >
+              See all trips
+            </MDBBtn>
+          </div>
+        </MDBContainer>
+      ) : null}
+
       <MDBContainer>
         <h2 className="text-center mt-5 mb-3">Goodies from our services</h2>
         <MDBRow className="gx-0">

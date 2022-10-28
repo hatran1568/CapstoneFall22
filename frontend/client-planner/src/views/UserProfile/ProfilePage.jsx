@@ -18,7 +18,7 @@ function ProfilePage() {
   const [myTrips, setMyTrips] = useState();
   const [basicActive, setBasicActive] = useState("myTrips");
 
-  const handleBasicClick = (value: string) => {
+  const handleBasicClick = (value) => {
     if (value === basicActive) {
       return;
     }
@@ -86,7 +86,7 @@ function ProfilePage() {
             <MDBTabsPane show={basicActive === "myTrips"}>
               {myTrips
                 ? myTrips.map((trip) => (
-                    <TripInfoCard trip={trip}></TripInfoCard>
+                    <TripInfoCard trip={trip} key={trip.tripId}></TripInfoCard>
                   ))
                 : null}
             </MDBTabsPane>

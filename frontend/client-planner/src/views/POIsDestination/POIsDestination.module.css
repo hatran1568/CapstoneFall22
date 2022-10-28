@@ -35,12 +35,17 @@
   color: rgb(0, 0, 0) !important;
   text-decoration: none;
 }
+.catButton:hover {
+  cursor: pointer;
+  text-decoration: underline;
+}
 .catButtonSelected{
   margin: 3px !important;
   color: rgb(0, 0, 0) !important;
   text-decoration: underline;
 }
 .removeFilterButton {
+  cursor: pointer;
   margin: 3px !important;
   color: rgb(0, 0, 0) !important;
 }

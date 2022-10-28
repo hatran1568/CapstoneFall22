@@ -1,4 +1,6 @@
 import React, { useEffect } from "react";
+import { Modal } from "antd";
+import "antd/dist/antd.css";
 import style from "./TripInfoCard.module.css";
 import {
   MDBIcon,
@@ -8,10 +10,13 @@ import {
   MDBCol,
   MDBBtn,
 } from "mdb-react-ui-kit";
+import axios from "../../api/axios";
+import { useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faDongSign } from "@fortawesome/free-solid-svg-icons";
 
 function TripInfoCard(trip) {
+  const [isDeleted, setIsDeleted] = useState(false);
   const toLongDate = (date) => {
     var options = {
       month: "short",
@@ -26,10 +31,36 @@ function TripInfoCard(trip) {
     return string.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
   };
 
-  return (
+  const { confirm } = Modal;
+
+  const showDeleteConfirm = () => {
+    confirm({
+      title: "Are you sure to delete this plan?" + trip.trip.name,
+      content: "The plan and all its contents will be deleted",
+      okText: "Yes",
+      okType: "danger",
+      cancelText: "No",
+      onOk() {
+        axios
+          .delete("/trip/delete-trip/", {
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("token")}`,
+            },
+            withCredentials: true,
+            data: {
+              id: trip.trip.tripId,
+            },
+          })
+          .then(setIsDeleted(true));
+      },
+      onCancel() {},
+    });
+  };
+
+  return isDeleted ? null : (
     <MDBRow>
       <MDBCol sm="12">
-        <MDBCard>
+        <MDBCard style={{ border: 0 }}>
           <MDBRow>
             <MDBCol sm="3">
               <MDBCardImage
@@ -37,7 +68,7 @@ function TripInfoCard(trip) {
                 src={
                   trip.trip.image
                     ? trip.trip.image
-                    : "https://i.picsum.photos/id/1000/5626/3635.jpg?hmac=qWh065Fr_M8Oa3sNsdDL8ngWXv2Jb-EE49ZIn6c0P-g"
+                    : "https://i.picsum.photos/id/1015/6000/4000.jpg?hmac=aHjb0fRa1t14DTIEBcoC12c5rAXOSwnVlaA5ujxPQ0I"
                 }
                 fluid
               />
@@ -48,16 +79,17 @@ function TripInfoCard(trip) {
                 href={"http://localhost:3000/trip/" + trip.trip.tripId}
               >
                 <h5 className="mt-4">{trip.trip.name}</h5>
+
+                <p className="mt-2 mb-0">
+                  <MDBIcon far icon="calendar-alt" />{" "}
+                  {toLongDate(trip.trip.startDate)}
+                  &nbsp;-&nbsp;{toLongDate(trip.trip.endDate)}
+                </p>
+                <p style={{ position: "relative", top: 0 }}>
+                  <FontAwesomeIcon icon={faDongSign} />
+                  &nbsp;{formatCurrency(trip.trip.budget).split(" ")[0]}
+                </p>
               </a>
-              <p className="mt-2">
-                <MDBIcon far icon="calendar-alt" />{" "}
-                {toLongDate(trip.trip.startDate)}
-                &nbsp;-&nbsp;{toLongDate(trip.trip.endDate)}
-              </p>
-              <p>
-                <FontAwesomeIcon icon={faDongSign} />
-                &nbsp;{formatCurrency(trip.trip.budget).split(" ")[0]}
-              </p>
               <small className={style.lastUpdated}>
                 <i>
                   Last updated:{" "}
@@ -70,6 +102,7 @@ function TripInfoCard(trip) {
                 tag="a"
                 color="none"
                 className={`${style.deleteButton} m-1 mt-4`}
+                onClick={showDeleteConfirm}
               >
                 <MDBIcon far icon="trash-alt" size="lg" />
               </MDBBtn>

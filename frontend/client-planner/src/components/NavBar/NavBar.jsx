@@ -29,18 +29,21 @@ const NavBar = () => {
     window.location.href = "/";
   };
   return (
-    <MDBNavbar expand='lg' light className={style.navBar}>
+    <MDBNavbar expand="lg" light className={style.navBar}>
       <MDBContainer fluid>
-        <MDBNavbarBrand href='/' className='me-0'>
-          <p className='mb-0 d-flex align-items-center'>
-            <span className='fs-3 me-2'>TPS</span>
-            <span className='fs-5 text-muted'>Itinerary planner</span>
+        <MDBNavbarBrand href="/" className="me-0">
+          <p className="mb-0 d-flex align-items-center">
+            <span className="fs-3 me-2">TPS</span>
+            <span className="fs-5 text-muted">Itinerary planner</span>
           </p>
         </MDBNavbarBrand>
 
         <MDBNavbarNav>
           <MDBNavbarItem>
-            <MDBNavbarLink className={pathname === "/" ? "active" : ""} href='/'></MDBNavbarLink>
+            <MDBNavbarLink
+              className={pathname === "/" ? "active" : ""}
+              href="/"
+            ></MDBNavbarLink>
           </MDBNavbarItem>
 
           {/*<MDBNavbarItem>
@@ -50,7 +53,7 @@ const NavBar = () => {
           </MDBNavbarItem>*/}
         </MDBNavbarNav>
 
-        <MDBNavbarNav center='true'>
+        <MDBNavbarNav center="true">
           <MDBNavbarItem>
             <SearchBar />
           </MDBNavbarItem>
@@ -60,14 +63,17 @@ const NavBar = () => {
           {isLogged ? (
             <MDBNavbarItem>
               <MDBDropdown>
-                <MDBDropdownToggle tag='a' className='nav-link link-dark'>
+                <MDBDropdownToggle tag="a" className="nav-link link-dark">
                   <PersonIcon />
                 </MDBDropdownToggle>
                 <MDBDropdownMenu>
-                  <MDBDropdownItem link href='/profile'>
+                  <MDBDropdownItem link href="/profile">
                     Profile
                   </MDBDropdownItem>
-                  <MDBDropdownItem link href='/' onClick={handleLogout}>
+                  <MDBDropdownItem link href="/change-password">
+                    Change password
+                  </MDBDropdownItem>
+                  <MDBDropdownItem link href="/" onClick={handleLogout}>
                     Logout
                   </MDBDropdownItem>
                 </MDBDropdownMenu>
@@ -75,7 +81,7 @@ const NavBar = () => {
             </MDBNavbarItem>
           ) : (
             <MDBNavbarItem>
-              <MDBBtn href='/login' color='info'>
+              <MDBBtn href="/login" color="info">
                 Login
               </MDBBtn>
             </MDBNavbarItem>

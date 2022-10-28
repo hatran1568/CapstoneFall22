@@ -56,12 +56,15 @@ class TripDetail extends Component {
     if (prevProps.nextActivityId !== this.props.nextActivityId) {
       this.setDistanceState();
     }
+    if (prevProps.tripDetail !== this.props.tripDetail) {
+      this.setState({ tripDetail: this.props.tripDetail });
+    }
   }
   //close edit modal, update inside component, and fire edit event in parent component
   fireEditEvent = (event, input) => {
     this.toggleEditModal();
     var newInput = { ...input };
-    this.updateNewDetail(input);
+    // this.updateNewDetail(input);
     this.props.editEvent(event, newInput);
   };
   //set state with edited details
@@ -89,6 +92,8 @@ class TripDetail extends Component {
   };
   render() {
     var moment = require("moment"); // require
+    var isCustom =
+      typeof this.state.tripDetail.masterActivity.category !== "undefined";
     return (
       <React.Fragment>
         <li className={`${style.timelineItem} card`}>
@@ -132,23 +137,36 @@ class TripDetail extends Component {
                 ).format("hh:mm a")}
               </p>
             </div>
-            <div className="col-4">
-              <img
-                src={
-                  this.state.tripDetail.masterActivity.listImages
-                    ? this.state.tripDetail.masterActivity.listImages[0]
-                      ? this.state.tripDetail.masterActivity.listImages[0].url
+            {isCustom ? (
+              <div className="col-4">
+                <img
+                  src={
+                    this.state.tripDetail.masterActivity.images
+                      ? this.state.tripDetail.masterActivity.images[0]
+                        ? `../${this.state.tripDetail.masterActivity.images[0].url}`
+                        : "https://picsum.photos/seed/picsum/300/200"
                       : "https://picsum.photos/seed/picsum/300/200"
-                    : "https://picsum.photos/seed/picsum/300/200"
-                }
-                className={style.activityImg}
-              ></img>
-            </div>
-            <div className="col-6">
+                  }
+                  className={style.activityImg}
+                ></img>
+              </div>
+            ) : (
+              <></>
+            )}
+
+            <div className={isCustom ? "col-6" : "col-10"}>
               <MDBDropdown animation={false} className={style.btnMore}>
                 <MDBDropdownToggle color="light"></MDBDropdownToggle>
                 <MDBDropdownMenu>
-                  <MDBDropdownItem link>Details</MDBDropdownItem>
+                  <MDBDropdownItem
+                    link
+                    href={
+                      "../poi?id=" +
+                      this.state.tripDetail.masterActivity.activityId
+                    }
+                  >
+                    Details
+                  </MDBDropdownItem>
                   <MDBDropdownItem link onClick={this.toggleEditModal}>
                     Edit Event
                   </MDBDropdownItem>
@@ -180,13 +198,6 @@ class TripDetail extends Component {
 
               <p className="text-muted card-text address-value">
                 {this.state.tripDetail.masterActivity.address}
-              </p>
-              <p className="category-name">
-                <span href="" className="text-muted card-text">
-                  {this.state.tripDetail.masterActivity.category
-                    ? this.state.tripDetail.masterActivity.category.name
-                    : ""}
-                </span>
               </p>
             </div>
           </div>
