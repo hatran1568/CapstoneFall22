@@ -97,12 +97,12 @@ function ProfilePage() {
               {myTrips ? myTrips.map((trip) => <TripInfoCard trip={trip} key={trip.tripId} />) : null}
             </MDBTabsPane>
             <MDBTabsPane show={basicActive === "myCollection"}>
+              <AddCollectionModal />
               {myCollections
                 ? myCollections.map((collection) => (
                     <CollectionInfoCard prop={collection} key={collection.collectionId} />
                   ))
                 : null}
-              <AddCollectionModal />
             </MDBTabsPane>
           </MDBTabsContent>
         </MDBCol>

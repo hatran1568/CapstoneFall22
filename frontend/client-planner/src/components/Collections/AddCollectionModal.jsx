@@ -38,7 +38,7 @@ const AddCollectionModal = () => {
         } else {
           description = "";
         }
-  
+
         axios
           .post(
             "/api/collection/create",
@@ -54,7 +54,7 @@ const AddCollectionModal = () => {
               withCredentials: true,
             },
           )
-          .then((response) => navigate("/collection/details?id=" + response.data.collectionId));
+          .then((response) => navigate("/collection?id=" + response.data.collectionId));
       },
     });
   };
@@ -65,7 +65,7 @@ const AddCollectionModal = () => {
 
   return (
     <>
-      <MDBBtn color='primary' onClick={handleCreate}>
+      <MDBBtn color='primary' className='m-2' onClick={handleCreate}>
         <MDBIcon fas icon='plus-circle' /> Create new...
       </MDBBtn>
       <Modal
