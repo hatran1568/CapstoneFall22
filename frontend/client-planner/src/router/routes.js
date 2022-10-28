@@ -14,7 +14,7 @@ import HomePage from "../views/HomePage/HomePage";
 import LayoutsWithNavbar from "../components/NavBar/LayoutsWithNavbar";
 import SearchResults from "../views/SearchResults/SearchResults";
 import POIDetails from "../views/POIDetails/POIDetails";
-
+import Test from "../views/TestingScreen/Test";
 export default function RootRoutes() {
   return (
     <Router>
@@ -35,6 +35,7 @@ export default function RootRoutes() {
           <Route path='/' element={<HomePage />} />
           <Route path='/SearchResults' element={<SearchResults />} />
           <Route path='/poi' element={<POIDetails />} />
+          <Route path='/test' element={<Test />} />
         </Route>
 
         {/*Routes that don't need a nav bar go out here.*/}
