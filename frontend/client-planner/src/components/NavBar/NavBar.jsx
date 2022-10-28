@@ -70,6 +70,9 @@ const NavBar = () => {
                   <MDBDropdownItem link href="/profile">
                     Profile
                   </MDBDropdownItem>
+                  <MDBDropdownItem link href="/change-password">
+                    Change password
+                  </MDBDropdownItem>
                   <MDBDropdownItem link href="/" onClick={handleLogout}>
                     Logout
                   </MDBDropdownItem>

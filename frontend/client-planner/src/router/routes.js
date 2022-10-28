@@ -16,17 +16,19 @@ import LayoutsWithNavbar from "../components/NavBar/LayoutsWithNavbar";
 import SearchResults from "../views/SearchResults/SearchResults";
 import POIDetails from "../views/POIDetails/POIDetails";
 import BlogDetails from "../views/Blog/BlogDetails";
+import ChangePassword from "../views/UserProfile/ChangePassword";
 export default function RootRoutes() {
   return (
     <Router>
       <Routes>
         {/*Any route that needs a nav bar goes inside this one.*/}
-        <Route path='/' element={<LayoutsWithNavbar />}>
-          <Route exact path='login' element={<Login />} />
-          <Route path='register' element={<Signup />} />
-          <Route path='oauth2/*' element={<OAuthHandler />} />
+        <Route path="/" element={<LayoutsWithNavbar />}>
+          <Route exact path="login" element={<Login />} />
+          <Route path="register" element={<Signup />} />
+          <Route path="oauth2/*" element={<OAuthHandler />} />
           <Route element={<RequireAuth allowedRoles={["User", "Admin"]} />}>
-            <Route path='/profile' element={<ProfilePage />} />
+            <Route path="/profile" element={<ProfilePage />} />
+            <Route path="/change-password" element={<ChangePassword />} />
           </Route>
           <Route exact path='/Destination' element={<DestinationDetails />} />
           <Route exact path='/Destination/POIs' element={<POIsDestination />} />

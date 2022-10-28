@@ -164,6 +164,28 @@ public class TripServiceImpl implements TripService {
         tripRepository.deleteTripById(id);
     }
 
+    @Override
+    public List<TripGeneralDTO> getLast3TripsByUser(int userId) {
+        ArrayList<Trip> trips = tripRepository.getLast3TripsByUser(userId);
+
+        return trips.stream().map(trip -> {
+            TripGeneralDTO tripDTO = new TripGeneralDTO();
+            tripDTO.setTripId(trip.getTripId());
+            tripDTO.setName(trip.getName());
+            tripDTO.setBudget(trip.getBudget());
+            tripDTO.setStartDate(trip.getStartDate());
+            tripDTO.setEndDate(trip.getEndDate());
+            tripDTO.setImage(getFirstPOIImage(trip.getTripId()));
+            tripDTO.setDateModified(trip.getDateModified());
+            return tripDTO;
+        }).collect(Collectors.toList());
+    }
+
+    @Override
+    public int countTripByUser(int userId) {
+        return tripRepository.getNumberOfTripsByUser(userId);
+    }
+
     private String getTripThumbnail(List<TripDetails> tripDetails){
         if (tripDetails.size() == 0){
             return null;

@@ -52,12 +52,8 @@ function TripInfoCard(trip) {
             },
           })
           .then(setIsDeleted(true));
-
-        console.log("OK");
       },
-      onCancel() {
-        console.log("Cancel");
-      },
+      onCancel() {},
     });
   };
 
@@ -72,7 +68,7 @@ function TripInfoCard(trip) {
                 src={
                   trip.trip.image
                     ? trip.trip.image
-                    : "https://i.picsum.photos/id/1000/5626/3635.jpg?hmac=qWh065Fr_M8Oa3sNsdDL8ngWXv2Jb-EE49ZIn6c0P-g"
+                    : "https://i.picsum.photos/id/1015/6000/4000.jpg?hmac=aHjb0fRa1t14DTIEBcoC12c5rAXOSwnVlaA5ujxPQ0I"
                 }
                 fluid
               />
