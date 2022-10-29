@@ -1,5 +1,6 @@
 package com.planner.backendserver.config;
 
+import com.nimbusds.jwt.JWT;
 import com.planner.backendserver.DTO.OAuth2UserDTO;
 import com.planner.backendserver.DTO.UserDTO;
 import com.planner.backendserver.entity.User;
@@ -10,6 +11,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.Date;
+import java.util.UUID;
+
 @Component
 @Slf4j
 public class JwtTokenProvider {
@@ -20,6 +23,8 @@ public class JwtTokenProvider {
 
     //Thời gian có hiệu lực của chuỗi jwt
     private final long JWT_EXPIRATION = 604800000L;
+
+    private final long RESET_PASSWORD_EXPIRATION = 600000L;
 
     // Tạo ra jwt từ thông tin user
     public String generateToken(UserDTO userDetails) {
@@ -83,4 +88,21 @@ public class JwtTokenProvider {
         }
         return false;
     }
+
+    public String generatePasswordResetToken(int userID) {
+        Date now = new Date();
+        Date expiryDate = new Date(now.getTime() + RESET_PASSWORD_EXPIRATION);
+
+        String resetPasswordToken = Jwts.builder()
+                .setSubject("Reset password")
+                .claim("UUID", UUID.randomUUID().toString())
+                .setIssuedAt(now)
+                .setExpiration(expiryDate)
+                .signWith(SignatureAlgorithm.HS512, JWT_SECRET)
+                .compact();
+
+        return resetPasswordToken;
+    }
+
+
 }
