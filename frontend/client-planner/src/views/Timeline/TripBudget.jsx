@@ -76,8 +76,20 @@ class TripBudget extends Component {
     axios.get(`http://localhost:8080/api/expense/` + id + "/0").then((res) => {
       const data = res.data;
       this.setState({
-        expenseData: data
+        expenseData: data,
       });
+      axios.get(`http://localhost:8080/api/expense/user/` + this.state.trip.tripId).then((res) => {
+        const data = res.data;
+        this.setState({
+          tripUser: data,
+        });
+      }).catch(
+        function (error) {
+          console.log(error)
+          return Promise.reject(error)
+        }
+      );
+      console.log(this.state.tripUser);
     }).catch(
       function (error) {
         console.log(error)
@@ -200,16 +212,12 @@ class TripBudget extends Component {
       );
     });
     //Check user
-    axios.get(`http://localhost:8080/api/expense/user/` + this.state.trip.tripId).then((res) => {
-      const data = res.data;
-      this.setState({
-        tripUser: data,
-      });
-    }).catch(
-      function (error) {
-        console.log(error)
-        return Promise.reject(error)
-      }
+    
+    if (!this.state.dataLoaded)
+    return (
+      <div>
+        <h1> Please wait some time.... </h1>{" "}
+      </div>
     );
     if (localStorage.getItem("id") == null)
       return(
@@ -223,12 +231,6 @@ class TripBudget extends Component {
           <h1> You cannot manage expenses of a trip not yours </h1>{" "}
         </div>
       )
-    if (!this.state.dataLoaded)
-    return (
-      <div>
-        <h1> Please wait some time.... </h1>{" "}
-      </div>
-    );
     document.title = this.state.trip.name + " | Tripplanner";
     return (
       <div>
