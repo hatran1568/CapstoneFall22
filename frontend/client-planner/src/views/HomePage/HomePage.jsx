@@ -37,6 +37,9 @@ import TripInfoCardHomepage from "../../components/Trips/TripInfoCardHomepage";
 function HomePage() {
   const navigate = useNavigate();
   const [basicModal, setBasicModal] = useState(false);
+  let loggedInUser = localStorage.getItem("id");
+  if (loggedInUser == null)
+    loggedInUser = -1;
   const [centredModal, setCentredModal] = useState(false);
   const [isGenerating, setIsGenerating] = useState(false);
   const [progress, setProgress] = useState(0);
