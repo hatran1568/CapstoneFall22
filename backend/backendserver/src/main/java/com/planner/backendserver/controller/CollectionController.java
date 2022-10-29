@@ -1,6 +1,7 @@
 package com.planner.backendserver.controller;
 
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import com.planner.backendserver.DTO.CollectionDTO;
 import com.planner.backendserver.entity.Collection;
 import com.planner.backendserver.entity.CollectionPOI;
 import com.planner.backendserver.repository.CollectionRepository;
@@ -33,16 +34,13 @@ public class CollectionController {
     }
 
     @GetMapping("/list/{uid}")
-    public ResponseEntity<ArrayList<Collection>> getCollections(@PathVariable int uid) {
-        try {
-            ArrayList<Collection> collections = collectionRepository.getCollectionsByUserID(uid);
-            if (collections.isEmpty()) {
-                return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-            }
-            return new ResponseEntity<>(collections, HttpStatus.OK);
-        } catch (Exception e) {
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+    public ResponseEntity<ArrayList<CollectionDTO>> getCollections(@PathVariable int uid) {
+        ArrayList<CollectionDTO> collections = collectionRepository.getCollectionsByUserID(uid);
+        if (collections.isEmpty()) {
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
+        return new ResponseEntity<>(collections, HttpStatus.OK);
+
     }
 
     // getting POI list here
