@@ -1,16 +1,15 @@
-package com.planner.backendserver;
+package com.example.Optimizer;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 
 @SpringBootApplication
 @EnableDiscoveryClient
-public class BackendserverApplication {
+public class OptimizerApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(BackendserverApplication.class, args);
+		SpringApplication.run(OptimizerApplication.class, args);
 	}
 
 }
