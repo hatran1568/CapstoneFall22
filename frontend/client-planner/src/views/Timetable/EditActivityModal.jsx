@@ -2,7 +2,7 @@ import React, { Component, useState, useEffect } from "react";
 import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
 import style from "./modals.module.css";
-import Rating from "../../components/Rating";
+import Rating from "../../components/POIs/Rating";
 function EditActivityModal(props) {
   const { activityEdited, allDates, tripDetail, ...rest } = props;
   const inputField = { ...tripDetail };
