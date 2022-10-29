@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="aa147f69-41bc-40f0-9f64-569527fd0161" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/../../../backend/backendserver/src/main/java/com/planner/backendserver/DTO/response/RequestStatus.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../../backend/backendserver/src/main/java/com/planner/backendserver/DTO/response/SimpleResponse.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../backend/backendserver/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../../../backend/backendserver/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../backend/backendserver/src/main/java/com/planner/backendserver/BackendserverApplication.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../../backend/backendserver/src/main/java/com/planner/backendserver/BackendserverApplication.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../backend/backendserver/src/main/java/com/planner/backendserver/DTO/GenerateTripUserInput.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../../backend/backendserver/src/main/java/com/planner/backendserver/DTO/GenerateTripUserInput.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../backend/backendserver/src/main/java/com/planner/backendserver/config/WebSercurityConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../../backend/backendserver/src/main/java/com/planner/backendserver/config/WebSercurityConfig.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../backend/backendserver/src/main/java/com/planner/backendserver/controller/TripController.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../../backend/backendserver/src/main/java/com/planner/backendserver/controller/TripController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../frontend/client-planner/src/views/HomePage/HomePage.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/../../../frontend/client-planner/src/views/HomePage/HomePage.jsx" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Interface" />
+        <option value="Enum" />
+        <option value="Class" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/../../.." />
+  </component>
+  <component name="MarkdownSettingsMigration">
+    <option name="stateVersion" value="1" />
+  </component>
+  <component name="MavenImportPreferences">
+    <option name="generalSettings">
+      <MavenGeneralSettings>
+        <option name="useMavenConfig" value="true" />
+      </MavenGeneralSettings>
+    </option>
+  </component>
+  <component name="ProjectId" id="2Gbq431MZrOvt5M5ZfgG1zKH9o2" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RequestMappingsPanelOrder0": "0",
+    "RequestMappingsPanelOrder1": "1",
+    "RequestMappingsPanelWidth0": "75",
+    "RequestMappingsPanelWidth1": "75",
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "WebServerToolWindowFactoryState": "false",
+    "last_opened_file_path": "C:/Users/ACER/Desktop/Capstone/CapstoneFall22/backend",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "settings.editor.selected.configurable": "preferences.keymap",
+    "spring.configuration.checksum": "7a865060b1a2be22d8c8a073670b2e0f"
+  }
+}]]></component>
+  <component name="RecentsManager">
+    <key name="CreateClassDialog.RecentsKey">
+      <recent name="com.example.Optimizer.config" />
+    </key>
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\ACER\Desktop\OptimizerServer\Optimizer\Optimizer\src\main\java\com\example\Optimizer\repository" />
+      <recent name="C:\Users\ACER\Desktop\OptimizerServer\Optimizer\Optimizer\src\main\java\com\example\Optimizer\entity" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\ACER\Desktop\Capstone\CapstoneFall22\backend" />
+    </key>
+    <key name="CopyClassDialog.RECENTS_KEY">
+      <recent name="com.example.Optimizer.repository" />
+      <recent name="com.example.Optimizer.DTO" />
+    </key>
+  </component>
+  <component name="RunDashboard">
+    <option name="configurationTypes">
+      <set>
+        <option value="SpringBootApplicationConfigurationType" />
+      </set>
+    </option>
+  </component>
+  <component name="RunManager" selected="Spring Boot.AnotherOptimizer">
+    <configuration default="true" type="GroovyScriptRunConfiguration" factoryName="Groovy">
+      <setting name="path" value="" />
+      <setting name="vmparams" value="" />
+      <setting name="params" value="" />
+      <setting name="workDir" value="file://$PROJECT_DIR$" />
+      <setting name="debug" value="false" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="AnotherAnother" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot">
+      <option name="ACTIVE_PROFILES" />
+      <module name="Optimizer" />
+      <option name="SPRING_BOOT_MAIN_CLASS" value="com.example.Optimizer.OptimizerApplication" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="AnotherOptimizer" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot">
+      <option name="ACTIVE_PROFILES" />
+      <module name="Optimizer" />
+      <option name="SPRING_BOOT_MAIN_CLASS" value="com.example.Optimizer.OptimizerApplication" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="Optimizer" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot">
+      <option name="ACTIVE_PROFILES" />
+      <module name="Optimizer" />
+      <option name="SPRING_BOOT_MAIN_CLASS" value="com.example.Optimizer.OptimizerApplication" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <list>
+      <item itemvalue="Spring Boot.Optimizer" />
+      <item itemvalue="Spring Boot.AnotherAnother" />
+      <item itemvalue="Spring Boot.AnotherOptimizer" />
+    </list>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="aa147f69-41bc-40f0-9f64-569527fd0161" name="Changes" comment="" />
+      <created>1666667438692</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1666667438692</updated>
+      <workItem from="1666667440073" duration="617000" />
+      <workItem from="1666673764536" duration="40705000" />
+      <workItem from="1666834954747" duration="11769000" />
+      <workItem from="1666946692883" duration="13822000" />
+      <workItem from="1667063211585" duration="231000" />
+      <workItem from="1667063550868" duration="27000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+  <component name="XDebuggerManager">
+    <watches-manager>
+      <configuration name="SpringBootApplicationConfigurationType">
+        <watch expression="uid" />
+      </configuration>
+    </watches-manager>
+  </component>
+  <component name="XSLT-Support.FileAssociations.UIState">
+    <expand />
+    <select />
+  </component>
+  <component name="com.intellij.coverage.CoverageDataManagerImpl">
+    <SUITE FILE_PATH="coverage/Optimizer$Optimizer.ic" NAME="Optimizer Coverage Results" MODIFIED="1667054641735" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" />
+  </component>
+</project>
