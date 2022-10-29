@@ -9,7 +9,7 @@ import { React } from "react";
 
 function Footer() {
   return (
-    <MDBFooter bgColor="dark" className=" text-lg-left mt-5">
+    <MDBFooter bgColor="dark" className="text-lg-left mt-5">
       <MDBContainer className="p-4" style={{ color: "white" }}>
         <MDBRow>
           <MDBCol lg="8" md="12" className="mb-md-0">

@@ -2,6 +2,7 @@ package com.planner.backendserver.controller;
 
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.planner.backendserver.dto.request.ChangePwdRequestDTO;
+import com.planner.backendserver.dto.request.PasswordResetRequestDTO;
 import com.planner.backendserver.service.interfaces.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -71,4 +72,29 @@ public class UserController {
         }
     }
 
+    @PostMapping("/password-reset-request")
+    public ResponseEntity<?> requestResetPassword(@RequestBody String email){
+        try{
+            boolean result = userService.requestPasswordReset(email);
+            if (result){
+                return new ResponseEntity<>(HttpStatus.OK);
+            }
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        } catch (Exception e){
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @PostMapping("/password-reset")
+    public ResponseEntity<?> resetPassword(@RequestBody PasswordResetRequestDTO request){
+        try{
+            boolean result = userService.handleResetPasswordToken(request);
+            if (result){
+                return new ResponseEntity<>(HttpStatus.OK);
+            }
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        } catch (Exception e){
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
 }

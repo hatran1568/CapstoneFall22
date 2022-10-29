@@ -5,7 +5,7 @@ import Modal from "react-bootstrap/Modal";
 import style from "./timeline.module.css";
 import Rating from "../../components/POIs/Rating";
 import { ContactSupport } from "@mui/icons-material";
-function AddActivityModal(props) {
+function EditActivityModal(props) {
   const { activityEdited, allDates, tripDetail, ...rest } = props;
   const inputField = { ...tripDetail };
   useEffect(() => {
@@ -187,4 +187,4 @@ function AddActivityModal(props) {
   );
 }
 
-export default AddActivityModal;
+export default EditActivityModal;
