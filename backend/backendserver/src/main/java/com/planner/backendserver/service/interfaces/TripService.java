@@ -22,4 +22,6 @@ public interface TripService {
     public Optional<TripDetails> editCustomTripDetailById(TripDetails detail, int id);
     public List<TripGeneralDTO> getTripsByUser(int userId);
     public void deleteTripById(int id);
+    public List<TripGeneralDTO> getLast3TripsByUser(int userId);
+    public int countTripByUser(int userId);
 }

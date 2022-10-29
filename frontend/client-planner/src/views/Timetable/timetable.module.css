@@ -88,13 +88,14 @@ display: none;
     position: fixed;
     overflow-y: visible;
     height: auto;
-    /* text-align: right; */
   }
 .month{
     font-weight: 500;
     text-transform: uppercase;
     font-size: 16px;
     color: #0e0e0f;
+    margin-top: 20px;
+    text-align: center;
 }
 .date{
     display: block;
