@@ -66,15 +66,15 @@ public class TripController {
     }
     @GetMapping("/general/{id}")
     public ResponseEntity<TripGeneralDTO> getTripGeneralById(@PathVariable int id){
-//        try{
+        try{
             TripGeneralDTO trip = tripService.getTripGeneralById(id);
             if (trip == null){
                 return new ResponseEntity<>(HttpStatus.NOT_FOUND);
             }
             return new ResponseEntity<>(trip, HttpStatus.OK);
-//        } catch (Exception e){
-//            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-//        }
+        } catch (Exception e){
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
     @GetMapping("/get-distance")
     public ResponseEntity<Double> getDistanceBetweenTwoPOIs(@RequestParam int from, @RequestParam int to){
@@ -114,7 +114,7 @@ public class TripController {
     }
     @PostMapping("/add-custom-detail")
     public ResponseEntity<TripDetails> addCustomTripDetail(@RequestBody ObjectNode objectNode){
-//        try{
+        try{
             Date date = Date.valueOf(objectNode.get("date").asText());
             int startTime = objectNode.get("startTime").asInt();
             int endTime = objectNode.get("endTime").asInt();
@@ -123,9 +123,9 @@ public class TripController {
             String address = objectNode.get("address").asText();
             TripDetails result = tripService.addCustomTripDetail(date, startTime, endTime, tripId, name, address);
             return new ResponseEntity<>(result, HttpStatus.OK);
-//        } catch (Exception e){
-//            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-//        }
+        } catch (Exception e){
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
     @GetMapping("/get-detail")
     public ResponseEntity<TripDetails> getTripDetail(@RequestParam int id){

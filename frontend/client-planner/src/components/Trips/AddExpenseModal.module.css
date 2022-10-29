@@ -1,0 +1,26 @@
+.modalBtn{
+  text-align: center;
+  width: 100%;
+}
+.modalBody{
+  text-align: center;
+}
+.modalInput{
+  width: 100% !important;
+}
+.catBtn{
+  width: 80px;
+  height: 60px;
+  background-color: rgb(0, 0, 0) !important;
+  border-style: none !important;
+  font-size: 10px !important;
+  opacity: 0.9 !important;
+}
+.modalContainer{
+  width: 30vw !important
+}
+.errorMessage{
+  margin: auto;
+  text-align: center;
+  color: red;
+}

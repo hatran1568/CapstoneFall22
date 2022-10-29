@@ -94,7 +94,7 @@ function Login() {
                 onChange={(e) => setUser({ ...user, password: e.target.value })}
               />
               <div className="d-flex justify-content-end">
-                <a className="small text-muted mx-5" href="#!">
+                <a className="small text-muted mx-5" href="/forgot-password">
                   Forgot password?
                 </a>
               </div>

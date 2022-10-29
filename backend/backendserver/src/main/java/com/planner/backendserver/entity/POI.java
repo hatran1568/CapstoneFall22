@@ -67,6 +67,4 @@ public class POI extends MasterActivity {
     @Column(name="is_deleted")
     private boolean isDeleted;
 
-    @OneToMany(targetEntity = POIImage.class,fetch = FetchType.LAZY, mappedBy = "poi", cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
-    private List<POIImage> images;
 }

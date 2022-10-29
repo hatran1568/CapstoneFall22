@@ -1,6 +1,7 @@
 package com.planner.backendserver.service.interfaces;
 
 import com.planner.backendserver.dto.request.ChangePwdRequestDTO;
+import com.planner.backendserver.dto.request.PasswordResetRequestDTO;
 import com.planner.backendserver.dto.response.UserDetailResponseDTO;
 import com.planner.backendserver.entity.Provider;
 import com.planner.backendserver.entity.User;
@@ -16,4 +17,6 @@ public interface UserService {
     public String editAvatar(int userId, MultipartFile file);
     public void editUsername(int userId, String newUsername);
     public boolean editPassword(ChangePwdRequestDTO request);
+    boolean requestPasswordReset(String email);
+    boolean handleResetPasswordToken(PasswordResetRequestDTO request);
 }
