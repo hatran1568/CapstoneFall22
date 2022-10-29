@@ -1,8 +1,8 @@
 package com.planner.backendserver.repository;
 
-import com.planner.backendserver.DTO.CollectionDTO;
 import com.planner.backendserver.entity.Collection;
 import com.planner.backendserver.entity.CollectionPOI;
+import com.planner.backendserver.entity.POI;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -13,15 +13,8 @@ import java.util.ArrayList;
 
 public interface CollectionRepository extends JpaRepository<Collection, Integer> {
     // getting collections here
-    @Query(value = "select *\n" +
-            "from (select c.collection_id, c.date_modified, c.description, c.is_deleted, title, user_id, min(pi.url)\n" +
-            "      from collection c\n" +
-            "               left join collection_poi cp on c.collection_id = cp.collection_id\n" +
-            "               left join poi p on cp.poi_id = p.activity_id\n" +
-            "               left join poi_image pi on p.activity_id = pi.poi_id\n" +
-            "      group by c.collection_id) lmao\n" +
-            "where lmao.user_id = :id", nativeQuery = true)
-    ArrayList<CollectionDTO> getCollectionsByUserID(int id);
+    @Query("select c from Collection c where c.user.userID = :id")
+    ArrayList<Collection> getCollectionsByUserID(int id);
 
     @Query("select c from Collection c where c.collectionId = (select max(c.collectionId) from Collection c)")
     Collection getNewestCollectionID();
@@ -35,6 +28,9 @@ public interface CollectionRepository extends JpaRepository<Collection, Integer>
 
     @Query("select cp from CollectionPOI cp where cp.poi.activityId = :poiId and cp.collection.collectionId = :colId")
     CollectionPOI getPOIFromCollection(int poiId, int colId);
+
+    @Query("select min(cp.poi) from CollectionPOI cp where cp.collection.collectionId = :colId")
+    POI getFirstPOIInCollection(int colId);
 
     // modifying collection list here
     @Modifying

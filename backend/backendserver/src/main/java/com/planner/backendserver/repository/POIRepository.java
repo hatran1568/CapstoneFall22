@@ -48,10 +48,10 @@ public interface POIRepository extends JpaRepository<POI, Integer> {
     @Query("select r from Rating r join User u on r.user.userID = u.userID where r.POI.activityId = :id")
     ArrayList<Rating> getRatingsByPOIId(int id);
 
-    @Query(value = "SELECT pi.url  from poi p join poi_image pi on p.activity_id=pi.poi_id  where p.activity_id=:id", nativeQuery = true)
+    @Query(value = "SELECT pi.url from poi p join poi_image pi on p.activity_id=pi.poi_id  where p.activity_id=:id", nativeQuery = true)
     ArrayList<String> getImagesByPOIId(int id);
 
-    @Query(value = "SELECT pi.url  from poi p join poi_image pi on p.activity_id=pi.poi_id  where p.activity_id=:id limit 1", nativeQuery = true)
+    @Query(value = "SELECT pi.url from poi p join poi_image pi on p.activity_id=pi.poi_id  where p.activity_id=:id limit 1", nativeQuery = true)
     Optional<String> getThumbnailById(int id);
 
     @Query("SELECT p FROM POI p left join MasterActivity m on p.activityId = m.activityId where p.activityId = :masterActivityId")

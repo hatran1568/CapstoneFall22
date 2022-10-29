@@ -20,21 +20,21 @@ const POIDetails = () => {
 
   useEffect(() => {
     const getPOI = async () => {
-      await axios.get("http://localhost:8080/api/pois/" + poiId).then((res) => setCurPOI(res.data));
+      await axios.get("/api/pois/" + poiId).then((res) => setCurPOI(res.data));
     };
     getPOI();
   }, []);
 
   useEffect(() => {
     const getRatings = async () => {
-      await axios.get("http://localhost:8080/api/pois/" + poiId + "/ratings").then((res) => setRatings(res.data));
+      await axios.get("/api/pois/" + poiId + "/ratings").then((res) => setRatings(res.data));
     };
     getRatings();
   }, []);
 
   useEffect(() => {
     const getImages = async () => {
-      await axios.get("http://localhost:8080/api/pois/" + poiId + "/images").then((res) => setImages(res.data));
+      await axios.get("/api/pois/" + poiId + "/images").then((res) => setImages(res.data));
     };
     getImages();
   }, []);
@@ -55,9 +55,10 @@ const POIDetails = () => {
     );
   }
 
-  const avgRate = ratings.reduce((sum, cur) => sum + Number(cur.rate), 0) / ratings.length;
+  const avgRate = 0;
   const poiRatings = [];
   if (ratings.length > 0) {
+    avgRate = ratings.reduce((sum, cur) => sum + Number(cur.rate), 0) / ratings.length;
     ratings.forEach((rating) => {
       var formattedDate = new Date(rating.dateCreated).toLocaleDateString("vi-VN");
       poiRatings.push(

@@ -45,8 +45,8 @@ const CollectionInfoCard = (prop) => {
           <MDBCardImage
             className={style.img}
             src={
-              prop.prop.image
-                ? prop.prop.image
+              prop.prop.imgUrl
+                ? prop.prop.imgUrl
                 : "https://i.picsum.photos/id/1000/5626/3635.jpg?hmac=qWh065Fr_M8Oa3sNsdDL8ngWXv2Jb-EE49ZIn6c0P-g"
             }
             fluid
@@ -54,7 +54,7 @@ const CollectionInfoCard = (prop) => {
         </MDBCol>
         <MDBCol sm='7'>
           <MDBCardBody>
-            <a className={style.link} href={"/collection?id=" + prop.prop.collectionId}>
+            <a className={style.link} href={"/collection?id=" + prop.prop.collectionID}>
               <h5 className='mt-4'>{prop.prop.title}</h5>
               <p className='mt-2 mb-0'>{prop.prop.description}</p>
             </a>

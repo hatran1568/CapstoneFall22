@@ -5,6 +5,7 @@ import com.planner.backendserver.DTO.CollectionDTO;
 import com.planner.backendserver.entity.Collection;
 import com.planner.backendserver.entity.CollectionPOI;
 import com.planner.backendserver.repository.CollectionRepository;
+import com.planner.backendserver.service.interfaces.CollectionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,6 +19,9 @@ import java.util.ArrayList;
 public class CollectionController {
     @Autowired
     private CollectionRepository collectionRepository;
+
+    @Autowired
+    private CollectionService collectionService;
 
     // getting collections here
     @GetMapping("/newest")
@@ -35,12 +39,15 @@ public class CollectionController {
 
     @GetMapping("/list/{uid}")
     public ResponseEntity<ArrayList<CollectionDTO>> getCollections(@PathVariable int uid) {
-        ArrayList<CollectionDTO> collections = collectionRepository.getCollectionsByUserID(uid);
-        if (collections.isEmpty()) {
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        try {
+            ArrayList<CollectionDTO> collections = collectionService.getCollectionListByUid(uid);
+            if (collections.isEmpty()) {
+                return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+            }
+            return new ResponseEntity<>(collections, HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
-        return new ResponseEntity<>(collections, HttpStatus.OK);
-
     }
 
     // getting POI list here
