@@ -9,8 +9,23 @@ import ModalGraph from "../../components/Trips/ModalGraph";
 import AddExpenseModal from "../../components/Trips/AddExpenseModal";
 import UpdateExpenseModal from "../../components/Trips/UpdateExpenseModal";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import fontawesome from '@fortawesome/fontawesome'
-import { faFilter, faTrash, faPlane, faBed, faTaxi, faBus, faUtensils, faWineGlass, faMonument, faTicket, faBagShopping, faGasPump, faBasketShopping, faNoteSticky } from "@fortawesome/free-solid-svg-icons";
+import {
+  faFilter,
+  faTrash,
+  faPlane,
+  faBed,
+  faTaxi,
+  faBus,
+  faUtensils,
+  faWineGlass,
+  faMonument,
+  faTicket,
+  faBagShopping,
+  faGasPump,
+  faBasketShopping,
+  faNoteSticky,
+} from "@fortawesome/free-solid-svg-icons";
+import { library } from "@fortawesome/fontawesome-svg-core";
 import {
     MDBContainer,
     MDBCard,
@@ -20,7 +35,7 @@ import {
     MDBBtn
   } from "mdb-react-ui-kit";
 import Dropdown from 'react-bootstrap/Dropdown';
-fontawesome.library.add(faFilter, faTrash, faPlane, faBed, faTaxi, faBus, faUtensils, faWineGlass, faMonument, faTicket, faBagShopping, faGasPump, faBasketShopping, faNoteSticky);
+library.add(faFilter, faTrash, faPlane, faBed, faTaxi, faBus, faUtensils, faWineGlass, faMonument, faTicket, faBagShopping, faGasPump, faBasketShopping, faNoteSticky);
 
 const { confirm } = Modal;
 class TripBudget extends Component {
