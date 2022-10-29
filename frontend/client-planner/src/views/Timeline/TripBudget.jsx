@@ -139,7 +139,7 @@ class TripBudget extends Component {
         return Promise.reject(error)
       }
     );
-    axios.get(`http://localhost:8080/api/expense/` + id + "/0").then((res) => {
+    axios.get(`http://localhost:8080/api/expense/` + id + "/" + this.state.currentFilter).then((res) => {
       const data = res.data;
       this.setState({
         expenseData: data,

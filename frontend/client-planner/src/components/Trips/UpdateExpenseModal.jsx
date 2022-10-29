@@ -84,7 +84,7 @@ function UpdateExpenseModal(props) {
   return (
     <span>
       <FontAwesomeIcon icon={faPenToSquare} onClick={toggleShow} />
-      <MDBModal show={basicModal} setShow={setBasicModal} tabIndex="-1">
+      <MDBModal key={data.amount} show={basicModal} setShow={setBasicModal} tabIndex="-1">
         <MDBModalDialog>
           <MDBModalContent className={style.modalContainer}>
             <MDBModalHeader>
