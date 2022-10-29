@@ -196,10 +196,11 @@ class TripBudget extends Component {
       okText: "Yes",
       okType: "danger",
       cancelText: "No",
-      async onOk() {
+      onOk: async () => {
         const id = window.location.href.split('/')[4];
         await axios.delete(`http://localhost:8080/api/expense/` + expenseId, {});
-        window.location.reload();
+        //window.location.reload();
+        this.refreshHandler();
       },
       onCancel() {},
     });
