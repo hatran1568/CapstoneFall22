@@ -67,5 +67,13 @@ public interface ExpenseRepository extends JpaRepository<ExpenseCategory,Double>
             value = "INSERT INTO trip_expense (amount, description, expense_category_id, trip_id) VALUE (?1, ?2, ?3, ?4)",
             nativeQuery = true)
     void addExpense(double amount, String description, int expenseCategoryId, int tripId);
+    @Modifying
+    @Transactional
+    @Query(
+            value = "UPDATE trip_expense te\n" +
+                    "SET te.amount = ?1, te.description = ?2, te.expense_category_id = ?3\n" +
+                    "WHERE te.trip_expense_id = ?4",
+            nativeQuery = true)
+    void updateExpense(double amount, String description, int expenseCategoryId, int expenseId);
 
 }

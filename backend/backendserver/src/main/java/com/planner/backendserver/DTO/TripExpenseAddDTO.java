@@ -5,6 +5,7 @@ public class TripExpenseAddDTO {
     String description;
     int expenseCategoryId;
     int tripId;
+    int expenseId;
 
     public double getAmount(){
         return amount;
@@ -17,5 +18,8 @@ public class TripExpenseAddDTO {
     };
     public int getTripId(){
         return tripId;
+    };
+    public int getExpenseId(){
+        return expenseId;
     };
 }

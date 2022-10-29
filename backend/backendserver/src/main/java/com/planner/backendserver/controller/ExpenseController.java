@@ -114,6 +114,15 @@ public class ExpenseController {
         catch (Exception e){
             return  new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
-
+    }
+    @RequestMapping(value = "/expense/update", consumes = "application/json", produces = { "*/*" }, method = RequestMethod.POST)
+    public ResponseEntity<?> updateExpense(@RequestBody TripExpenseAddDTO expense) {
+        try{
+            expenseRepo.updateExpense(expense.getAmount(), expense.getDescription(), expense.getExpenseCategoryId(), expense.getExpenseId());
+            return new ResponseEntity<>(HttpStatus.OK);
+        }
+        catch (Exception e){
+            return  new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 }

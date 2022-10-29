@@ -5,7 +5,7 @@ import axios from "axios";
 import Select from "react-dropdown-select"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import fontawesome from '@fortawesome/fontawesome'
-import { faFilter, faTrash, faPlane, faBed, faTaxi, faBus, faUtensils, faWineGlass, faMonument, faTicket, faBagShopping, faGasPump, faBasketShopping, faNoteSticky, faDongSign } from "@fortawesome/free-solid-svg-icons";
+import { faPenToSquare, faFilter, faTrash, faPlane, faBed, faTaxi, faBus, faUtensils, faWineGlass, faMonument, faTicket, faBagShopping, faGasPump, faBasketShopping, faNoteSticky, faDongSign } from "@fortawesome/free-solid-svg-icons";
 import style from "./AddExpenseModal.module.css";
 import {
   MDBBtn,
@@ -22,35 +22,40 @@ import {
   MDBRow,
   MDBCol
 } from "mdb-react-ui-kit";
-fontawesome.library.add(faFilter, faTrash, faPlane, faBed, faTaxi, faBus, faUtensils, faWineGlass, faMonument, faTicket, faBagShopping, faGasPump, faBasketShopping, faNoteSticky, faDongSign);
-function AddExpenseModal() {
-  //Get category Data
-  var currentCat = 0;
+fontawesome.library.add(faPenToSquare, faFilter, faTrash, faPlane, faBed, faTaxi, faBus, faUtensils, faWineGlass, faMonument, faTicket, faBagShopping, faGasPump, faBasketShopping, faNoteSticky, faDongSign);
+function UpdateExpenseModal({data}) {
+  //Get Data
+  console.log(data);
+  var currentCat = data.expenseCategoryId;
+  var modalAmountName = "modalAmount" + data.expenseId;
+  var modalDescName = "modalDesc" + data.expenseId;
+  var modalCatName = "modalCat" + data.expenseId;
+  var modalErrorName = "errorMessage" + data.expenseId;
   const changeCat = (event) => {
-    currentCat = event.target.id;
-    document.getElementById("modalCat").value = event.target.name;
+    currentCat = event.currentTarget.id;
+    document.getElementById(modalCatName).value = event.currentTarget.name;
   };
-  //Add Expense
+  //Update Expense
   const addExpense = event => {
     const id = window.location.href.split('/')[4];
-    if (document.getElementById("modalDesc").value == null)
-      document.getElementById("modalDesc").value = " "
-    if (document.getElementById("modalAmount").value=="")
+    if (document.getElementById(modalDescName).value == null)
+      document.getElementById(modalDescName).value = " "
+    if (document.getElementById(modalAmountName).value=="")
       {
-        document.getElementById("errorMessage").innerHTML = "Please enter an amount.";
+        document.getElementById(modalErrorName).innerHTML = "Please enter an amount.";
       }
     else if (currentCat == 0)
-    document.getElementById("errorMessage").innerHTML = "Please select a category.";
+    document.getElementById(modalErrorName).innerHTML = "Please select a category.";
     else
     axios({
         method: 'post',
-        url: 'http://localhost:8080/api/expense/new',
+        url: 'http://localhost:8080/api/expense/update',
         data: {
-            amount: document.getElementById("modalAmount").value,
-            description: document.getElementById("modalDesc").value,
+            amount: document.getElementById(modalAmountName).value,
+            description: document.getElementById(modalDescName).value,
             expenseCategoryId: currentCat,
             tripId: id,
-            expenseId: 0
+            expenseId: data.expenseId
         },
         headers: {
             'Content-Type': 'application/json'
@@ -63,22 +68,15 @@ function AddExpenseModal() {
   const [basicModal, setBasicModal] = useState(false);
   const toggleShow = () => {
     setBasicModal(!basicModal);
-    document.getElementById("modalAmount").value = "";
-    document.getElementById("modalDesc").value = "";
-    document.getElementById("modalCat").value = "";
-    document.getElementById("errorMessage").innerHTML = "";
-    currentCat = 0;
   };
   return (
     <span>
-      <MDBBtn color='info' onClick={toggleShow}>
-        Add Expense
-      </MDBBtn>
+      <FontAwesomeIcon icon="pen-to-square" onClick={toggleShow}/>
       <MDBModal show={basicModal} setShow={setBasicModal} tabIndex='-1'>
         <MDBModalDialog>
           <MDBModalContent className={style.modalContainer}>
             <MDBModalHeader>
-              <MDBModalTitle>Add Expense</MDBModalTitle>
+              <MDBModalTitle>Update Expense</MDBModalTitle>
               <MDBBtn className='btn-close' color='none' onClick={toggleShow}></MDBBtn>
             </MDBModalHeader>
             <MDBModalBody className={style.modalBody}>
@@ -87,9 +85,10 @@ function AddExpenseModal() {
                 <input
                   type="number"
                   className="form-control"
-                  id="modalAmount"
+                  id={"modalAmount" + data.expenseId}
                   label='Amount'
                   placeholder='Amount'
+                  defaultValue={data.amount}
                 />
               </div>
               <div className="input-group mb-3">
@@ -97,9 +96,10 @@ function AddExpenseModal() {
                 <input
                   type="text"
                   className="form-control"
-                  id="modalDesc"
+                  id={"modalDesc" + data.expenseId}
                   label='Description'
                   placeholder='Description'
+                  defaultValue={data.description}
                 />
               </div>
               <div className="input-group mb-3">
@@ -107,9 +107,10 @@ function AddExpenseModal() {
                 <input
                   type="text"
                   className="form-control"
-                  id="modalCat"
+                  id={"modalCat" + data.expenseId}
                   label='Category'
                   placeholder='Category'
+                  defaultValue={data.name}
                   disabled
                 />
               </div>
@@ -179,7 +180,7 @@ function AddExpenseModal() {
                   </MDBBtn>
                 </MDBCol>
               </MDBRow><br/>
-              <div id="errorMessage" className={style.errorMessage}></div>
+              <div id={"errorMessage" + data.expenseId} className={style.errorMessage}></div>
               <br/>
               <div className={style.modalBtn}>
                 <MDBBtn color="info" onClick={addExpense}>Save</MDBBtn>
@@ -191,4 +192,4 @@ function AddExpenseModal() {
     </span>
   )
 }
-export default AddExpenseModal
+export default UpdateExpenseModal

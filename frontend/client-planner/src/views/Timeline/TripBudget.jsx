@@ -7,6 +7,7 @@ import { Modal } from "antd";
 import { Progress } from 'antd';
 import ModalGraph from "../../components/Trips/ModalGraph";
 import AddExpenseModal from "../../components/Trips/AddExpenseModal";
+import UpdateExpenseModal from "../../components/Trips/UpdateExpenseModal";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import fontawesome from '@fortawesome/fontawesome'
 import { faFilter, faTrash, faPlane, faBed, faTaxi, faBus, faUtensils, faWineGlass, faMonument, faTicket, faBagShopping, faGasPump, faBasketShopping, faNoteSticky } from "@fortawesome/free-solid-svg-icons";
@@ -32,6 +33,7 @@ class TripBudget extends Component {
       graphData: [],
       expenseData: [],
       dataLoaded: false,
+      tripIdLoaded: false,
       currentFilter: 0,
       tripUser: null
     };
@@ -82,6 +84,7 @@ class TripBudget extends Component {
         const data = res.data;
         this.setState({
           tripUser: data,
+          tripIdLoaded: true
         });
       }).catch(
         function (error) {
@@ -198,11 +201,14 @@ class TripBudget extends Component {
             <MDBCol md={1} className={style.expenseBoxIcon}>
               <FontAwesomeIcon icon={entry.icon}/>
             </MDBCol>
-            <MDBCol md={7} className={style.expenseBoxMid}>
+            <MDBCol md={6} className={style.expenseBoxMid}>
               <b>{entry.name}</b><br/>{entry.description}
             </MDBCol>
             <MDBCol md={3} className={style.expenseBoxAmount}>
               {formatter.format(entry.amount)}
+            </MDBCol>
+            <MDBCol md={1} onClick={this.updateExpense} id={entry.expenseId} className={style.expenseBoxDelete}>
+              <UpdateExpenseModal data={entry}/>
             </MDBCol>
             <MDBCol md={1} onClick={this.deleteExpense} id={entry.expenseId} className={style.expenseBoxDelete}>
               <FontAwesomeIcon icon="trash"/>
@@ -219,18 +225,19 @@ class TripBudget extends Component {
         <h1> Please wait some time.... </h1>{" "}
       </div>
     );
-    if (localStorage.getItem("id") == null)
-      return(
-        <div className={style.errorText}>
-          <h1> Log in to manage your expenses </h1>{" "}
-        </div>
-      )
-    else if (localStorage.getItem("id") != this.state.tripUser)
-      return(
-        <div className={style.errorText}>
-          <h1> You cannot manage expenses of a trip not yours </h1>{" "}
-        </div>
-      )
+    if (this.state.tripIdLoaded)
+      if (localStorage.getItem("id") == null)
+        return(
+          <div className={style.errorText}>
+            <h1> Log in to manage your expenses </h1>{" "}
+          </div>
+        )
+      else if (localStorage.getItem("id") != this.state.tripUser)
+        return(
+          <div className={style.errorText}>
+            <h1> You cannot manage expenses of a trip not yours </h1>{" "}
+          </div>
+        )
     document.title = this.state.trip.name + " | Tripplanner";
     return (
       <div>
