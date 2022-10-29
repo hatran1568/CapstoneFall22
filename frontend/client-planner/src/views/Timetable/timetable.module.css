@@ -1,6 +1,8 @@
 .calendarDiv{
-    min-width: 900px;
+    min-width: 800px;
     margin-bottom: 100px;
+    position: relative;
+    padding: 0;
 }
 .fcEvent{
     height: 100%;
@@ -18,24 +20,35 @@
     top: 5px;
 }
 .dropdownMenu{
-display: none;
+  display: none;
   position: absolute;
+  top: 0;
+  left: 15px;
   background-color: #fff;
   box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+  padding: 0;
   }
   .dropdown:hover .dropdownMenu {
     display: block;
   }
   .dropdownMenu a:hover {
     background-color: #f1f1f1;
-    font-weight: 500;
   }
   .dropdownMenu a {
     color: black;
-    padding: 12px 15px;
+    padding: 0.5em;
+    padding-right: 1em;
+    padding-left: 0.3em;
     text-decoration: none;
     display: block;
-    font-size: 15px;
+    font-size: 14px;
+    text-align: left;
+    padding: none;
+  }
+  .dropdownIcon{
+    margin: 0;
+    width: 30px;
+    padding-left: 0;
   }
   .moreBtn{
     background-color:transparent;
@@ -88,27 +101,70 @@ display: none;
     position: fixed;
     overflow-y: visible;
     height: auto;
+    padding: 0;
   }
 .month{
     font-weight: 500;
     text-transform: uppercase;
-    font-size: 16px;
+    font-size: 15px;
     color: #0e0e0f;
     margin-top: 20px;
-    text-align: center;
+    text-align: left;
 }
 .date{
     display: block;
     font-weight: 600;
     text-transform: uppercase;
-    font-size: 20px;
-    color: #0e0e0f;
+    font-size: 18px;
     text-decoration: none;
     text-align: center;
     margin-top: 20px;
+    color: blue;
+}
+.dateActive{
+  color: #0e0e0f;
 }
 .date:hover{
     color: #0e0e0f;
     text-decoration: none;
     text-decoration: underline;
+}
+.navBtn {
+  text-decoration: none;
+  background: #0e0e0f;
+  text-align: center;
+  width: 48px;
+  height: 48px;
+  border-radius: 100%;
+  display: inline-flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  font-size: 30px;
+  color: white;
+  font-weight: bold;
+  position: absolute;
+  cursor: pointer;
+}
+.navBtn:hover{
+  background-color: #0e0e0f76;
+  color: #0e0e0f;
+}
+.navIcon {
+  display: inline-block;
+  vertical-align: middle;
+  padding: 0;
+  margin: 0;
+}
+.nextBtn{
+  right: 0;
+  top: 50%;
+  z-index: 5;
+  transform: translateX(50%);
+}
+.prevBtn{
+  left: 0;
+  top: 50%;
+  z-index: 5;
+  transform: translateX(-80%);
 }
