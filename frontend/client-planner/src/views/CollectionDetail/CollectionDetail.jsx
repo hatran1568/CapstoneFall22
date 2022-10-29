@@ -9,6 +9,7 @@ import {
   MDBCardTitle,
   MDBCol,
   MDBContainer,
+  MDBIcon,
   MDBRow,
 } from "mdb-react-ui-kit";
 import React, { useEffect, useState } from "react";
@@ -51,11 +52,14 @@ const CollectionDetail = () => {
     return (
       <>
         <MDBContainer>
-          <MDBRow className='mb-3'>
-            <h3>Your collection: {curCol.title}</h3>
+          <MDBRow className='mt-md-5'>
+            <h3>
+              <MDBIcon far icon='bookmark' /> Your collection: {curCol.title}
+            </h3>
           </MDBRow>
+          <hr />
           <MDBRow>
-            {curCol.description === "" ? <p>There is no description yet.</p> : <p>Description: {curCol.description}</p>}
+            {curCol.description === "" ? <p className="fs-5">There is no description yet.</p> : <p className="fs-5">Description: {curCol.description}</p>}
           </MDBRow>
           <MDBRow>
             <h4>Places you saved in this collection</h4>
@@ -71,8 +75,8 @@ const CollectionDetail = () => {
                         style={{ backgroundImage: `url(${poi.poi.images[0].url})` }}
                       >
                         <MDBCard className={style.card} style={{ border: "none" }}>
-                          <MDBCardBody>
-                            <MDBCardTitle className='fs-6 text-center text-white'>{poi.poi.name}</MDBCardTitle>
+                          <MDBCardBody className='mt-5 pt-5'>
+                            <MDBCardTitle className='fs-4 text-center text-white'>{poi.poi.name}</MDBCardTitle>
                           </MDBCardBody>
                           <MDBCardFooter border='0'>
                             <MDBCardText className='text-center text-white'>
