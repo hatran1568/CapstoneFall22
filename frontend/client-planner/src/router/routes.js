@@ -16,6 +16,7 @@ import LayoutsWithNavbar from "../components/NavBar/LayoutsWithNavbar";
 import SearchResults from "../views/SearchResults/SearchResults";
 import POIDetails from "../views/POIDetails/POIDetails";
 import BlogDetails from "../views/Blog/BlogDetails";
+import Test from "../views/TestingScreen/Test";
 import ChangePassword from "../views/UserProfile/ChangePassword";
 export default function RootRoutes() {
   return (
