@@ -50,6 +50,19 @@ public class CollectionController {
         }
     }
 
+    @GetMapping("/get/{colId}")
+    public ResponseEntity<Collection> getCollection(@PathVariable int colId) {
+        try {
+            Collection collection = collectionRepository.getCollectionByID(colId);
+            if (collection == null) {
+                return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+            }
+            return new ResponseEntity<>(collection, HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
     // getting POI list here
     @GetMapping("/poiList/{colId}")
     public ResponseEntity<ArrayList<CollectionPOI>> getPOIList(@PathVariable int colId) {

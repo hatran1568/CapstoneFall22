@@ -19,6 +19,9 @@ public interface CollectionRepository extends JpaRepository<Collection, Integer>
     @Query("select c from Collection c where c.collectionId = (select max(c.collectionId) from Collection c)")
     Collection getNewestCollectionID();
 
+    @Query("select c from Collection c where c.collectionId = :id")
+    Collection getCollectionByID(int id);
+
     // getting POI list here
     @Query("select cp, m" +
             " from CollectionPOI cp" +

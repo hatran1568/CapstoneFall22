@@ -31,7 +31,7 @@ const AddCollectionModal = () => {
         if (titleInput.trim().length > 0) {
           title = titleInput.trim();
         } else {
-          title = "Untitled collection";
+          title = "Untitled";
         }
         if (descriptionInput.trim().length > 0) {
           description = descriptionInput.trim();
@@ -65,7 +65,7 @@ const AddCollectionModal = () => {
 
   return (
     <>
-      <MDBBtn color='primary' className='m-2' onClick={handleCreate}>
+      <MDBBtn tag='a' color='none' className='m-2' onClick={handleCreate} style={{ textDecoration: "none" }}>
         <MDBIcon fas icon='plus-circle' /> Create new...
       </MDBBtn>
       <Modal
