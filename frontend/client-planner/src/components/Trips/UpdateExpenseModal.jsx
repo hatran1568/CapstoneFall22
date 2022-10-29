@@ -34,7 +34,6 @@ import {
   MDBRow,
   MDBCol,
 } from "mdb-react-ui-kit";
-fontawesome.library.add(faPenToSquare, faFilter, faTrash, faPlane, faBed, faTaxi, faBus, faUtensils, faWineGlass, faMonument, faTicket, faBagShopping, faGasPump, faBasketShopping, faNoteSticky, faDongSign);
 function UpdateExpenseModal(props) {
   const { refreshHandler, data } = props;
   //Get Data
