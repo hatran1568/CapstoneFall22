@@ -13,7 +13,7 @@ function TripInfoCardHomepage(trip) {
     return today.toLocaleDateString("en-IE");
   };
   const formatCurrency = (string) => {
-    return string.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+    return string.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") + " VND";
   };
   const { confirm } = Modal;
 

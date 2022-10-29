@@ -93,6 +93,29 @@
   overflow-y: visible;
   height: auto;
 }
+.month{
+  font-weight: 500;
+  text-transform: uppercase;
+  font-size: 16px;
+  color: #0e0e0f;
+  margin-top: 20px;
+  text-align: center;
+}
+.date{
+  display: block;
+  font-weight: 600;
+  text-transform: uppercase;
+  font-size: 20px;
+  color: #0e0e0f;
+  text-decoration: none;
+  text-align: center;
+  margin-top: 20px;
+}
+.date:hover{
+  color: #0e0e0f;
+  text-decoration: none;
+  text-decoration: underline;
+}
 .detailsGroupDate {
   font-weight: bold;
   font-size: large;
@@ -163,7 +186,6 @@
 }
 .timeGroupDiv{
   padding: 0 !important;
-  /* padding-top: 30px ; */
 }
 .timeGroupDiv label{
   font-size: large;

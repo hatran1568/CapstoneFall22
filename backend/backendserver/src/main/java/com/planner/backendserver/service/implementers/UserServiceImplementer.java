@@ -1,6 +1,8 @@
 package com.planner.backendserver.service.implementers;
 
+import com.planner.backendserver.config.JwtTokenProvider;
 import com.planner.backendserver.dto.request.ChangePwdRequestDTO;
+import com.planner.backendserver.dto.request.PasswordResetRequestDTO;
 import com.planner.backendserver.dto.response.UserDetailResponseDTO;
 import com.planner.backendserver.entity.Provider;
 import com.planner.backendserver.entity.Role;
@@ -9,6 +11,7 @@ import com.planner.backendserver.entity.UserStatus;
 import com.planner.backendserver.repository.UserRepository;
 import com.planner.backendserver.service.interfaces.UserService;
 import com.planner.backendserver.utils.GoogleDriveManager;
+import com.planner.backendserver.utils.MailSenderManager;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -26,6 +29,12 @@ public class UserServiceImplementer implements UserService  {
 
     @Autowired
     GoogleDriveManager driveManager;
+
+    @Autowired
+    JwtTokenProvider tokenProvider;
+
+    @Autowired
+    MailSenderManager mailSender;
 
     @Override
     public void processOAuthPostLoginGoogle(String email) {
@@ -120,5 +129,33 @@ public class UserServiceImplementer implements UserService  {
         }
         userRepository.updatePassword(request.getId(), encoder.encode(request.getNewPassword()));
         return true;
+    }
+
+    @Override
+    public boolean requestPasswordReset(String email) {
+        User user = userRepository.findByEmail(email);
+        if (user == null){
+            return false;
+        }
+        String token = tokenProvider.generatePasswordResetToken(user.getUserID());
+        userRepository.updateResetToken(user.getUserID(), token);
+        String emailContent = "http://localhost:3000/reset-password-confirm?email="+email+"&&token=" + token;
+        mailSender.sendSimpleMessage(email, "Request reset password", emailContent);
+        return true;
+    }
+
+    @Override
+    public boolean handleResetPasswordToken(PasswordResetRequestDTO request) {
+        User user = userRepository.findByEmail(request.getEmail());
+        String token = request.getResetToken();
+        PasswordEncoder encoder = new BCryptPasswordEncoder();
+
+        if (user!=null && token.equals(request.getResetToken())){
+            if (tokenProvider.validateToken(token)){
+                userRepository.updatePassword(user.getUserID(),encoder.encode(request.getNewPassword()));
+                return true;
+            }
+        }
+        return false;
     }
 }
