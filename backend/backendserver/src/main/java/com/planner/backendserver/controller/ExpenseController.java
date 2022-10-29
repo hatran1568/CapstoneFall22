@@ -6,6 +6,7 @@ import com.planner.backendserver.entity.ExpenseCategory;
 import com.planner.backendserver.entity.TripExpense;
 import com.planner.backendserver.repository.DestinationRepository;
 import com.planner.backendserver.repository.ExpenseRepository;
+import com.planner.backendserver.repository.TripRepository;
 import com.planner.backendserver.service.UserDTOServiceImplementer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -22,6 +23,8 @@ public class ExpenseController {
     private UserDTOServiceImplementer userDTOService;
     @Autowired
     private ExpenseRepository expenseRepo;
+    @Autowired
+    private TripRepository tripRepo;
 
     @GetMapping("/expense/{tripId}/{orderBy}")
     public ResponseEntity<ArrayList<TripExpenseDTO>> getDestinationById(@PathVariable int tripId, @PathVariable int orderBy){
@@ -68,6 +71,15 @@ public class ExpenseController {
         try{
             Double expense = expenseRepo.getTotalExpense(tripId);
             return new ResponseEntity<>(expense, HttpStatus.OK);
+        } catch (Exception e){
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+    @GetMapping("/expense/user/{tripId}")
+    public ResponseEntity<Integer> getTripUserId(@PathVariable int tripId){
+        try{
+            Integer userId = tripRepo.getTripUserId(tripId);
+            return new ResponseEntity<>(userId, HttpStatus.OK);
         } catch (Exception e){
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }

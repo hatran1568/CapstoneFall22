@@ -133,3 +133,8 @@
   margin-bottom: 5px;
   border-radius: 2px !important;
 }
+.errorText{
+  width: 100%;
+  text-align: center;
+  margin-top: 30px;
+}

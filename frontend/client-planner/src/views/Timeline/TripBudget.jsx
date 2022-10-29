@@ -32,7 +32,8 @@ class TripBudget extends Component {
       graphData: [],
       expenseData: [],
       dataLoaded: false,
-      currentFilter: 0
+      currentFilter: 0,
+      tripUser: null
     };
   }
   componentDidMount() {
@@ -198,8 +199,30 @@ class TripBudget extends Component {
         </MDBCardBody>
       );
     });
-    
-
+    //Check user
+    axios.get(`http://localhost:8080/api/expense/user/` + this.state.trip.tripId).then((res) => {
+      const data = res.data;
+      this.setState({
+        tripUser: data,
+      });
+    }).catch(
+      function (error) {
+        console.log(error)
+        return Promise.reject(error)
+      }
+    );
+    if (localStorage.getItem("id") == null)
+      return(
+        <div className={style.errorText}>
+          <h1> Log in to manage your expenses </h1>{" "}
+        </div>
+      )
+    else if (localStorage.getItem("id") != this.state.tripUser)
+      return(
+        <div className={style.errorText}>
+          <h1> You cannot manage expenses of a trip not yours </h1>{" "}
+        </div>
+      )
     if (!this.state.dataLoaded)
     return (
       <div>
