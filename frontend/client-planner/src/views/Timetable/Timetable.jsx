@@ -401,7 +401,10 @@ class Timetable extends Component {
   };
   //handle event change
   handleEventChange = (eventInfo) => {
-    if (eventInfo.event.extendedProps.fromForm == true) return;
+    if (eventInfo.event.extendedProps.fromForm == true) {
+      delete eventInfo.event.extendedProps.fromForm;
+      return;
+    }
     var detail = {};
 
     var start = getTimeString(eventInfo.event.start).split(":");
@@ -465,7 +468,7 @@ class Timetable extends Component {
     var endDate = new Date(detail.date);
     endDate.setSeconds(detail.endTime);
     event.end = endDate.toISOString().substring(0, 19);
-
+    event.extendedProps = detail;
     let calendarApi = this.calendarComponentRef.current.getApi();
     calendarApi.addEvent(event);
   };
