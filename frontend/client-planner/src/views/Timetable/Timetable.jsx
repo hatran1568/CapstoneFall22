@@ -426,7 +426,7 @@ class Timetable extends Component {
   //delete from timetable
   deleteEvent = (event, id) => {
     event.preventDefault();
-    if (confirm("do you reall wanna delete this?")) {
+    if (window.confirm("do you reall wanna delete this?")) {
       let calendarApi = this.calendarComponentRef.current.getApi();
       calendarApi.getEventById(id).remove();
     }
@@ -638,7 +638,7 @@ class Timetable extends Component {
 
   handleEventClick = (clickInfo) => {
     if (
-      confirm(
+      window.confirm(
         `Are you sure you want to delete the event '${clickInfo.event.title}'`
       )
     ) {
