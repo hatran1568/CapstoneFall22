@@ -47,7 +47,9 @@ function ResetPasswordConfirm() {
     }
   };
 
-  useEffect(() => {}, [current]);
+  useEffect(() => {
+    document.title = "Reset password | Tripplanner";
+  }, [current]);
 
   return (
     <MDBContainer
@@ -104,11 +106,7 @@ function ResetPasswordConfirm() {
               onChange={(e) => setCfPassword(e.target.value)}
             ></MDBInput>
           </div>
-          <p
-            id="invalidWarning"
-            className="text-danger my-1 mx-5"
-            style={{ display: "none" }}
-          >
+          <p id="invalidWarning" className="text-danger my-1 mx-5">
             {errMsg}
           </p>
           <MDBBtn
