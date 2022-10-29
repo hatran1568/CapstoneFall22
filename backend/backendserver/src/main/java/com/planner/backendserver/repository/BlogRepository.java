@@ -10,11 +10,11 @@ import org.springframework.data.jpa.repository.Query;
 import java.util.ArrayList;
 
 public interface BlogRepository  extends JpaRepository<Blog,Integer> {
-    @Query("SELECT b from Blog b where b.title like  CONCAT('%',:keyword,'%')")
+    @Query("SELECT b from Blog b where b.title like  CONCAT('%',:keyword,'%') AND b.status = 'PUBLISHED'")
     public ArrayList<Blog> getBlogsByKeyword(String keyword);
 
     @Query(
-            value = "SELECT b.blog_id as blogId, b.content, b.status, b.thumbnail, b.title, u.user_id as userId, u.name as username, u.avatar FROM blog b LEFT JOIN user u ON b.user_id = u.user_id WHERE b.blog_id = ?1",
+            value = "SELECT b.blog_id as blogId, b.date_modified as dateModified, b.content, b.status, b.thumbnail, b.title, u.user_id as userId, u.name as username, u.avatar FROM blog b LEFT JOIN user u ON b.user_id = u.user_id WHERE b.blog_id = ?1",
             nativeQuery = true)
     BlogDetailsDTO getBlogById(int blogId);
     @Query(

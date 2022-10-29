@@ -3,6 +3,7 @@ import TripDetailTabs from "./TripDetailTabs";
 import style from "./TripBudget.module.css";
 import axios from "axios";
 import { useParams } from "react-router-dom";
+import { Modal } from "antd";
 import { Progress } from 'antd';
 import ModalGraph from "../../components/Trips/ModalGraph";
 import AddExpenseModal from "../../components/Trips/AddExpenseModal";
@@ -19,6 +20,8 @@ import {
   } from "mdb-react-ui-kit";
 import Dropdown from 'react-bootstrap/Dropdown';
 fontawesome.library.add(faFilter, faTrash, faPlane, faBed, faTaxi, faBus, faUtensils, faWineGlass, faMonument, faTicket, faBagShopping, faGasPump, faBasketShopping, faNoteSticky);
+
+const { confirm } = Modal;
 class TripBudget extends Component {
   state = {};
   constructor(props) {
@@ -117,41 +120,26 @@ class TripBudget extends Component {
   }
 
   //Delete Expense
+  onOkDeleteHandler = (data) => {this.setState({ expenseData: data })}
+  onOkTotalHandler = (data) => {this.setState({ totalBudget: data })}
+  onOkGraphHandler = (data) => {this.setState({ graphData: data })}
+  
   deleteExpense = async (event) => {
-    const id = window.location.href.split('/')[4];
-    await axios.delete(`http://localhost:8080/api/expense/` + event.currentTarget.id, {});
-    await axios.get(`http://localhost:8080/api/expense/` + id + "/" + this.state.currentFilter).then((res) => {
-      const data = res.data;
-      this.setState({
-        expenseData: data
-      });
-    }).catch(
-      function (error) {
-        return Promise.reject(error)
-      }
-    );
-    await axios.get(`http://localhost:8080/api/expense/total/` + id).then((res) => {
-      const totalExpense = res.data;
-      this.setState({
-        totalBudget: totalExpense
-      });
-    }).catch(
-      function (error) {
-        console.log(error)
-        return Promise.reject(error)
-      }
-    );
-    await axios.get(`http://localhost:8080/api/expense/graph/` + id).then((res) => {
-      const data = res.data;
-      this.setState({
-        graphData: data
-      });
-    }).catch(
-      function (error) {
-        console.log(error)
-        return Promise.reject(error)
-      }
-    );
+    const filter = this.state.currentFilter;
+    const expenseId = event.currentTarget.id;
+    confirm({
+      title: "Are you sure to delete this expense?",
+      content: "The expense will be deleted",
+      okText: "Yes",
+      okType: "danger",
+      cancelText: "No",
+      async onOk() {
+        const id = window.location.href.split('/')[4];
+        await axios.delete(`http://localhost:8080/api/expense/` + expenseId, {});
+        window.location.reload();
+      },
+      onCancel() {},
+    });
   }
 
   render() {
@@ -218,6 +206,7 @@ class TripBudget extends Component {
         <h1> Please wait some time.... </h1>{" "}
       </div>
     );
+    document.title = this.state.trip.name + " | Tripplanner";
     return (
       <div>
         <div className={style.tripImage}>
@@ -231,7 +220,7 @@ class TripBudget extends Component {
         </div>
         <TripDetailTabs></TripDetailTabs>
         <MDBContainer className={style.mainContainer}>
-          <h1>Trip Budget</h1>
+          <h1>Trip Budget</h1><br/>
           <MDBCard className={style.budgetContainer}>
             <MDBCardBody>
               <span className={style.expenseText}>Expenses: {formatter.format(this.state.totalBudget)}</span>

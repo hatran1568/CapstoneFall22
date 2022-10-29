@@ -26,7 +26,9 @@
   height: 50px;
 }
 .authorBox{
-  width: 100%
+  width: 100%;
+  margin-bottom: 20px;
+  margin-top: 5vh;
 }
 .contentContainer{
   margin-left: 0;
@@ -59,11 +61,18 @@
 .contentContainer p{
   text-align: justify;
 }
+.contentContainer span{
+  text-align: center;
+  font-style: italic;
+  display: block;
+  font-size: 15px;
+  margin-bottom: 10px;
+  margin-top: -5px;
+}
 .navContainer{
   margin-top: 30px;
   border-radius: 0;
   width: 70vw;
-  margin-bottom: 20px;
   border-style: none;
 }
 .lastBlogBox{
@@ -110,4 +119,17 @@
   align-items: center;
   justify-content: center;
   width: 4vw !important;
+}
+.dateBox{
+  font-size: 15px;
+  color: rgb(95, 95, 95);
+  margin-left: 10px
+}
+.date{
+  margin-left: 10px;
+  margin-right: 20px;
+}
+h1{
+  margin: 0;
+  padding: 0;
 }

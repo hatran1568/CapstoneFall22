@@ -5,7 +5,7 @@ import { useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import fontawesome from '@fortawesome/fontawesome'
-import { faArrowRight, faArrowLeft } from "@fortawesome/free-solid-svg-icons";
+import { faArrowRight, faClock, faArrowLeft, faUser } from "@fortawesome/free-solid-svg-icons";
 import axios from "../../api/axios";
 import {
   MDBBtn,
@@ -16,7 +16,8 @@ import {
   MDBCol,
 } from "mdb-react-ui-kit";
 import style from "./BlogDetails.module.css";
-fontawesome.library.add( faArrowRight, faArrowLeft );
+fontawesome.library.add( faArrowRight, faClock, faArrowLeft, faUser );
+
 function BlogDetails() {
   const [isLoading, setLoading] = useState(true);
   const queryParams = new URLSearchParams(window.location.search);
@@ -42,7 +43,6 @@ function BlogDetails() {
     };
     listResp();
   }, []);
-  console.log(nearbyBlogs);
   if (blog.status != "PUBLISHED")
     return (
       <MDBContainer className={style.errorContainer}>
@@ -51,13 +51,31 @@ function BlogDetails() {
       </MDBContainer>
     )
   else if (!isLoading){
+    document.title = blog.title + " | Tripplanner";
+    const dateRaw = blog.dateModified;
+    var options = {
+      month: "short",
+      day: "numeric",
+      year: "numeric",
+    };
+    var date = new Date(dateRaw);
+    date = date.toLocaleDateString("en-US", options);
+    console.log(date);
     return (
       <div>
         <img src={blog.thumbnail} className={style.thumbnail}/>
         <MDBContainer className={style.mainContainer}>
           <MDBCard className={style.mainCard}>
             <MDBCardBody className={style.mainCardBody}>
-              <h2>{blog.title}</h2><br/>
+              <h1>{blog.title}</h1><br/>
+              <div className={style.dateBox}>
+                <FontAwesomeIcon icon="clock" size="sm"/>
+                <span className={style.date}>{date}</span>
+                <FontAwesomeIcon icon="user" size="sm"/>
+                <span className={style.date}>{blog.username}</span>
+              </div>
+              <div dangerouslySetInnerHTML={{__html:blog.content}} className={style.contentContainer}>            
+              </div>
               <MDBRow className={style.authorBox}>
                 <MDBCol md={1}>
                   <img src={blog.avatar} className={style.avatar}/>
@@ -67,8 +85,6 @@ function BlogDetails() {
                   {blog.username}
                 </MDBCol>
               </MDBRow>
-              <div dangerouslySetInnerHTML={{__html:blog.content}} className={style.contentContainer}>            
-              </div>
             </MDBCardBody>
 
           </MDBCard>
