@@ -2,6 +2,7 @@ package com.planner.backendserver.controller;
 
 import com.planner.backendserver.DTO.POIofDestinationDTO;
 import com.planner.backendserver.entity.MasterActivity;
+import com.planner.backendserver.entity.POIImage;
 import com.planner.backendserver.entity.Rating;
 import com.planner.backendserver.repository.POIRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,7 +41,8 @@ public class POIController {
         try {
             ArrayList<POIofDestinationDTO> pois;
             if (catid == 0)
-                pois = poiRepo.getPOIOfDestination(desid, page * 10, 10, rating);
+                pois = poiRepo.getPOIOfDestination(desid, page * 10,
+                        10, rating);
             else
                 pois = poiRepo.getPOIOfDestinationFilter(desid, catid, page * 10, 10, rating);
             if (pois.isEmpty()) {
@@ -104,11 +106,15 @@ public class POIController {
 
     @GetMapping("/{poiId}/images")
     public ResponseEntity<ArrayList<String>> getPOIImages(@PathVariable("poiId") int poiId) {
-        ArrayList<String> img;
-        img = poiRepo.getImagesByPOIId(poiId);
-        if (img.isEmpty()) {
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        try {
+            ArrayList<String> img;
+            img = poiRepo.getImagesByPOIId(poiId);
+            if (img.isEmpty()) {
+                return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+            }
+            return new ResponseEntity<>(img, HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
-        return new ResponseEntity<>(img, HttpStatus.OK);
     }
 }

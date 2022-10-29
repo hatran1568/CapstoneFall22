@@ -15,3 +15,23 @@
 .card:hover {
   background-color: rgba(50, 50, 50, 0.5);
 }
+
+.header {
+  padding-top: 2em;
+  padding-bottom: 2em;
+  background-color: gray;
+  background: linear-gradient(rgba(0, 0, 0, 1), rgba(0, 0, 0, 0));
+}
+
+.text {
+  color: white;
+  text-align: center;
+}
+
+h3.text {
+  font-size: 4em;
+}
+
+p.text {
+  font-size: 1.5em;
+}

@@ -1,4 +1,4 @@
-package com.planner.backendserver.DTO;
+package com.planner.backendserver.DTO.response;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

@@ -3,6 +3,7 @@ package com.planner.backendserver.repository;
 import com.planner.backendserver.DTO.POIofDestinationDTO;
 import com.planner.backendserver.entity.MasterActivity;
 import com.planner.backendserver.entity.POI;
+import com.planner.backendserver.entity.POIImage;
 import com.planner.backendserver.entity.Rating;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -48,7 +49,7 @@ public interface POIRepository extends JpaRepository<POI, Integer> {
     @Query("select r from Rating r join User u on r.user.userID = u.userID where r.POI.activityId = :id")
     ArrayList<Rating> getRatingsByPOIId(int id);
 
-    @Query(value = "SELECT pi.url from poi p join poi_image pi on p.activity_id=pi.poi_id  where p.activity_id=:id", nativeQuery = true)
+    @Query("select pi.url from POIImage pi where pi.poi.activityId = :id")
     ArrayList<String> getImagesByPOIId(int id);
 
     @Query(value = "SELECT pi.url from poi p join poi_image pi on p.activity_id=pi.poi_id  where p.activity_id=:id limit 1", nativeQuery = true)

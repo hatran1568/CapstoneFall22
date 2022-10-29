@@ -51,16 +51,20 @@ const CollectionDetail = () => {
   if (curCol !== undefined) {
     return (
       <>
-        <MDBContainer>
-          <MDBRow className='mt-md-5'>
-            <h3>
-              <MDBIcon far icon='bookmark' /> Your collection: {curCol.title}
-            </h3>
-          </MDBRow>
-          <hr />
-          <MDBRow>
-            {curCol.description === "" ? <p className="fs-5">There is no description yet.</p> : <p className="fs-5">Description: {curCol.description}</p>}
-          </MDBRow>
+        <div className={style.header}>
+          <div className='row mt-3'>
+            <h3 className={style.text}>{curCol.title}</h3>
+          </div>
+          <div className='row mb-5 pb-3'>
+            {curCol.description === "" ? (
+              <p className={style.text}>There is no description yet.</p>
+            ) : (
+              <p className={style.text}>{curCol.description}</p>
+            )}
+          </div>
+        </div>
+
+        <MDBContainer className="mt-5">
           <MDBRow>
             <h4>Places you saved in this collection</h4>
           </MDBRow>

@@ -1,7 +1,7 @@
 package com.planner.backendserver.controller;
 
 import com.fasterxml.jackson.databind.node.ObjectNode;
-import com.planner.backendserver.DTO.CollectionDTO;
+import com.planner.backendserver.DTO.response.CollectionDTO;
 import com.planner.backendserver.entity.Collection;
 import com.planner.backendserver.entity.CollectionPOI;
 import com.planner.backendserver.repository.CollectionRepository;

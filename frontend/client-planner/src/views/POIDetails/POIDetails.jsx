@@ -4,6 +4,7 @@ import { MDBCarousel, MDBCarouselItem, MDBCol, MDBContainer, MDBRow } from "mdb-
 import StarRatings from "react-star-ratings";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faGoogle } from "@fortawesome/free-brands-svg-icons";
+import ImageGallery from "react-image-gallery";
 import style from "./POIDetails.module.css";
 
 const POIDetails = () => {
@@ -44,15 +45,14 @@ const POIDetails = () => {
   };
 
   const poiImages = [];
-  if (images.length > 1) {
-    images.forEach((image) => poiImages.push(<MDBCarouselItem className='w-100 d-block' src={image} alt='...' />));
-  } else if (images.length == 1) {
-    poiImages.push(
-      <>
-        <MDBCarouselItem className='w-100 d-block' src={images[0]} alt='...' />
-        <MDBCarouselItem className='w-100 d-block' src={images[0]} alt='...' />
-      </>,
-    );
+
+  if (images.length > 0) {
+    images.forEach((image) => {
+      poiImages.push({
+        original: image,
+        thumbnail: image,
+      });
+    });
   }
 
   const avgRate = 0;
@@ -130,9 +130,7 @@ const POIDetails = () => {
         </MDBRow>
         <MDBRow className='pb-4'>
           <MDBCol size='8'>
-            <MDBCarousel showControls className='pb-3'>
-              {poiImages}
-            </MDBCarousel>
+            <ImageGallery items={poiImages} showPlayButton={false} />
             <p>{curPOI.description}</p>
           </MDBCol>
           <MDBCol size='4'>

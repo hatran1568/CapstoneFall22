@@ -1,8 +1,7 @@
 package com.planner.backendserver.service.implementers;
 
-import com.planner.backendserver.DTO.CollectionDTO;
+import com.planner.backendserver.DTO.response.CollectionDTO;
 import com.planner.backendserver.entity.Collection;
-import com.planner.backendserver.entity.CollectionPOI;
 import com.planner.backendserver.entity.POI;
 import com.planner.backendserver.entity.POIImage;
 import com.planner.backendserver.repository.CollectionRepository;
@@ -11,7 +10,6 @@ import com.planner.backendserver.service.interfaces.CollectionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.sql.Date;
 import java.util.ArrayList;
 
 @Service
