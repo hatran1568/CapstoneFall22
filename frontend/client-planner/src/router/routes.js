@@ -6,6 +6,7 @@ import OAuthHandler from "../views/Login/OauthHandler";
 import ProfilePage from "../views/UserProfile/ProfilePage";
 import RequireAuth from "../components/RequireAuth";
 import Timeline from "../views/Timeline/timeline";
+import TripBudget from "../views/Timeline/TripBudget";
 import TripGeneralInfo from "../views/Timeline/TripGeneralInfo";
 import DestinationDetails from "../views/DestinationDetails/DestinationDetails";
 import POIsDestination from "../views/POIsDestination/POIsDestination";
@@ -14,6 +15,7 @@ import HomePage from "../views/HomePage/HomePage";
 import LayoutsWithNavbar from "../components/NavBar/LayoutsWithNavbar";
 import SearchResults from "../views/SearchResults/SearchResults";
 import POIDetails from "../views/POIDetails/POIDetails";
+import BlogDetails from "../views/Blog/BlogDetails";
 import Timetable from "../views/Timetable/Timetable"
 import Test from "../views/TestingScreen/Test";
 import ChangePassword from "../views/UserProfile/ChangePassword";
@@ -42,8 +44,10 @@ export default function RootRoutes() {
           <Route path="/timeline/:id" element={<Timeline />} />
           <Route path='/timetable/:id' element={<Timetable />} />
           <Route path="/trip/:id" element={<TripGeneralInfo />} />
+          <Route path='/budget/:id' element={<TripBudget />} />
           <Route path="/search" element={<POIAndDestinationSearchBar />} />
           <Route path="/" element={<HomePage />} />
+          <Route path='/blog' element={<BlogDetails />} />
           <Route path="/SearchResults" element={<SearchResults />} />
           <Route path="/poi" element={<POIDetails />} />
         </Route>

@@ -1,12 +1,11 @@
 import React from "react";
-import ReactDOM from "react-dom";
-import { useState } from "react";
-import { useEffect } from "react";
-import { Navigate, useParams } from "react-router-dom";
-import POIBoxLarge from "../../components/POIBoxLarge.jsx";
+import ReactDOM from "react-dom"
+import {useState} from 'react';
+import {useEffect} from 'react';
+import {Navigate, useParams } from 'react-router-dom';
+import POIBoxLarge from '../../components/POIs/POIBoxLarge.jsx';
 import axios from "../../api/axios";
-import poidata from "./poidata.json";
-import ReactPaginate from "react-paginate";
+import ReactPaginate from 'react-paginate';
 import cateData from "./category.json";
 import { useNavigate } from "react-router-dom";
 import FilterRatings from "react-star-ratings";

@@ -3,8 +3,8 @@ import ReactDOM from "react-dom";
 import { useState } from "react";
 import { useEffect } from "react";
 import { useParams } from "react-router-dom";
-import POIBox from "../../components/POIBox.jsx";
-import MyGallery from "../../components/MyGallery.jsx";
+import POIBox from "../../components/POIs/POIBox.jsx";
+import MyGallery from "../../components/POIs/MyGallery.jsx";
 import axios from "../../api/axios";
 import {
   MDBBtn,

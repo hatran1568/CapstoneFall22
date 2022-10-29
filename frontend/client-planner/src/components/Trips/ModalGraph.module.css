@@ -1,0 +1,11 @@
+
+.breakdownBtn{
+  float:right;
+  color: rgb(117, 117, 117);
+  text-decoration: none;
+}
+.breakdownBtn:hover{
+  cursor: pointer;
+  color: rgb(58, 58, 58);
+  text-decoration: none;
+}
