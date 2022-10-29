@@ -14,6 +14,7 @@ import HomePage from "../views/HomePage/HomePage";
 import LayoutsWithNavbar from "../components/NavBar/LayoutsWithNavbar";
 import SearchResults from "../views/SearchResults/SearchResults";
 import POIDetails from "../views/POIDetails/POIDetails";
+import Timetable from "../views/Timetable/Timetable"
 import Test from "../views/TestingScreen/Test";
 import ChangePassword from "../views/UserProfile/ChangePassword";
 export default function RootRoutes() {
@@ -32,6 +33,7 @@ export default function RootRoutes() {
           <Route exact path="/Destination" element={<DestinationDetails />} />
           <Route exact path="/Destination/POIs" element={<POIsDestination />} />
           <Route path="/timeline/:id" element={<Timeline />} />
+          <Route path='/timetable/:id' element={<Timetable />} />
           <Route path="/trip/:id" element={<TripGeneralInfo />} />
           <Route path="/search" element={<POIAndDestinationSearchBar />} />
           <Route path="/" element={<HomePage />} />
