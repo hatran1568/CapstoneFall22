@@ -41,7 +41,7 @@ class TripBudget extends Component {
   componentDidMount() {
     const { id } = this.props.params;
     //console.log("id:", id);
-    axios.get(`http://localhost:8080/trip/` + id).then((res) => {
+    axios.get(`http://localhost:8080/trip/general/` + id).then((res) => {
       const tripData = res.data;
       this.setState({
         trip: tripData,
@@ -92,7 +92,6 @@ class TripBudget extends Component {
           return Promise.reject(error)
         }
       );
-      console.log(this.state.tripUser);
     }).catch(
       function (error) {
         console.log(error)
@@ -101,6 +100,43 @@ class TripBudget extends Component {
     );
   }
   
+  refreshHandler = () => {
+    const id = window.location.href.split('/')[4];
+    axios.get(`http://localhost:8080/api/expense/total/` + id).then((res) => {
+      const totalExpense = res.data;
+      this.setState({
+        totalBudget: totalExpense
+      });
+    }).catch(
+      function (error) {
+        console.log(error)
+        return Promise.reject(error)
+      }
+    );
+    axios.get(`http://localhost:8080/api/expense/graph/` + id).then((res) => {
+      const data = res.data;
+      this.setState({
+        graphData: data
+      });
+    }).catch(
+      function (error) {
+        console.log(error)
+        return Promise.reject(error)
+      }
+    );
+    axios.get(`http://localhost:8080/api/expense/` + id + "/0").then((res) => {
+      const data = res.data;
+      this.setState({
+        expenseData: data,
+      });
+    }).catch(
+      function (error) {
+        console.log(error)
+        return Promise.reject(error)
+      }
+    );
+  }
+
   toLongDate = (date) => {
     var options = {
       month: "short",
@@ -136,10 +172,6 @@ class TripBudget extends Component {
   }
 
   //Delete Expense
-  onOkDeleteHandler = (data) => {this.setState({ expenseData: data })}
-  onOkTotalHandler = (data) => {this.setState({ totalBudget: data })}
-  onOkGraphHandler = (data) => {this.setState({ graphData: data })}
-  
   deleteExpense = async (event) => {
     const filter = this.state.currentFilter;
     const expenseId = event.currentTarget.id;
@@ -208,7 +240,7 @@ class TripBudget extends Component {
               {formatter.format(entry.amount)}
             </MDBCol>
             <MDBCol md={1} onClick={this.updateExpense} id={entry.expenseId} className={style.expenseBoxDelete}>
-              <UpdateExpenseModal data={entry}/>
+              <UpdateExpenseModal data={entry} refreshHandler={() => this.refreshHandler()}/>
             </MDBCol>
             <MDBCol md={1} onClick={this.deleteExpense} id={entry.expenseId} className={style.expenseBoxDelete}>
               <FontAwesomeIcon icon="trash"/>
@@ -239,11 +271,22 @@ class TripBudget extends Component {
           </div>
         )
     document.title = this.state.trip.name + " | Tripplanner";
+    var imgUrl = this.state.trip.image;
     return (
       <div>
-        <div className={style.tripImage}>
+        <div className={style.tripImageDiv}>
+          <img
+            src={
+              imgUrl
+                ? `../${imgUrl}`
+                : "https://twimg0-a.akamaihd.net/a/1350072692/t1/img/front_page/jp-mountain@2x.jpg"
+            }
+            className={style.tripImage}
+          ></img>
           <div className={style.infoBox}>
-            <h1 className={style.planTitle}>{this.state.trip.name}</h1>
+            <h1 className={style.planTitle}>
+              {this.state.trip.name ? this.state.trip.name : ""}
+            </h1>
             <h2 className={style.dates}>
               {this.toLongDate(this.state.trip.startDate)} -{" "}
               {this.toLongDate(this.state.trip.endDate)}
@@ -264,7 +307,7 @@ class TripBudget extends Component {
           <h2>Expenses</h2>
           <MDBRow className={style.btnGroup}>
             <MDBCol md={4} className={style.expenseAdd}>
-              <AddExpenseModal/>
+              <AddExpenseModal refreshHandler={() => this.refreshHandler()}/>
             </MDBCol>
             <MDBCol md={4} className={style.expenseFilter}>            
               <Dropdown>

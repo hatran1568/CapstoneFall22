@@ -23,8 +23,9 @@ import {
   MDBCol
 } from "mdb-react-ui-kit";
 fontawesome.library.add(faFilter, faTrash, faPlane, faBed, faTaxi, faBus, faUtensils, faWineGlass, faMonument, faTicket, faBagShopping, faGasPump, faBasketShopping, faNoteSticky, faDongSign);
-function AddExpenseModal() {
+function AddExpenseModal(props) {
   //Get category Data
+  const { refreshHandler } = props;
   var currentCat = 0;
   const changeCat = (event) => {
     currentCat = event.target.id;
@@ -56,7 +57,9 @@ function AddExpenseModal() {
             'Content-Type': 'application/json'
         }
       }).then(function (response) {
-        window.location.reload();
+        //window.location.reload();
+        refreshHandler();
+        toggleShow();
     });
   };
   //Add Expense Modal
