@@ -1,8 +1,12 @@
+.mainContainer{
+  min-width: 1000px;
+}
 .calendarDiv{
-    min-width: 800px;
+    width: 74vw;
     margin-bottom: 100px;
     position: relative;
     padding: 0;
+    margin-left: 50px !important;
 }
 .fcEvent{
     height: 100%;
@@ -89,9 +93,10 @@
     padding-right: 7px;
   }
   .duration{
-    color: #3ec843;
+    color: #1100ff;
     font-size: 13px;
     overflow: hidden;
+    font-weight: 500;
   }
   .startEndTime{
     font-size: 12px;
@@ -102,6 +107,7 @@
     overflow-y: visible;
     height: auto;
     padding: 0;
+    overflow-x: hidden;
   }
 .month{
     font-weight: 500;
@@ -167,4 +173,11 @@
   top: 50%;
   z-index: 5;
   transform: translateX(-80%);
+}
+@media (max-width: 1000px) {
+  .daysBox{
+    display: none;
+  }
+  .calendarDiv{
+    width: 100%;}
 }

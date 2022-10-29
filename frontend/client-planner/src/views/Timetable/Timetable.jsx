@@ -234,7 +234,7 @@ class Timetable extends Component {
         )}
 
         <div className="container">
-          <div className="row">
+          <div className={`row ${style.mainContainer}`}>
             <div className="col-1">
               <div className={style.daysBox}>
                 {allMonths.map((month) => (

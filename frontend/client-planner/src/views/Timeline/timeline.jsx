@@ -6,6 +6,8 @@ import axios from "axios";
 import TripDetailTabs from "./TripDetailTabs";
 import style from "./timeline.module.css";
 import { useParams } from "react-router-dom";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faPlus } from "@fortawesome/free-solid-svg-icons";
 class Timeline extends Component {
   state = {};
   //set state of component
@@ -379,20 +381,9 @@ class Timeline extends Component {
             </div>
             <div className="col-2"></div>
           </div>
-          <div
-            className={`form-group`}
-            style={{ position: "fixed", bottom: 0, right: "20px" }}
-          >
-            <button
-              type="button"
-              className="btn btn-primary btn-md"
-              id={style.btnAdd}
-              variant="primary"
-              onClick={this.toggleAddModal}
-            >
-              +
-            </button>
-          </div>
+          <a className={` ${style.btnAdd}`} onClick={this.toggleAddModal}>
+            <FontAwesomeIcon icon={faPlus} className={style.addIcon} />
+          </a>
         </div>
         <AddActivityModal
           show={this.state.showAddModal}
