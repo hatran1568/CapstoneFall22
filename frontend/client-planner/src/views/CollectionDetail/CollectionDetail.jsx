@@ -1,6 +1,7 @@
 import {
   MDBCard,
   MDBCardBody,
+  MDBCardFooter,
   MDBCardGroup,
   MDBCardImage,
   MDBCardText,
@@ -10,6 +11,7 @@ import {
   MDBRow,
 } from "mdb-react-ui-kit";
 import React, { useEffect, useState } from "react";
+import StarRatings from "react-star-ratings";
 import axios from "../../api/axios";
 import style from "./CollectionDetail.module.css";
 
@@ -33,8 +35,6 @@ const CollectionDetail = () => {
     getPOIList();
   }, []);
 
-  console.log(POIList);
-
   return (
     <>
       <MDBContainer>
@@ -43,15 +43,25 @@ const CollectionDetail = () => {
           {POIList
             ? POIList.map((poi) => (
                 <MDBCol>
-                  <MDBCard>
-                    <MDBCardImage src={poi.poi.images[0].url} className={style.img} alt='...' position='top' />
-                    <MDBCardBody>
-                      <a href={"/poi?id=" + poi.poi.activityId} style={{ textDecoration: "none" }}>
+                  <a href={"/poi?id=" + poi.poi.activityId} style={{ textDecoration: "none" }}>
+                    <MDBCard className='h-100'>
+                      <div className={style.img} style={{ backgroundImage: `url(${poi.poi.images[0].url})` }} />
+                      <MDBCardBody>
                         <MDBCardTitle className='fs-6 text-center'>{poi.poi.name}</MDBCardTitle>
                         <MDBCardText className='text-muted text-center'>{poi.poi.category.categoryName}</MDBCardText>
-                      </a>
-                    </MDBCardBody>
-                  </MDBCard>
+                      </MDBCardBody>
+                      <MDBCardFooter border='0'>
+                        <MDBCardText className='text-center'>
+                          <StarRatings
+                            rating={poi.poi.googleRate}
+                            starDimension='1em'
+                            starSpacing='0.1em'
+                            starRatedColor='orange'
+                          />
+                        </MDBCardText>
+                      </MDBCardFooter>
+                    </MDBCard>
+                  </a>
                 </MDBCol>
               ))
             : null}

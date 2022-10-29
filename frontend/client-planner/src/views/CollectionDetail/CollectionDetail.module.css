@@ -1,3 +1,6 @@
 .img {
-  height: 200px !important;
+  width: auto;
+  height: 150px;
+  background-position: center center;
+  background-repeat: no-repeat;
 }
