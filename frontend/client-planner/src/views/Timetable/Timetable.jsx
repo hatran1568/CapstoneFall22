@@ -342,6 +342,14 @@ class Timetable extends Component {
   renderEventContent = (eventInfo) => {
     var newProps = { ...eventInfo.event.extendedProps };
     newProps.date = eventInfo.event.start.toISOString().substring(0, 10);
+
+    var startStr = getTimeString(eventInfo.event.start).split(":");
+    var start = +startStr[0] * 60 * 60 + +startStr[1] * 60;
+    var endStr = getTimeString(eventInfo.event.end).split(":");
+    var end = +endStr[0] * 60 * 60 + +endStr[1] * 60;
+    newProps.startTime = start;
+    newProps.endTime = end;
+    // newProps.startTime = eventInfo.event.start.toISOString().substring(12, 19);
     return (
       <div className={style.fcEvent}>
         <div className={style.eventTitle}>{eventInfo.event.title}</div>

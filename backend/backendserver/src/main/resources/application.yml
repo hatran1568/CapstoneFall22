@@ -33,3 +33,14 @@ spring:
                         scope:
                             - email
                             - profile
+    mail:
+        host: smtp.gmail.com
+        username: oanhha2001@gmail.com
+        password: oydlwnsgjxitbqca
+        port: 587
+        properties:
+            mail:
+                smtp:
+                    auth: true
+                    starttls:
+                        enable: true
