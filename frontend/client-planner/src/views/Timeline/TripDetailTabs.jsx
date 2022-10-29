@@ -14,6 +14,7 @@ export default function Tabs() {
   const location = useLocation();
   var path = location.pathname.slice(0, location.pathname.lastIndexOf("/"));
   var params = useParams();
+  console.log(path);
   return (
     <div className={style.stickyNavFirst}>
       <ul className={`nav nav-tabs justify-content-center ${style.navTabs} `}>
@@ -33,7 +34,9 @@ export default function Tabs() {
         <li className={`nav-item ${style.dropDown}`}>
           <a
             className={
-              path.toLowerCase() == ("/timeline" || "/timetable" || "/map")
+              path.toLowerCase() == "/timeline" ||
+              path.toLowerCase() == "/timetable" ||
+              path.toLowerCase() == "/map"
                 ? `nav-link active ${style.navItem} ${style.navItemActive}`
                 : `nav-link ${style.navItem}`
             }
