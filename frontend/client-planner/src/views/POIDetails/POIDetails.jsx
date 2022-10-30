@@ -1,21 +1,10 @@
 import React, { useEffect, useState } from "react";
 import axios from "../../api/axios";
-import {
-  MDBBtn,
-  MDBBtnGroup,
-  MDBCard,
-  MDBCardBody,
-  MDBCardFooter,
-  MDBCardHeader,
-  MDBCardText,
-  MDBCardTitle,
-  MDBCarousel,
-  MDBCarouselItem,
-  MDBCol,
-  MDBContainer,
-  MDBRow,
-} from "mdb-react-ui-kit";
+import { MDBCarousel, MDBCarouselItem, MDBCol, MDBContainer, MDBRow } from "mdb-react-ui-kit";
 import StarRatings from "react-star-ratings";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faGoogle } from "@fortawesome/free-brands-svg-icons";
+import ImageGallery from "react-image-gallery";
 import style from "./POIDetails.module.css";
 
 const POIDetails = () => {
@@ -32,21 +21,21 @@ const POIDetails = () => {
 
   useEffect(() => {
     const getPOI = async () => {
-      await axios.get("http://localhost:8080/api/pois/" + poiId).then((res) => setCurPOI(res.data));
+      await axios.get("/api/pois/" + poiId).then((res) => setCurPOI(res.data));
     };
     getPOI();
   }, []);
 
   useEffect(() => {
     const getRatings = async () => {
-      await axios.get("http://localhost:8080/api/pois/" + poiId + "/ratings").then((res) => setRatings(res.data));
+      await axios.get("/api/pois/" + poiId + "/ratings").then((res) => setRatings(res.data));
     };
     getRatings();
   }, []);
 
   useEffect(() => {
     const getImages = async () => {
-      await axios.get("http://localhost:8080/api/pois/" + poiId + "/images").then((res) => setImages(res.data));
+      await axios.get("/api/pois/" + poiId + "/images").then((res) => setImages(res.data));
     };
     getImages();
   }, []);
@@ -55,85 +44,108 @@ const POIDetails = () => {
     e.preventDefault();
   };
 
-  const timeConverter = (seconds) => {
+  const poiImages = [];
+
+  if (images.length > 0) {
+    images.forEach((image) => {
+      poiImages.push({
+        original: image,
+        thumbnail: image,
+      });
+    });
+  }
+
+  var avgRate = 0;
+  var poiRatings = [];
+  if (ratings.length > 0) {
+    avgRate = ratings.reduce((sum, cur) => sum + Number(cur.rate), 0) / ratings.length;
+    ratings.forEach((rating) => {
+      var formattedDate = new Date(rating.dateCreated).toLocaleDateString("vi-VN");
+      poiRatings.push(
+        <>
+          <MDBRow className='border-top'>
+            <MDBCol size='auto' className='pe-0'>
+              <StarRatings rating={rating.rate} starDimension='1em' starSpacing='0.1em' starRatedColor='orange' />
+            </MDBCol>
+            <MDBCol size='auto' className='pt-1'>
+              <p>
+                {" "}
+                by <strong>{rating.user.name}</strong>
+              </p>
+            </MDBCol>
+          </MDBRow>
+          <MDBRow>
+            <div>
+              <p>{rating.comment}</p>
+            </div>
+          </MDBRow>
+          <MDBRow className='border-bottom'>
+            <p>Commented on {formattedDate}</p>
+          </MDBRow>
+        </>,
+      );
+    });
+  } else if (ratings.length == 0) {
+    poiRatings.push(
+      <div>
+        <p>There is still nothing yet</p>
+      </div>,
+    );
+  }
+
+  const timeConverter = (seconds, format) => {
     var dateObj = new Date(seconds * 1000);
     var hours = dateObj.getUTCHours();
     var minutes = dateObj.getUTCMinutes();
+    var timeString;
 
-    var timeString = hours.toString().padStart(2, "0") + ":" + minutes.toString().padStart(2, "0");
+    if (format === "hh:mm") {
+      if (hours > 12) {
+        timeString = (hours - 12).toString().padStart(2, "0") + ":" + minutes.toString().padStart(2, "0") + " pm";
+      } else {
+        timeString = hours.toString().padStart(2, "0") + ":" + minutes.toString().padStart(2, "0") + " am";
+      }
+    } else if (format === "x hours y minutes") {
+      timeString = hours.toString() + " hours " + minutes.toString() + " minutes";
+    }
+
     return timeString;
   };
 
-  if (curPOI !== undefined /*&& !images.isEmpty() && !ratings.isEmpty()*/) {
+  if (curPOI !== undefined) {
     return (
-      <MDBContainer>
-        <MDBRow className='mb-3'>
+      <MDBContainer className={style.container}>
+        <MDBRow className='pb-3 pt-5'>
           <h2 className='fw-bold'>{curPOI.name}</h2>
-          <StarRatings rating={curPOI.googleRate} starDimension='1em' starSpacing='0.1em' starRatedColor='orange' />
-          <p>
-            {curPOI.googleRate} on Google Maps | {curPOI.category.categoryName}
-          </p>
+          <MDBRow className='m-0'>
+            <MDBCol size='auto' className='p-0'>
+              <StarRatings rating={curPOI.googleRate} starDimension='1em' starSpacing='0.1em' starRatedColor='orange' />
+            </MDBCol>
+            <MDBCol size='auto' className='pt-1'>
+              <p>
+                {curPOI.googleRate} stars on <FontAwesomeIcon icon={faGoogle} /> Maps | {curPOI.category.categoryName}
+              </p>
+            </MDBCol>
+          </MDBRow>
         </MDBRow>
-        <MDBRow className='mb-4'>
+        <MDBRow className='pb-4'>
           <MDBCol size='8'>
-            <MDBCarousel showControls className='mb-3'>
-              {/*{images &&
-                images.map((item, index) => {
-                  <MDBCarouselItem
-                    className='w-100 d-block'
-                    itemId={index}
-                    src={item.url}
-                    alt='...'
-                  />;
-                })}*/}
-              <MDBCarouselItem
-                className='w-100 d-block'
-                itemId={1}
-                src='https://mdbootstrap.com/img/new/slides/041.jpg'
-                alt='...'
-              />
-              <MDBCarouselItem
-                className='w-100 d-block'
-                itemId={2}
-                src='https://mdbootstrap.com/img/new/slides/042.jpg'
-                alt='...'
-              />
-              <MDBCarouselItem
-                className='w-100 d-block'
-                itemId={3}
-                src='https://mdbootstrap.com/img/new/slides/043.jpg'
-                alt='...'
-              />
-            </MDBCarousel>
-            {/*<p>{curPOI.description}</p>*/}
-            <p>
-              Lorem ipsum dolor, sit amet consectetur adipisicing elit. Libero, ea! Quam deserunt cumque tenetur
-              doloremque et nostrum nisi beatae ratione. Laudantium deleniti ea similique unde nobis eum error, mollitia
-              quo sunt perspiciatis qui consectetur doloremque fugit nulla ipsum blanditiis quos magni quidem ex ipsam
-              exercitationem eligendi fuga molestiae! Harum quis eligendi aliquid facilis similique reiciendis ducimus,
-              cumque dignissimos neque aperiam nesciunt dolorem quibusdam labore? Cumque provident doloremque, unde
-              iste, voluptates odit nisi et dicta nobis facere nulla tempora quos excepturi explicabo illum vero.
-              Consequuntur omnis aperiam, nihil corrupti consectetur, ipsum enim quam fugit, quas illo est dolore
-              explicabo impedit libero?
-            </p>
+            <ImageGallery items={poiImages} showPlayButton={false} />
+            <p>{curPOI.description}</p>
           </MDBCol>
           <MDBCol size='4'>
             <p className='fs-5 fw-bold'>Open hours:</p>
             <p>
-              {timeConverter(curPOI.openTime)} - {timeConverter(curPOI.closeTime)}
+              {timeConverter(curPOI.openTime, "hh:mm")} - {timeConverter(curPOI.closeTime, "hh:mm")}
             </p>
-            <br />
             <p className='fs-5 fw-bold'>Recommended duration:</p>
-            <p>{timeConverter(curPOI.duration)}</p>
-            <br />
+            <p>{timeConverter(curPOI.duration, "x hours y minutes")}</p>
             <p className='fs-5 fw-boldfs-5 fw-bold'>Address:</p>
             <p>{curPOI.address}</p>
-            <br />
             {curPOI.phone ? (
               <>
                 <p className='fs-5 fw-bold'>Phone number:</p>
                 <p>{curPOI.phone}</p>
-                <br />
               </>
             ) : (
               <></>
@@ -142,7 +154,6 @@ const POIDetails = () => {
               <>
                 <p className='fs-5 fw-bold'>Business email:</p>
                 <p>{curPOI.businessEmail}</p>
-                <br />
               </>
             ) : (
               <></>
@@ -151,76 +162,37 @@ const POIDetails = () => {
               <>
                 <p className='fs-5 fw-bold'>Website:</p>
                 <p>{curPOI.website}</p>
-                <br />
               </>
             ) : (
               <></>
             )}
-            <button className='btn btn-link' onClick={handleClick}>
-              Generate plans to this place &gt;&gt;.
+            <button className='btn btn-info' onClick={handleClick}>
+              Generate plans to this place
             </button>
           </MDBCol>
         </MDBRow>
 
-        <MDBRow className='mb-3'>
+        <MDBRow className='pb-3'>
           <h2 className='fw-bold'>{curPOI.name} reviews</h2>
         </MDBRow>
-        <MDBRow className='mb-4'>
-          {/*{ratings &&
-            ratings.map((item, index) => {
-              <div className='mb-2'>
-                <h4>{item.name}</h4>
-                <div>
-                  <StarRatings rating={item.rate} starDimension='1em' starSpacing='0.1em' starRatedColor='orange' />
-                  <p>{item.Comment}</p>
-                </div>
-                <p className='text-muted'>{item.dateCreated}</p>
-              </div>;
-            })}*/}
-          <div className='mb-2'>
-            <h4>Tourist A</h4>
-            <div>
-              <StarRatings rating={4} starDimension='1em' starSpacing='0.1em' starRatedColor='orange' />
-              <p>
-                Lorem ipsum dolor, sit amet consectetur adipisicing elit. Libero, ea! Quam deserunt cumque tenetur
-                doloremque et nostrum nisi beatae ratione.
-              </p>
-            </div>
-            <p className='text-muted'>20/10/2022</p>
-          </div>
-          <div className='mb-2'>
-            <h4>Tourist B</h4>
-            <div>
-              <StarRatings rating={3} starDimension='1em' starSpacing='0.1em' starRatedColor='orange' />
-              <p>
-                Lorem ipsum dolor, sit amet consectetur adipisicing elit. Libero, ea! Quam deserunt cumque tenetur
-                doloremque et nostrum nisi beatae ratione.
-              </p>
-            </div>
-            <p className='text-muted'>20/10/2022</p>
-          </div>
-          <div className='mb-2'>
-            <h4>Tourist C</h4>
-            <div>
-              <StarRatings rating={5} starDimension='1em' starSpacing='0.1em' starRatedColor='orange' />
-              <p>
-                Lorem ipsum dolor, sit amet consectetur adipisicing elit. Libero, ea! Quam deserunt cumque tenetur
-                doloremque et nostrum nisi beatae ratione.
-              </p>
-            </div>
-            <p className='text-muted'>20/10/2022</p>
-          </div>
-          <div className='mb-2'>
-            <h4>Tourist D</h4>
-            <div>
-              <StarRatings rating={4} starDimension='1em' starSpacing='0.1em' starRatedColor='orange' />
-              <p>
-                Lorem ipsum dolor, sit amet consectetur adipisicing elit. Libero, ea! Quam deserunt cumque tenetur
-                doloremque et nostrum nisi beatae ratione.
-              </p>
-            </div>
-            <p className='text-muted'>20/10/2022</p>
-          </div>
+        <MDBRow className='pb-4'>
+          <MDBCol size='4'>
+            <MDBRow>
+              <MDBCol size='auto'>
+                <p className={style.text}>{avgRate.toString().padEnd(3, ".0")}</p>
+              </MDBCol>
+              <MDBCol size='auto' className='pt-md-1'>
+                <StarRatings rating={avgRate} starDimension='1em' starSpacing='0.1em' starRatedColor='orange' />
+              </MDBCol>
+              <MDBCol size='auto' className='pt-md-2 px-lg-0'>
+                <p>
+                  {ratings.length} {ratings.length > 1 ? "reviews" : "review"}
+                </p>
+              </MDBCol>
+            </MDBRow>
+            <MDBRow></MDBRow>
+          </MDBCol>
+          <MDBCol>{poiRatings}</MDBCol>
         </MDBRow>
       </MDBContainer>
     );

@@ -21,9 +21,9 @@ import java.util.stream.Collectors;
 @Service
 public class TripServiceImpl implements TripService {
     @Autowired
-    private TripRepository tripRepository;
-    @Autowired
     ModelMapper mapper;
+    @Autowired
+    private TripRepository tripRepository;
     @Autowired
     private TripDetailRepository tripDetailRepository;
     @Autowired
@@ -68,7 +68,7 @@ public class TripServiceImpl implements TripService {
     @Override
     public TripGeneralDTO getTripGeneralById(int id) {
         Trip trip = tripRepository.findById(id);
-        if(trip == null) return null;
+        if (trip == null) return null;
         TripGeneralDTO tripGeneralDTO = mapper.map(trip, TripGeneralDTO.class);
         tripGeneralDTO.setImage(getFirstPOIImage(trip.getTripId()));
         return tripGeneralDTO;
@@ -214,24 +214,25 @@ public class TripServiceImpl implements TripService {
         return tripRepository.getNumberOfTripsByUser(userId);
     }
 
-    private String getTripThumbnail(List<TripDetails> tripDetails){
-        if (tripDetails.size() == 0){
+    private String getTripThumbnail(List<TripDetails> tripDetails) {
+        if (tripDetails.size() == 0) {
             return null;
         }
         int masterActivityId = tripDetails.get(0).getMasterActivity().getActivityId();
         Optional<POI> poi = poiRepository.getPOIByMasterActivity(masterActivityId);
-        if (poi.isPresent()){
+        if (poi.isPresent()) {
             ArrayList<POIImage> poiImages = poiImageRepository.findAllByPOIId(poi.get().getActivityId());
             if (poiImages.size() > 0)
-            return poiImages.get(0).getUrl();
+                return poiImages.get(0).getUrl();
         }
         return null;
     }
-    private String getFirstPOIImage(int tripId){
+
+    private String getFirstPOIImage(int tripId) {
         TripDetails tripDetails = tripDetailRepository.findFirstInTrip(tripId);
-        if(tripDetails == null) return null;
+        if (tripDetails == null) return null;
         POIImage poiImage = poiImageRepository.findFirstByPoiId(tripDetails.getMasterActivity().getActivityId());
-        if(poiImage == null) return null;
+        if (poiImage == null) return null;
         return poiImage.getUrl();
     }
 }
