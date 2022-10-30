@@ -14,7 +14,6 @@ export default function Tabs() {
   const location = useLocation();
   var path = location.pathname.slice(0, location.pathname.lastIndexOf("/"));
   var params = useParams();
-  console.log(path);
   return (
     <div className={style.stickyNavFirst}>
       <ul className={`nav nav-tabs justify-content-center ${style.navTabs} `}>

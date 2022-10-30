@@ -14,7 +14,7 @@ public interface TripDetailRepository extends JpaRepository<TripDetails, Integer
     @Override
     void deleteById(Integer integer);
     @Query("select td from TripDetails td where td.tripDetailsId = :id")
-    Optional<TripDetails> getTripDetailsById(int id);
+    TripDetails getTripDetailsById(int id);
     @Override
     Optional<TripDetails> findById(Integer id);
     @Query(value="select * from trip_details td where td.trip_id = :tripId order by td.trip_details_id asc limit 1",nativeQuery=true)

@@ -62,13 +62,34 @@
   margin: 10px;
 }
 
-#btnAdd {
-  border-radius: 50%;
-  height: 65px;
+.btnAdd {
+  text-decoration: none;
+  background: #97c83e;
+  text-align: center;
   width: 65px;
-  background-color: #ff8005;
-  border: none;
-  font-size: 30px;
+  height: 65px;
+  border-radius: 100%;
+  display: inline-flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  font-size: 35px;
+  color: white;
+  font-weight: bold;
+  position: fixed;
+  right: 30px;
+  bottom: 30px;
+  z-index: 10;
+  cursor: pointer;
+}
+.btnAdd:hover{
+  color: wheat;
+}
+.addIcon {
+  display: inline-block;
+  vertical-align: middle;
+  padding: 0;
+  margin: 0;
 }
 .foreIcon {
   margin-right: 10px;

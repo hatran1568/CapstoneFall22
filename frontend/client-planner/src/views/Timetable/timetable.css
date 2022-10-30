@@ -329,7 +329,7 @@ When it's NOT activated, the fc-button classes won't even be in the DOM.
   }
 .fc .fc-scroller-harness {
     position: relative;
-    overflow: hidden;
+    overflow: visible;
     direction: ltr;
       /* hack for chrome computing the scroller's right/left wrong for rtl. undone below... */
       /* TODO: demonstrate in codepen */
@@ -397,9 +397,10 @@ When it's NOT activated, the fc-button classes won't even be in the DOM.
 
 }
 .fc .fc-scrollgrid-section-sticky > * {
-    background: #fff;
-    background: var(--fc-page-bg-color, #fff);
+    background: #ddd;
+    background: var(--fc-page-bg-color, #ddd);
     position: sticky;
+    margin-left: 0;
     z-index: 3; /* TODO: var */
     /* TODO: box-shadow when sticking */
   }
@@ -441,7 +442,7 @@ When it's NOT activated, the fc-button classes won't even be in the DOM.
   }
   a.fc-col-header-cell-cushion {
     text-decoration: none;
-    color: black;
+    /* color: black; */
     font-size: 16px;
     font-family: Klarna Text,Helvetica Neue,Arial,Helvetica,sans-serif;
     color: #0e0e0f;
@@ -1088,8 +1089,8 @@ A VERTICAL event
     z-index: 1;
   }
 .fc .fc-timegrid-slot { /* a <td> */
-    height: 1em;
-    line-height: 15px;
+    height: 0.9em;
+    line-height: 10px;
     border-bottom: 0 /* each cell owns its top border */
   }
 .fc .fc-timegrid-slot:empty:before {
