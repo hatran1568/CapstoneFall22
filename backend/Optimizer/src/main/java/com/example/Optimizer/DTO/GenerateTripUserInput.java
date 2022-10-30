@@ -1,4 +1,4 @@
-package com.planner.backendserver.DTO;
+package com.example.Optimizer.DTO;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

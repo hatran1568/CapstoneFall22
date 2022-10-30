@@ -49,9 +49,9 @@ function HomePage() {
   const toggleShowMore = () => setShowShow(!showShow);
 
   var stompClient = null;
-  const connect = function (userId) {
-    if (userId) {
-      var socket = new SockJS("http://localhost:8081/ws");
+  const connect = function (userId, port) {
+    if ((userId, port)) {
+      var socket = new SockJS("http://localhost:" + port + "/ws");
       stompClient = over(socket);
       console.log("connected");
       stompClient.connect({}, onConnected, onError);
@@ -60,9 +60,7 @@ function HomePage() {
   const onError = (err) => {
     console.log(err);
   };
-  useEffect(() => {
-    connect(localStorage.getItem("id"));
-  }, []);
+  useEffect(() => {}, []);
   const onConnected = () => {
     console.log("onConnected");
     // Subscribe to the Public Topic
@@ -181,6 +179,7 @@ function HomePage() {
         progress: 0,
         theme: "light",
       });
+      stompClient = null;
     }
   }, [progress != 100]);
   const submitGenerateTrip = (event) => {
@@ -204,7 +203,7 @@ function HomePage() {
       console.log(preferences);
       axios({
         method: "post",
-        url: "http://localhost:8081/trip/generate",
+        url: "http://localhost:8080/trip/generate",
         data: {
           userId: localStorage.getItem("id"),
           budget: document.getElementById("budgetGenerateInput").value,
@@ -220,6 +219,9 @@ function HomePage() {
         },
       }).then(function (response) {
         setIsGenerating(true);
+        connect(localStorage.getItem("id"), response.data);
+        console.log(response.data);
+        //connect(id,response.data);
       });
     }
   };
