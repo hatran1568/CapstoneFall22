@@ -370,7 +370,13 @@ class Timetable extends Component {
             <FontAwesomeIcon icon={faEllipsisVertical} size="xl" />
           </button>
           <div className={style.dropdownMenu}>
-            <a className="dropdown-item">
+            <a
+              className="dropdown-item"
+              href={
+                "../poi?id=" +
+                eventInfo.event.extendedProps.masterActivity.activityId
+              }
+            >
               <FontAwesomeIcon
                 icon={faCircleInfo}
                 className={style.dropdownIcon}
@@ -488,15 +494,10 @@ class Timetable extends Component {
         tripId: this.state.trip.tripId,
       })
       .then((response) => {
-        // console.log("custom response: ", response);
         var newDetail = response.data;
         this.addEventToView(newDetail);
-        // var newTrip = this.state.trip;
-        // newTrip.listTripDetails.push(newDetail);
         this.setState({
-          // trip: newTrip,
           showAddModal: false,
-          // dataLoaded: true,
         });
       })
       .catch(function (error) {
@@ -505,7 +506,7 @@ class Timetable extends Component {
   };
   //insert an activity into the trip
   insertTripDetail = (event, input) => {
-    if (input.custom == true) {
+    if (input.custom && input.custom == true) {
       this.insertCustomDetail(input);
       return;
     }
@@ -524,12 +525,8 @@ class Timetable extends Component {
       .then((response) => {
         var newDetail = response.data;
         this.addEventToView(newDetail);
-        // var newTrip = this.state.trip;
-        // newTrip.listTripDetails.push(newDetail);
         this.setState({
-          // trip: newTrip,
           showAddModal: false,
-          // dataLoaded: true,
         });
       })
       .catch(function (error) {

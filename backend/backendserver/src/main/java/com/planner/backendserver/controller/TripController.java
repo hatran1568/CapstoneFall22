@@ -3,10 +3,10 @@ package com.planner.backendserver.controller;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.planner.backendserver.DTO.TripDTO;
 import com.planner.backendserver.DTO.UserDTO;
-import com.planner.backendserver.DTO.response.TripDetailedDTO;
+import com.planner.backendserver.DTO.response.DetailedTripDTO;
+import com.planner.backendserver.DTO.response.TripDetailDTO;
 import com.planner.backendserver.dto.response.TripGeneralDTO;
 import com.planner.backendserver.entity.MasterActivity;
-import com.planner.backendserver.entity.Trip;
 import com.planner.backendserver.entity.TripDetails;
 import com.planner.backendserver.repository.POIRepository;
 import com.planner.backendserver.repository.TripRepository;
@@ -17,10 +17,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.core.parameters.P;
 import org.springframework.web.bind.annotation.*;
 import java.sql.Date;
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Optional;
 
@@ -39,9 +37,9 @@ public class TripController {
     ModelMapper mapper;
 
     @GetMapping("/{id}")
-    public ResponseEntity<TripDetailedDTO> getTripById(@PathVariable int id){
+    public ResponseEntity<DetailedTripDTO> getTripById(@PathVariable int id){
         try{
-            TripDetailedDTO trip = tripService.getTripDetailedById(id);
+            DetailedTripDTO trip = tripService.getDetailedTripById(id);
             if (trip == null){
                 return new ResponseEntity<>(HttpStatus.NOT_FOUND);
             }
@@ -114,13 +112,13 @@ public class TripController {
         }
     }
     @GetMapping("/get-detail")
-    public ResponseEntity<TripDetails> getTripDetail(@RequestParam int id){
+    public ResponseEntity<TripDetailDTO> getTripDetail(@RequestParam int id){
         try{
-            Optional<TripDetails> detail = tripService.getTripDetailById(id);
-            if (detail.isEmpty()){
+            TripDetailDTO detail = tripService.getTripDetailById(id);
+            if (detail ==null){
                 return new ResponseEntity<>(HttpStatus.NOT_FOUND);
             }
-            return new ResponseEntity<>(detail.get(), HttpStatus.OK);
+            return new ResponseEntity<>(detail, HttpStatus.OK);
         } catch (Exception e){
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
