@@ -23,9 +23,8 @@ public interface CollectionRepository extends JpaRepository<Collection, Integer>
     Collection getCollectionByID(int id);
 
     // getting POI list here
-    @Query("select cp, m" +
+    @Query("select cp" +
             " from CollectionPOI cp" +
-            " left join MasterActivity m on cp.poi.activityId = m.activityId" +
             " where cp.collection.collectionId = :id")
     ArrayList<CollectionPOI> getPOIListOfCollectionByID(int id);
 

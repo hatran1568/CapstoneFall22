@@ -48,6 +48,8 @@ const CollectionDetail = () => {
     getPOIList();
   }, []);
 
+  console.log(POIList);
+
   if (curCol !== undefined) {
     return (
       <>
@@ -72,27 +74,27 @@ const CollectionDetail = () => {
             {POIList
               ? POIList.map((poi) => (
                   <MDBCol>
-                    <a href={"/poi?id=" + poi.poi.activityId} style={{ textDecoration: "none" }}>
+                    <a href={"/poi?id=" + poi.activityID} style={{ textDecoration: "none" }}>
                       <div
                         overlay='true'
                         className={style.img}
-                        style={{ backgroundImage: `url(${poi.poi.images[0].url})` }}
+                        style={{ backgroundImage: `url(${poi.imgUrl})` }}
                       >
                         <MDBCard className={style.card} style={{ border: "none" }}>
                           <MDBCardBody className='mt-5 pt-5'>
-                            <MDBCardTitle className='fs-4 text-center text-white'>{poi.poi.name}</MDBCardTitle>
+                            <MDBCardTitle className='fs-4 text-center text-white'>{poi.name}</MDBCardTitle>
                           </MDBCardBody>
                           <MDBCardFooter border='0'>
                             <MDBCardText className='text-center text-white'>
                               <StarRatings
-                                rating={poi.poi.googleRate}
+                                rating={poi.googleRate}
                                 starDimension='1em'
                                 starSpacing='0.1em'
                                 starRatedColor='orange'
                               />
                             </MDBCardText>
                             <MDBCardText className='text-white text-center'>
-                              {poi.poi.category.categoryName}
+                              {poi.category}
                             </MDBCardText>
                           </MDBCardFooter>
                         </MDBCard>
@@ -100,7 +102,7 @@ const CollectionDetail = () => {
                     </a>
                   </MDBCol>
                 ))
-              : null}
+              : (<p className={style.text}>Add a place you like into the collection</p>)}
           </MDBRow>
         </MDBContainer>
       </>

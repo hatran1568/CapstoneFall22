@@ -2,10 +2,12 @@ package com.planner.backendserver.controller;
 
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.planner.backendserver.DTO.response.CollectionDTO;
+import com.planner.backendserver.DTO.response.POIOfCollectionDTO;
 import com.planner.backendserver.entity.Collection;
 import com.planner.backendserver.entity.CollectionPOI;
 import com.planner.backendserver.repository.CollectionRepository;
 import com.planner.backendserver.service.interfaces.CollectionService;
+import com.planner.backendserver.service.interfaces.POIService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -22,6 +24,9 @@ public class CollectionController {
 
     @Autowired
     private CollectionService collectionService;
+
+    @Autowired
+    private POIService poiService;
 
     // getting collections here
     @GetMapping("/newest")
@@ -65,9 +70,9 @@ public class CollectionController {
 
     // getting POI list here
     @GetMapping("/poiList/{colId}")
-    public ResponseEntity<ArrayList<CollectionPOI>> getPOIList(@PathVariable int colId) {
+    public ResponseEntity<ArrayList<POIOfCollectionDTO>> getPOIList(@PathVariable int colId) {
         try {
-            ArrayList<CollectionPOI> pois = collectionRepository.getPOIListOfCollectionByID(colId);
+            ArrayList<POIOfCollectionDTO> pois = poiService.getPOIListOfCollection(colId);
             if (pois.isEmpty()) {
                 return new ResponseEntity<>(HttpStatus.NO_CONTENT);
             }
