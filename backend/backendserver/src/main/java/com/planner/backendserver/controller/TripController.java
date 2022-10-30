@@ -52,15 +52,15 @@ public class TripController {
     private DiscoveryClient discoveryClient;
     @GetMapping("/{id}")
     public ResponseEntity<DetailedTripDTO> getTripById(@PathVariable int id){
-        try{
+//        try{
             DetailedTripDTO trip = tripService.getDetailedTripById(id);
             if (trip == null){
                 return new ResponseEntity<>(HttpStatus.NOT_FOUND);
             }
             return new ResponseEntity<>(trip, HttpStatus.OK);
-        } catch (Exception e){
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-        }
+//        } catch (Exception e){
+//            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+//        }
     }
     @GetMapping("/general/{id}")
     public ResponseEntity<TripGeneralDTO> getTripGeneralById(@PathVariable int id){
@@ -97,14 +97,14 @@ public class TripController {
         }
     }
     @PostMapping("/add-detail")
-    public ResponseEntity<TripDetails> addTripDetail(@RequestBody ObjectNode objectNode){
+    public ResponseEntity<TripDetailDTO> addTripDetail(@RequestBody ObjectNode objectNode){
         try{
             Date date = Date.valueOf(objectNode.get("date").asText());
             int startTime = objectNode.get("startTime").asInt();
             int endTime = objectNode.get("endTime").asInt();
             int tripId = objectNode.get("tripId").asInt();
             int activityId = objectNode.get("activityId").asInt();
-            TripDetails result = tripService.addTripDetail(date, startTime, endTime, activityId, tripId);
+            TripDetailDTO result = tripService.addTripDetail(date, startTime, endTime, activityId, tripId);
             return new ResponseEntity<>(result, HttpStatus.OK);
         } catch (Exception e){
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
@@ -138,13 +138,13 @@ public class TripController {
         }
     }
     @PutMapping("/put-detail")
-    public ResponseEntity<TripDetails> editTripDetail(@RequestBody TripDetails newDetail, @RequestParam int id){
+    public ResponseEntity<TripDetailDTO> editTripDetail(@RequestBody TripDetails newDetail, @RequestParam int id){
         try{
-            Optional<TripDetails> detail = tripService.editTripDetailById(newDetail,id);
-            if (detail.isEmpty()){
+            TripDetailDTO detail = tripService.editTripDetailById(newDetail,id);
+            if (detail==null){
                 return new ResponseEntity<>(HttpStatus.NOT_FOUND);
             }
-            return new ResponseEntity<>(detail.get(), HttpStatus.OK);
+            return new ResponseEntity<>(detail, HttpStatus.OK);
         } catch (Exception e){
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
