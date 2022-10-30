@@ -115,7 +115,7 @@ const POIDetails = () => {
   if (curPOI !== undefined) {
     return (
       <MDBContainer className={style.container}>
-        <MDBRow className='pb-3'>
+        <MDBRow className='pb-3 pt-5'>
           <h2 className='fw-bold'>{curPOI.name}</h2>
           <MDBRow className='m-0'>
             <MDBCol size='auto' className='p-0'>
