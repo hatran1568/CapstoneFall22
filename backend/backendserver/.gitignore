@@ -1,5 +1,6 @@
 HELP.md
 target/
+tokens/
 !.mvn/wrapper/maven-wrapper.jar
 !**/src/main/**/target/
 !**/src/test/**/target/
@@ -26,6 +27,7 @@ target/
 /nbdist/
 /.nb-gradle/
 build/
+tokens/
 !**/src/main/**/build/
 !**/src/test/**/build/
 

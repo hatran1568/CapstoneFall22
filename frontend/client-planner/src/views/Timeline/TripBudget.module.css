@@ -1,0 +1,269 @@
+.mainContainer{
+  width: 100vw;
+  align-content: center;
+  text-align: center;
+  position:relative;
+}
+.tripImage{
+  width: 100%;
+  height: 500px;
+  background-image:url('https://twimg0-a.akamaihd.net/a/1350072692/t1/img/front_page/jp-mountain@2x.jpg');
+  background-size: cover;
+  background-attachment:fixed;
+  margin: 0;
+  padding: 0;
+  position: relative;
+}
+.tripImage:after {
+  background-image: linear-gradient(to top,rgba(0,0,0,0),#000);
+  opacity: .6;
+}
+.infoBox{
+  margin: 0;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+.planTitle{
+  color: #FFFAB0;
+  margin: 0 auto 13px;
+  overflow: visible;
+  max-height: 207px;
+  display: block;
+  border-bottom: 1px dashed transparent;
+  -webkit-font-smoothing: antialiased;
+  text-shadow: 0 15px 40px rgb(0 0 0 / 20%);
+  font-family: Klarna Display,Helvetica Neue,Arial,Helvetica,sans-serif;
+  font-size: 66px;
+  font-weight: 700;
+  line-height: 1.05;
+  letter-spacing: .1px;
+  margin-bottom: 16px;
+  text-align: center;
+}
+.dates{
+  color: #FFFAB0;
+  margin: 0 auto 13px;
+  overflow: visible;
+  max-height: 207px;
+  display: block;
+  border-bottom: 1px dashed transparent;
+  -webkit-font-smoothing: antialiased;
+  text-shadow: 0 15px 40px rgb(0 0 0 / 20%);
+  font-family: Klarna Display,Helvetica Neue,Arial,Helvetica,sans-serif;
+  font-size: 20px;
+  font-weight: 700;
+  line-height: 1.05;
+  letter-spacing: .1px;
+  margin-bottom: 16px;
+  text-align: center;
+}
+.budgetContainer{
+  width: 60vw;
+  text-align: left;
+  margin:auto;
+  padding: 10px;
+}
+.expenseText{
+  font-size: 20px;
+}
+.budgetText{
+  float:right;
+  font-size: 20px;
+}
+.budgetExceed{
+  color: red;
+}
+.budgetWarning{
+  color: rgb(255, 153, 0);
+}
+.budgetNormal{
+  color: rgb(0, 174, 0);
+}
+.expenseBox{
+  width: 50vw;
+  height: 10vh;
+  margin: auto;
+  border-style: solid;
+  border-width: 1px;
+  border-radius: 10px;
+  border-color: rgb(231, 231, 231);
+  border-top: none;
+  border-left: none;
+  border-right: none;
+}
+.expenseBox:hover{
+  background-color: rgb(235, 234, 234);
+}
+.expenseBoxMid{
+  text-align: left;
+  margin: auto;
+}
+.expenseBoxAmount{
+  text-align: right;
+}
+.expenseBoxRow{
+  padding: 20px;
+}
+.expenseFilter{
+  width: 45vw !important;
+  text-align: right !important;
+}
+.expenseBoxDelete{
+  color: rgb(134, 134, 134);
+}
+.expenseBoxDelete:hover{
+  cursor: pointer;
+  color: rgb(0, 0, 0);
+}
+.expenseAdd{
+  align-items: left;
+  width: 15vw !important;
+}
+.expenseAdd:hover{
+  cursor: pointer;
+}
+.btnGroup{
+  width: 60vw !important;
+  margin:auto !important;
+}
+.progressBar{
+  margin-top: 10px;
+  margin-bottom: 5px;
+  border-radius: 2px !important;
+}
+.errorText{
+  width: 100%;
+  text-align: center;
+  margin-top: 30px;
+}
+.tripImageDiv{
+  width: 100%; 
+  height: 500px;
+  background-size: cover;
+  margin: 0;
+  padding: 0;
+  position: relative; 
+}
+.tripImage{
+height: 500px;
+width: 100%;
+object-fit: cover;
+filter: brightness(60%) opacity(80%);
+}
+.infoBox{
+  margin: 0;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+.planTitle{
+  color: #FFFAB0;
+  margin: 0 auto 13px;
+  overflow: visible;
+  max-height: 207px;
+  display: block;
+  border-bottom: 1px dashed transparent;
+  -webkit-font-smoothing: antialiased;
+  text-shadow: 0 15px 40px rgb(0 0 0 / 20%);
+  font-family: Klarna Display,Helvetica Neue,Arial,Helvetica,sans-serif;
+  font-size: 66px;
+  font-weight: 700;
+  line-height: 1.05;
+  letter-spacing: .1px;
+  margin-bottom: 16px;
+  text-align: center;
+}
+.dates{
+  color: #FFFAB0;
+  margin: 0 auto 13px;
+  overflow: visible;
+  max-height: 207px;
+  display: block;
+  border-bottom: 1px dashed transparent;
+  -webkit-font-smoothing: antialiased;
+  text-shadow: 0 15px 40px rgb(0 0 0 / 20%);
+  font-family: Klarna Display,Helvetica Neue,Arial,Helvetica,sans-serif;
+  font-size: 20px;
+  font-weight: 700;
+  line-height: 1.05;
+  letter-spacing: .1px;
+  margin-bottom: 16px;
+  text-align: center;
+}
+
+.stickyNavFirst {
+  padding: 0;
+  background-color: #fff;
+  border: none;
+  margin-bottom: 50px;
+  position: sticky;
+  top: 0;
+  z-index: 900;
+}
+.dropdownContent{
+  display: none;
+position: absolute;
+background-color: #fff;
+min-width: 160px;
+box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+z-index: 1;
+}
+.dropDown:hover .dropdownContent {
+  display: block;
+}
+.dropdownContent a:hover {
+  background-color: #f1f1f1;
+  font-weight: 500;
+}
+.dropdownContent a {
+  color: black;
+  padding: 12px 15px;
+  text-decoration: none;
+  display: block;
+  font-size: 15px;
+}
+.icons{
+  width: 20px;
+  margin-left: 0;
+  margin-right: 10px;
+}
+.dropDownIcon{
+  margin: 0;
+  margin-left: 5px;
+  font-size: 15px;
+}
+.active{
+  background-color: #f1f1f1
+}
+.checkIcons{
+  float: right;
+  color: green;
+}
+.navItem{
+  border: none !important;
+  color: #5f6163 !important;
+  background-color: #fff !important;
+  font-family: Klarna Text,Helvetica Neue,Arial,Helvetica,sans-serif;
+  font-size: 16px !important;
+  font-weight: 500 !important;
+  text-transform: none !important;
+}
+.navItem:hover{
+  color: #000 !important;
+  background-color: rgb(255, 255, 255) !important;
+  font-weight: 600 !important;
+}
+.navItemActive{
+  color: #000 !important;
+  background-color: rgb(255, 255, 255) !important;
+  border: none !important;
+  border-bottom: 3px solid #0E0E0F !important;
+  font-weight: 600 !important;
+}
+.navTabs{
+  border: none !important;
+  box-shadow: 0 4px 12px 0 rgb(0 0 0 / 5%), 0 2px 12px rgb(0 0 0 / 7%) !important;
+}

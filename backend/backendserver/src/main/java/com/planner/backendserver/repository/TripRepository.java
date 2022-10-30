@@ -41,4 +41,8 @@ public interface TripRepository extends JpaRepository<Trip, Integer> {
             value = "select MAX(trip_id) from trip",
             nativeQuery = true)
     int getNewestTripId();
+    @Query(
+            value = "SELECT user_id FROM trip WHERE trip_id = ?1",
+            nativeQuery = true)
+    int getTripUserId(int tripId);
 }

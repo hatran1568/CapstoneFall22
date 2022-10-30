@@ -3,7 +3,7 @@ import props from "prop-types";
 import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
 import style from "./timeline.module.css";
-import Rating from "../../components/Rating";
+import Rating from "../../components/POIs/Rating";
 import { ContactSupport } from "@mui/icons-material";
 function EditActivityModal(props) {
   const { activityEdited, allDates, tripDetail, ...rest } = props;

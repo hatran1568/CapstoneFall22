@@ -1,8 +1,15 @@
 package com.planner.backendserver.controller;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.planner.backendserver.DTO.GenerateTripUserInput;
 import com.planner.backendserver.DTO.TripDTO;
 import com.planner.backendserver.DTO.UserDTO;
+import com.planner.backendserver.DTO.response.SimpleResponse;
 import com.planner.backendserver.DTO.response.TripDetailedDTO;
 import com.planner.backendserver.dto.response.TripGeneralDTO;
 import com.planner.backendserver.entity.MasterActivity;
@@ -12,16 +19,21 @@ import com.planner.backendserver.repository.POIRepository;
 import com.planner.backendserver.repository.TripRepository;
 import com.planner.backendserver.service.UserDTOServiceImplementer;
 import com.planner.backendserver.service.interfaces.TripService;
+import net.minidev.json.JSONObject;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import org.springframework.cloud.client.ServiceInstance;
+import org.springframework.cloud.client.discovery.DiscoveryClient;
+import org.springframework.http.*;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.parameters.P;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.client.RestTemplate;
+
 import java.sql.Date;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 import java.util.Optional;
 
 @RestController
@@ -38,6 +50,8 @@ public class TripController {
     @Autowired
     ModelMapper mapper;
 
+    @Autowired
+    private DiscoveryClient discoveryClient;
     @GetMapping("/{id}")
     public ResponseEntity<TripDetailedDTO> getTripById(@PathVariable int id){
         try{
@@ -228,5 +242,36 @@ public class TripController {
         } catch(Exception e){
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
+    }
+    @PostMapping("/generate")
+    public String generateTrip(@RequestBody GenerateTripUserInput input) throws JsonProcessingException {
+        List<ServiceInstance> instances = discoveryClient.getInstances("Optimizer");
+
+        ServiceInstance instance =  instances.get(0);
+
+        System.out.println(instance);
+
+
+        String url = "http://localhost:"+instance.getPort()+"/trip/generate";
+
+        System.out.println(url);
+
+        RestTemplate restTemplate = new RestTemplate();
+        HttpHeaders headers = new HttpHeaders();
+
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        ObjectMapper mapper = new ObjectMapper();
+        Gson gson = new GsonBuilder()
+                .setDateFormat("yyyy-MM-dd").create();
+        String personJsonObject  = gson.toJson(input);
+        HttpEntity<String> request =
+                new HttpEntity<String>(personJsonObject, headers);
+        System.out.println(request);
+        String personResultAsJsonStr =
+                restTemplate.postForObject(url, request, String.class);
+
+        JsonNode root = mapper.readTree(personResultAsJsonStr);
+        System.out.println(root.path("port").asText());
+        return root.path("port").asText();
     }
 }
