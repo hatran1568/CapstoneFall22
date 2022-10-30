@@ -4,7 +4,7 @@ import Modal from "react-bootstrap/Modal";
 import POISearchBar from "../../components/POISearchBar/POISearchBar";
 import style from "./timeline.module.css";
 function AddActivityModal(props) {
-  const { activityAdded, allDates, ...rest } = props;
+  const { activityAdded, allDates, onHide, ...rest } = props;
   const inputField = {
     date: allDates[0].toISOString().split("T")[0],
     activity_id: "",
@@ -32,7 +32,23 @@ function AddActivityModal(props) {
       alert("Please add a custom activity name or choose a place");
       return;
     }
-    activityAdded(event, inputField);
+    var sendFields = { ...inputField };
+    resetInputField();
+    activityAdded(event, sendFields);
+  };
+  const closeModal = () => {
+    resetInputField();
+    onHide();
+  };
+  const resetInputField = () => {
+    inputField.date = allDates[0].toISOString().split("T")[0];
+    inputField.activity_id = "";
+    inputField.start_time = "08:00";
+    inputField.end_time = "09:00";
+    inputField.custom = false;
+    inputField.name = "";
+    inputField.address = "";
+    setShowAddCustomModal(false);
   };
   return (
     <>
@@ -45,7 +61,7 @@ function AddActivityModal(props) {
         <Modal.Body>
           <button
             className={`btn-close ${style.closeBtn}`}
-            onClick={props.onHide}
+            onClick={() => closeModal()}
           ></button>
           <form className={style.modalBody}>
             <div className="row">
@@ -150,7 +166,12 @@ function AddActivityModal(props) {
           >
             Add This Activity
           </Button>
-          <Button onClick={props.onHide} variant="outline-secondary">
+          <Button
+            onClick={() => {
+              closeModal();
+            }}
+            variant="outline-secondary"
+          >
             Close
           </Button>
         </Modal.Footer>
