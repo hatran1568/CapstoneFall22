@@ -55,7 +55,7 @@ const POIDetails = () => {
     });
   }
 
-  const avgRate = 0;
+  var avgRate = 0;
   const poiRatings = [];
   if (ratings.length > 0) {
     avgRate = ratings.reduce((sum, cur) => sum + Number(cur.rate), 0) / ratings.length;
