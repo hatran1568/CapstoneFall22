@@ -25,8 +25,6 @@ public class POI extends MasterActivity {
     @Column(name="description", columnDefinition = "text")
     private String Description;
 
-
-
     @Column(name="google_rate")
     private double googleRate;
 
