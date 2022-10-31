@@ -59,7 +59,6 @@ public class SearchServiceImpl implements SearchService {
         int start = Math.min((int) paging.getOffset(), list.size());
         int end = Math.min((start + paging.getPageSize()), list.size());
 
-
         return new PageImpl<SearchPOIAndDestinationDTO>(list.subList(start, end), PageRequest.of(page, size), list.size());
     }
 
