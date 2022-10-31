@@ -327,7 +327,7 @@ class Timeline extends Component {
             <div className="col-2">
               <div className={style.daysBox}>
                 {allMonths.map((month) => (
-                  <div key={month}>
+                  <div key={month} className={style.monthsBox}>
                     <div className={style.month}>{month}</div>
                     {this.getAllDatesOfMonth(allDates, month).map((date) => (
                       <a

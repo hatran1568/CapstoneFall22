@@ -64,8 +64,19 @@ class Timetable extends Component {
         endDate.setSeconds(detail.endTime);
         event.end = endDate.toISOString().substring(0, 19);
         event.extendedProps = detail;
+        event.constraint = "available";
         // event.color = "blue";
         tempEvents.push(event);
+      });
+      var tzoffset = new Date().getTimezoneOffset() * 60000;
+      var endDt = new Date(tripData.endDate);
+      var newEndDt = new Date(endDt - tzoffset);
+      newEndDt.setDate(newEndDt.getDate() + 1);
+      tempEvents.push({
+        groupId: "available",
+        start: tripData.startDate,
+        end: newEndDt.toISOString().substring(0, 10),
+        display: "background",
       });
       var snext = false;
       if (this.getAllDates(tripData.startDate, tripData.endDate).length > 1) {
@@ -117,8 +128,19 @@ class Timetable extends Component {
   setDate = (event, date) => {
     event.preventDefault();
     let calendarApi = this.calendarComponentRef.current.getApi();
-    calendarApi.gotoDate(date); // call a method on the Calendar object
-    this.setState({ currentDate: date });
+    let endDate = this.state.trip.endDate;
+    if (this.addDays(endDate, 0) >= this.addDays(date, 3)) {
+      calendarApi.gotoDate(date); // call a method on the Calendar object
+      var showN = false;
+      showN = this.showNextBtn(date);
+      var showP = false;
+      showP = this.showPrevBtn(date);
+      this.setState({
+        showNext: showN,
+        showPrev: showP,
+        currentDate: date,
+      });
+    }
   };
   //convert time from api to event time
   apiToEventTime = (apiDate, apiTime) => {
@@ -340,6 +362,9 @@ class Timetable extends Component {
   }
 
   renderEventContent = (eventInfo) => {
+    if (eventInfo.event.groupId && eventInfo.event.groupId == "available") {
+      return;
+    }
     var newProps = { ...eventInfo.event.extendedProps };
     var tzoffset = new Date().getTimezoneOffset() * 60000;
     newProps.date = new Date(eventInfo.event.start - tzoffset)
@@ -410,6 +435,7 @@ class Timetable extends Component {
   };
   //handle event change
   handleEventChange = (eventInfo) => {
+    console.log("event changing...");
     if (eventInfo.event.extendedProps.fromForm == true) {
       delete eventInfo.event.extendedProps.fromForm;
       return;

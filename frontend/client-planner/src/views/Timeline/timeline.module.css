@@ -110,9 +110,13 @@
   padding-top: 0;
 }
 .daysBox {
-  position: fixed;
-  overflow-y: visible;
-  height: auto;
+  
+  position: sticky;
+  top: 10vh;
+  overflow-y: auto;
+  height: 80vh;
+  padding: 0;
+  overflow-x: hidden;
 }
 .month{
   font-weight: 500;

@@ -34,7 +34,10 @@ public class TripServiceImpl implements TripService {
     private CustomActivityRepository customActivityRepository;
     @Autowired
     private POIImageRepository poiImageRepository;
-
+    @Autowired
+    private ExpenseRepository expenseRepository;
+    @Autowired
+    private ExpenseCategoryRepository expenseCategoryRepository;
     @Override
     public DetailedTripDTO getDetailedTripById(int tripId) {
         Trip trip = tripRepository.findById(tripId);
@@ -76,10 +79,20 @@ public class TripServiceImpl implements TripService {
         trip.setTripId(tripId);
         tripDetails.setTrip(trip);
         TripDetailDTO saved = mapper.map(tripDetailRepository.save(tripDetails), TripDetailDTO.class);
+        addPOICostToExpenses(tripId, activityId);
         saved.setMasterActivity(getMasterActivity(saved.getMasterActivity().getActivityId()));
         return saved;
     }
 
+    //add an expense to trip with typical price of POI
+    public void addPOICostToExpenses(int tripId, int activityId){
+        POI poi = poiRepository.getById(activityId);
+        ExpenseCategory expenseCategory = expenseCategoryRepository.findByName("Activities");
+        if(expenseCategory == null) return;
+        if(poi.getTypicalPrice() > 0){
+            expenseRepository.addExpense(poi.getTypicalPrice(), poi.getName(), expenseCategory.getExpenseCategoryId(), tripId);
+        }
+    }
     public MasterActivityDTO getMasterActivity(int id){
         if(!masterActivityRepository.existsById(id)) return null;
         MasterActivityDTO masterActivityDTO = mapper.map(masterActivityRepository.getById(id), MasterActivityDTO.class);
