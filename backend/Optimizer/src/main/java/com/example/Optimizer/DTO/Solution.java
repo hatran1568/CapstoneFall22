@@ -108,7 +108,7 @@ public class Solution {
                 MasterActivity activity = new MasterActivity();
                 activity = data.getPOIs()[list.get(i)];
                 tripDetails.setMasterActivity(activity);
-                tripDetails.setStartTime((int) Math.max(currentTime,((POI) tripDetails.getMasterActivity()).getOpenTime()));
+                tripDetails.setStartTime((int) Math.max(currentTime,((POI) tripDetails.getMasterActivity()).getOpenTime())) ;
                 currentTime = (int) ((int) Math.max(currentTime,((POI) tripDetails.getMasterActivity()).getOpenTime()) +((POI) tripDetails.getMasterActivity()).getDuration());
                 tripDetails.setEndTime((int) currentTime);
                 if(i!=list.size()-1){
