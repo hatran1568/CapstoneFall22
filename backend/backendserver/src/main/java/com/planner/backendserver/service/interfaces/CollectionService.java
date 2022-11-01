@@ -6,4 +6,7 @@ import java.util.ArrayList;
 
 public interface CollectionService {
     ArrayList<CollectionDTO> getCollectionListByUid(int uid);
+    CollectionDTO getCollectionById(int colId);
+
+    void deletePOIFromCollection(int colID, int poiId);
 }

@@ -26,9 +26,22 @@ public class CollectionServiceImpl implements CollectionService {
         ArrayList<Collection> collections = collectionRepository.getCollectionsByUserID(uid);
         for (Collection collection : collections) {
             CollectionDTO collectionDTO = new CollectionDTO(collection.getCollectionId(), collection.getTitle(), collection.getDescription(), collection.getDateModified(), collection.isDeleted(), collection.getUser().getUserID(), getFirstImageOfCollection(collection.getCollectionId()));
-            list.add(collectionDTO);
+            if(!collectionDTO.isDeleted()) {
+                list.add(collectionDTO);
+            }
         }
         return list;
+    }
+
+    @Override
+    public CollectionDTO getCollectionById(int colId) {
+        Collection collection = collectionRepository.getCollectionByID(colId);
+        return new CollectionDTO(collection.getCollectionId(), collection.getTitle(), collection.getDescription(), collection.getDateModified(), collection.isDeleted(), collection.getUser().getUserID(), getFirstImageOfCollection(collection.getCollectionId()));
+    }
+
+    @Override
+    public void deletePOIFromCollection(int colID, int poiId) {
+        collectionRepository.removePOIFromCollection(colID, poiId);
     }
 
     private String getFirstImageOfCollection(int colId) {

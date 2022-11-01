@@ -16,27 +16,21 @@ const POIDetails = () => {
   const poiId = urlParams.get("id");
 
   useEffect(() => {
-    document.title = "Trip planner | POIDetails";
-  }, []);
-
-  useEffect(() => {
     const getPOI = async () => {
       await axios.get("/api/pois/" + poiId).then((res) => setCurPOI(res.data));
     };
-    getPOI();
-  }, []);
 
-  useEffect(() => {
     const getRatings = async () => {
       await axios.get("/api/pois/" + poiId + "/ratings").then((res) => setRatings(res.data));
     };
-    getRatings();
-  }, []);
 
-  useEffect(() => {
     const getImages = async () => {
       await axios.get("/api/pois/" + poiId + "/images").then((res) => setImages(res.data));
     };
+
+    document.title = "Trip planner | POIDetails";
+    getPOI();
+    getRatings();
     getImages();
   }, []);
 
