@@ -1,16 +1,22 @@
 import React, { useEffect, useState } from "react";
 import axios from "../../api/axios";
-import { MDBCarousel, MDBCarouselItem, MDBCol, MDBContainer, MDBRow } from "mdb-react-ui-kit";
+import { MDBBtn, MDBCol, MDBContainer, MDBRow, MDBTextArea } from "mdb-react-ui-kit";
 import StarRatings from "react-star-ratings";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faGoogle } from "@fortawesome/free-brands-svg-icons";
 import ImageGallery from "react-image-gallery";
+import { Input, Modal } from "antd";
 import style from "./POIDetails.module.css";
 
 const POIDetails = () => {
   const [curPOI, setCurPOI] = useState();
   const [ratings, setRatings] = useState([]);
   const [images, setImages] = useState([]);
+  const [comment, setComment] = useState("");
+  const [rate, setRate] = useState(0);
+
+  const { TextArea } = Input;
+  const { error } = Modal;
 
   const urlParams = new URLSearchParams(window.location.search);
   const poiId = urlParams.get("id");
@@ -38,8 +44,69 @@ const POIDetails = () => {
     e.preventDefault();
   };
 
-  const poiImages = [];
+  const handleChange = (e) => {
+    setComment(e.target.value);
+  };
 
+  const handleEdit = () => {
+    if (rate > 0) {
+      axios
+        .put(
+          "/api/pois/editRating",
+          {
+            rate: rate,
+            comment: comment,
+            userId: localStorage.getItem("id"),
+            poiId: poiId,
+          },
+          {
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("token")}`,
+            },
+            withCredentials: true,
+          },
+        )
+        .then((res) => {
+          setRatings(res.data);
+        });
+    } else {
+      error({
+        title: "Can't change rating",
+        content: "Please enter at least 1 star rating.",
+      });
+    }
+  };
+
+  const handleCreate = () => {
+    if (rate > 0) {
+      axios
+        .post(
+          "/api/pois/createRating",
+          {
+            rate: rate,
+            comment: comment,
+            userId: localStorage.getItem("id"),
+            poiId: poiId,
+          },
+          {
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("token")}`,
+            },
+            withCredentials: true,
+          },
+        )
+        .then((res) => {
+          setRatings(res.data);
+        });
+    } else {
+      error({
+        title: "Can't create rating",
+        content: "Please enter at least 1 star rating.",
+      });
+    }
+  };
+
+  var poiImages = [];
   if (images.length > 0) {
     images.forEach((image) => {
       poiImages.push({
@@ -54,7 +121,7 @@ const POIDetails = () => {
   if (ratings.length > 0) {
     avgRate = ratings.reduce((sum, cur) => sum + Number(cur.rate), 0) / ratings.length;
     ratings.forEach((rating) => {
-      var formattedDate = new Date(rating.dateCreated).toLocaleDateString("vi-VN");
+      var formattedDate = new Date(rating.modified).toLocaleDateString("vi-VN");
       poiRatings.push(
         <>
           <MDBRow className='border-top'>
@@ -64,7 +131,7 @@ const POIDetails = () => {
             <MDBCol size='auto' className='pt-1'>
               <p>
                 {" "}
-                by <strong>{rating.user.name}</strong>
+                by <strong>{rating.userName}</strong>
               </p>
             </MDBCol>
           </MDBRow>
@@ -79,11 +146,79 @@ const POIDetails = () => {
         </>,
       );
     });
-  } else if (ratings.length == 0) {
+  } else if (ratings.length === 0) {
     poiRatings.push(
       <div>
         <p>There is still nothing yet</p>
       </div>,
+    );
+  }
+
+  var ratingInput;
+  var commented;
+  if (ratings.length > 0) {
+    commented = ratings.some((rate) => {
+      if (rate.userId == localStorage.getItem("id")) {
+        return true;
+      } else {
+        return false;
+      }
+    });
+  }
+
+  if (commented) {
+    ratingInput = (
+      <MDBCol className='mt-3'>
+        <p className='fs-3 mb-1'>Edit your feedback:</p>
+        <StarRatings
+          numberOfStars={5}
+          changeRating={setRate}
+          rating={rate}
+          starDimension='1em'
+          starSpacing='0.1em'
+          starRatedColor='orange'
+          starHoverColor='orange'
+        />
+        <TextArea
+          id='comment-rating'
+          showCount
+          maxLength={500}
+          className='mt-2'
+          style={{ height: 120, resize: "none" }}
+          placeholder='Share your thoughts about this place...'
+          onChange={handleChange}
+        />
+        <MDBBtn color='info' className='mt-2' onClick={handleEdit}>
+          Edit
+        </MDBBtn>
+      </MDBCol>
+    );
+  } else {
+    ratingInput = (
+      <MDBCol className='mt-3'>
+        <p className='fs-3 mb-1'>Write a feedback:</p>
+        <StarRatings
+          numberOfStars={5}
+          changeRating={setRate}
+          rating={rate}
+          starDimension='1em'
+          starSpacing='0.1em'
+          starRatedColor='orange'
+          starHoverColor='orange'
+        />
+        <TextArea
+          id='comment-rating'
+          showCount
+          maxLength={500}
+          className='mt-2'
+          style={{ height: 120, resize: "none" }}
+          placeholder='Share your thoughts about this place...'
+          onChange={handleChange}
+        />
+        <MDBBtn color='info' className='mt-2' onClick={handleCreate}>
+          Comment
+        </MDBBtn>
+      </MDBCol>
     );
   }
 
@@ -184,9 +319,11 @@ const POIDetails = () => {
                 </p>
               </MDBCol>
             </MDBRow>
-            <MDBRow></MDBRow>
           </MDBCol>
-          <MDBCol>{poiRatings}</MDBCol>
+          <MDBCol>
+            {poiRatings}
+            {ratingInput}
+          </MDBCol>
         </MDBRow>
       </MDBContainer>
     );

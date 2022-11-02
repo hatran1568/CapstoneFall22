@@ -73,7 +73,7 @@ public class CollectionController {
     @GetMapping("/poiList/{colId}")
     public ResponseEntity<ArrayList<POIOfCollectionDTO>> getPOIList(@PathVariable int colId) {
         try {
-            ArrayList<POIOfCollectionDTO> pois = poiService.getPOIListOfCollection(colId);
+            ArrayList<POIOfCollectionDTO> pois = collectionService.getPOIListOfCollection(colId);
             if (pois.isEmpty()) {
                 return new ResponseEntity<>(HttpStatus.NO_CONTENT);
             }
@@ -133,7 +133,7 @@ public class CollectionController {
             int poiId = objectNode.get("poiId").asInt();
             int colId = objectNode.get("colId").asInt();
             collectionRepository.addPOIIntoCollection(poiId, colId);
-            ArrayList<POIOfCollectionDTO> poiList = poiService.getPOIListOfCollection(colId);
+            ArrayList<POIOfCollectionDTO> poiList = collectionService.getPOIListOfCollection(colId);
             return new ResponseEntity<>(poiList, HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
@@ -146,7 +146,7 @@ public class CollectionController {
             int poiId = dto.getPoiId();
             int colId = dto.getColId();
             collectionService.deletePOIFromCollection(poiId, colId);
-            ArrayList<POIOfCollectionDTO> poiList = poiService.getPOIListOfCollection(colId);
+            ArrayList<POIOfCollectionDTO> poiList = collectionService.getPOIListOfCollection(colId);
             return new ResponseEntity<>(poiList, HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
