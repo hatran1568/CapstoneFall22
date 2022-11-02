@@ -111,7 +111,7 @@ public class TripController {
         }
     }
     @PostMapping("/add-custom-detail")
-    public ResponseEntity<TripDetails> addCustomTripDetail(@RequestBody ObjectNode objectNode){
+    public ResponseEntity<TripDetailDTO> addCustomTripDetail(@RequestBody ObjectNode objectNode){
         try{
             Date date = Date.valueOf(objectNode.get("date").asText());
             int startTime = objectNode.get("startTime").asInt();
@@ -119,7 +119,7 @@ public class TripController {
             int tripId = objectNode.get("tripId").asInt();
             String name = objectNode.get("name").asText();
             String address = objectNode.get("address").asText();
-            TripDetails result = tripService.addCustomTripDetail(date, startTime, endTime, tripId, name, address);
+            TripDetailDTO result = tripService.addCustomTripDetail(date, startTime, endTime, tripId, name, address);
             return new ResponseEntity<>(result, HttpStatus.OK);
         } catch (Exception e){
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
@@ -150,13 +150,13 @@ public class TripController {
         }
     }
     @PutMapping("/put-custom-detail")
-    public ResponseEntity<TripDetails> editCustomTripDetail(@RequestBody TripDetails newDetail, @RequestParam int id){
+    public ResponseEntity<TripDetailDTO> editCustomTripDetail(@RequestBody TripDetails newDetail, @RequestParam int id){
         try{
-            Optional<TripDetails> detail = tripService.editCustomTripDetailById(newDetail,id);
-            if (detail.isEmpty()){
+            TripDetailDTO detail = tripService.editCustomTripDetailById(newDetail,id);
+            if (detail == null){
                 return new ResponseEntity<>(HttpStatus.NOT_FOUND);
             }
-            return new ResponseEntity<>(detail.get(), HttpStatus.OK);
+            return new ResponseEntity<>(detail, HttpStatus.OK);
         } catch (Exception e){
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }

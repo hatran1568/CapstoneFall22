@@ -90,10 +90,10 @@ class TripDetail extends Component {
     var timeString = date.toISOString().substring(11, 19);
     return timeString;
   };
+
   render() {
     var moment = require("moment"); // require
-    var isCustom =
-      typeof this.state.tripDetail.masterActivity.category !== "undefined";
+    var isCustom = this.state.tripDetail.masterActivity.custom;
     return (
       <React.Fragment>
         <li className={`${style.timelineItem} card`}>
@@ -137,7 +137,7 @@ class TripDetail extends Component {
                 ).format("hh:mm a")}
               </p>
             </div>
-            {isCustom ? (
+            {!isCustom ? (
               <div className="col-4">
                 <img
                   src={
@@ -154,11 +154,11 @@ class TripDetail extends Component {
               <></>
             )}
 
-            <div className={isCustom ? "col-6" : "col-10"}>
+            <div className={!isCustom ? "col-6" : "col-10"}>
               <MDBDropdown animation={false} className={style.btnMore}>
                 <MDBDropdownToggle color="light"></MDBDropdownToggle>
                 <MDBDropdownMenu>
-                  {!this.state.tripDetail.masterActivity.custom ? (
+                  {!isCustom ? (
                     <MDBDropdownItem
                       link
                       href={
@@ -172,7 +172,12 @@ class TripDetail extends Component {
                     <></>
                   )}
 
-                  <MDBDropdownItem link onClick={this.toggleEditModal}>
+                  <MDBDropdownItem
+                    link
+                    onClick={(event) =>
+                      this.props.editEvent(event, this.state.tripDetail)
+                    }
+                  >
                     Edit Event
                   </MDBDropdownItem>
                   <MDBDropdownItem
@@ -180,7 +185,8 @@ class TripDetail extends Component {
                     onClick={(event) =>
                       this.props.deleteEvent(
                         event,
-                        this.state.tripDetail.tripDetailsId
+                        this.state.tripDetail.tripDetailsId,
+                        this.state.tripDetail.masterActivity.name
                       )
                     }
                   >

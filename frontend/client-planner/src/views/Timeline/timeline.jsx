@@ -8,6 +8,9 @@ import style from "./timeline.module.css";
 import { useParams } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlus } from "@fortawesome/free-solid-svg-icons";
+import LoadingScreen from "react-loading-screen";
+import ConfirmDelete from "../Timetable/ConfirmDelete";
+import EditActivityModal from "./EditActivityModal";
 class Timeline extends Component {
   state = {};
   //set state of component
@@ -19,6 +22,13 @@ class Timeline extends Component {
       showEditModal: false,
       dataLoaded: false,
       showAddCustomModal: false,
+      detailInEdit: {},
+      showEditModal: false,
+      delete: {
+        detailId: "",
+        name: "",
+        show: false,
+      },
     };
   }
   //get request to get trip info
@@ -121,35 +131,33 @@ class Timeline extends Component {
       showAddCustomModal: !newShowCustom,
     });
   };
-  //delete an activirty
+  //delete an activity
   deleteTripDetail = (event, detailId) => {
-    if (
-      window.confirm("Do you really want to delete this event from your trip?")
-    ) {
-      axios
-        .delete(`http://localhost:8080/trip/delete-detail`, {
-          data: { id: detailId },
-        })
-        .then((response) => {
-          if (response.status == 200) {
-            var newTrip = this.state.trip;
-            newTrip.listTripDetails = newTrip.listTripDetails.filter(function (
-              detail
-            ) {
-              return detail.tripDetailsId !== detailId;
-            });
-            this.setState(
-              {
-                trip: newTrip,
-                showAddModal: false,
-                showEditModal: false,
-                dataLoaded: true,
-              },
-              this.render
-            );
-          }
-        });
-    }
+    axios
+      .delete(`http://localhost:8080/trip/delete-detail`, {
+        data: { id: detailId },
+      })
+      .then((response) => {
+        if (response.status == 200) {
+          var newTrip = this.state.trip;
+          newTrip.listTripDetails = newTrip.listTripDetails.filter(function (
+            detail
+          ) {
+            return detail.tripDetailsId !== detailId;
+          });
+          this.setState({
+            trip: newTrip,
+            showAddModal: false,
+            showEditModal: false,
+            dataLoaded: true,
+            delete: {
+              detailId: "",
+              name: "",
+              show: false,
+            },
+          });
+        }
+      });
   };
   //get a tripDetail inside trip in state
   getTripDetailById = (id) => {
@@ -161,8 +169,6 @@ class Timeline extends Component {
   };
   //put request to edit a custom detail
   editCustomDetail = (event, detail) => {
-    console.log("calling custom");
-    delete detail.custom;
     var start = detail.startTime.split(":");
     detail.startTime = +start[0] * 60 * 60 + +start[1] * 60;
     var end = detail.endTime.split(":");
@@ -179,6 +185,7 @@ class Timeline extends Component {
     })
       .then((response) => {
         this.updateDetail(detail.tripDetailsId, response.data);
+        this.closeEditModal();
       })
       .catch(function (error) {
         console.log(error);
@@ -186,7 +193,7 @@ class Timeline extends Component {
   };
   //put request to edit a detail
   editTripDetail = (event, detail) => {
-    if (detail.custom == true) {
+    if (detail.masterActivity.custom) {
       this.editCustomDetail(event, detail);
       return;
     }
@@ -204,6 +211,7 @@ class Timeline extends Component {
     })
       .then((response) => {
         this.updateDetail(detail.tripDetailsId, response.data);
+        this.closeEditModal();
       })
       .catch(function (error) {
         console.log(error);
@@ -306,12 +314,62 @@ class Timeline extends Component {
     }
     return false;
   };
+  //close confirm delete
+  closeConfirmDelete = () => {
+    this.setState({
+      delete: {
+        detailId: "",
+        name: "",
+        show: false,
+      },
+    });
+  };
+  //open confirm delete modal
+  openConfirmDelete = (event, detailId, name) => {
+    this.setState({
+      delete: {
+        detailId: detailId,
+        name: name,
+        show: true,
+      },
+    });
+  };
+  //open edit modal with event data
+  openEditModal = (event, detail) => {
+    event.preventDefault();
+    var newDetail = {};
+    newDetail.date = detail.date;
+    var date = new Date(detail.date);
+    date.setSeconds(detail.startTime);
+    var timeString = date.toISOString().substring(11, 16);
+    newDetail.startTime = timeString;
+    var enddate = new Date(detail.date);
+    enddate.setSeconds(detail.endTime);
+    var endtimeString = enddate.toISOString().substring(11, 16);
+    newDetail.endTime = endtimeString;
+    newDetail.masterActivity = detail.masterActivity;
+    newDetail.tripDetailsId = detail.tripDetailsId;
+    this.setState({ detailInEdit: newDetail }, () => {
+      this.setState({ showEditModal: true });
+    });
+  };
+  //close edit modal
+  closeEditModal = () => {
+    this.setState({ showEditModal: false, detailInEdit: {} });
+  };
   render() {
     if (!this.state.dataLoaded)
       return (
-        <div>
-          <h1> Pleses wait some time.... </h1>{" "}
-        </div>
+        <LoadingScreen
+          loading={true}
+          bgColor="#f1f1f1"
+          spinnerColor="#9ee5f8"
+          textColor="#676767"
+          // logoSrc="/logo.png"
+          text="Please wait a bit while we get your plan..."
+        >
+          <div></div>
+        </LoadingScreen>
       );
     var allDates = this.getAllDates(
       this.state.trip.startDate,
@@ -321,7 +379,22 @@ class Timeline extends Component {
     return (
       <div>
         <TripDetailTabs />
-
+        {this.state.showEditModal ? (
+          <EditActivityModal
+            show={this.state.showEditModal}
+            onHide={this.closeEditModal}
+            allDates={allDates}
+            tripDetail={this.state.detailInEdit}
+            activityEdited={(event, input) => this.editTripDetail(event, input)}
+          ></EditActivityModal>
+        ) : null}
+        <ConfirmDelete
+          show={this.state.delete.show}
+          onHide={this.closeConfirmDelete}
+          onConfirmed={(event, id) => this.deleteTripDetail(event, id)}
+          detailId={this.state.delete.detailId}
+          name={this.state.delete.name}
+        />
         <div className="container ">
           <div className="timeline-container row ">
             <div className="col-2">
@@ -357,11 +430,11 @@ class Timeline extends Component {
                         <TripDetail
                           key={tripDetail.tripDetailsId}
                           tripDetail={tripDetail}
-                          deleteEvent={(event, detailId) =>
-                            this.deleteTripDetail(event, detailId)
+                          deleteEvent={(event, detailId, name) =>
+                            this.openConfirmDelete(event, detailId, name)
                           }
                           editEvent={(event, detail) =>
-                            this.editTripDetail(event, detail)
+                            this.openEditModal(event, detail)
                           }
                           nextActivityId={this.getNextTripDetail(
                             this.getTripDetailsByDate(date),

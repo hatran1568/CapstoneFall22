@@ -18,10 +18,14 @@
     padding-top: 5px;
     overflow-y: hidden;
 }
+.fcEvent:hover .dropdown{
+  display: block;
+}
 .dropdown{
+  display: none;
     position: absolute;
     right: 0;
-    top: 5px;
+    top: 0;
 }
 .dropdownMenu{
   display: none;

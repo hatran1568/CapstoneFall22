@@ -111,7 +111,7 @@ public class TripServiceImpl implements TripService {
     }
 
     @Override
-    public TripDetails addCustomTripDetail(Date date, int startTime, int endTime, int tripId, String name, String address) {
+    public TripDetailDTO addCustomTripDetail(Date date, int startTime, int endTime, int tripId, String name, String address) {
         MasterActivity masterActivity = new MasterActivity();
         masterActivity.setName(name);
         masterActivity.setAddress(address);
@@ -126,10 +126,14 @@ public class TripServiceImpl implements TripService {
         tripDetails.setEndTime(endTime);
         tripDetails.setMasterActivity(savedMasterActivity);
 
+        MasterActivityDTO masterActivityDTO = mapper.map(savedMasterActivity, MasterActivityDTO.class);
+        masterActivityDTO.setCustom(true);
+
         Trip trip = new Trip();
         trip.setTripId(tripId);
         tripDetails.setTrip(trip);
-        TripDetails saved = tripDetailRepository.save(tripDetails);
+        TripDetailDTO saved = mapper.map(tripDetailRepository.save(tripDetails), TripDetailDTO.class);
+        saved.setMasterActivity(masterActivityDTO);
         return saved;
     }
 
@@ -171,7 +175,7 @@ public class TripServiceImpl implements TripService {
     }
 
     @Override
-    public Optional<TripDetails> editCustomTripDetailById(TripDetails newDetail, int id) {
+    public TripDetailDTO editCustomTripDetailById(TripDetails newDetail, int id) {
         MasterActivity masterActivity = newDetail.getMasterActivity();
         int maId = masterActivity.getActivityId();
         masterActivityRepository.findById(maId)
@@ -179,18 +183,9 @@ public class TripServiceImpl implements TripService {
                     activity.setName(masterActivity.getName());
                     activity.setAddress(masterActivity.getAddress());
                     return masterActivityRepository.save(activity);
+
                 }).orElseGet(() -> masterActivityRepository.save(masterActivity));
-        return Optional.ofNullable(tripDetailRepository.findById(id)
-                .map(detail -> {
-                    detail.setDate(newDetail.getDate());
-                    detail.setStartTime(newDetail.getStartTime());
-                    detail.setEndTime(newDetail.getEndTime());
-                    TripDetails saved = tripDetailRepository.save(detail);
-                    return saved;
-                })
-                .orElseGet(() -> {
-                    return tripDetailRepository.save(newDetail);
-                }));
+        return editTripDetailById(newDetail, id);
     }
 
     @Override

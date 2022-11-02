@@ -4,28 +4,33 @@ import Modal from "react-bootstrap/Modal";
 import style from "./modals.module.css";
 import Rating from "../../components/POIs/Rating";
 function EditActivityModal(props) {
-  const { activityEdited, allDates, tripDetail, ...rest } = props;
-  const inputField = { ...tripDetail };
-  useEffect(() => {
-    inputField.custom =
-      typeof tripDetail.masterActivity.category === "undefined";
-    inputField.startTime = getTimeFromSecs(tripDetail.startTime);
-    inputField.endTime = getTimeFromSecs(tripDetail.endTime);
-  });
-  const getTimeFromSecs = (seconds) => {
-    var date = new Date(0);
-    date.setSeconds(seconds); // specify value for SECONDS here
-    var timeString = date.toISOString().substring(11, 16);
-    return timeString;
-  };
+  const { activityEdited, allDates, tripDetail, onHide, ...rest } = props;
+  const [inputField, setInputField] = useState(
+    JSON.parse(JSON.stringify(tripDetail))
+  );
+  const [showWarningTime, setShowWarningTime] = useState(false);
+  const [showWarningName, setShowWarningName] = useState(false);
   const validateInput = (event) => {
-    if (inputField.custom) {
+    if (inputField.masterActivity.custom) {
       if (inputField.masterActivity.name == "") {
-        alert("Please enter an activity name!");
+        setShowWarningName(true);
         return;
       }
     }
+    var startStr = inputField.startTime.split(":");
+    var start = +startStr[0] * 60 * 60 + +startStr[1] * 60;
+    var endStr = inputField.endTime.split(":");
+    var end = +endStr[0] * 60 * 60 + +endStr[1] * 60;
+    if (end <= start) {
+      setShowWarningTime(true);
+      return;
+    }
+    console.log("validated", inputField);
     activityEdited(event, inputField);
+  };
+  const closeModal = () => {
+    setInputField({});
+    onHide();
   };
   return (
     <div>
@@ -41,7 +46,7 @@ function EditActivityModal(props) {
               className={`btn-close ${style.closeBtn}`}
               onClick={props.onHide}
             ></button>
-            {!(typeof tripDetail.masterActivity.category === "undefined") && (
+            {!tripDetail.masterActivity.custom ? (
               <div className={style.activityInfo}>
                 <div className={style.poiDiv}>
                   <img
@@ -93,9 +98,9 @@ function EditActivityModal(props) {
                   </a>
                 </div>
               </div>
-            )}
+            ) : null}
             <form className={style.editForm}>
-              {typeof tripDetail.masterActivity.category === "undefined" ? (
+              {tripDetail.masterActivity.custom ? (
                 <>
                   <label className={style.customLabel}>
                     Name:
@@ -103,7 +108,7 @@ function EditActivityModal(props) {
                       className={`form-control`}
                       name="name"
                       required
-                      defaultValue={inputField.masterActivity.name}
+                      defaultValue={tripDetail.masterActivity.name}
                       onChange={(e) => {
                         inputField.masterActivity.name = e.target.value;
                       }}
@@ -114,16 +119,26 @@ function EditActivityModal(props) {
                     <input
                       className={`form-control`}
                       name="address"
-                      defaultValue={inputField.masterActivity.address}
+                      defaultValue={tripDetail.masterActivity.address}
                       onChange={(e) => {
                         inputField.masterActivity.address = e.target.value;
                       }}
                     />
                   </label>
+                  <div
+                    className={
+                      showWarningName
+                        ? `${style.warningMessageName}`
+                        : `${style.warningMessageName} ${style.hide}`
+                    }
+                  >
+                    Hãy chọn một địa điểm hoặc thêm một hoạt động của bạn.
+                  </div>
                 </>
               ) : (
                 <></>
               )}
+
               <div className={`container row ${style.timeGroupDiv}`}>
                 <label className="col-4">
                   Date:
@@ -133,7 +148,7 @@ function EditActivityModal(props) {
                     onChange={(e) => {
                       inputField.date = e.target.value;
                     }}
-                    defaultValue={inputField.date}
+                    defaultValue={tripDetail.date}
                   >
                     {allDates.map((date) => (
                       <option
@@ -152,7 +167,7 @@ function EditActivityModal(props) {
                     className="form-control"
                     name="start_time"
                     type="time"
-                    defaultValue={getTimeFromSecs(tripDetail.startTime)}
+                    defaultValue={tripDetail.startTime}
                     onChange={(e) => {
                       inputField.startTime = e.target.value;
                     }}
@@ -165,11 +180,20 @@ function EditActivityModal(props) {
                     className="form-control"
                     name="end_time"
                     type="time"
-                    defaultValue={getTimeFromSecs(inputField.endTime)}
+                    defaultValue={tripDetail.endTime}
                     onChange={(e) => {
                       inputField.endTime = e.target.value;
                     }}
                   />
+                  <div
+                    className={
+                      showWarningTime
+                        ? `${style.warningMessage}`
+                        : `${style.warningMessage} ${style.hide}`
+                    }
+                  >
+                    Thời gian kết thúc phải lớn hơn thời gian bắt đầu
+                  </div>
                 </label>
               </div>
             </form>
@@ -181,7 +205,12 @@ function EditActivityModal(props) {
             >
               Save
             </Button>
-            <Button onClick={props.onHide} variant="outline-secondary">
+            <Button
+              onClick={() => {
+                closeModal();
+              }}
+              variant="outline-secondary"
+            >
               Close
             </Button>
           </Modal.Footer>
