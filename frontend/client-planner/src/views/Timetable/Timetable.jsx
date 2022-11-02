@@ -9,9 +9,17 @@ import { INITIAL_EVENTS, createEventId } from "./event-utils";
 import TripDetailTabs from "../Timeline/TripDetailTabs";
 import style from "./timetable.module.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faEllipsisVertical, faPlus } from "@fortawesome/free-solid-svg-icons";
+import {
+  faEllipsisVertical,
+  faPlus,
+  faCircleInfo,
+  faPenToSquare,
+  faTrash,
+  faCaretRight,
+  faCaretLeft,
+} from "@fortawesome/free-solid-svg-icons";
 import AddActivityModal from "../Timeline/AddActivityModal";
-// import EditActivityModal from "./EditActivityModal";
+import EditActivityModal from "./EditActivityModal";
 
 // import "@fullcalendar/core/main.css";
 import "./timetable.css";
@@ -34,6 +42,10 @@ class Timetable extends Component {
       dataLoaded: false,
       showAddCustomModal: false,
       initialDate: "",
+      detailInEdit: {},
+      currentDate: "",
+      showNext: false,
+      showPrev: false,
     };
   }
   componentDidMount() {
@@ -51,18 +63,24 @@ class Timetable extends Component {
         var endDate = new Date(detail.date);
         endDate.setSeconds(detail.endTime);
         event.end = endDate.toISOString().substring(0, 19);
+        event.extendedProps = detail;
         // event.color = "blue";
         tempEvents.push(event);
       });
+      var snext = false;
+      if (this.getAllDates(tripData.startDate, tripData.endDate).length > 1) {
+        snext = true;
+      }
       this.setState(
         {
           trip: tripData,
           dataLoaded: true,
           currentEvents: tempEvents,
           initialDate: tripData.startDate,
+          currentDate: tripData.startDate,
+          showNext: snext,
         },
         () => {
-          console.log(this.state);
           window.scrollTo(0, 600);
         }
       );
@@ -100,11 +118,85 @@ class Timetable extends Component {
     event.preventDefault();
     let calendarApi = this.calendarComponentRef.current.getApi();
     calendarApi.gotoDate(date); // call a method on the Calendar object
+    this.setState({ currentDate: date });
+  };
+  //convert time from api to event time
+  apiToEventTime = (apiDate, apiTime) => {
+    var date = new Date(apiDate);
+    date.setSeconds(apiTime);
+    return date.toISOString().substring(0, 19);
   };
   //toggle add modal
   toggleAddModal = () => {
     var newShow = this.state.showAddModal;
     this.setState({ showAddModal: !newShow });
+  };
+  //close edit modal
+  closeEditModal = () => {
+    this.setState({ showEditModal: false });
+  };
+  //open edit modal with event data
+  openEditModal = (event, detail) => {
+    event.preventDefault();
+    this.setState({ detailInEdit: detail }, () => {
+      this.setState({ showEditModal: true });
+    });
+  };
+  //get the current date in the view
+  getCurrentDate = () => {
+    let calendarApi = this.calendarComponentRef.current.getApi();
+    let currDate = calendarApi.getDate();
+    currDate.setDate(currDate.getDate() + 1);
+    return currDate.toISOString().substring(0, 10);
+  };
+  //add a number of days to a date
+  addDays = (date, dayNum) => {
+    var newDate = new Date(date);
+    newDate.setDate(newDate.getDate() + dayNum);
+    return newDate;
+  };
+  //check to show next btn
+  showNextBtn = (currDate) => {
+    let endDate = this.state.trip.endDate;
+    return this.addDays(endDate, 0) > this.addDays(currDate, 3) ? true : false;
+  };
+  //check to show prev button
+  showPrevBtn = (currDate) => {
+    // let currDate = this.state.currentDate;
+    let startDate = this.state.trip.startDate;
+    return this.addDays(startDate, 0) < this.addDays(currDate, 0)
+      ? true
+      : false;
+  };
+  //increment date
+  incrementDate = () => {
+    let calendarApi = this.calendarComponentRef.current.getApi();
+    calendarApi.incrementDate({ days: 1 });
+    let newCurDate = this.addDays(this.state.currentDate, 1);
+    var showN = false;
+    showN = this.showNextBtn(newCurDate);
+    var showP = false;
+    showP = this.showPrevBtn(newCurDate);
+    this.setState({
+      showNext: showN,
+      showPrev: showP,
+      currentDate: newCurDate,
+    });
+  };
+  //decrementDate date
+  decrementDate = () => {
+    let calendarApi = this.calendarComponentRef.current.getApi();
+    calendarApi.incrementDate({ days: -1 });
+    let newCurDate = this.addDays(this.state.currentDate, -1);
+    var showN = false;
+    showN = this.showNextBtn(newCurDate);
+    var showP = false;
+    showP = this.showPrevBtn(newCurDate);
+    this.setState({
+      showNext: showN,
+      showPrev: showP,
+      currentDate: newCurDate,
+    });
   };
   //rendering
   render() {
@@ -131,8 +223,18 @@ class Timetable extends Component {
           allDates={allDates}
           activityAdded={(event, input) => this.insertTripDetail(event, input)}
         />
+        {this.state.showEditModal && (
+          <EditActivityModal
+            show={this.state.showEditModal}
+            onHide={this.closeEditModal}
+            allDates={allDates}
+            tripDetail={this.state.detailInEdit}
+            activityEdited={(event, input) => this.editTripDetail(event, input)}
+          ></EditActivityModal>
+        )}
+
         <div className="container">
-          <div className="row">
+          <div className={`row ${style.mainContainer}`}>
             <div className="col-1">
               <div className={style.daysBox}>
                 {allMonths.map((month) => (
@@ -145,7 +247,12 @@ class Timetable extends Component {
                           this.setDate(event, date.toISOString().split("T")[0])
                         }
                         key={date}
-                        className={style.date}
+                        //className={style.date}
+                        className={
+                          new Date(date) >= new Date(this.state.currentDate)
+                            ? `${style.date} ${style.dateActive}`
+                            : `${style.date}`
+                        }
                       >
                         {date.getDate()}
                       </a>
@@ -155,15 +262,37 @@ class Timetable extends Component {
               </div>
             </div>
             <div className={`col-11 ${style.calendarDiv}`}>
+              {this.state.showNext && (
+                <a
+                  className={` ${style.nextBtn} ${style.navBtn}`}
+                  onClick={this.incrementDate}
+                >
+                  <FontAwesomeIcon
+                    icon={faCaretRight}
+                    className={` ${style.navIcon}`}
+                  />
+                </a>
+              )}
+              {this.state.showPrev && (
+                <a
+                  className={` ${style.prevBtn} ${style.navBtn}`}
+                  onClick={this.decrementDate}
+                >
+                  <FontAwesomeIcon
+                    icon={faCaretLeft}
+                    className={` ${style.navIcon}`}
+                  />
+                </a>
+              )}
+
               <FullCalendar
                 ref={this.calendarComponentRef}
                 plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin]}
                 headerToolbar={{
                   left: "",
-                  right: "today prev,next",
+                  right: "",
                   center: "",
                 }}
-                // stickyHeaderDates={true}
                 initialView="timeGridFourDay"
                 views={{
                   timeGridFourDay: {
@@ -189,18 +318,18 @@ class Timetable extends Component {
                 eventTextColor="black"
                 initialDate={this.state.trip.startDate}
                 editable={true}
-                selectable={true}
+                selectable={false}
                 selectMirror={true}
                 dayMaxEvents={true}
                 weekends={this.state.weekendsVisible}
                 initialEvents={this.state.currentEvents} // alternatively, use the `events` setting to fetch from a feed
-                select={this.handleDateSelect}
+                // select={this.handleDateSelect}
                 eventContent={this.renderEventContent} // custom render function
                 // eventClick={this.handleEventClick}
                 eventsSet={this.handleEvents} // called after events are initialized/added/changed/removed
                 /* you can update a remote database when these fire:
-            eventAdd={function(){}}
-            eventChange={function(){}}*/
+            eventAdd={function(){}}*/
+                eventChange={this.handleEventChange}
                 eventRemove={this.deleteEventApi}
               />
             </div>
@@ -211,6 +340,19 @@ class Timetable extends Component {
   }
 
   renderEventContent = (eventInfo) => {
+    var newProps = { ...eventInfo.event.extendedProps };
+    var tzoffset = new Date().getTimezoneOffset() * 60000;
+    newProps.date = new Date(eventInfo.event.start - tzoffset)
+      .toISOString()
+      .substring(0, 10);
+
+    var startStr = getTimeString(eventInfo.event.start).split(":");
+    var start = +startStr[0] * 60 * 60 + +startStr[1] * 60;
+    var endStr = getTimeString(eventInfo.event.end).split(":");
+    var end = +endStr[0] * 60 * 60 + +endStr[1] * 60;
+    newProps.startTime = start;
+    newProps.endTime = end;
+    // newProps.startTime = eventInfo.event.start.toISOString().substring(12, 19);
     return (
       <div className={style.fcEvent}>
         <div className={style.eventTitle}>{eventInfo.event.title}</div>
@@ -231,18 +373,69 @@ class Timetable extends Component {
             <FontAwesomeIcon icon={faEllipsisVertical} size="xl" />
           </button>
           <div className={style.dropdownMenu}>
-            <a className="dropdown-item">Details</a>
-            <a className="dropdown-item">Edit</a>
+            <a
+              className="dropdown-item"
+              href={
+                "../poi?id=" +
+                eventInfo.event.extendedProps.masterActivity.activityId
+              }
+            >
+              <FontAwesomeIcon
+                icon={faCircleInfo}
+                className={style.dropdownIcon}
+              />{" "}
+              Details
+            </a>
+            <a
+              className="dropdown-item"
+              onClick={(event) => this.openEditModal(event, newProps)}
+            >
+              <FontAwesomeIcon
+                icon={faPenToSquare}
+                className={style.dropdownIcon}
+              />{" "}
+              Edit
+            </a>
             <a
               className="dropdown-item"
               onClick={(event) => this.deleteEvent(event, eventInfo.event.id)}
             >
+              <FontAwesomeIcon icon={faTrash} className={style.dropdownIcon} />
               Remove
             </a>
           </div>
         </div>
       </div>
     );
+  };
+  //handle event change
+  handleEventChange = (eventInfo) => {
+    if (eventInfo.event.extendedProps.fromForm == true) {
+      delete eventInfo.event.extendedProps.fromForm;
+      return;
+    }
+    var detail = {};
+    var start = getTimeString(eventInfo.event.start).split(":");
+    detail.startTime = +start[0] * 60 * 60 + +start[1] * 60;
+    var end = getTimeString(eventInfo.event.end).split(":");
+    detail.endTime = +end[0] * 60 * 60 + +end[1] * 60;
+    detail.tripDetailsId = eventInfo.event.id;
+    var tzoffset = new Date().getTimezoneOffset() * 60000;
+    detail.date = new Date(eventInfo.event.start - tzoffset)
+      .toISOString()
+      .substring(0, 10);
+    axios({
+      method: "put",
+      url: "http://localhost:8080/trip/put-detail?id=" + detail.tripDetailsId,
+      headers: {
+        "Content-Type": "application/json",
+      },
+      data: detail,
+    })
+      .then((response) => {})
+      .catch(function (error) {
+        console.log(error);
+      });
   };
   //delete from timetable
   deleteEvent = (event, id) => {
@@ -278,15 +471,16 @@ class Timetable extends Component {
   //add event to timetable
   addEventToView = (detail) => {
     var event = {};
+    var tzoffset = new Date().getTimezoneOffset() * 60000;
     event.id = detail.tripDetailsId;
     event.title = detail.masterActivity.name;
     var date = new Date(detail.date);
     date.setSeconds(detail.startTime);
-    event.start = date.toISOString().substring(0, 19);
+    event.start = new Date(date - tzoffset).toISOString().substring(0, 19);
     var endDate = new Date(detail.date);
     endDate.setSeconds(detail.endTime);
-    event.end = endDate.toISOString().substring(0, 19);
-
+    event.end = new Date(endDate - tzoffset).toISOString().substring(0, 19);
+    event.extendedProps = detail;
     let calendarApi = this.calendarComponentRef.current.getApi();
     calendarApi.addEvent(event);
   };
@@ -306,15 +500,10 @@ class Timetable extends Component {
         tripId: this.state.trip.tripId,
       })
       .then((response) => {
-        // console.log("custom response: ", response);
         var newDetail = response.data;
         this.addEventToView(newDetail);
-        // var newTrip = this.state.trip;
-        // newTrip.listTripDetails.push(newDetail);
         this.setState({
-          // trip: newTrip,
           showAddModal: false,
-          // dataLoaded: true,
         });
       })
       .catch(function (error) {
@@ -323,7 +512,7 @@ class Timetable extends Component {
   };
   //insert an activity into the trip
   insertTripDetail = (event, input) => {
-    if (input.custom == true) {
+    if (input.custom && input.custom == true) {
       this.insertCustomDetail(input);
       return;
     }
@@ -342,13 +531,81 @@ class Timetable extends Component {
       .then((response) => {
         var newDetail = response.data;
         this.addEventToView(newDetail);
-        // var newTrip = this.state.trip;
-        // newTrip.listTripDetails.push(newDetail);
         this.setState({
-          // trip: newTrip,
           showAddModal: false,
-          // dataLoaded: true,
         });
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
+  };
+  //update an event in timetable
+  editEventInView = (detail) => {
+    let calendarApi = this.calendarComponentRef.current.getApi();
+    let event = calendarApi.getEventById(detail.tripDetailsId);
+    event.setExtendedProp("fromForm", true);
+    event.setStart(this.apiToEventTime(detail.date, detail.startTime));
+    event.setEnd(this.apiToEventTime(detail.date, detail.endTime));
+    event.setProp("extendedProps", detail);
+    this.closeEditModal();
+  };
+  //update a custom event in timetable
+  editCustomEventInView = (detail) => {
+    let calendarApi = this.calendarComponentRef.current.getApi();
+    let event = calendarApi.getEventById(detail.tripDetailsId);
+    event.setProp("extendedProps", detail);
+    event.setExtendedProp("fromForm", true);
+    event.setStart(this.apiToEventTime(detail.date, detail.startTime));
+    event.setEnd(this.apiToEventTime(detail.date, detail.endTime));
+    event.setProp("title", detail.masterActivity.name);
+    this.closeEditModal();
+  };
+  //put request to edit a detail
+  editTripDetail = (event, detail) => {
+    if (detail.custom == true) {
+      this.editCustomDetail(event, detail);
+      return;
+    }
+    var start = detail.startTime.split(":");
+    detail.startTime = +start[0] * 60 * 60 + +start[1] * 60;
+    var end = detail.endTime.split(":");
+    detail.endTime = +end[0] * 60 * 60 + +end[1] * 60;
+    axios({
+      method: "put",
+      url: "http://localhost:8080/trip/put-detail?id=" + detail.tripDetailsId,
+      headers: {
+        "Content-Type": "application/json",
+      },
+      data: detail,
+    })
+      .then((response) => {
+        this.editEventInView(response.data);
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
+  };
+  //put request to edit a custom detail
+  editCustomDetail = (event, detail) => {
+    console.log("calling custom: ", detail);
+    delete detail.custom;
+    var start = detail.startTime.split(":");
+    detail.startTime = +start[0] * 60 * 60 + +start[1] * 60;
+    var end = detail.endTime.split(":");
+    detail.endTime = +end[0] * 60 * 60 + +end[1] * 60;
+    axios({
+      method: "put",
+      url:
+        "http://localhost:8080/trip/put-custom-detail?id=" +
+        detail.tripDetailsId,
+      headers: {
+        "Content-Type": "application/json",
+      },
+      data: detail,
+    })
+      .then((response) => {
+        console.log("response data: ", response.data);
+        this.editCustomEventInView(response.data);
       })
       .catch(function (error) {
         console.log(error);

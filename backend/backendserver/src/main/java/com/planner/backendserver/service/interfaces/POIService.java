@@ -1,5 +1,9 @@
 package com.planner.backendserver.service.interfaces;
 
-public interface POIService {
+import com.planner.backendserver.DTO.response.POIOfCollectionDTO;
 
+import java.util.ArrayList;
+
+public interface POIService {
+    ArrayList<POIOfCollectionDTO> getPOIListOfCollection(int colId);
 }

@@ -91,7 +91,9 @@ public class WebSercurityConfig extends WebSecurityConfigurerAdapter {
                 .disable()
                 .authorizeRequests()
 
-                .antMatchers("/api/login","/api/register","/login","/oauth/**","/api/loginByOAuth","/api/wrongUser", "/api/user/findById/**","/search/**","/trip/**", "/trip/put-detail", "/api/pois/**", "/api/destination/**", "/api/expense/**", "/api/blog/**", "/api/user/password-reset", "/api/user/password-reset-request").permitAll()
+
+                .antMatchers("/api/login", "/api/register", "/login", "/oauth/**", "/api/loginByOAuth", "/api/wrongUser", "/api/user/findById/**", "/search/**", "/trip/**", "/trip/put-detail", "/api/pois/**", "/api/destination/**", "/api/expense/**", "/api/blog/**", "/api/user/password-reset", "/api/user/password-reset-request", "/trip/generate", "/api/collection/**").permitAll()
+
                 .anyRequest().authenticated().and().formLogin().loginPage("/api/wrongUser").failureHandler(new AuthenticationFailureHandler() {
 
                     @Override
@@ -132,7 +134,7 @@ public class WebSercurityConfig extends WebSecurityConfigurerAdapter {
                             userService.processOAuthPostLoginGoogle(oauthUser.getEmail());
                             String jwt = tokenProvider.generateToken(oauthUser);
                             User user = userRepository.findByEmail(oauthUser.getEmail());
-                            String uri=  UriComponentsBuilder.fromUriString("http://localhost:3000/oauth2/redirect")
+                            String uri = UriComponentsBuilder.fromUriString("http://localhost:3000/oauth2/redirect")
 
 
                                     .queryParam("token", jwt)
@@ -145,7 +147,7 @@ public class WebSercurityConfig extends WebSecurityConfigurerAdapter {
                             userService.processOAuthPostLoginFacebook(oauthUser.getEmail());
                             String jwt = tokenProvider.generateToken(oauthUser);
                             User user = userRepository.findByEmail(oauthUser.getEmail());
-                            String uri=  UriComponentsBuilder.fromUriString("http://localhost:3000/oauth2/redirect")
+                            String uri = UriComponentsBuilder.fromUriString("http://localhost:3000/oauth2/redirect")
 
                                     .queryParam("token", jwt)
                                     .queryParam("role", user.getRole().getRoleName())

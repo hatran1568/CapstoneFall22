@@ -8,14 +8,19 @@ import {
   MDBTabsContent,
   MDBTabsPane,
   MDBRow,
+  MDBBtn,
+  MDBIcon,
 } from "mdb-react-ui-kit";
 import axios from "../../api/axios";
 import ProfileCard from "./ProfileCard";
 import TripInfoCard from "../../components/Trips/TripInfoCard";
+import CollectionInfoCard from "../../components/Collections/CollectionInfoCard";
+import AddCollectionModal from "../../components/Collections/AddCollectionModal";
 
 function ProfilePage() {
   const [curUser, setCurUser] = useState();
   const [myTrips, setMyTrips] = useState();
+  const [myCollections, setMyCollections] = useState();
   const [basicActive, setBasicActive] = useState("myTrips");
 
   const handleBasicClick = (value) => {
@@ -46,51 +51,59 @@ function ProfilePage() {
 
       setMyTrips(response.data);
     }
+
+    async function getCollectionList() {
+      const response = await axios.get("/api/collection/list/" + id, {
+        headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+        withCredentials: true,
+      });
+
+      setMyCollections(response.data);
+    }
+
     document.title = "Profile | Tripplanner";
     getUserProfile();
     getTripList();
+    getCollectionList();
   }, []);
 
   return curUser ? (
-    <MDBContainer className="mt-4">
+    <MDBContainer className='mt-4'>
       <MDBRow>
-        <MDBCol md="3">
+        <MDBCol md='3'>
           <ProfileCard user={curUser} />
         </MDBCol>
-        <MDBCol md="9">
+        <MDBCol md='9'>
           <MDBTabs
-            className="mb-3"
+            className='mb-3'
             style={{
               borderBottom: "1px solid #e0e0e0",
               alignContent: "center",
             }}
           >
             <MDBTabsItem>
-              <MDBTabsLink
-                onClick={() => handleBasicClick("myTrips")}
-                active={basicActive === "myTrips"}
-              >
+              <MDBTabsLink onClick={() => handleBasicClick("myTrips")} active={basicActive === "myTrips"}>
                 My Trips
               </MDBTabsLink>
             </MDBTabsItem>
             <MDBTabsItem>
-              <MDBTabsLink
-                onClick={() => handleBasicClick("myCollection")}
-                active={basicActive === "myCollection"}
-              >
+              <MDBTabsLink onClick={() => handleBasicClick("myCollection")} active={basicActive === "myCollection"}>
                 My Collection
               </MDBTabsLink>
             </MDBTabsItem>
           </MDBTabs>
           <MDBTabsContent>
             <MDBTabsPane show={basicActive === "myTrips"}>
-              {myTrips
-                ? myTrips.map((trip) => (
-                    <TripInfoCard trip={trip} key={trip.tripId}></TripInfoCard>
+              {myTrips ? myTrips.map((trip) => <TripInfoCard trip={trip} key={trip.tripId} />) : null}
+            </MDBTabsPane>
+            <MDBTabsPane show={basicActive === "myCollection"}>
+              <AddCollectionModal />
+              {myCollections
+                ? myCollections.map((collection) => (
+                    <CollectionInfoCard prop={collection} key={collection.collectionId} />
                   ))
                 : null}
             </MDBTabsPane>
-            <MDBTabsPane show={basicActive === "myCollection"}></MDBTabsPane>
           </MDBTabsContent>
         </MDBCol>
       </MDBRow>

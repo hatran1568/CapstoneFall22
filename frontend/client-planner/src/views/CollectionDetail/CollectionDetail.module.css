@@ -1,0 +1,37 @@
+.img {
+  width: auto;
+  height: 250px;
+  background-position: center center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  border-radius: 0.5em;
+}
+
+.card {
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+}
+
+.card:hover {
+  background-color: rgba(50, 50, 50, 0.5);
+}
+
+.header {
+  padding-top: 2em;
+  padding-bottom: 2em;
+  background-color: gray;
+  background: linear-gradient(rgba(0, 0, 0, 1), rgba(0, 0, 0, 0));
+}
+
+.text {
+  color: white;
+  text-align: center;
+}
+
+h3.text {
+  font-size: 4em;
+}
+
+p.text {
+  font-size: 1.5em;
+}

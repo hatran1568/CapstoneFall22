@@ -158,15 +158,20 @@ class TripDetail extends Component {
               <MDBDropdown animation={false} className={style.btnMore}>
                 <MDBDropdownToggle color="light"></MDBDropdownToggle>
                 <MDBDropdownMenu>
-                  <MDBDropdownItem
-                    link
-                    href={
-                      "../poi?id=" +
-                      this.state.tripDetail.masterActivity.activityId
-                    }
-                  >
-                    Details
-                  </MDBDropdownItem>
+                  {!this.state.tripDetail.masterActivity.custom ? (
+                    <MDBDropdownItem
+                      link
+                      href={
+                        "../poi?id=" +
+                        this.state.tripDetail.masterActivity.activityId
+                      }
+                    >
+                      Details
+                    </MDBDropdownItem>
+                  ) : (
+                    <></>
+                  )}
+
                   <MDBDropdownItem link onClick={this.toggleEditModal}>
                     Edit Event
                   </MDBDropdownItem>
