@@ -1,16 +1,9 @@
 package com.planner.backendserver.controller;
 
-import com.planner.backendserver.DTO.GalleryImages;
-import com.planner.backendserver.DTO.POIBoxDTO;
-import com.planner.backendserver.DTO.POIofDestinationDTO;
-import com.planner.backendserver.DTO.SearchPOIAndDestinationDTO;
-import com.planner.backendserver.entity.Destination;
+import com.planner.backendserver.DTO.request.POIofDestinationDTO;
 import com.planner.backendserver.entity.MasterActivity;
-import com.planner.backendserver.entity.POI;
 import com.planner.backendserver.entity.Rating;
-import com.planner.backendserver.repository.DestinationRepository;
 import com.planner.backendserver.repository.POIRepository;
-import com.planner.backendserver.service.UserDTOServiceImplementer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

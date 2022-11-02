@@ -1,19 +1,19 @@
 package com.planner.backendserver.controller;
 
-import com.planner.backendserver.DTO.*;
-import com.planner.backendserver.entity.Destination;
-import com.planner.backendserver.entity.ExpenseCategory;
-import com.planner.backendserver.entity.TripExpense;
+import com.planner.backendserver.DTO.request.BlogDetailsDTO;
+import com.planner.backendserver.DTO.request.BlogNearbyDTO;
+import com.planner.backendserver.DTO.response.BlogAddUpdateDTO;
+import com.planner.backendserver.DTO.response.TripExpenseAddDTO;
+import com.planner.backendserver.entity.User;
 import com.planner.backendserver.repository.BlogRepository;
-import com.planner.backendserver.repository.DestinationRepository;
-import com.planner.backendserver.repository.ExpenseRepository;
-import com.planner.backendserver.service.UserDTOServiceImplementer;
+import com.planner.backendserver.utils.GoogleDriveManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Calendar;
 
@@ -22,7 +22,8 @@ import java.util.Calendar;
 public class BlogController {
     @Autowired
     private BlogRepository blogRepo;
-
+    @Autowired
+    GoogleDriveManager driveManager;
     @GetMapping("/blog/{blogId}")
     public ResponseEntity<BlogDetailsDTO> getBlogDetailsById(@PathVariable int blogId){
         try{
@@ -49,6 +50,48 @@ public class BlogController {
             if (blogId == lastBlog.getBlogId())
                 blogs.add(firstBlog);
             return new ResponseEntity<>(blogs, HttpStatus.OK);
+        } catch (Exception e){
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+    //@PreAuthorize("hasAuthority('Admin')")
+    @RequestMapping(value = "/blog/new", consumes = "application/json", produces = { "*/*" }, method = RequestMethod.POST)
+    public ResponseEntity<?> addBlog(@RequestBody BlogAddUpdateDTO blog) {
+        try{
+            java.sql.Timestamp date = new java.sql.Timestamp(Calendar.getInstance().getTime().getTime());
+            blogRepo.addBlog(blog.getContent(), date, date, blog.getStatus(), blog.getThumbnail(), blog.getTitle(), blog.getUserId());
+            return new ResponseEntity<>(HttpStatus.OK);
+        }
+        catch (Exception e){
+            return  new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+    //@PreAuthorize("hasAuthority('Admin')")
+    @RequestMapping(value = "/blog/update", consumes = "application/json", produces = { "*/*" }, method = RequestMethod.POST)
+    public ResponseEntity<?> updateExpense(@RequestBody BlogAddUpdateDTO blog) {
+        try{
+            java.sql.Timestamp date = new java.sql.Timestamp(Calendar.getInstance().getTime().getTime());
+            blogRepo.updateBlog(blog.getBlogId(), blog.getThumbnail(), blog.getTitle(), blog.getStatus(), date, blog.getContent());
+            return new ResponseEntity<>(HttpStatus.OK);
+        }
+        catch (Exception e){
+            return  new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+    //@PreAuthorize("hasAuthority('Admin')")
+    @PostMapping("/blog/uploadImg")
+    @ResponseBody
+    public ResponseEntity<String> uploadImg(@RequestPart("File") MultipartFile file){
+        try{
+            String webViewLink = null;
+            try {
+                webViewLink = driveManager.uploadFile(file, "tripplanner/img");
+            } catch (Exception e) {
+                throw new RuntimeException("Could not store the file. Error: " + e.getMessage());
+            } finally {
+
+            }
+            return new ResponseEntity<>(webViewLink, HttpStatus.OK);
         } catch (Exception e){
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }

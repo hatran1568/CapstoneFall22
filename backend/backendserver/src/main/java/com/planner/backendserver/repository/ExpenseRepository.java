@@ -1,23 +1,17 @@
 package com.planner.backendserver.repository;
 
-import com.planner.backendserver.DTO.*;
-import com.planner.backendserver.entity.Destination;
+import com.planner.backendserver.DTO.request.ExpenseCategorySelectDTO;
+import com.planner.backendserver.DTO.request.ExpenseGraphDTO;
 
 import java.util.ArrayList;
 
+import com.planner.backendserver.DTO.request.TripExpenseDTO;
 import com.planner.backendserver.entity.ExpenseCategory;
-import com.planner.backendserver.entity.Trip;
-import com.planner.backendserver.entity.TripExpense;
-import org.hibernate.sql.Select;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.Optional;
 
 @Repository
 public interface ExpenseRepository extends JpaRepository<ExpenseCategory,Double> {

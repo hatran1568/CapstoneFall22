@@ -21,6 +21,7 @@ import Test from "../views/TestingScreen/Test";
 import ChangePassword from "../views/UserProfile/ChangePassword";
 import RequestResetPassword from "../views/Login/RequestResetPassword";
 import ResetPasswordConfirm from "../views/Login/ResetPasswordConfirm";
+import BlogAddUpdate from "../views/Blog/BlogAddUpdate";
 export default function RootRoutes() {
   return (
     <Router>
@@ -52,7 +53,9 @@ export default function RootRoutes() {
           <Route path="/poi" element={<POIDetails />} />
         </Route>
 
+        <Route path='/blog/update' element={<BlogAddUpdate />} />
         {/*Routes that don't need a nav bar go out here.*/}
+        
       </Routes>
     </Router>
   );

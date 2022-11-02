@@ -1,0 +1,22 @@
+.mainContainer{
+  width: 80%;
+  margin-bottom: 5vh;
+}
+.titleInput{
+  margin-bottom: 10px;
+}
+.thumbnail {
+  transition: all 0.5s;
+  height: 50vh;
+  width: 100%;
+  object-fit: cover;
+  margin-bottom: 10px;
+}
+.btnBar{
+  margin: 0;
+  border-radius: 0;
+}
+.rightBtn{
+  float: right;
+  margin-left: 1vw
+}
