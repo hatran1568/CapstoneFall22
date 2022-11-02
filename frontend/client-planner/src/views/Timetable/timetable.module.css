@@ -28,7 +28,7 @@
   position: absolute;
   top: 10px;
   left: 0;
-  transform: translateX(-50%);
+  /* transform: translateX(-50%); */
   background-color: #fff;
   box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
   padding: 0;

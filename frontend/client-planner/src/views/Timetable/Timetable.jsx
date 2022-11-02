@@ -341,7 +341,10 @@ class Timetable extends Component {
 
   renderEventContent = (eventInfo) => {
     var newProps = { ...eventInfo.event.extendedProps };
-    newProps.date = eventInfo.event.start.toISOString().substring(0, 10);
+    var tzoffset = new Date().getTimezoneOffset() * 60000;
+    newProps.date = new Date(eventInfo.event.start - tzoffset)
+      .toISOString()
+      .substring(0, 10);
 
     var startStr = getTimeString(eventInfo.event.start).split(":");
     var start = +startStr[0] * 60 * 60 + +startStr[1] * 60;
@@ -412,13 +415,15 @@ class Timetable extends Component {
       return;
     }
     var detail = {};
-
     var start = getTimeString(eventInfo.event.start).split(":");
     detail.startTime = +start[0] * 60 * 60 + +start[1] * 60;
     var end = getTimeString(eventInfo.event.end).split(":");
     detail.endTime = +end[0] * 60 * 60 + +end[1] * 60;
     detail.tripDetailsId = eventInfo.event.id;
-    detail.date = eventInfo.event.start.toISOString().substring(0, 10);
+    var tzoffset = new Date().getTimezoneOffset() * 60000;
+    detail.date = new Date(eventInfo.event.start - tzoffset)
+      .toISOString()
+      .substring(0, 10);
     axios({
       method: "put",
       url: "http://localhost:8080/trip/put-detail?id=" + detail.tripDetailsId,
@@ -466,14 +471,15 @@ class Timetable extends Component {
   //add event to timetable
   addEventToView = (detail) => {
     var event = {};
+    var tzoffset = new Date().getTimezoneOffset() * 60000;
     event.id = detail.tripDetailsId;
     event.title = detail.masterActivity.name;
     var date = new Date(detail.date);
     date.setSeconds(detail.startTime);
-    event.start = date.toISOString().substring(0, 19);
+    event.start = new Date(date - tzoffset).toISOString().substring(0, 19);
     var endDate = new Date(detail.date);
     endDate.setSeconds(detail.endTime);
-    event.end = endDate.toISOString().substring(0, 19);
+    event.end = new Date(endDate - tzoffset).toISOString().substring(0, 19);
     event.extendedProps = detail;
     let calendarApi = this.calendarComponentRef.current.getApi();
     calendarApi.addEvent(event);
