@@ -1,9 +1,12 @@
 .mainContainer{
-  width: 80%;
+  width: 70vw;
   margin-bottom: 5vh;
 }
 .titleInput{
   margin-bottom: 10px;
+  font-size: 25px;
+  overflow: hidden;
+  resize: none;
 }
 .thumbnail {
   transition: all 0.5s;
@@ -19,4 +22,19 @@
 .rightBtn{
   float: right;
   margin-left: 1vw
+}
+.autosave{
+  margin-left: 10px;
+  color:rgb(139, 139, 139)
+}
+.editor{
+  border-style: solid;
+  border-radius: 5px;
+  padding-top: 0;
+  border-width: 1px;
+  border-color: rgb(193, 193, 193);
+  min-height: 50vh;
+}
+.editorContent{
+  padding: 5vw;
 }

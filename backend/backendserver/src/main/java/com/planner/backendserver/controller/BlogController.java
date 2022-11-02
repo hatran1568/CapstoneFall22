@@ -85,7 +85,7 @@ public class BlogController {
         try{
             String webViewLink = null;
             try {
-                webViewLink = driveManager.uploadFile(file, "tripplanner/img");
+                webViewLink = driveManager.uploadFile(file, "tripplanner/img/blog");
             } catch (Exception e) {
                 throw new RuntimeException("Could not store the file. Error: " + e.getMessage());
             } finally {
