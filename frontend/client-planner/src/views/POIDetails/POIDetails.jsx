@@ -68,6 +68,8 @@ const POIDetails = () => {
         )
         .then((res) => {
           setRatings(res.data);
+          setRate(0);
+          setComment("");
         });
     } else {
       error({
@@ -97,6 +99,7 @@ const POIDetails = () => {
         )
         .then((res) => {
           setRatings(res.data);
+          setRate(0);
         });
     } else {
       error({
@@ -201,13 +204,13 @@ const POIDetails = () => {
           starHoverColor='orange'
         />
         <TextArea
-          id='comment-rating'
           showCount
           maxLength={500}
           className='mt-2'
           style={{ height: 120, resize: "none" }}
           placeholder='Share your thoughts about this place...'
           onChange={handleChange}
+          value={comment}
         />
         <MDBBtn color='info' className='mt-2' onClick={handleEdit}>
           Edit
@@ -228,13 +231,13 @@ const POIDetails = () => {
           starHoverColor='orange'
         />
         <TextArea
-          id='comment-rating'
           showCount
           maxLength={500}
           className='mt-2'
           style={{ height: 120, resize: "none" }}
           placeholder='Share your thoughts about this place...'
           onChange={handleChange}
+          value={comment}
         />
         <MDBBtn color='info' className='mt-2' onClick={handleCreate}>
           Comment
