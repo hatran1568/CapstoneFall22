@@ -9,14 +9,14 @@ import { INITIAL_EVENTS, createEventId } from "./event-utils";
 import TripDetailTabs from "../Timeline/TripDetailTabs";
 import style from "./timetable.module.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import LoadingScreen from "react-loading-screen";
+import ConfirmDelete from "./ConfirmDelete";
+import NotificationModal from "./NotificationModal";
 import {
-  faEllipsisVertical,
   faPlus,
-  faCircleInfo,
-  faPenToSquare,
-  faTrash,
   faCaretRight,
   faCaretLeft,
+  faXmark,
 } from "@fortawesome/free-solid-svg-icons";
 import AddActivityModal from "../Timeline/AddActivityModal";
 import EditActivityModal from "./EditActivityModal";
@@ -46,6 +46,12 @@ class Timetable extends Component {
       currentDate: "",
       showNext: false,
       showPrev: false,
+      delete: {
+        detailId: "",
+        name: "",
+        show: false,
+      },
+      showNotiModal: false,
     };
   }
   componentDidMount() {
@@ -54,21 +60,35 @@ class Timetable extends Component {
       const tripData = res.data;
       var tempEvents = [];
       tripData.listTripDetails.forEach((detail) => {
-        var event = {};
-        event.id = detail.tripDetailsId;
-        event.title = detail.masterActivity.name;
-        var date = new Date(detail.date);
-        date.setSeconds(detail.startTime);
-        event.start = date.toISOString().substring(0, 19);
-        var endDate = new Date(detail.date);
-        endDate.setSeconds(detail.endTime);
-        event.end = endDate.toISOString().substring(0, 19);
-        event.extendedProps = detail;
-        // event.color = "blue";
-        tempEvents.push(event);
+        if (detail.startTime < detail.endTime) {
+          var event = {};
+          event.id = detail.tripDetailsId;
+          event.title = detail.masterActivity.name;
+          var date = new Date(detail.date);
+          date.setSeconds(detail.startTime);
+          event.start = date.toISOString().substring(0, 19);
+          var endDate = new Date(detail.date);
+          endDate.setSeconds(detail.endTime);
+          event.end = endDate.toISOString().substring(0, 19);
+          event.detail = detail;
+          event.constraint = "available";
+          tempEvents.push(event);
+        }
+      });
+      var tzoffset = new Date().getTimezoneOffset() * 60000;
+      var endDt = new Date(tripData.endDate);
+      var newEndDt = new Date(endDt - tzoffset);
+      newEndDt.setDate(newEndDt.getDate() + 1);
+      tempEvents.push({
+        groupId: "available",
+        start: tripData.startDate,
+        end: newEndDt.toISOString().substring(0, 10),
+        display: "background",
       });
       var snext = false;
-      if (this.getAllDates(tripData.startDate, tripData.endDate).length > 1) {
+      if (
+        this.addDays(tripData.endDate, 0) > this.addDays(tripData.startDate, 3)
+      ) {
         snext = true;
       }
       this.setState(
@@ -85,7 +105,8 @@ class Timetable extends Component {
         }
       );
     });
-  } //get all dates in the trip
+  }
+  //get all dates in the trip
   getAllDates = (start, end) => {
     for (
       var arr = [], dt = new Date(start);
@@ -117,8 +138,24 @@ class Timetable extends Component {
   setDate = (event, date) => {
     event.preventDefault();
     let calendarApi = this.calendarComponentRef.current.getApi();
-    calendarApi.gotoDate(date); // call a method on the Calendar object
-    this.setState({ currentDate: date });
+    let endDate = this.state.trip.endDate;
+    let startDate = this.state.trip.startDate;
+    let targetDate = new Date();
+    if (this.addDays(endDate, 0) >= this.addDays(date, 3)) {
+      targetDate = date;
+    } else if (this.addDays(endDate, 0) >= this.addDays(startDate, 3)) {
+      targetDate = this.addDays(endDate, -3);
+    } else return;
+    calendarApi.gotoDate(targetDate); // call a method on the Calendar object
+    var showN = false;
+    showN = this.showNextBtn(targetDate);
+    var showP = false;
+    showP = this.showPrevBtn(targetDate);
+    this.setState({
+      showNext: showN,
+      showPrev: showP,
+      currentDate: targetDate,
+    });
   };
   //convert time from api to event time
   apiToEventTime = (apiDate, apiTime) => {
@@ -131,9 +168,15 @@ class Timetable extends Component {
     var newShow = this.state.showAddModal;
     this.setState({ showAddModal: !newShow });
   };
+
+  //toggle notification
+  toggleNotification = () => {
+    var newShow = this.state.showNotiModal;
+    this.setState({ showNotiModal: !newShow });
+  };
   //close edit modal
   closeEditModal = () => {
-    this.setState({ showEditModal: false });
+    this.setState({ showEditModal: false, detailInEdit: {} });
   };
   //open edit modal with event data
   openEditModal = (event, detail) => {
@@ -198,32 +241,86 @@ class Timetable extends Component {
       currentDate: newCurDate,
     });
   };
+  //close confirm delete
+  closeConfirmDelete = () => {
+    this.setState({
+      delete: {
+        detailId: "",
+        name: "",
+        show: false,
+      },
+    });
+  };
+  //open confirm delete modal
+  openConfirmDelete = (event, detailId, name) => {
+    event.stopPropagation();
+    this.setState({
+      delete: {
+        detailId: detailId,
+        name: name,
+        show: true,
+      },
+    });
+  };
   //rendering
   render() {
     if (!this.state.dataLoaded)
       return (
-        <div>
-          <h1> Pleses wait some time.... </h1>{" "}
-        </div>
+        <LoadingScreen
+          loading={true}
+          bgColor="#f1f1f1"
+          spinnerColor="#9ee5f8"
+          textColor="#676767"
+          // logoSrc="/logo.png"
+          text="Please wait a bit while we get your plan..."
+        >
+          <div></div>
+        </LoadingScreen>
       );
     var allDates = this.getAllDates(
       this.state.trip.startDate,
       this.state.trip.endDate
     );
     var allMonths = this.getAllMonths(allDates);
+    const vietMonths = {
+      January: "Tháng Một",
+      February: "Tháng Hai",
+      March: "Tháng Ba",
+      April: "Tháng Tư",
+      May: "Tháng Năm",
+      June: "Tháng Sáu",
+      July: "Tháng Bảy",
+      August: "Tháng Tám",
+      September: "Tháng Chín",
+      October: "Tháng Mười",
+      November: "Tháng Mười Một",
+      December: "Tháng Mười Hai",
+    };
     return (
       <>
         <TripDetailTabs />
         <a className={` ${style.btnAdd}`} onClick={this.toggleAddModal}>
           <FontAwesomeIcon icon={faPlus} className={style.addIcon} />
         </a>
+        <ConfirmDelete
+          show={this.state.delete.show}
+          onHide={this.closeConfirmDelete}
+          onConfirmed={(event, id) => this.deleteEvent(event, id)}
+          detailId={this.state.delete.detailId}
+          name={this.state.delete.name}
+        />
         <AddActivityModal
           show={this.state.showAddModal}
           onHide={this.toggleAddModal}
           allDates={allDates}
           activityAdded={(event, input) => this.insertTripDetail(event, input)}
         />
-        {this.state.showEditModal && (
+        <NotificationModal
+          show={this.state.showNotiModal}
+          message="Hoạt động không thể kéo dài trên 1 ngày."
+          onHide={this.toggleNotification}
+        />
+        {this.state.showEditModal ? (
           <EditActivityModal
             show={this.state.showEditModal}
             onHide={this.closeEditModal}
@@ -231,7 +328,7 @@ class Timetable extends Component {
             tripDetail={this.state.detailInEdit}
             activityEdited={(event, input) => this.editTripDetail(event, input)}
           ></EditActivityModal>
-        )}
+        ) : null}
 
         <div className="container">
           <div className={`row ${style.mainContainer}`}>
@@ -239,7 +336,7 @@ class Timetable extends Component {
               <div className={style.daysBox}>
                 {allMonths.map((month) => (
                   <div key={month}>
-                    <div className={style.month}>{month}</div>
+                    <div className={style.month}>{vietMonths[month]}</div>
                     {this.getAllDatesOfMonth(allDates, month).map((date) => (
                       <a
                         href=""
@@ -293,12 +390,19 @@ class Timetable extends Component {
                   right: "",
                   center: "",
                 }}
+                // locale={viLocale}
                 initialView="timeGridFourDay"
                 views={{
                   timeGridFourDay: {
                     type: "timeGrid",
                     duration: { days: 4 },
                     buttonText: "4 day",
+                    dayHeaderFormat: {
+                      weekday: "long",
+                      month: "numeric",
+                      day: "numeric",
+                      omitCommas: true,
+                    },
                   },
                 }}
                 // timeFormat="hh(:mm)"
@@ -308,7 +412,7 @@ class Timetable extends Component {
                   omitZeroMinute: false,
                   hour12: false,
                 }}
-                locale="en-gb"
+                locale="vi"
                 height="auto"
                 allDaySlot={false}
                 slotDuration="00:15:00"
@@ -326,11 +430,13 @@ class Timetable extends Component {
                 // select={this.handleDateSelect}
                 eventContent={this.renderEventContent} // custom render function
                 // eventClick={this.handleEventClick}
-                eventsSet={this.handleEvents} // called after events are initialized/added/changed/removed
+                //eventsSet={this.handleEvents} // called after events are initialized/added/changed/removed
                 /* you can update a remote database when these fire:
             eventAdd={function(){}}*/
-                eventChange={this.handleEventChange}
+                eventDrop={this.handleEventChange}
+                eventResize={this.handleEventChange}
                 eventRemove={this.deleteEventApi}
+                nextDayThreshold="00:00:00"
               />
             </div>
           </div>
@@ -340,7 +446,10 @@ class Timetable extends Component {
   }
 
   renderEventContent = (eventInfo) => {
-    var newProps = { ...eventInfo.event.extendedProps };
+    if (eventInfo.event.groupId && eventInfo.event.groupId == "available") {
+      return;
+    }
+    var newProps = { ...eventInfo.event.extendedProps.detail };
     var tzoffset = new Date().getTimezoneOffset() * 60000;
     newProps.date = new Date(eventInfo.event.start - tzoffset)
       .toISOString()
@@ -350,11 +459,13 @@ class Timetable extends Component {
     var start = +startStr[0] * 60 * 60 + +startStr[1] * 60;
     var endStr = getTimeString(eventInfo.event.end).split(":");
     var end = +endStr[0] * 60 * 60 + +endStr[1] * 60;
-    newProps.startTime = start;
-    newProps.endTime = end;
-    // newProps.startTime = eventInfo.event.start.toISOString().substring(12, 19);
+    newProps.startTime = getTimeString(eventInfo.event.start);
+    newProps.endTime = getTimeString(eventInfo.event.end);
     return (
-      <div className={style.fcEvent}>
+      <div
+        className={style.fcEvent}
+        onClick={(event) => this.openEditModal(event, newProps)}
+      >
         <div className={style.eventTitle}>{eventInfo.event.title}</div>
         <div>
           <span className={style.duration}>
@@ -369,49 +480,28 @@ class Timetable extends Component {
           </span>
         </div>
         <div className={style.dropdown}>
-          <button type="button" className={style.moreBtn}>
-            <FontAwesomeIcon icon={faEllipsisVertical} size="xl" />
+          <button
+            type="button"
+            className={style.moreBtn}
+            onClick={(event) =>
+              this.openConfirmDelete(
+                event,
+                eventInfo.event.id,
+                eventInfo.event.title
+              )
+            }
+          >
+            <FontAwesomeIcon icon={faXmark} size="lg" />
           </button>
-          <div className={style.dropdownMenu}>
-            <a
-              className="dropdown-item"
-              href={
-                "../poi?id=" +
-                eventInfo.event.extendedProps.masterActivity.activityId
-              }
-            >
-              <FontAwesomeIcon
-                icon={faCircleInfo}
-                className={style.dropdownIcon}
-              />{" "}
-              Details
-            </a>
-            <a
-              className="dropdown-item"
-              onClick={(event) => this.openEditModal(event, newProps)}
-            >
-              <FontAwesomeIcon
-                icon={faPenToSquare}
-                className={style.dropdownIcon}
-              />{" "}
-              Edit
-            </a>
-            <a
-              className="dropdown-item"
-              onClick={(event) => this.deleteEvent(event, eventInfo.event.id)}
-            >
-              <FontAwesomeIcon icon={faTrash} className={style.dropdownIcon} />
-              Remove
-            </a>
-          </div>
         </div>
       </div>
     );
   };
   //handle event change
   handleEventChange = (eventInfo) => {
-    if (eventInfo.event.extendedProps.fromForm == true) {
-      delete eventInfo.event.extendedProps.fromForm;
+    if (eventInfo.event.start.getDay() !== eventInfo.event.end.getDay()) {
+      this.setState({ showNotiModal: true });
+      eventInfo.revert();
       return;
     }
     var detail = {};
@@ -419,6 +509,7 @@ class Timetable extends Component {
     detail.startTime = +start[0] * 60 * 60 + +start[1] * 60;
     var end = getTimeString(eventInfo.event.end).split(":");
     detail.endTime = +end[0] * 60 * 60 + +end[1] * 60;
+
     detail.tripDetailsId = eventInfo.event.id;
     var tzoffset = new Date().getTimezoneOffset() * 60000;
     detail.date = new Date(eventInfo.event.start - tzoffset)
@@ -439,11 +530,9 @@ class Timetable extends Component {
   };
   //delete from timetable
   deleteEvent = (event, id) => {
-    event.preventDefault();
-    if (window.confirm("do you reall wanna delete this?")) {
-      let calendarApi = this.calendarComponentRef.current.getApi();
-      calendarApi.getEventById(id).remove();
-    }
+    let calendarApi = this.calendarComponentRef.current.getApi();
+    calendarApi.getEventById(id).remove();
+    this.closeConfirmDelete();
   };
   //callback delete from api
   deleteEventApi = (eventInfo) => {
@@ -471,16 +560,17 @@ class Timetable extends Component {
   //add event to timetable
   addEventToView = (detail) => {
     var event = {};
-    var tzoffset = new Date().getTimezoneOffset() * 60000;
+    // var tzoffset = new Date().getTimezoneOffset() * 60000;
     event.id = detail.tripDetailsId;
     event.title = detail.masterActivity.name;
     var date = new Date(detail.date);
     date.setSeconds(detail.startTime);
-    event.start = new Date(date - tzoffset).toISOString().substring(0, 19);
+    event.start = date.toISOString().substring(0, 19);
     var endDate = new Date(detail.date);
     endDate.setSeconds(detail.endTime);
-    event.end = new Date(endDate - tzoffset).toISOString().substring(0, 19);
-    event.extendedProps = detail;
+    event.end = endDate.toISOString().substring(0, 19);
+    event.detail = detail;
+    event.constraint = "available";
     let calendarApi = this.calendarComponentRef.current.getApi();
     calendarApi.addEvent(event);
   };
@@ -543,18 +633,16 @@ class Timetable extends Component {
   editEventInView = (detail) => {
     let calendarApi = this.calendarComponentRef.current.getApi();
     let event = calendarApi.getEventById(detail.tripDetailsId);
-    event.setExtendedProp("fromForm", true);
     event.setStart(this.apiToEventTime(detail.date, detail.startTime));
     event.setEnd(this.apiToEventTime(detail.date, detail.endTime));
-    event.setProp("extendedProps", detail);
+    event.setExtendedProp("detail", detail);
     this.closeEditModal();
   };
   //update a custom event in timetable
   editCustomEventInView = (detail) => {
     let calendarApi = this.calendarComponentRef.current.getApi();
     let event = calendarApi.getEventById(detail.tripDetailsId);
-    event.setProp("extendedProps", detail);
-    event.setExtendedProp("fromForm", true);
+    event.setExtendedProp("detail", detail);
     event.setStart(this.apiToEventTime(detail.date, detail.startTime));
     event.setEnd(this.apiToEventTime(detail.date, detail.endTime));
     event.setProp("title", detail.masterActivity.name);
@@ -562,7 +650,7 @@ class Timetable extends Component {
   };
   //put request to edit a detail
   editTripDetail = (event, detail) => {
-    if (detail.custom == true) {
+    if (detail.masterActivity.custom == true) {
       this.editCustomDetail(event, detail);
       return;
     }
@@ -587,8 +675,6 @@ class Timetable extends Component {
   };
   //put request to edit a custom detail
   editCustomDetail = (event, detail) => {
-    console.log("calling custom: ", detail);
-    delete detail.custom;
     var start = detail.startTime.split(":");
     detail.startTime = +start[0] * 60 * 60 + +start[1] * 60;
     var end = detail.endTime.split(":");
@@ -604,7 +690,7 @@ class Timetable extends Component {
       data: detail,
     })
       .then((response) => {
-        console.log("response data: ", response.data);
+        console.log(response.data);
         this.editCustomEventInView(response.data);
       })
       .catch(function (error) {
