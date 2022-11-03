@@ -8,8 +8,8 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.sql.Date;
 import java.util.ArrayList;
+import java.util.Date;
 
 public interface CollectionRepository extends JpaRepository<Collection, Integer> {
     // getting collections here
@@ -47,6 +47,11 @@ public interface CollectionRepository extends JpaRepository<Collection, Integer>
     @Transactional
     @Query("update Collection c set c.isDeleted = true where c.collectionId = :id")
     void deleteCollectionById(int id);
+
+    @Modifying
+    @Transactional
+    @Query("update Collection c set c.title = :title, c.description = :desc, c.dateModified = :modified where c.collectionId = :id")
+    void updateCollectionInfo(int id, String title, String desc, Date modified);
 
     // modifying POI list here
     @Modifying

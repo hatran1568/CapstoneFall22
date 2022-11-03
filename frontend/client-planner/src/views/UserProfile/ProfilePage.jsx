@@ -100,7 +100,7 @@ function ProfilePage() {
               <AddCollectionModal />
               {myCollections
                 ? myCollections.map((collection) => (
-                    <CollectionInfoCard prop={collection} key={collection.collectionId} />
+                    <CollectionInfoCard collection={collection} key={collection.collectionId} />
                   ))
                 : null}
             </MDBTabsPane>

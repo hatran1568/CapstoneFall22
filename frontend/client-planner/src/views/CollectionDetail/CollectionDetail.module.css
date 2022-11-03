@@ -20,7 +20,7 @@
   padding-top: 2em;
   padding-bottom: 2em;
   background-color: gray;
-  background: linear-gradient(rgba(0, 0, 0, 1), rgba(0, 0, 0, 0));
+  background: linear-gradient(rgba(50, 50, 50, 1), rgba(50, 50, 50, 0));
 }
 
 .text {
@@ -34,4 +34,21 @@ h3.text {
 
 p.text {
   font-size: 1.5em;
+}
+
+.btn {
+  color: black;
+}
+
+.btn:hover {
+  color: rgb(100, 100, 100);
+}
+
+.delBtn {
+  color: rgb(255, 255, 255);
+  z-index: 1000;
+}
+
+.delBtn:hover {
+  color: rgb(255, 90, 90);
 }

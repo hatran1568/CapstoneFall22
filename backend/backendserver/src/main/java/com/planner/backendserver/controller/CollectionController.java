@@ -1,6 +1,7 @@
 package com.planner.backendserver.controller;
 
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import com.planner.backendserver.DTO.request.DeletePOIFromCollectionDTO;
 import com.planner.backendserver.DTO.response.CollectionDTO;
 import com.planner.backendserver.DTO.response.POIOfCollectionDTO;
 import com.planner.backendserver.entity.Collection;
@@ -13,8 +14,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.sql.Date;
 import java.util.ArrayList;
+import java.util.Date;
 
 @RestController
 @RequestMapping("/api/collection")
@@ -56,9 +57,9 @@ public class CollectionController {
     }
 
     @GetMapping("/get/{colId}")
-    public ResponseEntity<Collection> getCollection(@PathVariable int colId) {
+    public ResponseEntity<CollectionDTO> getCollection(@PathVariable int colId) {
         try {
-            Collection collection = collectionRepository.getCollectionByID(colId);
+            CollectionDTO collection = collectionService.getCollectionById(colId);
             if (collection == null) {
                 return new ResponseEntity<>(HttpStatus.NO_CONTENT);
             }
@@ -72,7 +73,7 @@ public class CollectionController {
     @GetMapping("/poiList/{colId}")
     public ResponseEntity<ArrayList<POIOfCollectionDTO>> getPOIList(@PathVariable int colId) {
         try {
-            ArrayList<POIOfCollectionDTO> pois = poiService.getPOIListOfCollection(colId);
+            ArrayList<POIOfCollectionDTO> pois = collectionService.getPOIListOfCollection(colId);
             if (pois.isEmpty()) {
                 return new ResponseEntity<>(HttpStatus.NO_CONTENT);
             }
@@ -110,26 +111,43 @@ public class CollectionController {
         }
     }
 
+    @PutMapping("/edit")
+    public ResponseEntity<CollectionDTO> updateCollection(@RequestBody ObjectNode objectNode) {
+        try {
+            int colId = objectNode.get("id").asInt();
+            String title = objectNode.get("title").asText();
+            String desc = objectNode.get("description").asText();
+            Date mod = new Date(System.currentTimeMillis());
+            collectionRepository.updateCollectionInfo(colId, title, desc, mod);
+            CollectionDTO updated = collectionService.getCollectionById(colId);
+            return new ResponseEntity<>(updated, HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
     // modifying POI list here
     @PostMapping("/addPoi")
-    public ResponseEntity<?> addPOI(@RequestBody ObjectNode objectNode) {
+    public ResponseEntity<ArrayList<POIOfCollectionDTO>> addPOI(@RequestBody ObjectNode objectNode) {
         try {
             int poiId = objectNode.get("poiId").asInt();
             int colId = objectNode.get("colId").asInt();
             collectionRepository.addPOIIntoCollection(poiId, colId);
-            return new ResponseEntity<>(HttpStatus.OK);
+            ArrayList<POIOfCollectionDTO> poiList = collectionService.getPOIListOfCollection(colId);
+            return new ResponseEntity<>(poiList, HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
     @DeleteMapping("/deletePoi")
-    public ResponseEntity<?> deletePOI(@RequestBody ObjectNode objectNode) {
+    public ResponseEntity<ArrayList<POIOfCollectionDTO>> deletePOI(@RequestBody DeletePOIFromCollectionDTO dto) {
         try {
-            int poiId = objectNode.get("poiId").asInt();
-            int colId = objectNode.get("colId").asInt();
-            collectionRepository.removePOIFromCollection(poiId, colId);
-            return new ResponseEntity<>(HttpStatus.OK);
+            int poiId = dto.getPoiId();
+            int colId = dto.getColId();
+            collectionService.deletePOIFromCollection(poiId, colId);
+            ArrayList<POIOfCollectionDTO> poiList = collectionService.getPOIListOfCollection(colId);
+            return new ResponseEntity<>(poiList, HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }

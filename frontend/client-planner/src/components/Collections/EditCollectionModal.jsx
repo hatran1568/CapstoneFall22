@@ -5,22 +5,22 @@ import TextArea from "antd/lib/input/TextArea";
 import Input from "antd/lib/input/Input";
 import axios from "../../api/axios";
 import { useNavigate } from "react-router-dom";
+import style from "./EditCollectionModal.module.css";
 
-const AddCollectionModal = () => {
+const EditCollectionModal = (prop) => {
   const [open, setOpen] = useState(false);
   const [titleInput, setTitleInput] = useState("");
   const [descriptionInput, setDescriptionInput] = useState("");
   const { confirm } = Modal;
-  const navigate = useNavigate();
 
-  const handleCreate = () => {
+  const handleEdit = () => {
     setOpen(true);
   };
 
   const handleOk = () => {
     confirm({
-      title: "Confirm create?",
-      content: "A new collection will be added",
+      title: "Confirm edit?",
+      content: "Your collection will be updated",
       okText: "Yes",
       okType: "primary",
       cancelText: "No",
@@ -40,10 +40,10 @@ const AddCollectionModal = () => {
         }
 
         axios
-          .post(
-            "/api/collection/create",
+          .put(
+            "/api/collection/edit",
             {
-              uid: localStorage.getItem("id"),
+              id: prop.id,
               title: title,
               description: description,
             },
@@ -54,7 +54,10 @@ const AddCollectionModal = () => {
               withCredentials: true,
             },
           )
-          .then((response) => navigate("/collection?id=" + response.data.collectionId));
+          .then((res) => {
+            prop.refresh({ title: res.data.title, description: res.data.description });
+            handleCancel();
+          });
       },
     });
   };
@@ -65,15 +68,10 @@ const AddCollectionModal = () => {
 
   return (
     <>
-      <MDBBtn tag='a' color='none' className='m-2' onClick={handleCreate} style={{ textDecoration: "none" }}>
-        <MDBIcon fas icon='plus-circle' /> Create new...
-      </MDBBtn>
-      <Modal
-        title='Create new collection'
-        open={open}
-        onOk={handleOk}
-        onCancel={handleCancel}
-      >
+      <button className={`${style.editBtn}`} onClick={handleEdit}>
+        <MDBIcon far icon='edit' size='lg' />
+      </button>
+      <Modal title='Edit collection info' open={open} onOk={handleOk} onCancel={handleCancel}>
         <MDBInputGroup className='px-2 mb-3'>
           <p className='fs-5 fw-bold'>Title</p>
           <Input
@@ -102,4 +100,4 @@ const AddCollectionModal = () => {
   );
 };
 
-export default AddCollectionModal;
+export default EditCollectionModal;

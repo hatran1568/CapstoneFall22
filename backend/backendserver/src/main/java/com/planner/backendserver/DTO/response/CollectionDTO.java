@@ -10,7 +10,7 @@ import java.util.Date;
 @AllArgsConstructor
 @NoArgsConstructor
 public class CollectionDTO {
-    private int collectionID;
+    private int collectionId;
     private String title;
     private String description;
     private Date dateModified;
