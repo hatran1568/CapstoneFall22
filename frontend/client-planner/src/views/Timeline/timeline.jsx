@@ -376,6 +376,12 @@ class Timeline extends Component {
       this.state.trip.endDate
     );
     var allMonths = this.getAllMonths(allDates);
+    const options = {
+      weekday: "long",
+      year: "numeric",
+      month: "numeric",
+      day: "numeric",
+    };
     return (
       <div>
         <TripDetailTabs />
@@ -416,37 +422,54 @@ class Timeline extends Component {
               </div>
             </div>
             <div className="col-8">
-              {allDates.map((date) => (
+              {allDates.map((date, index) => (
                 <section
                   id={date.toISOString().split("T")[0]}
                   key={date.toISOString().split("T")[0]}
                 >
                   <div>
                     <div className={style.detailsGroupDate}>
-                      {date.toISOString().split("T")[0]}
+                      <span className={style.dayNum}>Ngày {index + 1}</span>
+                      {date.toLocaleDateString("vi", options)}
                     </div>
                     <ul className={style.timeline}>
-                      {this.getTripDetailsByDate(date).map((tripDetail) => (
-                        <TripDetail
-                          key={tripDetail.tripDetailsId}
-                          tripDetail={tripDetail}
-                          deleteEvent={(event, detailId, name) =>
-                            this.openConfirmDelete(event, detailId, name)
-                          }
-                          editEvent={(event, detail) =>
-                            this.openEditModal(event, detail)
-                          }
-                          nextActivityId={this.getNextTripDetail(
-                            this.getTripDetailsByDate(date),
-                            tripDetail
-                          )}
-                          allDates={allDates}
-                          isConflicting={this.isConflicting(
-                            this.getTripDetailsByDate(date),
-                            tripDetail
-                          )}
-                        ></TripDetail>
-                      ))}
+                      {this.getTripDetailsByDate(date).length > 0 ? (
+                        this.getTripDetailsByDate(date).map((tripDetail) => (
+                          <TripDetail
+                            key={tripDetail.tripDetailsId}
+                            tripDetail={tripDetail}
+                            deleteEvent={(event, detailId, name) =>
+                              this.openConfirmDelete(event, detailId, name)
+                            }
+                            editEvent={(event, detail) =>
+                              this.openEditModal(event, detail)
+                            }
+                            nextActivityId={this.getNextTripDetail(
+                              this.getTripDetailsByDate(date),
+                              tripDetail
+                            )}
+                            allDates={allDates}
+                            isConflicting={this.isConflicting(
+                              this.getTripDetailsByDate(date),
+                              tripDetail
+                            )}
+                          ></TripDetail>
+                        ))
+                      ) : (
+                        <div className={style.emptyDay}>
+                          <span>Thời gian trống.</span>
+                          <br />
+                          <span>
+                            Bạn chưa có hoạt động nào trong ngày này.{" "}
+                          </span>
+                          <a
+                            onClick={this.toggleAddModal}
+                            className={style.addActivity}
+                          >
+                            Thêm hoạt động
+                          </a>
+                        </div>
+                      )}
                     </ul>
                   </div>
                 </section>

@@ -79,7 +79,7 @@ public class TripController {
         try{
             Optional<Double> distance = tripService.getDistanceBetweenTwoPOIs(from, to);
             if (distance.isEmpty()){
-                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+                return new ResponseEntity<>(-1.0, HttpStatus.OK);
             }
             return new ResponseEntity<>(distance.get(), HttpStatus.OK);
     } catch (Exception e){

@@ -3,6 +3,8 @@ import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
 import style from "../Timetable/modals.module.css";
 import Rating from "../../components/POIs/Rating";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
 function EditActivityModal(props) {
   const { activityEdited, allDates, tripDetail, onHide, ...rest } = props;
   const [inputField, setInputField] = useState(
@@ -10,6 +12,7 @@ function EditActivityModal(props) {
   );
   const [showWarningTime, setShowWarningTime] = useState(false);
   const [showWarningName, setShowWarningName] = useState(false);
+  const [date, setDate] = useState(new Date(inputField.date));
 
   const validateInput = (event) => {
     if (inputField.masterActivity.custom) {
@@ -103,7 +106,7 @@ function EditActivityModal(props) {
               {tripDetail.masterActivity.custom ? (
                 <>
                   <label className={style.customLabel}>
-                    Name:
+                    Tên hoạt động:
                     <input
                       className={`form-control`}
                       name="name"
@@ -115,7 +118,7 @@ function EditActivityModal(props) {
                     />
                   </label>
                   <label className={style.customLabel}>
-                    Address:
+                    Địa chỉ:
                     <input
                       className={`form-control`}
                       name="address"
@@ -132,7 +135,7 @@ function EditActivityModal(props) {
                         : `${style.warningMessageName} ${style.hide}`
                     }
                   >
-                    Hãy chọn một địa điểm hoặc thêm một hoạt động của bạn.
+                    Tên hoạt động không được để trống.
                   </div>
                 </>
               ) : (
@@ -141,28 +144,23 @@ function EditActivityModal(props) {
 
               <div className={`container row ${style.timeGroupDiv}`}>
                 <label className="col-4">
-                  Date:
-                  <select
-                    className="form-select"
-                    name="date"
-                    onChange={(e) => {
-                      inputField.date = e.target.value;
+                  Ngày:
+                  <DatePicker
+                    className="form-control"
+                    minDate={allDates[0]}
+                    maxDate={allDates[allDates.length - 1]}
+                    selected={date}
+                    onChange={(date) => {
+                      setDate(date);
+                      inputField.date = date.toISOString().split("T")[0];
                     }}
-                    defaultValue={tripDetail.date}
-                  >
-                    {allDates.map((date) => (
-                      <option
-                        value={date.toISOString().split("T")[0]}
-                        key={date.toISOString().split("T")[0]}
-                      >
-                        {date.toISOString().split("T")[0]}
-                      </option>
-                    ))}
-                  </select>
+                    dateFormat="dd/MM/yyyy"
+                    popperPlacement="bottom-start"
+                  />
                 </label>
                 <br />
                 <label className="col-4">
-                  Start time:
+                  Giờ bắt đầu:
                   <input
                     className="form-control"
                     name="start_time"
@@ -175,7 +173,7 @@ function EditActivityModal(props) {
                 </label>
                 <br />
                 <label className="col-4">
-                  End time:
+                  Giờ kết thúc:
                   <input
                     className="form-control"
                     name="end_time"
@@ -203,7 +201,7 @@ function EditActivityModal(props) {
               onClick={(event) => validateInput(event)}
               className={style.submitBtn}
             >
-              Save
+              Lưu
             </Button>
             <Button
               onClick={() => {
@@ -211,7 +209,7 @@ function EditActivityModal(props) {
               }}
               variant="outline-secondary"
             >
-              Close
+              Đóng
             </Button>
           </Modal.Footer>
         </Modal>

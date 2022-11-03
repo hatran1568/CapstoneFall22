@@ -1,9 +1,11 @@
-import { EventNote } from "@mui/icons-material";
 import React, { Component, useState } from "react";
 import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
 import POISearchBar from "../../components/POISearchBar/POISearchBar";
 import style from "../Timetable/modals.module.css";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
+import "date-fns/locale/vi";
 function AddActivityModal(props) {
   const { activityAdded, allDates, onHide, ...rest } = props;
   const [inputField, setInputField] = useState({
@@ -24,6 +26,7 @@ function AddActivityModal(props) {
   const [showAddCustomModal, setShowAddCustomModal] = useState(false);
   const [showWarningTime, setShowWarningTime] = useState(false);
   const [showWarningName, setShowWarningName] = useState(false);
+  const [date, setDate] = useState(allDates[0]);
   const toggleCustom = () => {
     inputField.custom = !inputField.custom;
     setShowAddCustomModal(!showAddCustomModal);
@@ -74,6 +77,7 @@ function AddActivityModal(props) {
     setShowWarningName(false);
     setShowWarningTime(false);
     setShowAddCustomModal(false);
+    setDate(allDates[0]);
   };
   return (
     <>
@@ -94,7 +98,7 @@ function AddActivityModal(props) {
                 {showAddCustomModal ? (
                   <>
                     <label className={style.customLabel}>
-                      Name:
+                      Tên hoạt động:
                       <input
                         className={`form-control`}
                         name="name"
@@ -105,7 +109,7 @@ function AddActivityModal(props) {
                       />
                     </label>
                     <label className={style.customLabel}>
-                      Address:
+                      Địa chỉ:
                       <input
                         className={`form-control`}
                         name="address"
@@ -144,7 +148,7 @@ function AddActivityModal(props) {
               Hãy chọn một địa điểm hoặc thêm một hoạt động của bạn.
             </div>
             <div className={`row ${style.addForm}`}>
-              <label className="col-4">
+              {/* <label className="col-4">
                 Date:
                 <select
                   className={`form-select`}
@@ -163,9 +167,38 @@ function AddActivityModal(props) {
                     </option>
                   ))}
                 </select>
+              </label> */}
+              {/* <label className="col-4">
+                Ngày
+                <input
+                  type="date"
+                  className="form-control"
+                  min={minDate}
+                  max={maxDate}
+                  onChange={(e) => {
+                    inputField.date = e.target.value;
+                  }}
+                  defaultValue={minDate}
+                  lang="vi"
+                  required
+                />
+              </label> */}
+              <label className="col-4">
+                Ngày:
+                <DatePicker
+                  className="form-control"
+                  minDate={allDates[0]}
+                  maxDate={allDates[allDates.length - 1]}
+                  selected={date}
+                  onChange={(date) => {
+                    setDate(date);
+                    inputField.date = date.toISOString().split("T")[0];
+                  }}
+                  dateFormat="dd/MM/yyyy"
+                />
               </label>
               <label className="col-4">
-                Start time:
+                Giờ bắt đầu:
                 <input
                   name="start_time"
                   className="form-control"
@@ -178,7 +211,7 @@ function AddActivityModal(props) {
               </label>
               <br />
               <label className="col-4">
-                End time:
+                Giờ kết thúc:
                 <input
                   className="form-control"
                   defaultValue={"09:00"}
@@ -209,7 +242,7 @@ function AddActivityModal(props) {
             }}
             className={style.submitBtn}
           >
-            Add This Activity
+            Thêm Hoạt Động
           </Button>
           <Button
             onClick={() => {
@@ -217,7 +250,7 @@ function AddActivityModal(props) {
             }}
             variant="outline-secondary"
           >
-            Close
+            Đóng
           </Button>
         </Modal.Footer>
       </Modal>

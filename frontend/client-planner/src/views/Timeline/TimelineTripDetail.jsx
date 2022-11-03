@@ -14,8 +14,8 @@ import {
 } from "mdb-react-ui-kit";
 import OverlayTrigger from "react-bootstrap/OverlayTrigger";
 import Popover from "react-bootstrap/Popover";
-import EditActivityModal from "./EditActivityModal";
 import axios from "axios";
+// import "moment/locale/vi";
 class TripDetail extends Component {
   state = {};
   //set state of component based on props from timeline
@@ -43,11 +43,15 @@ class TripDetail extends Component {
         })
         .then((res) => {
           var newState = this.state;
-          if (res.status == 404) {
+          if (res.status === 404) {
             newState.distanceToNext = -1;
-          }
-          newState.distanceToNext = res.data;
+          } else newState.distanceToNext = res.data;
           this.setState(newState);
+        })
+        .catch((err) => {
+          if (err.response) {
+            this.setState({ distanceToNext: -1 });
+          }
         });
     }
   };
@@ -204,7 +208,9 @@ class TripDetail extends Component {
                   icon={faCalendarDays}
                   className={style.foreIcon}
                 />
-                <span className="date-value">{this.state.tripDetail.date}</span>
+                <span className="date-value">
+                  {moment(this.state.tripDetail.date).locale("vi").format("L")}
+                </span>
               </p>
 
               <p className="text-muted card-text address-value">
@@ -219,14 +225,6 @@ class TripDetail extends Component {
             ? this.state.distanceToNext + "km"
             : ""}
         </li>
-
-        <EditActivityModal
-          show={this.state.showEditModal}
-          onHide={this.toggleEditModal}
-          allDates={this.props.allDates}
-          tripDetail={this.state.tripDetail}
-          activityEdited={(event, input) => this.fireEditEvent(event, input)}
-        />
       </React.Fragment>
     );
   }
