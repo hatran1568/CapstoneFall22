@@ -3,13 +3,15 @@ package com.planner.backendserver.repository;
 import com.planner.backendserver.DTO.POIofDestinationDTO;
 import com.planner.backendserver.entity.MasterActivity;
 import com.planner.backendserver.entity.POI;
-import com.planner.backendserver.entity.POIImage;
 import com.planner.backendserver.entity.Rating;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Optional;
 
 @Repository
@@ -48,6 +50,17 @@ public interface POIRepository extends JpaRepository<POI, Integer> {
 
     @Query("select r from Rating r join User u on r.user.userID = u.userID where r.POI.activityId = :id")
     ArrayList<Rating> getRatingsByPOIId(int id);
+
+    @Modifying
+    @Transactional
+    @Query("update Rating r set r.rate = :rate, r.Comment = :comment, r.dateModified = :modified where r.user.userID = :uid and r.POI.activityId = :poiId")
+    void updateRatingInPOI(int rate, String comment, Date modified, int uid, int poiId);
+
+    @Modifying
+    @Transactional
+    @Query(value = "insert into rating (comment, date_created, date_modified, is_deleted, rate, poi_id, user_id)\n" +
+            "values (:comment, :created, :modified, false, :rate, :poiId, :uid)", nativeQuery = true)
+    void createRatingInPOI(String comment, Date created, Date modified, int rate, int poiId, int uid);
 
     @Query("select pi.url from POIImage pi where pi.poi.activityId = :id")
     ArrayList<String> getImagesByPOIId(int id);
