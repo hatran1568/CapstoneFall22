@@ -18,6 +18,7 @@ import com.planner.backendserver.entity.TripDetails;
 import com.planner.backendserver.repository.POIRepository;
 import com.planner.backendserver.repository.TripRepository;
 import com.planner.backendserver.service.UserDTOServiceImplementer;
+import com.planner.backendserver.service.implementers.AsyncManager;
 import com.planner.backendserver.service.interfaces.TripService;
 import net.minidev.json.JSONObject;
 import org.modelmapper.ModelMapper;
@@ -25,6 +26,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.client.ServiceInstance;
 import org.springframework.cloud.client.discovery.DiscoveryClient;
 import org.springframework.http.*;
+import org.springframework.security.access.method.P;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
@@ -46,8 +48,10 @@ public class TripController {
     @Autowired
     private TripRepository tripRepo;
     @Autowired
-    ModelMapper mapper;
+    private ModelMapper mapper;
 
+    @Autowired
+    private AsyncManager asyncManager;
     @Autowired
     private DiscoveryClient discoveryClient;
     @GetMapping("/{id}")
@@ -242,7 +246,7 @@ public class TripController {
         }
     }
     @PostMapping("/generate")
-    public String generateTrip(@RequestBody GenerateTripUserInput input) throws JsonProcessingException {
+    public ResponseEntity<SimpleResponse> generateTrip(@RequestBody GenerateTripUserInput input) throws JsonProcessingException {
         List<ServiceInstance> instances = discoveryClient.getInstances("Optimizer");
 
         ServiceInstance instance =  instances.get(0);
@@ -270,6 +274,64 @@ public class TripController {
 
         JsonNode root = mapper.readTree(personResultAsJsonStr);
         System.out.println(root.path("port").asText());
-        return root.path("port").asText();
+        SimpleResponse target2 = gson.fromJson(personResultAsJsonStr, SimpleResponse.class);
+        if(asyncManager.checkExistUser(input.getUserId())){
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+        asyncManager.putJob(target2.getId(),target2.getUserID());
+        asyncManager.putPort(target2.getUserID(),target2.getPort());
+        return new ResponseEntity<>(target2,HttpStatus.OK);
+    }
+
+    @GetMapping("/checkGenerating/{id}")
+    public boolean checkGenerating(@PathVariable int id){
+        if(!asyncManager.checkExistUser(id)) {
+            return false;
+        }
+        List<ServiceInstance> instances = discoveryClient.getInstances("Optimizer");
+
+        ServiceInstance instance =  instances.get(0);
+
+        System.out.println(instance);
+
+
+        String url = "http://localhost:"+asyncManager.getPortByUserId(id)+"/trip/checkUserFree/"+id;
+
+        RestTemplate restTemplate = new RestTemplate();
+        String personResultAsJsonStr =
+                restTemplate.getForObject(url, String.class);
+        Boolean check = Boolean.parseBoolean(personResultAsJsonStr);
+        if(!check){
+            asyncManager.removeUser(id);
+            asyncManager.removeUserPort(id);
+        }
+        return Boolean.parseBoolean(personResultAsJsonStr);
+    }
+
+    @PostMapping("/cancel/{id}")
+    public  ResponseEntity<Boolean> cancelJob(@PathVariable int id){
+        String url = "http://localhost:"+asyncManager.getPortByUserId(id)+"/trip/cancel/"+asyncManager.getJobByUserId(id)+"/"+id;
+        RestTemplate restTemplate = new RestTemplate();
+        ResponseEntity<String> result = restTemplate.postForEntity(url,null,String.class);
+        if(result.getStatusCode().is2xxSuccessful()){
+            asyncManager.removeUserPort(id);
+            asyncManager.removeUser(id);
+            return new ResponseEntity<>(HttpStatus.OK);
+        }
+        else{
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+
+    }
+
+    @GetMapping("/getServiceInfo/{id}")
+    public ResponseEntity<SimpleResponse> getServiceInfo(@PathVariable int id){
+        if(!asyncManager.checkExistUser(id)){
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        SimpleResponse response = new SimpleResponse();
+        response.setPort(asyncManager.getPortByUserId(id));
+        response.setId(asyncManager.getJobByUserId(id));
+        return  new ResponseEntity<>(response,HttpStatus.OK);
     }
 }

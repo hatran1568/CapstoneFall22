@@ -34,7 +34,24 @@ public class SearchController {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
-
+    @GetMapping("/Destination/{keyword}")
+    public ResponseEntity<List<SearchPOIAndDestinationDTO>> searchDestinationByKeyword(@PathVariable String keyword) {
+        try {
+            List<SearchPOIAndDestinationDTO> results = searchService.suggestSearchPOIAndDestinationByKeyword(keyword);
+            if (results.isEmpty()) {
+                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            }
+            List<SearchPOIAndDestinationDTO> result = new ArrayList<>();
+            for (SearchPOIAndDestinationDTO poi:results) {
+                if(poi.getType().equals(SearchType.DESTINATION)){
+                    result.add(poi);
+                }
+            }
+            return new ResponseEntity<List<SearchPOIAndDestinationDTO>>(result, HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
     @GetMapping("/{keyword}/{page}")
     public ResponseEntity<SearchRespondeDTO> searchByKeyword(@PathVariable String keyword, @PathVariable int page) {
         List<SearchPOIAndDestinationDTO> results = searchService.searchPOIAndDestinationByKeyword(keyword);

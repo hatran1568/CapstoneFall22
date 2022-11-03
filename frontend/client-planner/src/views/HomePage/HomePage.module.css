@@ -1,3 +1,11 @@
+.formInput::after {
+    visibility: hidden!important;
+}
+
+.formInput::before {
+    visibility: hidden!important;
+}
+
 @media screen and (min-width: 730px) {
     .img {
         transform: scaleX(-1);
@@ -56,8 +64,6 @@
 .modalInput {
     margin: 0 3% 0 3%;
 }
-
-.modalGenerateInput {}
 
 .emptyTripInfo {
     margin: auto;

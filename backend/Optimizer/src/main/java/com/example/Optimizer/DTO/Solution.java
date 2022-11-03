@@ -90,7 +90,7 @@ public class Solution {
         fitness += Math.pow((cal_distance_obj() - data.getMinDistance()) / (data.getMaxDistance() - data.getMinDistance()), 2) * data.getW1();
         fitness += Math.pow((data.getMinWaitingTime() - cal_waiting_time_obj()) / (data.getMaxWaitingTime() - data.getMinWaitingTime()), 2) * data.getW2();
         fitness += Math.pow((cal_hapiness_obj() - data.getMaxHappiness()) / (data.getMaxHappiness() - data.getMinHappiness()), 2) * data.getW3();
-        fitness += Math.pow((cal_number_of_destination_obj() - data.getMaxNumberOfDestinations()) / (data.getMinNumberOfDestinations() - data.getMinNumberOfDestinations()), 2) * data.getW4();
+        fitness += Math.pow((cal_number_of_destination_obj() - data.getMaxNumberOfDestinations()) / (data.getMaxNumberOfDestinations() - data.getMinNumberOfDestinations()), 2) * data.getW4();
         fitness = Math.sqrt(fitness);
         return fitness;
     }
@@ -112,7 +112,7 @@ public class Solution {
                 currentTime = (int) ((int) Math.max(currentTime,((POI) tripDetails.getMasterActivity()).getOpenTime()) +((POI) tripDetails.getMasterActivity()).getDuration());
                 tripDetails.setEndTime((int) currentTime);
                 if(i!=list.size()-1){
-                    currentTime+= data.getDistanceOfPOI()[list.get(i)][list.get(i+1)] * 90;
+                    currentTime+= data.getDistanceOfPOI()[list.get(i)][list.get(i+1)] * 270;
                 }
                 days.add(tripDetails);
             }
