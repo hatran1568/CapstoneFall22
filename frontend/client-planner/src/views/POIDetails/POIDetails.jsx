@@ -118,40 +118,61 @@ const POIDetails = () => {
 
   var avgRate = 0;
   var poiRatings = [];
+  var userRating = [];
   if (ratings.length > 0) {
     avgRate = ratings.reduce((sum, cur) => sum + Number(cur.rate), 0) / ratings.length;
     ratings.forEach((rating) => {
       var formattedDate = new Date(rating.modified).toLocaleDateString("vi-VN");
-      poiRatings.push(
-        <>
-          <MDBRow className='border-top'>
-            <MDBCol size='auto' className='pe-0'>
-              <StarRatings rating={rating.rate} starDimension='1em' starSpacing='0.1em' starRatedColor='orange' />
-            </MDBCol>
-            <MDBCol size='auto' className='pt-1'>
-              <p>
-                {" "}
-                by <strong>{rating.userName}</strong>
-              </p>
-            </MDBCol>
-          </MDBRow>
-          <MDBRow>
-            <div>
-              <p>{rating.comment}</p>
-            </div>
-          </MDBRow>
-          <MDBRow className='border-bottom'>
-            <p>Commented on {formattedDate}</p>
-          </MDBRow>
-        </>,
-      );
+      if (rating.userId != localStorage.getItem("id")) {
+        poiRatings.push(
+          <>
+            <MDBRow className='border-top'>
+              <MDBCol size='auto' className='pe-0'>
+                <StarRatings rating={rating.rate} starDimension='1em' starSpacing='0.1em' starRatedColor='orange' />
+              </MDBCol>
+              <MDBCol size='auto' className='pt-1'>
+                <p>
+                  {" "}
+                  by <strong>{rating.userName}</strong>
+                </p>
+              </MDBCol>
+            </MDBRow>
+            <MDBRow>
+              <div>
+                <p>{rating.comment}</p>
+              </div>
+            </MDBRow>
+            <MDBRow className='border-bottom'>
+              <p>Commented on {formattedDate}</p>
+            </MDBRow>
+          </>,
+        );
+      } else if (rating.userId == localStorage.getItem("id")) {
+        userRating.push(
+          <>
+            <MDBRow className='border-top'>
+              <MDBCol size='auto' className='pe-0'>
+                <StarRatings rating={rating.rate} starDimension='1em' starSpacing='0.1em' starRatedColor='orange' />
+              </MDBCol>
+              <MDBCol size='auto' className='pt-1'>
+                <p>
+                  {" "}
+                  by <strong>{rating.userName}</strong>
+                </p>
+              </MDBCol>
+            </MDBRow>
+            <MDBRow>
+              <div>
+                <p>{rating.comment}</p>
+              </div>
+            </MDBRow>
+            <MDBRow className='border-bottom'>
+              <p>Commented on {formattedDate}</p>
+            </MDBRow>
+          </>,
+        );
+      }
     });
-  } else if (ratings.length === 0) {
-    poiRatings.push(
-      <div>
-        <p>There is still nothing yet</p>
-      </div>,
-    );
   }
 
   var ratingInput;
@@ -321,7 +342,14 @@ const POIDetails = () => {
             </MDBRow>
           </MDBCol>
           <MDBCol>
-            {poiRatings}
+            <MDBRow>
+              <p className='fs-4 fw-bold'>Your review:</p>
+            </MDBRow>
+            {userRating.length > 0 ? userRating : <p>You haven't reviewed this place yet.</p>}
+            <MDBRow>
+              <p className='fs-4 fw-bold'>Others' review:</p>
+            </MDBRow>
+            {poiRatings.length > 0 ? poiRatings : <p>Other people haven't reviewed this place yet.</p>}
             {ratingInput}
           </MDBCol>
         </MDBRow>
