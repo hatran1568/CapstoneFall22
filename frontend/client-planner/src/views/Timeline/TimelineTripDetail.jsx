@@ -14,8 +14,8 @@ import {
 } from "mdb-react-ui-kit";
 import OverlayTrigger from "react-bootstrap/OverlayTrigger";
 import Popover from "react-bootstrap/Popover";
-import EditActivityModal from "./EditActivityModal";
 import axios from "axios";
+// import "moment/locale/vi";
 class TripDetail extends Component {
   state = {};
   //set state of component based on props from timeline
@@ -43,11 +43,15 @@ class TripDetail extends Component {
         })
         .then((res) => {
           var newState = this.state;
-          if (res.status == 404) {
+          if (res.status === 404) {
             newState.distanceToNext = -1;
-          }
-          newState.distanceToNext = res.data;
+          } else newState.distanceToNext = res.data;
           this.setState(newState);
+        })
+        .catch((err) => {
+          if (err.response) {
+            this.setState({ distanceToNext: -1 });
+          }
         });
     }
   };
@@ -90,10 +94,10 @@ class TripDetail extends Component {
     var timeString = date.toISOString().substring(11, 19);
     return timeString;
   };
+
   render() {
     var moment = require("moment"); // require
-    var isCustom =
-      typeof this.state.tripDetail.masterActivity.category !== "undefined";
+    var isCustom = this.state.tripDetail.masterActivity.custom;
     return (
       <React.Fragment>
         <li className={`${style.timelineItem} card`}>
@@ -112,7 +116,9 @@ class TripDetail extends Component {
                             icon={faCircleExclamation}
                             className={style.popoverIcon}
                           />
-                          <div>This conflicts with other activities</div>
+                          <div>
+                            Hoạt động này trùng thời gian với hoạt động khác.
+                          </div>
                         </Popover.Body>
                       </Popover>
                     }
@@ -137,7 +143,7 @@ class TripDetail extends Component {
                 ).format("hh:mm a")}
               </p>
             </div>
-            {isCustom ? (
+            {!isCustom ? (
               <div className="col-4">
                 <img
                   src={
@@ -154,11 +160,11 @@ class TripDetail extends Component {
               <></>
             )}
 
-            <div className={isCustom ? "col-6" : "col-10"}>
+            <div className={!isCustom ? "col-6" : "col-10"}>
               <MDBDropdown animation={false} className={style.btnMore}>
                 <MDBDropdownToggle color="light"></MDBDropdownToggle>
                 <MDBDropdownMenu>
-                  {!this.state.tripDetail.masterActivity.custom ? (
+                  {!isCustom ? (
                     <MDBDropdownItem
                       link
                       href={
@@ -172,7 +178,12 @@ class TripDetail extends Component {
                     <></>
                   )}
 
-                  <MDBDropdownItem link onClick={this.toggleEditModal}>
+                  <MDBDropdownItem
+                    link
+                    onClick={(event) =>
+                      this.props.editEvent(event, this.state.tripDetail)
+                    }
+                  >
                     Edit Event
                   </MDBDropdownItem>
                   <MDBDropdownItem
@@ -180,7 +191,8 @@ class TripDetail extends Component {
                     onClick={(event) =>
                       this.props.deleteEvent(
                         event,
-                        this.state.tripDetail.tripDetailsId
+                        this.state.tripDetail.tripDetailsId,
+                        this.state.tripDetail.masterActivity.name
                       )
                     }
                   >
@@ -198,7 +210,9 @@ class TripDetail extends Component {
                   icon={faCalendarDays}
                   className={style.foreIcon}
                 />
-                <span className="date-value">{this.state.tripDetail.date}</span>
+                <span className="date-value">
+                  {moment(this.state.tripDetail.date).locale("vi").format("L")}
+                </span>
               </p>
 
               <p className="text-muted card-text address-value">
@@ -213,14 +227,6 @@ class TripDetail extends Component {
             ? this.state.distanceToNext + "km"
             : ""}
         </li>
-
-        <EditActivityModal
-          show={this.state.showEditModal}
-          onHide={this.toggleEditModal}
-          allDates={this.props.allDates}
-          tripDetail={this.state.tripDetail}
-          activityEdited={(event, input) => this.fireEditEvent(event, input)}
-        />
       </React.Fragment>
     );
   }
