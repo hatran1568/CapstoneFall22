@@ -41,7 +41,7 @@ public class TripController {
     private Environment environment;
     @CrossOrigin(origins = "*", allowedHeaders = "*")
     @PostMapping("/generate")
-    public ResponseEntity<SimpleResponse> generateTrip(@RequestBody GenerateTripUserInput input) throws ExecutionException, InterruptedException {
+    public ResponseEntity generateTrip(@RequestBody GenerateTripUserInput input) throws ExecutionException, InterruptedException {
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
         System.out.println("----------");
         System.out.println(input.getStartDate());
@@ -51,15 +51,21 @@ public class TripController {
         System.out.println(input.getUserId());
         CompletableFuture<SimpleResponse> trip = generateTrip.generateTrip(input);
         String uid = UUID.randomUUID().toString();
+        String serverPort = environment.getProperty("local.server.port");
         trip.whenComplete((response,e) ->{
             template.convertAndSend("/chatroom","done");
-            });
-            asyncJobsManager.putJob(uid,trip);
+
+        });
+
+        if(asyncJobsManager.checkExistUser(input.getUserId())){
+            return new ResponseEntity<SimpleResponse>(new SimpleResponse(uid,null , RequestStatus.IN_PROGRESS,input.getUserId(),serverPort) , HttpStatus.OK) ;
+        }
+        asyncJobsManager.putJob(uid,input.getUserId(),trip);
         input.setId(uid);
         template.convertAndSend("/chatroom","abc");
         template.convertAndSendToUser("abc","/chatroom","private");
-        String serverPort = environment.getProperty("local.server.port");
-        return new ResponseEntity<SimpleResponse>(new SimpleResponse(uid,null , RequestStatus.SUBMITTED,serverPort) , HttpStatus.OK) ;
+
+        return new ResponseEntity<SimpleResponse>(new SimpleResponse(uid,null , RequestStatus.SUBMITTED, input.getUserId(), serverPort) , HttpStatus.OK) ;
 
 
     }
@@ -73,10 +79,22 @@ public class TripController {
         return generateTrip.getJobStatus(id);
     }
 
+
+    @GetMapping("/checkUserFree/{id}")
+    public boolean checkUserFree(@PathVariable int id){
+        return asyncJobsManager.checkExistUser(id);
+    }
+
     @GetMapping("/getOutput/{id}")
-    public Trip getTrip(String id) throws Exception {
+    public Trip getTrip(@PathVariable String id) throws Exception {
         return  generateTrip.getOutput(id);
     }
 
-
+    @PostMapping ("/cancel/{id}/{uid}")
+    public String cancelJob(@PathVariable  String id,@PathVariable int uid) throws Exception {
+        if(generateTrip.cancelJob(id,uid)){
+            return "Cancelled";
+        }
+        return "Fail";
+    }
 }
