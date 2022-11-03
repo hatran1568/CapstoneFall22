@@ -148,41 +148,6 @@ function AddActivityModal(props) {
               Hãy chọn một địa điểm hoặc thêm một hoạt động của bạn.
             </div>
             <div className={`row ${style.addForm}`}>
-              {/* <label className="col-4">
-                Date:
-                <select
-                  className={`form-select`}
-                  name="date"
-                  onChange={(e) => {
-                    inputField.date = e.target.value;
-                  }}
-                >
-                  {allDates.map((date) => (
-                    <option
-                      className="form-control"
-                      value={date.toISOString().split("T")[0]}
-                      key={date.toISOString().split("T")[0]}
-                    >
-                      {date.toISOString().split("T")[0]}
-                    </option>
-                  ))}
-                </select>
-              </label> */}
-              {/* <label className="col-4">
-                Ngày
-                <input
-                  type="date"
-                  className="form-control"
-                  min={minDate}
-                  max={maxDate}
-                  onChange={(e) => {
-                    inputField.date = e.target.value;
-                  }}
-                  defaultValue={minDate}
-                  lang="vi"
-                  required
-                />
-              </label> */}
               <label className="col-4">
                 Ngày:
                 <DatePicker

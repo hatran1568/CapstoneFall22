@@ -116,7 +116,9 @@ class TripDetail extends Component {
                             icon={faCircleExclamation}
                             className={style.popoverIcon}
                           />
-                          <div>This conflicts with other activities</div>
+                          <div>
+                            Hoạt động này trùng thời gian với hoạt động khác.
+                          </div>
                         </Popover.Body>
                       </Popover>
                     }

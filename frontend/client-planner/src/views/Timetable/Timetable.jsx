@@ -282,6 +282,20 @@ class Timetable extends Component {
       this.state.trip.endDate
     );
     var allMonths = this.getAllMonths(allDates);
+    const vietMonths = {
+      January: "Tháng Một",
+      February: "Tháng Hai",
+      March: "Tháng Ba",
+      April: "Tháng Tư",
+      May: "Tháng Năm",
+      June: "Tháng Sáu",
+      July: "Tháng Bảy",
+      August: "Tháng Tám",
+      September: "Tháng Chín",
+      October: "Tháng Mười",
+      November: "Tháng Mười Một",
+      December: "Tháng Mười Hai",
+    };
     return (
       <>
         <TripDetailTabs />
@@ -322,7 +336,7 @@ class Timetable extends Component {
               <div className={style.daysBox}>
                 {allMonths.map((month) => (
                   <div key={month}>
-                    <div className={style.month}>{month}</div>
+                    <div className={style.month}>{vietMonths[month]}</div>
                     {this.getAllDatesOfMonth(allDates, month).map((date) => (
                       <a
                         href=""
