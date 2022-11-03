@@ -189,7 +189,7 @@ const POIDetails = () => {
 
   if (commented) {
     ratingInput = (
-      <MDBCol className='mt-3'>
+      <MDBCol>
         <p className='fs-3 mb-1'>Edit your feedback:</p>
         <StarRatings
           numberOfStars={5}
@@ -216,7 +216,7 @@ const POIDetails = () => {
     );
   } else {
     ratingInput = (
-      <MDBCol className='mt-3'>
+      <MDBCol>
         <p className='fs-3 mb-1'>Write a feedback:</p>
         <StarRatings
           numberOfStars={5}
@@ -342,15 +342,15 @@ const POIDetails = () => {
             </MDBRow>
           </MDBCol>
           <MDBCol>
-            <MDBRow>
+            {ratingInput}
+            <MDBRow className='mt-4'>
               <p className='fs-4 fw-bold'>Your review:</p>
             </MDBRow>
             {userRating.length > 0 ? userRating : <p>You haven't reviewed this place yet.</p>}
-            <MDBRow>
+            <MDBRow className='mt-5'>
               <p className='fs-4 fw-bold'>Others' review:</p>
             </MDBRow>
             {poiRatings.length > 0 ? poiRatings : <p>Other people haven't reviewed this place yet.</p>}
-            {ratingInput}
           </MDBCol>
         </MDBRow>
       </MDBContainer>
