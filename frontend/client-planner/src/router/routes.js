@@ -55,9 +55,11 @@ export default function RootRoutes() {
           <Route path='/SearchResults' element={<SearchResults />} />
           <Route path='/poi' element={<POIDetails />} />
         </Route>
-        <Route path='/blog/list' element={<ProSidebarProvider><AdminSidebar props={<BlogList/>}/></ProSidebarProvider>} />
-        <Route path='/blog/update' element={<ProSidebarProvider><AdminSidebar props={<BlogAddUpdate/>}/></ProSidebarProvider>} />
-        <Route path='/admin' element={<ProSidebarProvider><AdminSidebar/></ProSidebarProvider>} />
+        <Route element={<RequireAuth allowedRoles={["Admin"]} />}>
+          <Route path='/blog/list' element={<ProSidebarProvider><AdminSidebar props={<BlogList/>}/></ProSidebarProvider>} />
+          <Route path='/blog/update' element={<ProSidebarProvider><AdminSidebar props={<BlogAddUpdate/>}/></ProSidebarProvider>} />
+          <Route path='/admin' element={<ProSidebarProvider><AdminSidebar/></ProSidebarProvider>} />
+        </Route>
         {/*Routes that don't need a nav bar go out here.*/}
         
       </Routes>
