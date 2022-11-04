@@ -68,13 +68,13 @@ const NavBar = () => {
                 </MDBDropdownToggle>
                 <MDBDropdownMenu>
                   <MDBDropdownItem link href="/profile">
-                    Profile
+                    Hồ sơ cá nhân
                   </MDBDropdownItem>
                   <MDBDropdownItem link href="/change-password">
-                    Change password
+                    Đổi mật khẩu
                   </MDBDropdownItem>
                   <MDBDropdownItem link href="/" onClick={handleLogout}>
-                    Logout
+                    Đăng xuất
                   </MDBDropdownItem>
                 </MDBDropdownMenu>
               </MDBDropdown>
@@ -82,7 +82,7 @@ const NavBar = () => {
           ) : (
             <MDBNavbarItem>
               <MDBBtn href="/login" color="info">
-                Login
+                Đăng nhập
               </MDBBtn>
             </MDBNavbarItem>
           )}

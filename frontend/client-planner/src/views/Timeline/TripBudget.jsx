@@ -154,12 +154,12 @@ class TripBudget extends Component {
 
   toLongDate = (date) => {
     var options = {
-      month: "short",
+      month: "numeric",
       day: "numeric",
       year: "numeric",
     };
     var today = new Date(date);
-    return today.toLocaleDateString("en-US", options);
+    return today.toLocaleDateString("vi", options);
   };
   
   //Filter
@@ -191,11 +191,11 @@ class TripBudget extends Component {
     const filter = this.state.currentFilter;
     const expenseId = event.currentTarget.id;
     confirm({
-      title: "Are you sure to delete this expense?",
-      content: "The expense will be deleted",
-      okText: "Yes",
+      title: "Bạn có chắc mình muốn xóa chi tiêu này không?",
+      content: "Chi tiêu này sẽ bị xóa",
+      okText: "Có",
       okType: "danger",
-      cancelText: "No",
+      cancelText: "Không",
       onOk: async () => {
         const id = window.location.href.split('/')[4];
         await axios.delete(`http://localhost:8080/api/expense/` + expenseId, {});
@@ -229,15 +229,15 @@ class TripBudget extends Component {
     const progressBar = [];
     if (expenseRate >= 100) {
       progressBar.push(<Progress className={style.progressBar} trailColor="rgb(219, 219, 219)" strokeColor="rgb(255, 99, 132)" showInfo={false} percent={expenseRate}/>)
-      progressBar.push(<span className={style.budgetExceed}>You have exceeded the budget by {exceedExpense}%</span>)
+      progressBar.push(<span className={style.budgetExceed}>Bạn đã quá ngân sách {exceedExpense}%</span>)
     }
     else if (expenseRate > 80) {
       progressBar.push(<Progress className={style.progressBar} trailColor="rgb(219, 219, 219)" strokeColor="rgb(255, 182, 10)" showInfo={false} percent={expenseRate}/>)
-      progressBar.push(<span className={style.budgetWarning}>You are at {expenseRate}% of the set budget</span>)
+      progressBar.push(<span className={style.budgetWarning}>Bạn đang ở {expenseRate}% ngân sách</span>)
     }
     else if (expenseRate <= 80) {
       progressBar.push(<Progress className={style.progressBar} trailColor="rgb(219, 219, 219)" strokeColor="rgb(82, 196, 26)" showInfo={false} percent={expenseRate}/>)
-      progressBar.push(<span className={style.budgetNormal}>You are at {expenseRate}% of the set budget</span>)
+      progressBar.push(<span className={style.budgetNormal}>Bạn đang ở {expenseRate}% ngân sách</span>)
     }
     //Expenses
     const expenseBox = [];
@@ -270,20 +270,20 @@ class TripBudget extends Component {
     if (!this.state.dataLoaded)
     return (
       <div>
-        <h1> Please wait some time.... </h1>{" "}
+        <h1> Vui lòng đợi.... </h1>{" "}
       </div>
     );
     if (this.state.tripIdLoaded)
       if (localStorage.getItem("id") == null)
         return(
           <div className={style.errorText}>
-            <h1> Log in to manage your expenses </h1>{" "}
+            <h1> Đăng nhập để quản lí chi phí </h1>{" "}
           </div>
         )
       else if (localStorage.getItem("id") != this.state.tripUser)
         return(
           <div className={style.errorText}>
-            <h1> You cannot manage expenses of a trip not yours </h1>{" "}
+            <h1> Không thể quản lí chi phí của một chuyến đi không phải của bạn </h1>{" "}
           </div>
         )
     document.title = this.state.trip.name + " | Tripplanner";
@@ -311,16 +311,16 @@ class TripBudget extends Component {
         </div>
         <TripDetailTabs></TripDetailTabs>
         <MDBContainer className={style.mainContainer}>
-          <h1>Trip Budget</h1><br/>
+          <h1>Ngân sách chuyến đi</h1><br/>
           <MDBCard className={style.budgetContainer}>
             <MDBCardBody>
-              <span className={style.expenseText}>Expenses: {formatter.format(this.state.totalBudget)}</span>
-              <span className={style.budgetText}>Set Budget: {formatter.format(this.state.trip.budget)}</span>
+              <span className={style.expenseText}>Chi tiêu: {formatter.format(this.state.totalBudget)}</span>
+              <span className={style.budgetText}>Ngân sách: {formatter.format(this.state.trip.budget)}</span>
               <br/>{progressBar}
               <ModalGraph props={graphProps}/>
             </MDBCardBody>
           </MDBCard><br/>
-          <h2>Expenses</h2>
+          <h2>Các chi tiêu</h2>
           <MDBRow className={style.btnGroup}>
             <MDBCol md={4} className={style.expenseAdd}>
               <AddExpenseModal refreshHandler={() => this.refreshHandler()}/>
@@ -328,14 +328,14 @@ class TripBudget extends Component {
             <MDBCol md={4} className={style.expenseFilter}>            
               <Dropdown>
                 <Dropdown.Toggle variant="info">
-                  <FontAwesomeIcon icon="filter"/><span id="filterDropdown"> Filter: By Date</span>
+                  <FontAwesomeIcon icon="filter"/><span id="filterDropdown"> Bộ lọc: Theo ngày</span>
                 </Dropdown.Toggle>
 
                 <Dropdown.Menu>
-                  <Dropdown.Item onClick={this.filterChanged} id={0} active name="By date">By date</Dropdown.Item>
-                  <Dropdown.Item onClick={this.filterChanged} id={1} name="Amount: High to low">Amount: High to low</Dropdown.Item>
-                  <Dropdown.Item onClick={this.filterChanged} id={2} name="Amount: Low to high">Amount: Low to high</Dropdown.Item>
-                  <Dropdown.Item onClick={this.filterChanged} id={3} name="By category">By category</Dropdown.Item>
+                  <Dropdown.Item onClick={this.filterChanged} id={0} active name="By date">Theo ngày</Dropdown.Item>
+                  <Dropdown.Item onClick={this.filterChanged} id={1} name="Amount: High to low">Giá: Cao đến thấp</Dropdown.Item>
+                  <Dropdown.Item onClick={this.filterChanged} id={2} name="Amount: Low to high">Giá: Thấp đến cao</Dropdown.Item>
+                  <Dropdown.Item onClick={this.filterChanged} id={3} name="By category">Theo danh mục</Dropdown.Item>
                 </Dropdown.Menu>
               </Dropdown>
             </MDBCol>
