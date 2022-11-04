@@ -173,7 +173,7 @@ class BlogAddUpdate extends Component {
           "Content-Type": "application/json",
         },
       }).then(function (response) {
-        
+        window.location.href = "./list";
     });
     };
     const titleChanged = (e) => {
@@ -207,10 +207,11 @@ class BlogAddUpdate extends Component {
     }
     return (
       <MDBContainer className={style.mainContainer}>
+        <h2 style={{'textAlign':'center'}}>Cập nhật Blog</h2>
         <MDBCard className={style.btnBar}>
           <MDBCardBody>
             <MDBBtn color="info" onClick={handleClick} className={style.leftBtn}>
-              Change Thumbnail
+              Thay đổi ảnh nền
             </MDBBtn>
             <input
               type="file"
@@ -219,12 +220,12 @@ class BlogAddUpdate extends Component {
               onChange={onFileChange}
               style={{ display: "none" }}
             />
-            <span className={style.autosave}>Automatically saves every 1 minute.</span>
+            <span className={style.autosave}>Tự động lưu sau mỗi phút</span>
             <MDBBtn color="info" onClick={publishBlog} className={style.rightBtn}>
-              Publish
+              Đăng bài
             </MDBBtn>
             <MDBBtn color="info" onClick={saveDraft} className={style.rightBtn}>
-              Save as Draft
+              Lưu bản nháp
             </MDBBtn>
           </MDBCardBody>
         </MDBCard>

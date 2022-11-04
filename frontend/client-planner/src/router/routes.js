@@ -1,5 +1,6 @@
 import React from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { ProSidebarProvider } from 'react-pro-sidebar';
 import Login from "../views/Login/Login";
 import Signup from "../views/Login/Signup";
 import OAuthHandler from "../views/Login/OauthHandler";
@@ -23,6 +24,8 @@ import RequestResetPassword from "../views/Login/RequestResetPassword";
 import ResetPasswordConfirm from "../views/Login/ResetPasswordConfirm";
 import BlogAddUpdate from "../views/Blog/BlogAddUpdate";
 import CollectionDetail from "../views/CollectionDetail/CollectionDetail";
+import AdminSidebar from "../components/Admin/SideBar"
+import BlogList from "../views/Blog/BlogList";
 
 export default function RootRoutes() {
   return (
@@ -52,8 +55,9 @@ export default function RootRoutes() {
           <Route path='/SearchResults' element={<SearchResults />} />
           <Route path='/poi' element={<POIDetails />} />
         </Route>
-
-        <Route path='/blog/update' element={<BlogAddUpdate />} />
+        <Route path='/blog/list' element={<ProSidebarProvider><AdminSidebar props={<BlogList/>}/></ProSidebarProvider>} />
+        <Route path='/blog/update' element={<ProSidebarProvider><AdminSidebar props={<BlogAddUpdate/>}/></ProSidebarProvider>} />
+        <Route path='/admin' element={<ProSidebarProvider><AdminSidebar/></ProSidebarProvider>} />
         {/*Routes that don't need a nav bar go out here.*/}
         
       </Routes>

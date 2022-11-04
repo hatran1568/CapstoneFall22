@@ -35,7 +35,7 @@ class POIBoxLarge extends React.Component {
                             <a href={poiLink} className={style.poiName}><b>{data.name}</b></a><br/>
                             <Rating ratings={data.googleRating}/><br/>
                             <span>{substr}</span><br/>
-                            <b><span className={style.poiPrice}>Other travelers usually spends {data.typicalPrice}VND here</span></b>
+                            <b><span className={style.poiPrice}>Khách du lịch thường tiêu {data.typicalPrice}VND tại đây</span></b>
                         </MDBCol>
                     </MDBRow>
                 </MDBCardBody>

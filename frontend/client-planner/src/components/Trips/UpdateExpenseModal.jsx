@@ -88,7 +88,7 @@ function UpdateExpenseModal(props) {
         <MDBModalDialog>
           <MDBModalContent className={style.modalContainer}>
             <MDBModalHeader>
-              <MDBModalTitle>Update Expense</MDBModalTitle>
+              <MDBModalTitle>Chỉnh sửa chi tiêu</MDBModalTitle>
               <MDBBtn
                 className="btn-close"
                 color="none"
@@ -308,7 +308,7 @@ function UpdateExpenseModal(props) {
               <br />
               <div className={style.modalBtn}>
                 <MDBBtn color="info" onClick={addExpense}>
-                  Save
+                  Lưu chi tiêu
                 </MDBBtn>
               </div>
             </MDBModalBody>

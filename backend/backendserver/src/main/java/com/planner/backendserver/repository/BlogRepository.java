@@ -1,6 +1,7 @@
 package com.planner.backendserver.repository;
 
 import com.planner.backendserver.DTO.request.BlogDetailsDTO;
+import com.planner.backendserver.DTO.request.BlogListDTO;
 import com.planner.backendserver.DTO.request.BlogNearbyDTO;
 import com.planner.backendserver.entity.Blog;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -15,7 +16,18 @@ import java.util.ArrayList;
 public interface BlogRepository  extends JpaRepository<Blog,Integer> {
     @Query("SELECT b from Blog b where b.title like  CONCAT('%',:keyword,'%') AND b.status = 'PUBLISHED'")
     public ArrayList<Blog> getBlogsByKeyword(String keyword);
-
+    @Query(
+            value = "SELECT b.blog_id as blogId, b.date_created as dateCreated, b.date_modified as dateModified, b.status, b.thumbnail, b.title, u.name as username, u.avatar\n" +
+                    "FROM blog b LEFT JOIN user u ON b.user_id = u.user_id\n" +
+                    "WHERE b.title LIKE CONCAT('%',?1,'%') AND b.status != 'DELETED' LIMIT ?2, ?3",
+            nativeQuery = true)
+    ArrayList<BlogListDTO> getBlogsByKeywordAll(String keyword, int start, int count);
+    @Query(
+            value = "SELECT COUNT(*)\n" +
+                    "FROM blog b LEFT JOIN user u ON b.user_id = u.user_id\n" +
+                    "WHERE b.title LIKE CONCAT('%',?1,'%') AND b.status != 'DELETED' LIMIT ?2, ?3",
+            nativeQuery = true)
+    Integer getBlogsByKeywordAllCount(String keyword, int start, int count);
     @Query(
             value = "SELECT b.blog_id as blogId, b.date_modified as dateModified, b.content, b.status, b.thumbnail, b.title, u.user_id as userId, u.name as username, u.avatar FROM blog b LEFT JOIN user u ON b.user_id = u.user_id WHERE b.blog_id = ?1",
             nativeQuery = true)
@@ -46,9 +58,36 @@ public interface BlogRepository  extends JpaRepository<Blog,Integer> {
     @Modifying
     @Transactional
     @Query(
-            value = "INSERT INTO blog ( content, date_created, date_modified, status, thumbnail, title, user_id)\n" +
-                    "VALUES (?1, ?2, ?3, ?4, ?5, ?6, ?7);",
+            value = "INSERT INTO blog ( content, title, thumbnail, date_created, date_modified, status, user_id)\n" +
+                    "VALUES (' ', ' ', ' ', ?1, ?2, 'DRAFT', ?3);",
             nativeQuery = true)
-    void addBlog(String content, Timestamp dateCreated, Timestamp dateModified, String status, String thumbnail, String title, int userId);
-
+    void addBlog(Timestamp dateCreated, Timestamp dateModified, int userId);
+    @Query(
+            value = "SELECT blog_id as blogId FROM blog ORDER BY blog_id DESC LIMIT 1",
+            nativeQuery = true)
+    int getLastestBlog();
+    @Modifying
+    @Transactional
+    @Query(
+            value = "UPDATE blog\n" +
+                    "SET status = 'HIDDEN'\n" +
+                    "WHERE blog_id = ?1",
+            nativeQuery = true)
+    void hideBlog(int blogId);
+    @Modifying
+    @Transactional
+    @Query(
+            value = "UPDATE blog\n" +
+                    "SET status = 'PUBLISHED'\n" +
+                    "WHERE blog_id = ?1",
+            nativeQuery = true)
+    void unhideBlog(int blogId);
+    @Modifying
+    @Transactional
+    @Query(
+            value = "UPDATE blog\n" +
+                    "SET status = 'DELETED'\n" +
+                    "WHERE blog_id = ?1",
+            nativeQuery = true)
+    void deleteBlog(int blogId);
 }

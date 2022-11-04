@@ -1,6 +1,8 @@
 .mainContainer{
-  width: 70vw;
+  width: 70%;
   margin-bottom: 5vh;
+  display:inline;
+  margin-top: 5vh;
 }
 .titleInput{
   margin-bottom: 10px;
@@ -36,5 +38,5 @@
   min-height: 50vh;
 }
 .editorContent{
-  padding: 5vw;
+  padding: 5%;
 }

@@ -43,9 +43,9 @@ function AddExpenseModal(props) {
   //Add Expense
   const addExpense = (event) => {
     const id = window.location.href.split("/")[4];
-    if (document.getElementById("modalDesc").value == null)
+    if (document.getElementById("modalDesc").value == null || document.getElementById("modalDesc").value == "")
       document.getElementById("modalDesc").value = " ";
-    if (document.getElementById("modalAmount").value == "") {
+    if (document.getElementById("modalAmount").value == "" || document.getElementById("modalAmount").value == null) {
       document.getElementById("errorMessage").innerHTML =
         "Please enter an amount.";
     } else if (currentCat == 0)
@@ -84,13 +84,13 @@ function AddExpenseModal(props) {
   return (
     <span>
       <MDBBtn color="info" onClick={toggleShow}>
-        Add Expense
+        Thêm chi tiêu
       </MDBBtn>
       <MDBModal show={basicModal} setShow={setBasicModal} tabIndex="-1">
         <MDBModalDialog>
           <MDBModalContent className={style.modalContainer}>
             <MDBModalHeader>
-              <MDBModalTitle>Add Expense</MDBModalTitle>
+              <MDBModalTitle>Thêm chi tiêu</MDBModalTitle>
               <MDBBtn
                 className="btn-close"
                 color="none"
@@ -304,7 +304,7 @@ function AddExpenseModal(props) {
               <br />
               <div className={style.modalBtn}>
                 <MDBBtn color="info" onClick={addExpense}>
-                  Save
+                  Lưu chi tiêu
                 </MDBBtn>
               </div>
             </MDBModalBody>

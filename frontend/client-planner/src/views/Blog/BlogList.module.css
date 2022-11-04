@@ -1,0 +1,61 @@
+.bodyContainer{
+  margin: 0px;
+  margin-top: 10vh;
+}
+.tableHead{
+  color:white;
+  background-color: rgb(17, 0, 42);
+}
+.createBtn{
+  margin-bottom: 10px;
+  display: inline;
+}
+.avatar{
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+}
+.thumbnail{
+  width: 120px;
+  height: 80px;
+  border-radius: 10px;
+  object-fit: cover;
+}
+.tableTitle{
+  max-width: 450px !important;
+}
+.tableTitleData{
+  max-width: 450px !important;
+  text-decoration: none;
+  color: rgb(0, 174, 232);
+}
+.tableTitleData:hover{
+  cursor: pointer;
+  color: rgb(27, 27, 27);
+}
+.tableDate{
+  width: 150px !important;
+}
+.tableAuthor{
+  width: 200px !important;
+}
+.tableStatus{
+  width: 150px !important;
+}
+.tableIcons{
+  font-size: 20px;
+  margin: 5px;
+  color: rgb(0, 174, 232);
+}
+.tableIcons:hover{
+  color: black;
+}
+.tableActions{
+  width: 200px !important;
+}
+.searchBar{
+  margin-bottom: 10px;
+}
+.tableDataGrey{
+  background-color: rgb(243, 242, 242);
+}
