@@ -154,12 +154,12 @@ class TripBudget extends Component {
 
   toLongDate = (date) => {
     var options = {
-      month: "short",
+      month: "numeric",
       day: "numeric",
       year: "numeric",
     };
     var today = new Date(date);
-    return today.toLocaleDateString("en-US", options);
+    return today.toLocaleDateString("vi", options);
   };
   
   //Filter
