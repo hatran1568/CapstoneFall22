@@ -133,7 +133,7 @@ function HomePage() {
     document.getElementById("tripNameInput").value = "";
     document.getElementById("startDateInput").value = null;
     document.getElementById("endDateInput").value = null;
-    document.getElementById("errorEmptyPlan").innerHTML = "";
+    document.getElementById("errorEmptyPlan1").innerHTML = "";
   };
   const submitTrip = (event) => {
     if (
@@ -142,9 +142,12 @@ function HomePage() {
       !document.getElementById("startDateInput").value ||
       !document.getElementById("endDateInput").value
     ) {
-      document.getElementById("errorEmptyPlan").innerHTML =
+      document.getElementById("errorEmptyPlan1").innerHTML =
         "Please enter all fields.";
-    } else
+    } 
+    else if (document.getElementById("startDateInput").value > document.getElementById("endDateInput").value)
+      document.getElementById("errorEmptyPlan1").innerHTML = "Please enter valid dates.";
+    else
       axios({
         method: "post",
         url: "http://localhost:8080/trip/createTrip",
@@ -491,7 +494,7 @@ function HomePage() {
                     className={style.datepicker}
                   />
                 </MDBCol>
-                <div id="errorEmptyPlan" className={style.errorEmptyPlan}></div>
+                <div id="errorEmptyPlan1" className={style.errorEmptyPlan}></div>
               </MDBRow>
               <br />
             </MDBModalBody>

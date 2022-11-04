@@ -55,8 +55,8 @@ function AdminSidebar({props}) {
   
   return (
     <div style={{ display: 'flex', height: '100%' }}>
-      <Sidebar id="sidebar" width="350px" collapsedWidth='0px' className={style.sidebar}>
-        <Menu width="350px" collapsedWidth='0px' className={style.sidebarMenu}>
+      <Sidebar id="sidebar" width="270px" collapsedWidth='0px' className={style.sidebar}>
+        <Menu width="270px" collapsedWidth='0px' className={style.sidebarMenu}>
           <MDBNavbarBrand href="/" className="me-0">
             <p className="mb-0 d-flex align-items-center">
               <span className="fs-3 me-2">TPS</span>
@@ -91,7 +91,7 @@ function AdminSidebar({props}) {
                   <img src={user.avatar} className={style.userAvatar}/>
                   <span className={style.username}>{user.name}</span>
                 </MDBDropdownToggle>
-                Đã đăng nhập bằng Admin<br/>
+                Đã đăng nhập bằng tài khoản Admin<br/>
                 Nếu đây không phải bạn, đăng xuất ngay lập tức
                 <MDBDropdownMenu>
                   <MDBDropdownItem link href="/profile">

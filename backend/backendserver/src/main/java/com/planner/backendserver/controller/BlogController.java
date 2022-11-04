@@ -146,11 +146,11 @@ public class BlogController {
             String thumbnail = " ";
             String content = " ";
             String title = " ";
-            if (blog.getThumbnail() != null)
+            if (blog.getThumbnail().length() > 0)
                 thumbnail = blog.getThumbnail();
-            if (blog.getContent() != null)
+            if (blog.getContent().length() > 0)
                 content = blog.getContent();
-            if (blog.getTitle() != null)
+            if (blog.getTitle().length() > 0)
                 title = blog.getTitle();
 
             blogRepo.updateBlog(blog.getBlogId(), thumbnail, title, blog.getStatus(), date, content);

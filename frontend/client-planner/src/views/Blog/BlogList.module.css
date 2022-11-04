@@ -59,3 +59,11 @@
 .tableDataGrey{
   background-color: rgb(243, 242, 242);
 }
+.navItem{
+  text-decoration: none;
+  color: black;
+}
+.navItem:hover{
+  text-decoration: underline;
+  color: rgb(0, 170, 255);
+}

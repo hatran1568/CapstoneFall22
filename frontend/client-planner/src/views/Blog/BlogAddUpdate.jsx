@@ -20,6 +20,10 @@ import {
   MDBIcon,
   MDBTextArea
 } from "mdb-react-ui-kit";
+import {
+  faAngleRight,
+} from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import style from "./BlogAddUpdate.module.css";
 class BlogAddUpdate extends Component {
   constructor(props) {
@@ -53,6 +57,9 @@ class BlogAddUpdate extends Component {
       if (document.getElementById("blogTitleInput").value != null && this.state.dataChanged) {
         const htmlPuri = draftToHtmlPuri(
         convertToRaw(this.state.editorState.getCurrentContent()));
+        var titleValue = " ";
+        if (document.getElementById("blogTitleInput").value != null || document.getElementById("blogTitleInput").value != "")
+          titleValue = document.getElementById("blogTitleInput").value;
         axios({
           method: "post",
           url: "http://localhost:8080/api/blog/update",
@@ -61,7 +68,7 @@ class BlogAddUpdate extends Component {
             content: htmlPuri,
             status: "DRAFT",
             thumbnail: this.state.thumbnail,
-            title: document.getElementById("blogTitleInput").value,
+            title: titleValue,
             userId: localStorage.getItem("id"),
           },
           headers: {
@@ -129,7 +136,7 @@ class BlogAddUpdate extends Component {
       }).then(response => 
         this.setState({
           thumbnail: response.data,
-        })
+        }),
       );
     };
 
@@ -137,6 +144,9 @@ class BlogAddUpdate extends Component {
     const publishBlog = (e) => {
       const queryParams = new URLSearchParams(window.location.search);
       const id = queryParams.get("id");
+      var titleValue = " ";
+      if (document.getElementById("blogTitleInput").value != null || document.getElementById("blogTitleInput").value != "")
+        titleValue = document.getElementById("blogTitleInput").value;
       axios({
         method: "post",
         url: "http://localhost:8080/api/blog/update",
@@ -145,7 +155,7 @@ class BlogAddUpdate extends Component {
           content: htmlPuri,
           status: "PUBLISHED",
           thumbnail: this.state.thumbnail,
-          title: document.getElementById("blogTitleInput").value,
+          title: titleValue,
           userId: localStorage.getItem("id"),
         },
         headers: {
@@ -158,6 +168,9 @@ class BlogAddUpdate extends Component {
     const saveDraft = (e) => {
       const queryParams = new URLSearchParams(window.location.search);
       const id = queryParams.get("id");
+      var titleValue = " ";
+      if (document.getElementById("blogTitleInput").value != null || document.getElementById("blogTitleInput").value != "")
+        titleValue = document.getElementById("blogTitleInput").value;
       axios({
         method: "post",
         url: "http://localhost:8080/api/blog/update",
@@ -166,7 +179,7 @@ class BlogAddUpdate extends Component {
           content: htmlPuri,
           status: "DRAFT",
           thumbnail: this.state.thumbnail,
-          title: document.getElementById("blogTitleInput").value,
+          title: titleValue,
           userId: localStorage.getItem("id"),
         },
         headers: {
@@ -201,12 +214,19 @@ class BlogAddUpdate extends Component {
           thumbnail: this.state.blog.thumbnail,
           dataLoaded: false,
         });
+        if (this.state.blog.thumbnail == " ")
+        this.setState({
+          thumbnail: "https://twimg0-a.akamaihd.net/a/1350072692/t1/img/front_page/jp-mountain@2x.jpg"
+        })
       }
       document.getElementById("blogTitleInput").style.height = "5px";
       document.getElementById("blogTitleInput").style.height = (document.getElementById("blogTitleInput").scrollHeight)+"px";
     }
     return (
       <MDBContainer className={style.mainContainer}>
+        <div className={style.nav}>
+          <a className={style.navItem} href="./list"><b>Quản lí blog</b></a><FontAwesomeIcon className={style.arrowIcon} icon={faAngleRight}/><b>Chỉnh sửa blog</b>
+        </div>
         <h2 style={{'textAlign':'center'}}>Cập nhật Blog</h2>
         <MDBCard className={style.btnBar}>
           <MDBCardBody>
