@@ -4,6 +4,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import DestinationSearchBar from "../../components/DestinationSearchBar/DestinationSearchBar";
 import {
   MDBBtn,
   MDBBtnGroup,
@@ -28,6 +29,8 @@ import {
   MDBProgressBar,
   MDBCollapse,
   MDBCheckbox,
+  MDBSpinner,
+  MDBIcon,
 } from "mdb-react-ui-kit";
 import { over } from "stompjs";
 import SockJS from "sockjs-client";
@@ -38,8 +41,7 @@ function HomePage() {
   const navigate = useNavigate();
   const [basicModal, setBasicModal] = useState(false);
   let loggedInUser = localStorage.getItem("id");
-  if (loggedInUser == null)
-    loggedInUser = -1;
+  if (loggedInUser == null) loggedInUser = -1;
   const [centredModal, setCentredModal] = useState(false);
   const [isGenerating, setIsGenerating] = useState(false);
   const [progress, setProgress] = useState(0);
@@ -47,7 +49,9 @@ function HomePage() {
   const [tripCount, setTripCount] = useState(0);
   const [trips, setTrips] = useState();
   const toggleShowMore = () => setShowShow(!showShow);
-
+  const [request, setRequest] = useState();
+  const [port, setPort] = useState();
+  const [isFirst, setIsFirst] = useState(true);
   var stompClient = null;
   const connect = function (userId, port) {
     if ((userId, port)) {
@@ -60,7 +64,9 @@ function HomePage() {
   const onError = (err) => {
     console.log(err);
   };
-  useEffect(() => {}, []);
+  useEffect(() => {
+    checkGenerating();
+  }, []);
   const onConnected = () => {
     console.log("onConnected");
     // Subscribe to the Public Topic
@@ -127,6 +133,13 @@ function HomePage() {
   const toggleOffGenerate = () => {
     setCentredModal(false);
   };
+  useEffect(() => {
+    const interval = setInterval(() => {
+      checkGenerating();
+    }, 5000);
+
+    return () => clearInterval(interval);
+  }, []);
   const toggleShow = () => {
     setBasicModal(!basicModal);
     document.getElementById("budgetInput").value = "";
@@ -135,6 +148,61 @@ function HomePage() {
     document.getElementById("endDateInput").value = null;
     document.getElementById("errorEmptyPlan1").innerHTML = "";
   };
+
+  useEffect(() => {
+    if (isFirst) {
+      console.log(isFirst);
+      setIsFirst(false);
+      return;
+    }
+    if (!isGenerating) {
+      toast(" Your trip is ready!!", {
+        position: "top-center",
+        autoClose: 5000,
+        hideProgressBar: true,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: 0,
+        theme: "light",
+      });
+    }
+    async function getExistingTrips() {
+      if (localStorage.getItem("token")) {
+        await axios
+          .get(
+            "http://localhost:8080/trip/get-total-trip/" +
+              localStorage.getItem("id"),
+            {
+              headers: {
+                "Content-Type": "application/json",
+              },
+            }
+          )
+          .then((response) => {
+            console.log(response.data);
+            setTripCount(response.data);
+          });
+        await axios
+          .get(
+            "http://localhost:8080/trip/get-trip-3/" +
+              localStorage.getItem("id"),
+            {
+              headers: {
+                "Content-Type": "application/json",
+              },
+            }
+          )
+          .then((response) => {
+            console.log("COunt" + response.data);
+
+            setTrips(response.data);
+          });
+      }
+    }
+
+    getExistingTrips();
+  }, [isGenerating]);
   const submitTrip = (event) => {
     if (
       document.getElementById("budgetInput").value == "" ||
@@ -185,16 +253,88 @@ function HomePage() {
       stompClient = null;
     }
   }, [progress != 100]);
+  const cancelGenerating = () => {
+    axios({
+      method: "post",
+      url: "http://localhost:8080/trip/cancel/" + localStorage.getItem("id"),
+
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: "Bearer " + localStorage.getItem("token"),
+      },
+    })
+      .then(function (response) {
+        setIsGenerating(false);
+        toast.success("🦄 Canceled!", {
+          position: "top-center",
+          autoClose: 5000,
+          hideProgressBar: true,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+        });
+      })
+      .catch(function (err) {
+        toast.error("🦄Cancel Failed! Try to reload the page!", {
+          position: "top-center",
+          autoClose: 5000,
+          hideProgressBar: true,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+        });
+      });
+  };
+  const checkGenerating = () => {
+    axios({
+      method: "get",
+      url:
+        "http://localhost:8080/trip/checkGenerating/" +
+        localStorage.getItem("id"),
+
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: "Bearer " + localStorage.getItem("token"),
+      },
+    }).then(function (response) {
+      if (response.data == true) {
+        setIsGenerating(true);
+        console.log(isGenerating);
+      } else {
+        setIsGenerating(false);
+        console.log(isGenerating);
+      }
+      //connect(id,response.data);
+    });
+  };
+  const setSelectedPOI = (item) => {
+    document.getElementById("destination").value = item.id;
+  };
   const submitGenerateTrip = (event) => {
+    const startDate = new Date(
+      document.getElementById("startDateGenerateInput").value
+    );
+    const endDate = new Date(
+      document.getElementById("endDateGenerateInput").value
+    );
     if (
       document.getElementById("budgetGenerateInput").value == "" ||
-      document.getElementById("tripNameGenerateInput").value == "" ||
+      document.getElementById("destination").value == "-1" ||
       !document.getElementById("startDateGenerateInput").value ||
       !document.getElementById("endDateGenerateInput").value
     ) {
       document.getElementById("errorEmptyPlan").innerHTML =
         "Please enter all fields.";
     } else {
+      if (endDate < startDate) {
+        document.getElementById("errorEmptyPlan").innerHTML =
+          "Please enter valid date.";
+        return;
+      }
       let preferences = [];
       for (let i = 1; i <= 9; i++) {
         let value = document.getElementById(i);
@@ -222,7 +362,8 @@ function HomePage() {
         },
       }).then(function (response) {
         setIsGenerating(true);
-        connect(localStorage.getItem("id"), response.data);
+        setRequest(response.data.id);
+        setPort(response.data.port);
         console.log(response.data);
         //connect(id,response.data);
       });
@@ -247,9 +388,15 @@ function HomePage() {
                   Ease your head on decisions.
                 </p>
                 <MDBBtnGroup className={style.btn}>
-                  <MDBBtn color="info" onClick={toggleShowGenerate}>
-                    Generate Trip
-                  </MDBBtn>
+                  {isGenerating ? (
+                    <MDBBtn color="info" onClick={toggleShowGenerate}>
+                      Chuyến đi của bạn sắp hoàn thành!
+                    </MDBBtn>
+                  ) : (
+                    <MDBBtn color="info" onClick={toggleShowGenerate}>
+                      Gợi ý chuyến đi
+                    </MDBBtn>
+                  )}
 
                   <MDBModal
                     tabIndex="-1"
@@ -259,7 +406,7 @@ function HomePage() {
                     <MDBModalDialog size="lg" centered>
                       <MDBModalContent>
                         <MDBModalHeader>
-                          <MDBModalTitle>Modal title</MDBModalTitle>
+                          <MDBModalTitle>Gợi ý chuyến đi</MDBModalTitle>
                           <MDBBtn
                             className="btn-close"
                             color="none"
@@ -269,43 +416,44 @@ function HomePage() {
 
                         {isGenerating ? (
                           <MDBModalBody>
-                            <MDBProgress height="20">
-                              <MDBProgressBar
-                                width={progress}
-                                valuemin={0}
-                                valuemax={100}
-                              >
-                                {progress + "%"}
-                              </MDBProgressBar>
-                            </MDBProgress>
+                            <div className="d-flex justify-content-center">
+                              <span> Đang tìm kiếm chuyến đi tốt nhất.</span>
+                              <MDBSpinner role="status">
+                                <span className="visually-hidden"></span>
+                              </MDBSpinner>
+                            </div>
                           </MDBModalBody>
                         ) : (
                           <MDBModalBody>
-                            <MDBRow className={style.modalInput}>
+                            <MDBRow className={""}>
                               <div className={style.formgroup}>
-                                <MDBInput
-                                  label="Trip name"
+                                <div className="form-outline"></div>
+                                <input
                                   type="text"
-                                  id="tripNameGenerateInput"
-                                  className={style.modalInput}
-                                />
+                                  id="destination"
+                                  value="-1"
+                                  hidden
+                                ></input>
+                                <DestinationSearchBar
+                                  POISelected={setSelectedPOI}
+                                ></DestinationSearchBar>
                               </div>
                             </MDBRow>
                             <br />
                             <MDBRow className={style.modalInput}>
                               <div className={style.formgroup}>
                                 <MDBInput
-                                  label="Budget"
+                                  label="Ngân sách"
                                   id="budgetGenerateInput"
                                   type="number"
-                                  className={style.modalInput}
+                                  className={""}
                                 />
                               </div>
                             </MDBRow>
                             <br />
                             <MDBRow className={style.modalInput}>
                               <MDBCol className={style.formgroup}>
-                                <h6>Start date</h6>
+                                <h6>Ngày bắt đầu</h6>
                                 <MDBInput
                                   placeholder="Select date"
                                   type="date"
@@ -314,7 +462,7 @@ function HomePage() {
                                 />
                               </MDBCol>
                               <MDBCol className={style.formgroup}>
-                                <h6>End date</h6>
+                                <h6>Ngày kết thúc</h6>
                                 <MDBInput
                                   placeholder="Select date"
                                   type="date"
@@ -331,7 +479,12 @@ function HomePage() {
                             <MDBRow className={style.modalGenerateInput}>
                               <MDBCol>
                                 <a onClick={toggleShowMore}>
-                                  Activities Preferences
+                                  Bạn muốn làm những gì trong chuyến đi{" "}
+                                  {!showShow ? (
+                                    <MDBIcon fas icon="caret-down" />
+                                  ) : (
+                                    <MDBIcon fas icon="caret-up" />
+                                  )}
                                 </a>
                               </MDBCol>
 
@@ -343,66 +496,75 @@ function HomePage() {
                                   (showShow && style.show)
                                 }
                               >
-                                <MDBCol size="3">
+                                <MDBCol size="4">
                                   <MDBCheckbox
+                                    className={style.formInput}
                                     name="ArtAndCulture"
                                     id="1"
                                     value="1"
-                                    label="Art & Culture"
+                                    label="Văn hóa, nghệ thuật"
                                   />
                                   <MDBCheckbox
+                                    className={style.formInput}
                                     name="Religion"
                                     id="3"
                                     value="3"
-                                    label="Religion"
+                                    label="Tôn giáo"
                                   />
                                   <MDBCheckbox
+                                    className={style.formInput}
                                     name="Outdoors"
                                     id="2"
                                     value="2"
-                                    label="Outdoors"
+                                    label="Hoạt động ngoài trời"
                                   />
                                 </MDBCol>
 
                                 <br />
-                                <MDBCol size="3">
+                                <MDBCol size="4">
                                   <MDBCheckbox
+                                    className={style.formInput}
                                     name="Historic&sights"
                                     id="4"
                                     value="4"
-                                    label="Historic sights"
+                                    label="Lịch sử"
                                   />
                                   <MDBCheckbox
+                                    className={style.formInput}
                                     name="Museums"
                                     id="5"
                                     value="5"
-                                    label="Museums"
+                                    label="Bảo tàng"
                                   />
                                   <MDBCheckbox
+                                    className={style.formInput}
                                     name="Beaches"
                                     id="8"
                                     value="8"
-                                    label="Beaches"
+                                    label="Bãi biển"
                                   />
                                 </MDBCol>
-                                <MDBCol size="3">
+                                <MDBCol size="4">
                                   <MDBCheckbox
+                                    className={style.formInput}
                                     name="Spas&Wellness"
                                     id="6"
                                     value="6"
                                     label="Spas & Wellness"
                                   />
                                   <MDBCheckbox
+                                    className={style.formInput}
                                     name="Shopping"
                                     id="7"
                                     value="7"
-                                    label="Shopping"
+                                    label="Mua sắm"
                                   />
                                   <MDBCheckbox
+                                    className={style.formInput}
                                     name="Nightlife"
                                     id="9"
                                     value="9"
-                                    label="Nightlife"
+                                    label="Hoạt động đêm"
                                   />
                                 </MDBCol>
                               </MDBRow>
@@ -417,9 +579,13 @@ function HomePage() {
                           >
                             Close
                           </MDBBtn>
-                          {!isGenerating && (
+                          {!isGenerating ? (
                             <MDBBtn onClick={submitGenerateTrip}>
-                              Save changes
+                              Gợi ý chuyến đi
+                            </MDBBtn>
+                          ) : (
+                            <MDBBtn onClick={cancelGenerating}>
+                              Dừng gợi ý
                             </MDBBtn>
                           )}
                         </MDBModalFooter>

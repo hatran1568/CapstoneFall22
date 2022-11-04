@@ -10,5 +10,10 @@ public class SimpleResponse {
     private String id;
     private Trip trip;
     private RequestStatus status;
+    private int userID;
     String  port;
+
+    public SimpleResponse() {
+
+    }
 }

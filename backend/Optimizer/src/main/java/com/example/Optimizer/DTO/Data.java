@@ -62,6 +62,10 @@ public class Data {
         this.minWaitingTime=0;
         this.minNumberOfDestinations=0;
         this.userId =_userId;
+        this.w1 =2;
+        this.w2=1;
+        this.w3=1;
+        this.w4 =1;
 
     }
 

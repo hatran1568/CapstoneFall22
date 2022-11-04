@@ -8,7 +8,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class POIOfCollectionDTO {
-    private int activityID;
+    private int activityId;
     private String name;
     private String address;
     private String category;

@@ -14,12 +14,12 @@ public interface TripService {
     public DetailedTripDTO getDetailedTripById(int id);
     public TripGeneralDTO getTripGeneralById(int id);
     public TripDetailDTO addTripDetail(Date date, int startTime, int endTime, int activityId, int tripId);
-    public TripDetails addCustomTripDetail(Date date, int startTime, int endTime, int tripId, String name, String address);
+    public TripDetailDTO addCustomTripDetail(Date date, int startTime, int endTime, int tripId, String name, String address);
     public void deleteDetailById(int id);
     public Optional<Double> getDistanceBetweenTwoPOIs(int from, int to);
     public TripDetailDTO getTripDetailById(int id);
     public TripDetailDTO editTripDetailById(TripDetails detail, int id);
-    public Optional<TripDetails> editCustomTripDetailById(TripDetails detail, int id);
+    public TripDetailDTO editCustomTripDetailById(TripDetails detail, int id);
     public List<TripGeneralDTO> getTripsByUser(int userId);
     public void deleteTripById(int id);
     public List<TripGeneralDTO> getLast3TripsByUser(int userId);

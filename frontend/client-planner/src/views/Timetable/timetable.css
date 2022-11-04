@@ -405,8 +405,9 @@ When it's NOT activated, the fc-button classes won't even be in the DOM.
     /* TODO: box-shadow when sticking */
   }
 .fc .fc-scrollgrid-section-header.fc-scrollgrid-section-sticky > * {
-  top: 52px; /* because border-sharing causes a gap at the top */
-  padding-top: 15px;
+  top: 51px; /* because border-sharing causes a gap at the top */
+  padding-top: 12px;
+  padding-bottom: 12px;
   border-top: none;
       /* TODO: give safari -1. has bug */
   }

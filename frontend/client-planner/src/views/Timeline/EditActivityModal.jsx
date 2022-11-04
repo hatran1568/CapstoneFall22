@@ -1,189 +1,220 @@
 import React, { Component, useState, useEffect } from "react";
-import props from "prop-types";
 import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
-import style from "./timeline.module.css";
+import style from "../Timetable/modals.module.css";
 import Rating from "../../components/POIs/Rating";
-import { ContactSupport } from "@mui/icons-material";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
 function EditActivityModal(props) {
-  const { activityEdited, allDates, tripDetail, ...rest } = props;
-  const inputField = { ...tripDetail };
-  useEffect(() => {
-    inputField.custom =
-      typeof tripDetail.masterActivity.category === "undefined";
-    inputField.startTime = getTimeFromSecs(tripDetail.startTime);
-    inputField.endTime = getTimeFromSecs(tripDetail.endTime);
-  });
-  const getTimeFromSecs = (seconds) => {
-    var date = new Date(0);
-    date.setSeconds(seconds); // specify value for SECONDS here
-    var timeString = date.toISOString().substring(11, 16);
-    return timeString;
-  };
+  const { activityEdited, allDates, tripDetail, onHide, ...rest } = props;
+  const [inputField, setInputField] = useState(
+    JSON.parse(JSON.stringify(tripDetail))
+  );
+  const [showWarningTime, setShowWarningTime] = useState(false);
+  const [showWarningName, setShowWarningName] = useState(false);
+  const [date, setDate] = useState(new Date(inputField.date));
+
   const validateInput = (event) => {
-    if (inputField.custom) {
+    if (inputField.masterActivity.custom) {
       if (inputField.masterActivity.name == "") {
-        alert("Please enter an activity name!");
+        setShowWarningName(true);
         return;
       }
     }
+    var startStr = inputField.startTime.split(":");
+    var start = +startStr[0] * 60 * 60 + +startStr[1] * 60;
+    var endStr = inputField.endTime.split(":");
+    var end = +endStr[0] * 60 * 60 + +endStr[1] * 60;
+    if (end <= start) {
+      setShowWarningTime(true);
+      return;
+    }
     activityEdited(event, inputField);
   };
+  const closeModal = () => {
+    setInputField({});
+    onHide();
+  };
   return (
-    <Modal
-      {...rest}
-      size="lg"
-      aria-labelledby="contained-modal-title-vcenter"
-      centered
-    >
-      <Modal.Body>
-        <button
-          className={`btn-close ${style.closeBtn}`}
-          onClick={props.onHide}
-        ></button>
-        {!(typeof tripDetail.masterActivity.category === "undefined") && (
-          <div className={style.activityInfo}>
-            <div className={style.poiDiv}>
-              <img
-                src={
-                  tripDetail.masterActivity.images
-                    ? tripDetail.masterActivity.images[0]
-                      ? `../${tripDetail.masterActivity.images[0].url}`
-                      : "https://picsum.photos/seed/picsum/300/200"
-                    : "https://picsum.photos/seed/picsum/300/200"
-                }
-                alt=""
-                className={style.poiImage}
-              />
-            </div>
-            <div>
-              <div style={{ fontWeight: "700", fontSize: "20px" }}>
-                {tripDetail.masterActivity.name
-                  ? tripDetail.masterActivity.name
-                  : ""}
-              </div>
-              <div className={style.ratingDiv}>
-                {tripDetail.masterActivity.googleRate ? (
-                  <div>
-                    <span>
-                      <Rating ratings={tripDetail.masterActivity.googleRate} />
-                    </span>
-                    <span className={style.ratingNum}>
-                      {tripDetail.masterActivity.googleRate}
-                    </span>
-                  </div>
-                ) : (
-                  ""
-                )}{" "}
-              </div>
-            </div>
-            <p className={style.poiDescription}>
-              {tripDetail.masterActivity.description
-                ? tripDetail.masterActivity.description
-                : ""}
-            </p>
-            <div className={style.linkDiv}>
-              <a
-                href={"../poi?id=" + tripDetail.masterActivity.activityId}
-                className={style.detailLink}
-              >
-                See full attraction detail
-              </a>
-            </div>
-          </div>
-        )}
-        <form className={style.editForm}>
-          {typeof tripDetail.masterActivity.category === "undefined" ? (
-            <>
-              <label className={style.customLabel}>
-                Name:
-                <input
-                  className={`form-control`}
-                  name="name"
-                  required
-                  defaultValue={inputField.masterActivity.name}
-                  onChange={(e) => {
-                    inputField.masterActivity.name = e.target.value;
-                  }}
-                />
-              </label>
-              <label className={style.customLabel}>
-                Address:
-                <input
-                  className={`form-control`}
-                  name="address"
-                  defaultValue={inputField.masterActivity.address}
-                  onChange={(e) => {
-                    inputField.masterActivity.address = e.target.value;
-                  }}
-                />
-              </label>
-            </>
-          ) : (
-            <></>
-          )}
-          <div className={`container row ${style.timeGroupDiv}`}>
-            <label className="col-4">
-              Date:
-              <select
-                className="form-select"
-                name="date"
-                onChange={(e) => {
-                  inputField.date = e.target.value;
-                }}
-                defaultValue={inputField.date}
-              >
-                {allDates.map((date) => (
-                  <option
-                    value={date.toISOString().split("T")[0]}
-                    key={date.toISOString().split("T")[0]}
-                  >
-                    {date.toISOString().split("T")[0]}
-                  </option>
-                ))}
-              </select>
-            </label>
-            <br />
-            <label className="col-4">
-              Start time:
-              <input
-                className="form-control"
-                name="start_time"
-                type="time"
-                defaultValue={getTimeFromSecs(tripDetail.startTime)}
-                onChange={(e) => {
-                  inputField.startTime = e.target.value;
-                }}
-              />
-            </label>
-            <br />
-            <label className="col-4">
-              End time:
-              <input
-                className="form-control"
-                name="end_time"
-                type="time"
-                defaultValue={getTimeFromSecs(inputField.endTime)}
-                onChange={(e) => {
-                  inputField.endTime = e.target.value;
-                }}
-              />
-            </label>
-          </div>
-        </form>
-      </Modal.Body>
-      <Modal.Footer>
-        <Button
-          onClick={(event) => validateInput(event)}
-          className={style.submitBtn}
+    <div>
+      {tripDetail !== {} && (
+        <Modal
+          {...rest}
+          size="lg"
+          aria-labelledby="contained-modal-title-vcenter"
+          centered
         >
-          Save
-        </Button>
-        <Button onClick={props.onHide} variant="outline-secondary">
-          Close
-        </Button>
-      </Modal.Footer>
-    </Modal>
+          <Modal.Body>
+            <button
+              className={`btn-close ${style.closeBtn}`}
+              onClick={props.onHide}
+            ></button>
+            {!tripDetail.masterActivity.custom ? (
+              <div className={style.activityInfo}>
+                <div className={style.poiDiv}>
+                  <img
+                    src={
+                      tripDetail.masterActivity.images
+                        ? tripDetail.masterActivity.images[0]
+                          ? `../${tripDetail.masterActivity.images[0].url}`
+                          : "https://picsum.photos/seed/picsum/300/200"
+                        : "https://picsum.photos/seed/picsum/300/200"
+                    }
+                    alt=""
+                    className={style.poiImage}
+                  />
+                </div>
+                <div>
+                  <div style={{ fontWeight: "700", fontSize: "20px" }}>
+                    {tripDetail.masterActivity.name
+                      ? tripDetail.masterActivity.name
+                      : ""}
+                  </div>
+                  <div className={style.ratingDiv}>
+                    {tripDetail.masterActivity.googleRate ? (
+                      <div>
+                        <span>
+                          <Rating
+                            ratings={tripDetail.masterActivity.googleRate}
+                          />
+                        </span>
+                        <span className={style.ratingNum}>
+                          {tripDetail.masterActivity.googleRate}
+                        </span>
+                      </div>
+                    ) : (
+                      ""
+                    )}{" "}
+                  </div>
+                </div>
+                <p className={style.poiDescription}>
+                  {tripDetail.masterActivity.description
+                    ? tripDetail.masterActivity.description
+                    : ""}
+                </p>
+                <div className={style.linkDiv}>
+                  <a
+                    href={"../poi?id=" + tripDetail.masterActivity.activityId}
+                    className={style.detailLink}
+                  >
+                    See full attraction detail
+                  </a>
+                </div>
+              </div>
+            ) : null}
+            <form className={style.editForm}>
+              {tripDetail.masterActivity.custom ? (
+                <>
+                  <label className={style.customLabel}>
+                    Tên hoạt động:
+                    <input
+                      className={`form-control`}
+                      name="name"
+                      required
+                      defaultValue={tripDetail.masterActivity.name}
+                      onChange={(e) => {
+                        inputField.masterActivity.name = e.target.value;
+                      }}
+                    />
+                  </label>
+                  <label className={style.customLabel}>
+                    Địa chỉ:
+                    <input
+                      className={`form-control`}
+                      name="address"
+                      defaultValue={tripDetail.masterActivity.address}
+                      onChange={(e) => {
+                        inputField.masterActivity.address = e.target.value;
+                      }}
+                    />
+                  </label>
+                  <div
+                    className={
+                      showWarningName
+                        ? `${style.warningMessageName}`
+                        : `${style.warningMessageName} ${style.hide}`
+                    }
+                  >
+                    Tên hoạt động không được để trống.
+                  </div>
+                </>
+              ) : (
+                <></>
+              )}
+
+              <div className={`container row ${style.timeGroupDiv}`}>
+                <label className="col-4">
+                  Ngày:
+                  <DatePicker
+                    className="form-control"
+                    minDate={allDates[0]}
+                    maxDate={allDates[allDates.length - 1]}
+                    selected={date}
+                    onChange={(date) => {
+                      setDate(date);
+                      inputField.date = date.toISOString().split("T")[0];
+                    }}
+                    dateFormat="dd/MM/yyyy"
+                    popperPlacement="bottom-start"
+                  />
+                </label>
+                <br />
+                <label className="col-4">
+                  Giờ bắt đầu:
+                  <input
+                    className="form-control"
+                    name="start_time"
+                    type="time"
+                    defaultValue={inputField.startTime}
+                    onChange={(e) => {
+                      inputField.startTime = e.target.value;
+                    }}
+                  />
+                </label>
+                <br />
+                <label className="col-4">
+                  Giờ kết thúc:
+                  <input
+                    className="form-control"
+                    name="end_time"
+                    type="time"
+                    defaultValue={inputField.endTime}
+                    onChange={(e) => {
+                      inputField.endTime = e.target.value;
+                    }}
+                  />
+                  <div
+                    className={
+                      showWarningTime
+                        ? `${style.warningMessage}`
+                        : `${style.warningMessage} ${style.hide}`
+                    }
+                  >
+                    Thời gian kết thúc phải lớn hơn thời gian bắt đầu
+                  </div>
+                </label>
+              </div>
+            </form>
+          </Modal.Body>
+          <Modal.Footer>
+            <Button
+              onClick={(event) => validateInput(event)}
+              className={style.submitBtn}
+            >
+              Lưu
+            </Button>
+            <Button
+              onClick={() => {
+                closeModal();
+              }}
+              variant="outline-secondary"
+            >
+              Đóng
+            </Button>
+          </Modal.Footer>
+        </Modal>
+      )}
+    </div>
   );
 }
 

@@ -2,11 +2,13 @@ package com.example.Optimizer.algorithms;
 
 import com.example.Optimizer.DTO.Data;
 import com.example.Optimizer.DTO.Solution;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 
 import java.util.*;
 
 
+@Slf4j
 public class GeneticAlgorithmImplementer {
 
     private SimpMessagingTemplate template;
@@ -236,7 +238,11 @@ public class GeneticAlgorithmImplementer {
                 return Double.compare(o1.cal_fitness(), o2.cal_fitness());
             }
         });
+
         for (int j = 1; j <= 300; j++) {
+
+            if(Thread.currentThread().isInterrupted())
+                return  null;
             if(j%3==0){
                template.convertAndSendToUser(String.valueOf(data.getUserId()),"/chatroom",String.valueOf(j/3));
         }
@@ -284,8 +290,16 @@ public class GeneticAlgorithmImplementer {
             population.clear();
             population = new ArrayList<>(nextPopulation);
         }
+//        for (Solution s:
+//              results) {
+//           log.info(String.valueOf(Thread.currentThread().isInterrupted()));
+//        }
 
-        return results.get(0);
+
+
+
+        return results.get(results.size()-1);
+
     }
 
     public static <T> Set<T> newShuffledSet(Collection<T> collection) {
