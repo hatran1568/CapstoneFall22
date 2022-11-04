@@ -550,7 +550,7 @@ function HomePage() {
                                     name="Spas&Wellness"
                                     id="6"
                                     value="6"
-                                    label="Spas & Wellness"
+                                    label="Spa & Sức khỏe"
                                   />
                                   <MDBCheckbox
                                     className={style.formInput}
@@ -594,7 +594,7 @@ function HomePage() {
                   </MDBModal>
                   {/* <MDBBtn color='info'>Create&nbsp;trip</MDBBtn> */}
                   <MDBBtn color="info" onClick={toggleShow}>
-                    Create Trip
+                    Tạo chuyến đi
                   </MDBBtn>
                 </MDBBtnGroup>
               </div>
@@ -606,7 +606,7 @@ function HomePage() {
         <MDBModalDialog>
           <MDBModalContent>
             <MDBModalHeader>
-              <MDBModalTitle>Create an Empty trip</MDBModalTitle>
+              <MDBModalTitle>Tạo chuyến đi mới</MDBModalTitle>
               <MDBBtn
                 className="btn-close"
                 color="none"
@@ -615,14 +615,14 @@ function HomePage() {
             </MDBModalHeader>
             <MDBModalBody>
               <div className={style.emptyTripInfo}>
-                Creates an Empty trip. After creation, you will be redirected to
-                your trip, where you can customize it all you want.
+                Tạo ra một chuyến đi trống. Sao khi khởi tạo, bạn sẽ được chuyển tới 
+                chuyến đi và có thể tự tùy chỉnh theo ý muốn.
               </div>
               <br />
               <MDBRow className={style.modalInput}>
                 <div className={style.formgroup}>
                   <MDBInput
-                    label="Trip name"
+                    label="Tên chuyến đi"
                     type="text"
                     id="tripNameInput"
                     className={style.modalInput}
@@ -633,7 +633,7 @@ function HomePage() {
               <MDBRow className={style.modalInput}>
                 <div className={style.formgroup}>
                   <MDBInput
-                    label="Budget"
+                    label="Ngân sách"
                     id="budgetInput"
                     type="number"
                     className={style.modalInput}
@@ -643,7 +643,7 @@ function HomePage() {
               <br />
               <MDBRow className={style.modalInput}>
                 <MDBCol className={style.formgroup}>
-                  <h6>Start date</h6>
+                  <h6>Ngày đi</h6>
                   <MDBInput
                     placeholder="Select date"
                     type="date"
@@ -652,7 +652,7 @@ function HomePage() {
                   />
                 </MDBCol>
                 <MDBCol className={style.formgroup}>
-                  <h6>End date</h6>
+                  <h6>Ngày về</h6>
                   <MDBInput
                     placeholder="Select date"
                     type="date"
@@ -667,9 +667,9 @@ function HomePage() {
 
             <MDBModalFooter>
               <MDBBtn color="secondary" onClick={toggleShow}>
-                Close
+                Đóng
               </MDBBtn>
-              <MDBBtn onClick={submitTrip}>Create Trip</MDBBtn>
+              <MDBBtn onClick={submitTrip}>Tạo chuyến đi</MDBBtn>
             </MDBModalFooter>
           </MDBModalContent>
         </MDBModalDialog>

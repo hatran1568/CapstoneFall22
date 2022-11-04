@@ -61,7 +61,7 @@ function BlogDetails() {
     document.title = blog.title + " | Tripplanner";
     const dateRaw = blog.dateModified;
     var options = {
-      month: "short",
+      month: "numeric",
       day: "numeric",
       year: "numeric",
     };

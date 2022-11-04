@@ -12,6 +12,10 @@ import ReactDOM from "react-dom"
 import Rating from './Rating.jsx';
 class POIBoxLarge extends React.Component {
     render() {
+        const formatter = new Intl.NumberFormat('vi', {
+            style: 'currency',
+            currency: 'VND',
+          });
         const data = this.props.data;
         const str = data.description;
         const poiLink = "../../poi?id=" + data.activityId;
@@ -35,7 +39,7 @@ class POIBoxLarge extends React.Component {
                             <a href={poiLink} className={style.poiName}><b>{data.name}</b></a><br/>
                             <Rating ratings={data.googleRating}/><br/>
                             <span>{substr}</span><br/>
-                            <b><span className={style.poiPrice}>Khách du lịch thường tiêu {data.typicalPrice}VND tại đây</span></b>
+                            <b><span className={style.poiPrice}>Khách du lịch thường tiêu {formatter.format(data.typicalPrice)} tại đây</span></b>
                         </MDBCol>
                     </MDBRow>
                 </MDBCardBody>

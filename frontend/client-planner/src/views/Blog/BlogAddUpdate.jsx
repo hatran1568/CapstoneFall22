@@ -255,7 +255,7 @@ class BlogAddUpdate extends Component {
           alt="avatar"
         />
         <MDBTextArea
-          label="Title"
+          label="Tiêu đề"
           id="blogTitleInput"
           type="text"
           maxLength="200"

@@ -107,7 +107,7 @@ function AddExpenseModal(props) {
                   className="form-control"
                   id="modalAmount"
                   label="Amount"
-                  placeholder="Amount"
+                  placeholder="Số tiền"
                 />
               </div>
               <div className="input-group mb-3">
@@ -119,7 +119,7 @@ function AddExpenseModal(props) {
                   className="form-control"
                   id="modalDesc"
                   label="Description"
-                  placeholder="Description"
+                  placeholder="Mô tả"
                 />
               </div>
               <div className="input-group mb-3">
@@ -131,7 +131,7 @@ function AddExpenseModal(props) {
                   className="form-control"
                   id="modalCat"
                   label="Category"
-                  placeholder="Category"
+                  placeholder="Danh mục"
                   disabled
                 />
               </div>
@@ -141,12 +141,12 @@ function AddExpenseModal(props) {
                     color="dark"
                     id={1}
                     onClick={changeCat}
-                    name="Flight"
+                    name="Vé máy bay"
                     className={style.catBtn}
                   >
                     <FontAwesomeIcon icon={faPlane} />
                     <br />
-                    Flight
+                    Vé máy bay
                   </MDBBtn>
                 </MDBCol>
                 <MDBCol>
@@ -154,12 +154,12 @@ function AddExpenseModal(props) {
                     color="dark"
                     id={2}
                     onClick={changeCat}
-                    name="Lodging"
+                    name="Chỗ ở"
                     className={style.catBtn}
                   >
                     <FontAwesomeIcon icon={faBed} />
                     <br />
-                    Lodging
+                    Chỗ ở
                   </MDBBtn>
                 </MDBCol>
                 <MDBCol>
@@ -167,12 +167,12 @@ function AddExpenseModal(props) {
                     color="dark"
                     id={3}
                     onClick={changeCat}
-                    name="Car Rental"
+                    name="Thuê xe"
                     className={style.catBtn}
                   >
                     <FontAwesomeIcon icon={faTaxi} />
                     <br />
-                    Car Rental
+                    Thuê xe
                   </MDBBtn>
                 </MDBCol>
                 <MDBCol>
@@ -180,12 +180,12 @@ function AddExpenseModal(props) {
                     color="dark"
                     id={4}
                     onClick={changeCat}
-                    name="Public Transit"
+                    name="Phương tiện công cộng"
                     className={style.catBtn}
                   >
                     <FontAwesomeIcon icon={faBus} />
                     <br />
-                    Public Transit
+                    <span style={{fontSize:8.5}}>Phương tiện công cộng</span>
                   </MDBBtn>
                 </MDBCol>
               </MDBRow>
@@ -196,12 +196,12 @@ function AddExpenseModal(props) {
                     color="dark"
                     id={5}
                     onClick={changeCat}
-                    name="Food"
+                    name="Đồ ăn"
                     className={style.catBtn}
                   >
                     <FontAwesomeIcon icon={faUtensils} />
                     <br />
-                    Food
+                    Đồ ăn
                   </MDBBtn>
                 </MDBCol>
                 <MDBCol>
@@ -209,12 +209,12 @@ function AddExpenseModal(props) {
                     color="dark"
                     id={6}
                     onClick={changeCat}
-                    name="Drinks"
+                    name="Đồ uống"
                     className={style.catBtn}
                   >
                     <FontAwesomeIcon icon={faWineGlass} />
                     <br />
-                    Drinks
+                    Đồ uống
                   </MDBBtn>
                 </MDBCol>
                 <MDBCol>
@@ -222,12 +222,12 @@ function AddExpenseModal(props) {
                     color="dark"
                     id={7}
                     onClick={changeCat}
-                    name="Sightseeing"
+                    name="Ngắm cảnh"
                     className={style.catBtn}
                   >
                     <FontAwesomeIcon icon={faMonument} />
                     <br />
-                    Sightseeing
+                    Ngắm cảnh
                   </MDBBtn>
                 </MDBCol>
                 <MDBCol>
@@ -235,12 +235,12 @@ function AddExpenseModal(props) {
                     color="dark"
                     id={8}
                     onClick={changeCat}
-                    name="Activities"
+                    name="Hoạt động"
                     className={style.catBtn}
                   >
                     <FontAwesomeIcon icon={faTicket} />
                     <br />
-                    Activities
+                    Hoạt động
                   </MDBBtn>
                 </MDBCol>
               </MDBRow>
@@ -251,12 +251,12 @@ function AddExpenseModal(props) {
                     color="dark"
                     id={9}
                     onClick={changeCat}
-                    name="Shopping"
+                    name="Mua sắm"
                     className={style.catBtn}
                   >
                     <FontAwesomeIcon icon={faBagShopping} />
                     <br />
-                    Shopping
+                    Mua sắm
                   </MDBBtn>
                 </MDBCol>
                 <MDBCol>
@@ -264,12 +264,12 @@ function AddExpenseModal(props) {
                     color="dark"
                     id={10}
                     onClick={changeCat}
-                    name="Gas"
+                    name="Xăng"
                     className={style.catBtn}
                   >
                     <FontAwesomeIcon icon={faGasPump} />
                     <br />
-                    Gas
+                    Xăng
                   </MDBBtn>
                 </MDBCol>
                 <MDBCol>
@@ -277,12 +277,12 @@ function AddExpenseModal(props) {
                     color="dark"
                     id={11}
                     onClick={changeCat}
-                    name="Groceries"
+                    name="Tạp hóa"
                     className={style.catBtn}
                   >
                     <FontAwesomeIcon icon={faBasketShopping} />
                     <br />
-                    Groceries
+                    Tạp hóa
                   </MDBBtn>
                 </MDBCol>
                 <MDBCol>
@@ -290,12 +290,12 @@ function AddExpenseModal(props) {
                     color="dark"
                     id={12}
                     onClick={changeCat}
-                    name="Other"
+                    name="Khác"
                     className={style.catBtn}
                   >
                     <FontAwesomeIcon icon={faNoteSticky} />
                     <br />
-                    Other
+                    Khác
                   </MDBBtn>
                 </MDBCol>
               </MDBRow>

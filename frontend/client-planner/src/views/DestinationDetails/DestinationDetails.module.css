@@ -15,8 +15,8 @@
 .contentbox {
   width: 90% !important;
   height: 40% !important;
+  margin: auto !important;
   margin-top: 5% !important;
-  margin-left: 15% !important;
 }
 .container {
   font-family: "Roboto", sans-serif !important;
