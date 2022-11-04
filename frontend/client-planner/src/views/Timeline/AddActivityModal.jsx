@@ -2,10 +2,13 @@ import React, { Component, useState } from "react";
 import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
 import POISearchBar from "../../components/POISearchBar/POISearchBar";
-import style from "./timeline.module.css";
+import style from "../Timetable/modals.module.css";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
+import "date-fns/locale/vi";
 function AddActivityModal(props) {
   const { activityAdded, allDates, onHide, ...rest } = props;
-  const inputField = {
+  const [inputField, setInputField] = useState({
     date: allDates[0].toISOString().split("T")[0],
     activity_id: "",
     start_time: "08:00",
@@ -13,42 +16,68 @@ function AddActivityModal(props) {
     custom: false,
     name: "",
     address: "",
+  });
+  const handleChange = (event) => {
+    setInputField({ ...inputField, [event.target.name]: event.target.value });
   };
   const setSelectedPOI = (item) => {
-    inputField.activity_id = item.id;
+    setInputField({ ...inputField, activity_id: item.id });
   };
   const [showAddCustomModal, setShowAddCustomModal] = useState(false);
+  const [showWarningTime, setShowWarningTime] = useState(false);
+  const [showWarningName, setShowWarningName] = useState(false);
+  const [date, setDate] = useState(allDates[0]);
   const toggleCustom = () => {
     inputField.custom = !inputField.custom;
     setShowAddCustomModal(!showAddCustomModal);
   };
-  const validateInput = (event) => {
+  const validate = () => {
     inputField.custom = showAddCustomModal;
     if (!inputField.custom && inputField.activity_id == "") {
-      alert("Please choose a place or add a custom activity name");
-      return;
+      setShowWarningName(true);
+      return false;
     }
     if (inputField.custom && inputField.name == "") {
-      alert("Please add a custom activity name or choose a place");
-      return;
+      setShowWarningName(true);
+      return false;
     }
-    var sendFields = { ...inputField };
-    resetInputField();
-    activityAdded(event, sendFields);
+    var startStr = inputField.start_time.split(":");
+    var start = +startStr[0] * 60 * 60 + +startStr[1] * 60;
+    var endStr = inputField.end_time.split(":");
+    var end = +endStr[0] * 60 * 60 + +endStr[1] * 60;
+    if (end <= start) {
+      setShowWarningTime(true);
+      return false;
+    }
+    return true;
+  };
+  const validateInput = (event) => {
+    event.preventDefault();
+    var validated = validate();
+    if (validated) {
+      var sendFields = { ...inputField };
+      resetInputField();
+      activityAdded(event, sendFields);
+    }
   };
   const closeModal = () => {
     resetInputField();
     onHide();
   };
   const resetInputField = () => {
-    inputField.date = allDates[0].toISOString().split("T")[0];
-    inputField.activity_id = "";
-    inputField.start_time = "08:00";
-    inputField.end_time = "09:00";
-    inputField.custom = false;
-    inputField.name = "";
-    inputField.address = "";
+    setInputField({
+      date: allDates[0].toISOString().split("T")[0],
+      activity_id: "",
+      start_time: "08:00",
+      end_time: "09:00",
+      custom: false,
+      name: "",
+      address: "",
+    });
+    setShowWarningName(false);
+    setShowWarningTime(false);
     setShowAddCustomModal(false);
+    setDate(allDates[0]);
   };
   return (
     <>
@@ -69,7 +98,7 @@ function AddActivityModal(props) {
                 {showAddCustomModal ? (
                   <>
                     <label className={style.customLabel}>
-                      Name:
+                      Tên hoạt động:
                       <input
                         className={`form-control`}
                         name="name"
@@ -80,7 +109,7 @@ function AddActivityModal(props) {
                       />
                     </label>
                     <label className={style.customLabel}>
-                      Address:
+                      Địa chỉ:
                       <input
                         className={`form-control`}
                         name="address"
@@ -91,7 +120,9 @@ function AddActivityModal(props) {
                     </label>
                   </>
                 ) : (
-                  <POISearchBar POISelected={setSelectedPOI} />
+                  <div style={{ marginBottom: "30px" }}>
+                    <POISearchBar POISelected={setSelectedPOI} />
+                  </div>
                 )}
               </div>
               <div className="col-3">
@@ -107,29 +138,32 @@ function AddActivityModal(props) {
               </div>
             </div>
             <br />
-            <div className={`row ${style.formField}`}>
+            <div
+              className={
+                showWarningName
+                  ? `${style.warningMessageName}`
+                  : `${style.warningMessageName} ${style.hide}`
+              }
+            >
+              Hãy chọn một địa điểm hoặc thêm một hoạt động của bạn.
+            </div>
+            <div className={`row ${style.addForm}`}>
               <label className="col-4">
-                Date:
-                <select
-                  className={`form-select`}
-                  name="date"
-                  onChange={(e) => {
-                    inputField.date = e.target.value;
+                Ngày:
+                <DatePicker
+                  className="form-control"
+                  minDate={allDates[0]}
+                  maxDate={allDates[allDates.length - 1]}
+                  selected={date}
+                  onChange={(date) => {
+                    setDate(date);
+                    inputField.date = date.toISOString().split("T")[0];
                   }}
-                >
-                  {allDates.map((date) => (
-                    <option
-                      className="form-control"
-                      value={date.toISOString().split("T")[0]}
-                      key={date.toISOString().split("T")[0]}
-                    >
-                      {date.toISOString().split("T")[0]}
-                    </option>
-                  ))}
-                </select>
+                  dateFormat="dd/MM/yyyy"
+                />
               </label>
               <label className="col-4">
-                Start time:
+                Giờ bắt đầu:
                 <input
                   name="start_time"
                   className="form-control"
@@ -142,16 +176,25 @@ function AddActivityModal(props) {
               </label>
               <br />
               <label className="col-4">
-                End time:
+                Giờ kết thúc:
                 <input
                   className="form-control"
-                  name="end_time"
                   defaultValue={"09:00"}
                   type="time"
+                  name="end_time"
                   onChange={(e) => {
                     inputField.end_time = e.target.value;
                   }}
                 />
+                <div
+                  className={
+                    showWarningTime
+                      ? `${style.warningMessage}`
+                      : `${style.warningMessage} ${style.hide}`
+                  }
+                >
+                  Thời gian kết thúc phải lớn hơn thời gian bắt đầu
+                </div>
               </label>
             </div>
           </form>
@@ -164,7 +207,7 @@ function AddActivityModal(props) {
             }}
             className={style.submitBtn}
           >
-            Add This Activity
+            Thêm Hoạt Động
           </Button>
           <Button
             onClick={() => {
@@ -172,7 +215,7 @@ function AddActivityModal(props) {
             }}
             variant="outline-secondary"
           >
-            Close
+            Đóng
           </Button>
         </Modal.Footer>
       </Modal>

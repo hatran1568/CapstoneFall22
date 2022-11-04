@@ -18,16 +18,16 @@ function POIAndDestinationSearchBar(Children) {
             },
           }}
           startAdornment={
-            <InputAdornment className={style.icon} position='start'>
+            <InputAdornment className={style.icon} position="start">
               <SearchIcon />
             </InputAdornment>
           }
           /*className={style.searchBar}*/
           onChange={(e) => setText(e.target.value)}
-          placeholder='Search'
-          label='Search'
-          id='form1'
-          type='text'
+          placeholder="Search"
+          label="Search"
+          id="form1"
+          type="text"
           className={style.searchBar}
         />
       </MDBInputGroup>

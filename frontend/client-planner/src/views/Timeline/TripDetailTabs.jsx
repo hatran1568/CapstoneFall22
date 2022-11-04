@@ -27,7 +27,7 @@ export default function Tabs() {
             aria-current="page"
             href={"../trip/" + params.id}
           >
-            General
+            Thông tin chung
           </a>
         </li>
         <li className={`nav-item ${style.dropDown}`}>
@@ -40,7 +40,7 @@ export default function Tabs() {
                 : `nav-link ${style.navItem}`
             }
           >
-            Day by day{" "}
+            Kế hoạch theo ngày{" "}
             <FontAwesomeIcon
               icon={faCaretDown}
               className={style.dropDownIcon}
@@ -53,7 +53,7 @@ export default function Tabs() {
               className={path == "/timeline" ? style.active : ""}
             >
               <FontAwesomeIcon icon={faMapPin} className={style.icons} />
-              Timeline{" "}
+              Mốc thời gian{" "}
               {path.toLowerCase() == "/timeline" && (
                 <FontAwesomeIcon icon={faCheck} className={style.checkIcons} />
               )}
@@ -63,7 +63,7 @@ export default function Tabs() {
               className={path == "/timetable" ? style.active : ""}
             >
               <FontAwesomeIcon icon={faCalendar} className={style.icons} />
-              Calendar
+              Thời gian biểu
               {path.toLowerCase() == "/timetable" && (
                 <FontAwesomeIcon icon={faCheck} className={style.checkIcons} />
               )}
@@ -76,7 +76,7 @@ export default function Tabs() {
                 icon={faMapLocationDot}
                 className={style.icons}
               />
-              Map
+              Bản đồ
               {path.toLowerCase() == "/map" && (
                 <FontAwesomeIcon icon={faCheck} className={style.checkIcons} />
               )}
@@ -92,7 +92,7 @@ export default function Tabs() {
             }
             href={"../checklist/" + params.id}
           >
-            Checklist
+            Việc cần làm
           </a>
         </li>
         <li className="nav-item">
@@ -104,7 +104,7 @@ export default function Tabs() {
             }
             href={"../budget/" + params.id}
           >
-            Budget
+            Ngân sách
           </a>
         </li>
       </ul>
