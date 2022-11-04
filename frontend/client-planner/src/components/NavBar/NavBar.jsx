@@ -81,7 +81,7 @@ const NavBar = () => {
             </MDBNavbarItem>
           ) : (
             <MDBNavbarItem>
-              <MDBBtn href="/login" color="info">
+              <MDBBtn style={{width:150}} href="/login" color="info">
                 Đăng nhập
               </MDBBtn>
             </MDBNavbarItem>

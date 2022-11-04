@@ -84,7 +84,7 @@ public class BlogController {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
-    //@PreAuthorize("hasAuthority('Admin')")
+    @PreAuthorize("hasAuthority('Admin')")
     @RequestMapping(value = "/blog/new/{userId}", produces = { MediaType.APPLICATION_JSON_VALUE }, method = RequestMethod.POST)
     public ResponseEntity<?> addBlog(@PathVariable int userId) {
 //        try{
@@ -96,6 +96,7 @@ public class BlogController {
 //            return  new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
 //        }
     }
+    @PreAuthorize("hasAuthority('Admin')")
     @RequestMapping(value = "/blog/hide/{blogId}", produces = { "*/*" }, method = RequestMethod.POST)
     public ResponseEntity<?> hideBlog(@PathVariable int blogId) {
         try{
@@ -110,6 +111,7 @@ public class BlogController {
             return  new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+    @PreAuthorize("hasAuthority('Admin')")
     @RequestMapping(value = "/blog/unhide/{blogId}", produces = { "*/*" }, method = RequestMethod.POST)
     public ResponseEntity<?> unhideBlog(@PathVariable int blogId) {
         try{
@@ -124,6 +126,7 @@ public class BlogController {
             return  new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+    @PreAuthorize("hasAuthority('Admin')")
     @RequestMapping(value = "/blog/delete/{blogId}", produces = { "*/*" }, method = RequestMethod.POST)
     public ResponseEntity<?> deleteBlog(@PathVariable int blogId) {
         try{
@@ -138,7 +141,7 @@ public class BlogController {
             return  new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
-    //@PreAuthorize("hasAuthority('Admin')")
+    @PreAuthorize("hasAuthority('Admin')")
     @RequestMapping(value = "/blog/update", consumes = "application/json", produces = { "*/*" }, method = RequestMethod.POST)
     public ResponseEntity<?> updateExpense(@RequestBody BlogAddUpdateDTO blog) {
         try{
@@ -160,7 +163,7 @@ public class BlogController {
             return  new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
-    //@PreAuthorize("hasAuthority('Admin')")
+    @PreAuthorize("hasAuthority('Admin')")
     @PostMapping("/blog/uploadImg")
     @ResponseBody
     public ResponseEntity<String> uploadImg(@RequestPart("File") MultipartFile file){
