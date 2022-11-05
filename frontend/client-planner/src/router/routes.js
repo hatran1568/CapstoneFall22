@@ -7,7 +7,7 @@ import ProfilePage from "../views/UserProfile/ProfilePage";
 import RequireAuth from "../components/RequireAuth";
 import Timeline from "../views/Timeline/timeline";
 import TripBudget from "../views/Timeline/TripBudget";
-import TripGeneralInfo from "../views/Timeline/TripGeneralInfo";
+import TripGeneralInfo from "../views/GeneralInfo/TripGeneralInfo";
 import DestinationDetails from "../views/DestinationDetails/DestinationDetails";
 import POIsDestination from "../views/POIsDestination/POIsDestination";
 import POIAndDestinationSearchBar from "../components/searchBar/POIAndDestinationSearchBar";

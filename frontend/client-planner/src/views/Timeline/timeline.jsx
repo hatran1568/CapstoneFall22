@@ -3,7 +3,7 @@ import { withRouter } from "react-router-dom";
 import TripDetail from "./TimelineTripDetail";
 import AddActivityModal from "./AddActivityModal";
 import axios from "axios";
-import TripDetailTabs from "./TripDetailTabs";
+import TripDetailTabs from "../GeneralInfo/TripDetailTabs";
 import style from "./timeline.module.css";
 import { useParams } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -11,6 +11,7 @@ import { faPlus } from "@fortawesome/free-solid-svg-icons";
 import LoadingScreen from "react-loading-screen";
 import ConfirmDelete from "../Timetable/ConfirmDelete";
 import EditActivityModal from "./EditActivityModal";
+import TripGeneralInfo from "../GeneralInfo/TripGeneralInfo";
 class Timeline extends Component {
   state = {};
   //set state of component
@@ -398,6 +399,7 @@ class Timeline extends Component {
     };
     return (
       <div>
+        <TripGeneralInfo />
         <TripDetailTabs />
         {this.state.showEditModal ? (
           <EditActivityModal

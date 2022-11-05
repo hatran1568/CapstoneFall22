@@ -1,9 +1,8 @@
-import React, { Component, useState } from "react";
+import React from "react";
 import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
-import POISearchBar from "../../components/POISearchBar/POISearchBar";
 import style from "./modals.module.css";
-function AddActivityModal(props) {
+function ConfirmDeleteModal(props) {
   const { onConfirmed, onHide, detailId, ...rest } = props;
   return (
     <>
@@ -41,4 +40,4 @@ function AddActivityModal(props) {
   );
 }
 
-export default AddActivityModal;
+export default ConfirmDeleteModal;

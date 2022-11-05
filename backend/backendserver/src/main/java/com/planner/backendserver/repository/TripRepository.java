@@ -45,4 +45,13 @@ public interface TripRepository extends JpaRepository<Trip, Integer> {
             value = "SELECT user_id FROM trip WHERE trip_id = ?1",
             nativeQuery = true)
     int getTripUserId(int tripId);
+
+    @Modifying
+    @org.springframework.transaction.annotation.Transactional
+    @Query("UPDATE Trip t SET t.name=:name WHERE t.tripId=:tripId")
+    public void updateTripName(int tripId, String name);
+    @Modifying
+    @org.springframework.transaction.annotation.Transactional
+    @Query("UPDATE Trip t SET t.startDate=:startDate, t.endDate=:endDate WHERE t.tripId=:tripId")
+    public void updateStartAndEndDates(int tripId, Date startDate, Date endDate);
 }

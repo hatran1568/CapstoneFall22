@@ -232,6 +232,28 @@ public class TripServiceImpl implements TripService {
         return tripRepository.getNumberOfTripsByUser(userId);
     }
 
+    @Override
+    public void editTripName(int tripId, String name) {
+        tripRepository.updateTripName(tripId, name);
+    }
+    @Override
+    public void editStartAndEndDates(int tripId, Date startDate, Date endDate){
+        Trip trip = tripRepository.findById(tripId);
+        Date oldStartDate = (Date) trip.getStartDate();
+        Date oldEndDate = (Date) trip.getEndDate();
+        tripRepository.updateStartAndEndDates(tripId, startDate, endDate);
+        tripDetailRepository.deleteByRange(tripId, startDate, endDate);
+    }
+    private void deleteTripDetailsOutOfRange(int tripId, Date oldStartDate, Date oldEndDate){
+        Trip trip = tripRepository.findById(tripId);
+        if(trip.getStartDate().after(oldStartDate) || trip.getEndDate().before(oldEndDate)){
+            tripDetailRepository.deleteByRange(tripId, (Date) trip.getStartDate(), (Date) trip.getEndDate());
+        }
+    }
+    @Override
+    public boolean tripExists(int tripId){
+        return tripRepository.existsById(tripId);
+    }
     private String getTripThumbnail(List<TripDetails> tripDetails) {
         if (tripDetails.size() == 0) {
             return null;

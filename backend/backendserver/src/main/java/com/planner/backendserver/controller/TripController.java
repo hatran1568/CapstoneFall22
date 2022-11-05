@@ -56,15 +56,15 @@ public class TripController {
     private DiscoveryClient discoveryClient;
     @GetMapping("/{id}")
     public ResponseEntity<DetailedTripDTO> getTripById(@PathVariable int id){
-//        try{
+        try{
             DetailedTripDTO trip = tripService.getDetailedTripById(id);
             if (trip == null){
                 return new ResponseEntity<>(HttpStatus.NOT_FOUND);
             }
             return new ResponseEntity<>(trip, HttpStatus.OK);
-//        } catch (Exception e){
-//            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-//        }
+        } catch (Exception e){
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
     @GetMapping("/general/{id}")
     public ResponseEntity<TripGeneralDTO> getTripGeneralById(@PathVariable int id){
@@ -74,6 +74,37 @@ public class TripController {
                 return new ResponseEntity<>(HttpStatus.NOT_FOUND);
             }
             return new ResponseEntity<>(trip, HttpStatus.OK);
+        } catch (Exception e){
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+    @PostMapping("/edit-name")
+    public ResponseEntity<?> updateUsername(@RequestBody ObjectNode request){
+        try{
+            int tripId = request.get("tripId").asInt();
+            String newName = request.get("name").asText();
+            if (!tripService.tripExists(tripId)) {
+                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            }
+            tripService.editTripName(tripId, newName);
+            return new ResponseEntity<>(HttpStatus.OK);
+
+        } catch (Exception e){
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+    @PostMapping("/edit-dates")
+    public ResponseEntity<?> updateStartAndEndDates(@RequestBody ObjectNode requestBody){
+        try{
+            int tripId = requestBody.get("tripId").asInt();
+            Date startDate = Date.valueOf(requestBody.get("startDate").asText());
+            Date endDate = Date.valueOf(requestBody.get("endDate").asText());
+            if (!tripService.tripExists(tripId)) {
+                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            }
+            tripService.editStartAndEndDates(tripId, startDate, endDate);
+            return new ResponseEntity<>(HttpStatus.OK);
+
         } catch (Exception e){
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }

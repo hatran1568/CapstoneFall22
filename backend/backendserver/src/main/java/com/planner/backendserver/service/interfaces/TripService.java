@@ -24,4 +24,7 @@ public interface TripService {
     public void deleteTripById(int id);
     public List<TripGeneralDTO> getLast3TripsByUser(int userId);
     public int countTripByUser(int userId);
+    public void editTripName(int tripId, String name);
+    public boolean tripExists(int tripId);
+    public void editStartAndEndDates(int tripId, Date startDate, Date endDate);
 }
