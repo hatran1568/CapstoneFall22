@@ -49,10 +49,10 @@ function BlogDetails() {
   if (blog.status != "PUBLISHED")
     return (
       <MDBContainer className={style.errorContainer}>
-        <h1>This blog is not yet Published or has been Hidden or Deleted</h1>
+        <h1>Bài blog này chưa được đăng hoặc đã được ẩn hoặc xóa</h1>
         <b>
-          <a href="" className={style.returnBlogBtn}>
-            Return to Blog list
+          <a href="../" className={style.returnBlogBtn}>
+            Quay lại trang chủ
           </a>
         </b>
       </MDBContainer>
@@ -61,12 +61,12 @@ function BlogDetails() {
     document.title = blog.title + " | Tripplanner";
     const dateRaw = blog.dateModified;
     var options = {
-      month: "short",
+      month: "numeric",
       day: "numeric",
       year: "numeric",
     };
     var date = new Date(dateRaw);
-    date = date.toLocaleDateString("en-US", options);
+    date = date.toLocaleDateString("vi", options);
     console.log(date);
     return (
       <div>
@@ -91,7 +91,7 @@ function BlogDetails() {
                   <img src={blog.avatar} className={style.avatar} />
                 </MDBCol>
                 <MDBCol md={8}>
-                  <b>Author</b>
+                  <b>Tác giả</b>
                   <br />
                   {blog.username}
                 </MDBCol>

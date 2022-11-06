@@ -24,7 +24,7 @@ function POIAndDestinationSearchBar(Children) {
           }
           /*className={style.searchBar}*/
           onChange={(e) => setText(e.target.value)}
-          placeholder="Search"
+          placeholder="Tìm kiếm"
           label="Search"
           id="form1"
           type="text"

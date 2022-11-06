@@ -1,9 +1,6 @@
 package com.planner.backendserver.repository;
 
-import com.planner.backendserver.DTO.GalleryImages;
-import com.planner.backendserver.entity.Destination;
 import com.planner.backendserver.entity.Trip;
-import com.planner.backendserver.entity.TripDetails;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;

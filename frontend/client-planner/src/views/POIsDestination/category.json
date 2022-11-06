@@ -1,39 +1,39 @@
 [
     {
         "categoryId": 1,
-        "categoryName": "Art and Culture"
+        "categoryName": "Văn hóa, nghệ thuật"
     },{
         "categoryId": 2,
-        "categoryName": "Outdoors"
+        "categoryName": "Hoạt động ngoài trời"
     },{
         "categoryId": 3,
-        "categoryName": "Religion"
+        "categoryName": "Tôn giáo"
     },{
         "categoryId": 4,
-        "categoryName": "Historic sights"
+        "categoryName": "Lịch sử"
     },{
         "categoryId": 5,
-        "categoryName": "Museums"
+        "categoryName": "Bảo tàng"
     },{
         "categoryId": 6,
-        "categoryName": "Spas & Wellness"
+        "categoryName": "Spa & Sức khỏe"
     },{
         "categoryId": 7,
-        "categoryName": "Shopping"
+        "categoryName": "Mua sắm"
     },{
         "categoryId": 8,
-        "categoryName": "Beaches"
+        "categoryName": "Bãi biển"
     },{
         "categoryId": 9,
-        "categoryName": "Nightlife"
+        "categoryName": "Hoạt động đêm"
     },{
         "categoryId": 10,
-        "categoryName": "Hotels"
+        "categoryName": "Khách sạn"
     },{
         "categoryId": 11,
-        "categoryName": "Restaurants"
+        "categoryName": "Nhà hàng"
     },{
         "categoryId": 12,
-        "categoryName": "Entertainment"
+        "categoryName": "Vui chơi giải trí"
     }
 ]

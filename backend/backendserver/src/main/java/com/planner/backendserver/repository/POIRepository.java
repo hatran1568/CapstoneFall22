@@ -1,6 +1,10 @@
 package com.planner.backendserver.repository;
 
-import com.planner.backendserver.DTO.POIofDestinationDTO;
+import com.planner.backendserver.DTO.request.POIofDestinationDTO;
+
+import java.awt.*;
+import java.util.ArrayList;
+
 import com.planner.backendserver.entity.MasterActivity;
 import com.planner.backendserver.entity.POI;
 import com.planner.backendserver.entity.Rating;
