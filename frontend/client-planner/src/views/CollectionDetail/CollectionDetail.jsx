@@ -86,8 +86,8 @@ const CollectionDetail = () => {
         });
     } else {
       error({
-        title: "Error",
-        content: "This place already exists in the collection.",
+        title: "Lỗi",
+        content: "Địa điểm đã tồn tại.",
       });
     }
   };
@@ -100,11 +100,11 @@ const CollectionDetail = () => {
     e.stopPropagation();
     e.preventDefault();
     confirm({
-      title: "Confirm delete?",
-      content: "This point of interest will be removed from the collection.",
-      okText: "Yes",
+      title: "Đồng ý xóa?",
+      content: "Địa điểm này sẽ bị xóa khỏi bộ sưu tập.",
+      okText: "Ok",
       okType: "danger",
-      cancelText: "No",
+      cancelText: "Không",
       centered: true,
       onOk() {
         axios
@@ -136,7 +136,7 @@ const CollectionDetail = () => {
             </div>
             <div className='row mb-5 pb-3'>
               {curCol.description === "" ? (
-                <p className={style.text}>There is no description yet.</p>
+                <p className={style.text}>Bộ sưu tập này chưa có miêu tả.</p>
               ) : (
                 <p className={style.text}>{curCol.description}</p>
               )}
@@ -152,7 +152,7 @@ const CollectionDetail = () => {
           </div>
           <div className='row mb-5 pb-3'>
             {curCol.description === "" ? (
-              <p className={style.text}>There is no description yet.</p>
+              <p className={style.text}>Bộ sưu tập này chưa có miêu tả.</p>
             ) : (
               <p className={style.text}>{curCol.description}</p>
             )}
@@ -165,7 +165,7 @@ const CollectionDetail = () => {
         {header}
         <MDBContainer className='mt-5'>
           <MDBRow className='mb-3'>
-            <h4>Places you saved in this collection</h4>
+            <h4>Những địa điểm đã lưu</h4>
           </MDBRow>
           <MDBRow className='row-cols-1 row-cols-md-3 g-4'>
             {POIList ? (
@@ -204,7 +204,7 @@ const CollectionDetail = () => {
                 </MDBCol>
               ))
             ) : (
-              <p className={style.text}>Add a place you like into the collection</p>
+              <p className={style.text}>Hãy thêm một dịa điểm bạn thích</p>
             )}
             <MDBCol>
               <div
