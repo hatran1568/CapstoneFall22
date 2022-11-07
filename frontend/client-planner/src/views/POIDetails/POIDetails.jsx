@@ -40,6 +40,25 @@ const POIDetails = () => {
     getImages();
   }, []);
 
+  const timeConverter = (seconds, format) => {
+    var dateObj = new Date(seconds * 1000);
+    var hours = dateObj.getUTCHours();
+    var minutes = dateObj.getUTCMinutes();
+    var timeString;
+
+    if (format === "hh:mm") {
+      if (hours > 12) {
+        timeString = (hours - 12).toString().padStart(2, "0") + ":" + minutes.toString().padStart(2, "0") + " pm";
+      } else {
+        timeString = hours.toString().padStart(2, "0") + ":" + minutes.toString().padStart(2, "0") + " am";
+      }
+    } else if (format === "x hours y minutes") {
+      timeString = hours.toString() + " hours " + minutes.toString() + " minutes";
+    }
+
+    return timeString;
+  };
+
   const handleClick = (e) => {
     e.preventDefault();
   };
@@ -246,26 +265,7 @@ const POIDetails = () => {
     );
   }
 
-  const timeConverter = (seconds, format) => {
-    var dateObj = new Date(seconds * 1000);
-    var hours = dateObj.getUTCHours();
-    var minutes = dateObj.getUTCMinutes();
-    var timeString;
-
-    if (format === "hh:mm") {
-      if (hours > 12) {
-        timeString = (hours - 12).toString().padStart(2, "0") + ":" + minutes.toString().padStart(2, "0") + " pm";
-      } else {
-        timeString = hours.toString().padStart(2, "0") + ":" + minutes.toString().padStart(2, "0") + " am";
-      }
-    } else if (format === "x hours y minutes") {
-      timeString = hours.toString() + " hours " + minutes.toString() + " minutes";
-    }
-
-    return timeString;
-  };
-
-  if (curPOI !== undefined) {
+  if (curPOI !== undefined && curPOI.category !== undefined && !curPOI.deleted) {
     return (
       <MDBContainer className={style.container}>
         <MDBRow className='pb-3 pt-5'>
@@ -357,6 +357,12 @@ const POIDetails = () => {
             {poiRatings.length > 0 ? poiRatings : <p>Địa điểm này vẫn chưa được mọi người đánh giá.</p>}
           </MDBCol>
         </MDBRow>
+      </MDBContainer>
+    );
+  } else {
+    return (
+      <MDBContainer>
+        <h2>Địa điểm này không tồn tại.</h2>
       </MDBContainer>
     );
   }
