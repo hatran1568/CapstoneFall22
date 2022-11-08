@@ -16,40 +16,45 @@ import LayoutsWithNavbar from "../components/NavBar/LayoutsWithNavbar";
 import SearchResults from "../views/SearchResults/SearchResults";
 import POIDetails from "../views/POIDetails/POIDetails";
 import BlogDetails from "../views/Blog/BlogDetails";
-import Timetable from "../views/Timetable/Timetable"
+import Timetable from "../views/Timetable/Timetable";
 import Test from "../views/TestingScreen/Test";
 import ChangePassword from "../views/UserProfile/ChangePassword";
 import RequestResetPassword from "../views/Login/RequestResetPassword";
 import ResetPasswordConfirm from "../views/Login/ResetPasswordConfirm";
 import CollectionDetail from "../views/CollectionDetail/CollectionDetail";
-
+import Map from "../views/Map/Map";
 export default function RootRoutes() {
   return (
     <Router>
       <Routes>
         {/*Any route that needs a nav bar goes inside this one.*/}
-        <Route path='/' element={<LayoutsWithNavbar />}>
-          <Route path='/' element={<HomePage />} />
-          <Route exact path='login' element={<Login />} />
-          <Route path='register' element={<Signup />} />
-          <Route path='oauth2/*' element={<OAuthHandler />} />
+        <Route path="/" element={<LayoutsWithNavbar />}>
+          <Route path="/" element={<HomePage />} />
+          <Route exact path="login" element={<Login />} />
+          <Route path="register" element={<Signup />} />
+          <Route path="oauth2/*" element={<OAuthHandler />} />
           <Route element={<RequireAuth allowedRoles={["User", "Admin"]} />}>
-            <Route path='/profile' element={<ProfilePage />} />
-            <Route path='/change-password' element={<ChangePassword />} />
-            <Route path='/collection' element={<CollectionDetail />} />
+            <Route path="/profile" element={<ProfilePage />} />
+            <Route path="/change-password" element={<ChangePassword />} />
+            <Route path="/collection" element={<CollectionDetail />} />
           </Route>
-          <Route path='/forgot-password' element={<RequestResetPassword />} />
-          <Route path='/reset-password-confirm' element={<ResetPasswordConfirm />} />
-          <Route exact path='/Destination' element={<DestinationDetails />} />
-          <Route exact path='/Destination/POIs' element={<POIsDestination />} />
-          <Route path='/timeline/:id' element={<Timeline />} />
-          <Route path='/timetable/:id' element={<Timetable />} />
-          <Route path='/trip/:id' element={<TripGeneralInfo />} />
-          <Route path='/budget/:id' element={<TripBudget />} />
-          <Route path='/search' element={<POIAndDestinationSearchBar />} />
-          <Route path='/blog' element={<BlogDetails />} />
-          <Route path='/SearchResults' element={<SearchResults />} />
-          <Route path='/poi' element={<POIDetails />} />
+          <Route path="/forgot-password" element={<RequestResetPassword />} />
+          <Route
+            path="/reset-password-confirm"
+            element={<ResetPasswordConfirm />}
+          />
+          <Route exact path="/Destination" element={<DestinationDetails />} />
+          <Route exact path="/Destination/POIs" element={<POIsDestination />} />
+          <Route path="/timeline/:id" element={<Timeline />} />
+          <Route path="/timetable/:id" element={<Timetable />} />
+          <Route path="/trip/:id" element={<TripGeneralInfo />} />
+          <Route path="/budget/:id" element={<TripBudget />} />
+          <Route path="/search" element={<POIAndDestinationSearchBar />} />
+          <Route path="/blog" element={<BlogDetails />} />
+          <Route path="/SearchResults" element={<SearchResults />} />
+          <Route path="/poi" element={<POIDetails />} />
+          <Route path="/test" element={<Test></Test>}></Route>
+          <Route path="/map:id" element={<Map></Map>}></Route>
         </Route>
 
         {/*Routes that don't need a nav bar go out here.*/}
