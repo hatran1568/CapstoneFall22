@@ -47,10 +47,10 @@ function AddExpenseModal(props) {
       document.getElementById("modalDesc").value = " ";
     if (document.getElementById("modalAmount").value == "" || document.getElementById("modalAmount").value == null) {
       document.getElementById("errorMessage").innerHTML =
-        "Please enter an amount.";
+        "Hãy nhập giá tiền.";
     } else if (currentCat == 0)
       document.getElementById("errorMessage").innerHTML =
-        "Please select a category.";
+        "Hãy chọn danh mục.";
     else
       axios({
         method: "post",

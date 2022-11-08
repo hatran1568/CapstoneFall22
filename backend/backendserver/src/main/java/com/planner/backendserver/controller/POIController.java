@@ -1,16 +1,26 @@
 package com.planner.backendserver.controller;
 
+import com.planner.backendserver.DTO.request.BlogDetailsDTO;
+import com.planner.backendserver.DTO.request.POIListDTO;
 import com.planner.backendserver.DTO.request.POIofDestinationDTO;
+import com.planner.backendserver.DTO.request.UpdatePOIDTO;
+import com.planner.backendserver.DTO.response.BlogAddUpdateDTO;
+import com.planner.backendserver.DTO.response.POIImageUpdateDTO;
+import com.planner.backendserver.DTO.response.POIUpdateDTO;
 import com.planner.backendserver.DTO.response.RatingDTO;
 import com.planner.backendserver.entity.MasterActivity;
 import com.planner.backendserver.repository.POIRepository;
 import com.planner.backendserver.service.interfaces.POIService;
+import com.planner.backendserver.utils.GoogleDriveManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 
 @RestController
@@ -21,6 +31,8 @@ public class POIController {
 
     @Autowired
     private POIService poiService;
+    @Autowired
+    GoogleDriveManager driveManager;
 
     @GetMapping("/{desid}/{page}/{catid}/{rating}")
     public ResponseEntity<ArrayList<POIofDestinationDTO>> getPOIsOfDestinationFilter(@PathVariable("desid") int desid, @PathVariable("page") int page, @PathVariable("catid") int catid, @PathVariable("rating") int rating) {
@@ -123,6 +135,131 @@ public class POIController {
             return new ResponseEntity<>(list, HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+    //@PreAuthorize("hasAuthority('Admin')")
+    @GetMapping("/list/admin/{filter}/{catId}/{nameKey}/{page}")
+    public ResponseEntity<ArrayList<POIListDTO>> getPOIListAdmin(@PathVariable("filter") String filter, @PathVariable("page") int page, @PathVariable("catId") int catId, @PathVariable("nameKey") String nameKey) {
+        try {
+            ArrayList<POIListDTO> pois;
+            if (nameKey.equals("*"))
+                nameKey = "";
+            pois = poiRepo.getPOIListAdmin(filter, catId, nameKey, page*30, 30);
+            return new ResponseEntity<>(pois, HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+    //@PreAuthorize("hasAuthority('Admin')")
+    @GetMapping("/list/admin/count/{catId}/{nameKey}")
+    public ResponseEntity<Integer> getPOIListAdminCount(@PathVariable("catId") int catId, @PathVariable("nameKey") String nameKey) {
+        try {
+            int count;
+            if (nameKey.equals("*"))
+                nameKey = "";
+            count = poiRepo.getPOIListAdminCount(catId, nameKey);
+            return new ResponseEntity<>(count, HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+    //@PreAuthorize("hasAuthority('Admin')")
+    @RequestMapping(value = "/delete/{poiId}", produces = { "*/*" }, method = RequestMethod.POST)
+    public ResponseEntity<?> deletePOI(@PathVariable int poiId) {
+        try{
+            if (poiRepo.getById(poiId) == null){
+                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            }
+            poiRepo.deletePOI(poiId);
+            return new ResponseEntity<>(HttpStatus.OK);
+        }
+        catch (Exception e){
+            return  new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+    //@PreAuthorize("hasAuthority('Admin')")
+    @GetMapping("/list/admin/update/{poiId}")
+    public ResponseEntity<POIUpdateDTO> getPOIUpdate(@PathVariable("poiId") int poiId) {
+        try {
+            POIUpdateDTO poi;
+            poi = poiRepo.getPOIUpdate(poiId);
+            if (poi == null) {
+                return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+            }
+            return new ResponseEntity<>(poi, HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+    //@PreAuthorize("hasAuthority('Admin')")
+    @GetMapping("/list/admin/update/images/{poiId}")
+    public ResponseEntity<ArrayList<POIImageUpdateDTO>> getPOIImageUpdate(@PathVariable("poiId") int poiId) {
+        try {
+            ArrayList<POIImageUpdateDTO> images = poiRepo.getPOIImagesUpdate(poiId);
+            if (images.isEmpty()) {
+                return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+            }
+            return new ResponseEntity<>(images, HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+    //@PreAuthorize("hasAuthority('Admin')")
+    @RequestMapping(value = "/update", consumes = "application/json", produces = { "*/*" }, method = RequestMethod.POST)
+    public ResponseEntity<?> updatePOI(@RequestBody UpdatePOIDTO poi) {
+        try{
+            java.sql.Timestamp date = new java.sql.Timestamp(Calendar.getInstance().getTime().getTime());
+            poiRepo.updateMA(poi.getActivityId(), poi.getAddress(), poi.getName());
+            poiRepo.updatePOI(poi.getActivityId(), poi.getDescription(), poi.getAdditionalInfo(),
+                    poi.getEmail(), poi.getClosingTime(), date, poi.getDuration(), poi.getOpeningTime(),
+                    poi.getPhoneNumber(), poi.getPrice(), poi.getWebsite(), poi.getCategoryId());
+            return new ResponseEntity<>(HttpStatus.OK);
+        }
+        catch (Exception e){
+            return  new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+    //@PreAuthorize("hasAuthority('Admin')")
+    @RequestMapping(value = "/add", consumes = "application/json", produces = { "*/*" }, method = RequestMethod.POST)
+    public ResponseEntity<?> addPOI(@RequestBody UpdatePOIDTO poi) {
+        try{
+            java.sql.Timestamp date = new java.sql.Timestamp(Calendar.getInstance().getTime().getTime());
+            poiRepo.addMA(poi.getAddress(), poi.getName());
+            poiRepo.addPOI(poi.getDescription(), poi.getAdditionalInfo(),
+                    poi.getEmail(), poi.getClosingTime(), date, date, poi.getDuration(), poi.getOpeningTime(),
+                    poi.getPhoneNumber(), poi.getPrice(), poi.getWebsite(), poiRepo.getLastestPOI(), poi.getCategoryId(), 5, false);
+            return new ResponseEntity<>(poiRepo.getLastestPOI(), HttpStatus.OK);
+        }
+        catch (Exception e){
+            return  new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+    @PostMapping("/addImg/{poiId}/{description}")
+    @ResponseBody
+    public ResponseEntity<?> addImage(@PathVariable int poiId, @PathVariable String description, @RequestPart("File") MultipartFile file) throws Exception{
+//        try{
+            String webViewLink = driveManager.uploadFile(file, "tripplanner/img/poi");
+            if (description.equals("*"))
+                poiRepo.addImage(poiId, null, webViewLink);
+            else
+                poiRepo.addImage(poiId, description, webViewLink);
+            return new ResponseEntity<>(HttpStatus.OK);
+//        } catch (Exception e){
+//            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+//        }
+    }
+    @RequestMapping(value = "/deleteImg/{imgId}", produces = { "*/*" }, method = RequestMethod.POST)
+    public ResponseEntity<?> deleteImg(@PathVariable int imgId){
+        try{
+            String oldAvatar = poiRepo.getUrlPOIImage(imgId);
+            if (oldAvatar != null){
+                driveManager.deleteFile(oldAvatar.split("id=")[1]);
+            }
+            poiRepo.deleteImage(imgId);
+            return new ResponseEntity<>(HttpStatus.OK);
+        }
+        catch (Exception e){
+            return  new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 }

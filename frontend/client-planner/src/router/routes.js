@@ -22,10 +22,13 @@ import Test from "../views/TestingScreen/Test";
 import ChangePassword from "../views/UserProfile/ChangePassword";
 import RequestResetPassword from "../views/Login/RequestResetPassword";
 import ResetPasswordConfirm from "../views/Login/ResetPasswordConfirm";
-import BlogAddUpdate from "../views/Blog/BlogAddUpdate";
+import BlogAddUpdate from "../views/Admin/BlogAddUpdate";
 import CollectionDetail from "../views/CollectionDetail/CollectionDetail";
 import AdminSidebar from "../components/Admin/SideBar"
-import BlogList from "../views/Blog/BlogList";
+import BlogList from "../views/Admin/BlogList";
+import POIList from "../views/Admin/POIList";
+import POIAddUpdate from "../views/Admin/POIAddUpdate";
+
 
 export default function RootRoutes() {
   return (
@@ -57,8 +60,11 @@ export default function RootRoutes() {
         </Route>
         <Route element={<RequireAuth allowedRoles={["Admin"]} />}>
           <Route path='/blog/list' element={<ProSidebarProvider><AdminSidebar props={<BlogList/>}/></ProSidebarProvider>} />
+          <Route path='/poi/adminlist' element={<ProSidebarProvider><AdminSidebar props={<POIList/>}/></ProSidebarProvider>} />
           <Route path='/blog/update' element={<ProSidebarProvider><AdminSidebar props={<BlogAddUpdate/>}/></ProSidebarProvider>} />
           <Route path='/admin' element={<ProSidebarProvider><AdminSidebar/></ProSidebarProvider>} />
+          <Route path='/poi/update' element={<ProSidebarProvider><AdminSidebar props={<POIAddUpdate/>}/></ProSidebarProvider>} />
+
         </Route>
         {/*Routes that don't need a nav bar go out here.*/}
         

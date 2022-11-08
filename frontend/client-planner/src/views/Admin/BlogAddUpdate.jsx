@@ -259,7 +259,7 @@ class BlogAddUpdate extends Component {
           id="blogTitleInput"
           type="text"
           maxLength="200"
-          placeholder="Enter a title for your blog."
+          placeholder="Thêm tiêu đề cho blog."
           onClick={onInput}
           onChange={titleChanged}
           onInput={onInput}

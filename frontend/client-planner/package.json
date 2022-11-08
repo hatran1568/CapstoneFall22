@@ -18,6 +18,7 @@
     "@mui/icons-material": "^5.10.9",
     "@mui/material": "^5.10.10",
     "@popperjs/core": "^2.3.0",
+    "@react-google-maps/api": "^2.15.0",
     "@syncfusion/ej2-react-popups": "^20.3.50",
     "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/react": "^13.4.0",

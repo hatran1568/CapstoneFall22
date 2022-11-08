@@ -1,5 +1,5 @@
 import { Sidebar, Menu, MenuItem, useProSidebar } from 'react-pro-sidebar';
-import BlogAddUpdate from "../../views/Blog/BlogAddUpdate";
+import BlogAddUpdate from "../../views/Admin/BlogAddUpdate";
 import { ProSidebarProvider } from 'react-pro-sidebar';
 import axios from "../../api/axios";
 import { useState } from "react";

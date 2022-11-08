@@ -332,10 +332,10 @@ class TripBudget extends Component {
                 </Dropdown.Toggle>
 
                 <Dropdown.Menu>
-                  <Dropdown.Item onClick={this.filterChanged} id={0} active name="By date">Theo ngày</Dropdown.Item>
-                  <Dropdown.Item onClick={this.filterChanged} id={1} name="Amount: High to low">Giá: Cao đến thấp</Dropdown.Item>
-                  <Dropdown.Item onClick={this.filterChanged} id={2} name="Amount: Low to high">Giá: Thấp đến cao</Dropdown.Item>
-                  <Dropdown.Item onClick={this.filterChanged} id={3} name="By category">Theo danh mục</Dropdown.Item>
+                  <Dropdown.Item onClick={this.filterChanged} id={0} active name="Theo ngày">Theo ngày</Dropdown.Item>
+                  <Dropdown.Item onClick={this.filterChanged} id={1} name="Giá: Cao đến thấp">Giá: Cao đến thấp</Dropdown.Item>
+                  <Dropdown.Item onClick={this.filterChanged} id={2} name="Giá: Thấp đến cao">Giá: Thấp đến cao</Dropdown.Item>
+                  <Dropdown.Item onClick={this.filterChanged} id={3} name="Theo danh mục">Theo danh mục</Dropdown.Item>
                 </Dropdown.Menu>
               </Dropdown>
             </MDBCol>
