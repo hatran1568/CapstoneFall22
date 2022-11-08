@@ -60,7 +60,7 @@ function ModalGraph({props}) {
       },
       title: {
         display: true,
-        text: 'Expenses',
+        text: 'Chi tiêu',
       },
     },
   };
@@ -68,7 +68,7 @@ function ModalGraph({props}) {
     labels,
     datasets: [
       {
-        label: 'Expenses',
+        label: 'Chi tiêu',
         data: expenseData,
         borderColor: 'rgb(255, 99, 132)',
         backgroundColor: 'rgba(255, 99, 132, 0.5)',
@@ -82,12 +82,12 @@ function ModalGraph({props}) {
   };
   return (
     <span>
-      <a className={style.breakdownBtn} onClick={toggleShow}><FontAwesomeIcon icon={faChartSimple}/><b> View Breakdown</b></a>
+      <a className={style.breakdownBtn} onClick={toggleShow}><FontAwesomeIcon icon={faChartSimple}/><b> Xem phân tích</b></a>
       <MDBModal show={basicModal} setShow={setBasicModal} tabIndex='-1'>
         <MDBModalDialog>
           <MDBModalContent>
             <MDBModalHeader>
-              <MDBModalTitle>Expenses Breakdown</MDBModalTitle>
+              <MDBModalTitle>Phân tích chi phí</MDBModalTitle>
               <MDBBtn className='btn-close' color='none' onClick={toggleShow}></MDBBtn>
             </MDBModalHeader>
             <MDBModalBody>
@@ -95,7 +95,7 @@ function ModalGraph({props}) {
             </MDBModalBody>
             <MDBModalFooter>
               <MDBBtn color='secondary' onClick={toggleShow}>
-                Close
+                Đóng
               </MDBBtn>
             </MDBModalFooter>
           </MDBModalContent>

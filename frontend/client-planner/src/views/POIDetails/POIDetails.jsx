@@ -68,11 +68,13 @@ const POIDetails = () => {
         )
         .then((res) => {
           setRatings(res.data);
+          setRate(0);
+          setComment("");
         });
     } else {
       error({
-        title: "Can't change rating",
-        content: "Please enter at least 1 star rating.",
+        title: "Lỗi đánh giá",
+        content: "Xin hãy đánh giá ít nhất 1 sao cho địa điểm.",
       });
     }
   };
@@ -97,11 +99,12 @@ const POIDetails = () => {
         )
         .then((res) => {
           setRatings(res.data);
+          setRate(0);
         });
     } else {
       error({
-        title: "Can't create rating",
-        content: "Please enter at least 1 star rating.",
+        title: "CLỗi đánh giá",
+        content: "Xin hãy đánh giá ít nhất 1 sao cho địa điểm.",
       });
     }
   };
@@ -118,40 +121,61 @@ const POIDetails = () => {
 
   var avgRate = 0;
   var poiRatings = [];
+  var userRating = [];
   if (ratings.length > 0) {
     avgRate = ratings.reduce((sum, cur) => sum + Number(cur.rate), 0) / ratings.length;
     ratings.forEach((rating) => {
       var formattedDate = new Date(rating.modified).toLocaleDateString("vi-VN");
-      poiRatings.push(
-        <>
-          <MDBRow className='border-top'>
-            <MDBCol size='auto' className='pe-0'>
-              <StarRatings rating={rating.rate} starDimension='1em' starSpacing='0.1em' starRatedColor='orange' />
-            </MDBCol>
-            <MDBCol size='auto' className='pt-1'>
-              <p>
-                {" "}
-                by <strong>{rating.userName}</strong>
-              </p>
-            </MDBCol>
-          </MDBRow>
-          <MDBRow>
-            <div>
-              <p>{rating.comment}</p>
-            </div>
-          </MDBRow>
-          <MDBRow className='border-bottom'>
-            <p>Commented on {formattedDate}</p>
-          </MDBRow>
-        </>,
-      );
+      if (rating.userId != localStorage.getItem("id")) {
+        poiRatings.push(
+          <>
+            <MDBRow className='border-top'>
+              <MDBCol size='auto' className='pe-0'>
+                <StarRatings rating={rating.rate} starDimension='1em' starSpacing='0.1em' starRatedColor='orange' />
+              </MDBCol>
+              <MDBCol size='auto' className='pt-1'>
+                <p>
+                  {" "}
+                  <strong>{rating.userName}</strong>
+                </p>
+              </MDBCol>
+            </MDBRow>
+            <MDBRow>
+              <div>
+                <p>{rating.comment}</p>
+              </div>
+            </MDBRow>
+            <MDBRow className='border-bottom'>
+              <p>Thời gian bình luận: {formattedDate}</p>
+            </MDBRow>
+          </>,
+        );
+      } else if (rating.userId == localStorage.getItem("id")) {
+        userRating.push(
+          <>
+            <MDBRow className='border-top'>
+              <MDBCol size='auto' className='pe-0'>
+                <StarRatings rating={rating.rate} starDimension='1em' starSpacing='0.1em' starRatedColor='orange' />
+              </MDBCol>
+              <MDBCol size='auto' className='pt-1'>
+                <p>
+                  {" "}
+                  <strong>{rating.userName}</strong>
+                </p>
+              </MDBCol>
+            </MDBRow>
+            <MDBRow>
+              <div>
+                <p>{rating.comment}</p>
+              </div>
+            </MDBRow>
+            <MDBRow className='border-bottom'>
+              <p>Thời gian bình luận: {formattedDate}</p>
+            </MDBRow>
+          </>,
+        );
+      }
     });
-  } else if (ratings.length === 0) {
-    poiRatings.push(
-      <div>
-        <p>There is still nothing yet</p>
-      </div>,
-    );
   }
 
   var ratingInput;
@@ -168,8 +192,8 @@ const POIDetails = () => {
 
   if (commented) {
     ratingInput = (
-      <MDBCol className='mt-3'>
-        <p className='fs-3 mb-1'>Edit your feedback:</p>
+      <MDBCol>
+        <p className='fs-3 mb-1'>Thay đổi đánh giá của bạn:</p>
         <StarRatings
           numberOfStars={5}
           changeRating={setRate}
@@ -180,13 +204,13 @@ const POIDetails = () => {
           starHoverColor='orange'
         />
         <TextArea
-          id='comment-rating'
           showCount
           maxLength={500}
           className='mt-2'
           style={{ height: 120, resize: "none" }}
           placeholder='Share your thoughts about this place...'
           onChange={handleChange}
+          value={comment}
         />
         <MDBBtn color='info' className='mt-2' onClick={handleEdit}>
           Edit
@@ -195,8 +219,8 @@ const POIDetails = () => {
     );
   } else {
     ratingInput = (
-      <MDBCol className='mt-3'>
-        <p className='fs-3 mb-1'>Write a feedback:</p>
+      <MDBCol>
+        <p className='fs-3 mb-1'>Chia sẻ đánh giá của bạn:</p>
         <StarRatings
           numberOfStars={5}
           changeRating={setRate}
@@ -207,16 +231,16 @@ const POIDetails = () => {
           starHoverColor='orange'
         />
         <TextArea
-          id='comment-rating'
           showCount
           maxLength={500}
           className='mt-2'
           style={{ height: 120, resize: "none" }}
           placeholder='Share your thoughts about this place...'
           onChange={handleChange}
+          value={comment}
         />
         <MDBBtn color='info' className='mt-2' onClick={handleCreate}>
-          Comment
+          Gửi
         </MDBBtn>
       </MDBCol>
     );
@@ -252,7 +276,8 @@ const POIDetails = () => {
             </MDBCol>
             <MDBCol size='auto' className='pt-1'>
               <p>
-                {curPOI.googleRate} stars on <FontAwesomeIcon icon={faGoogle} /> Maps | {curPOI.category.categoryName}
+                {curPOI.googleRate} xếp hạng bởi <FontAwesomeIcon icon={faGoogle} /> Maps |{" "}
+                {curPOI.category.categoryName}
               </p>
             </MDBCol>
           </MDBRow>
@@ -263,17 +288,17 @@ const POIDetails = () => {
             <p>{curPOI.description}</p>
           </MDBCol>
           <MDBCol size='4'>
-            <p className='fs-5 fw-bold'>Open hours:</p>
+            <p className='fs-5 fw-bold'>Thời gian mở cửa:</p>
             <p>
               {timeConverter(curPOI.openTime, "hh:mm")} - {timeConverter(curPOI.closeTime, "hh:mm")}
             </p>
-            <p className='fs-5 fw-bold'>Recommended duration:</p>
+            <p className='fs-5 fw-bold'>Thời gian thăm quan đề xuất:</p>
             <p>{timeConverter(curPOI.duration, "x hours y minutes")}</p>
-            <p className='fs-5 fw-boldfs-5 fw-bold'>Address:</p>
+            <p className='fs-5 fw-boldfs-5 fw-bold'>Địa chỉ:</p>
             <p>{curPOI.address}</p>
             {curPOI.phone ? (
               <>
-                <p className='fs-5 fw-bold'>Phone number:</p>
+                <p className='fs-5 fw-bold'>Điện thoại:</p>
                 <p>{curPOI.phone}</p>
               </>
             ) : (
@@ -281,7 +306,7 @@ const POIDetails = () => {
             )}
             {curPOI.businessEmail ? (
               <>
-                <p className='fs-5 fw-bold'>Business email:</p>
+                <p className='fs-5 fw-bold'>Email:</p>
                 <p>{curPOI.businessEmail}</p>
               </>
             ) : (
@@ -296,13 +321,13 @@ const POIDetails = () => {
               <></>
             )}
             <button className='btn btn-info' onClick={handleClick}>
-              Generate plans to this place
+              Tạo kế hoạch
             </button>
           </MDBCol>
         </MDBRow>
 
         <MDBRow className='pb-3'>
-          <h2 className='fw-bold'>{curPOI.name} reviews</h2>
+          <h2 className='fw-bold'>Đánh giá về {curPOI.name}</h2>
         </MDBRow>
         <MDBRow className='pb-4'>
           <MDBCol size='4'>
@@ -321,8 +346,15 @@ const POIDetails = () => {
             </MDBRow>
           </MDBCol>
           <MDBCol>
-            {poiRatings}
             {ratingInput}
+            <MDBRow className='mt-4'>
+              <p className='fs-4 fw-bold'>Đánh giá của bạn:</p>
+            </MDBRow>
+            {userRating.length > 0 ? userRating : <p>Bạn vẫn chưa có đánh giá gì về địa điểm này.</p>}
+            <MDBRow className='mt-5'>
+              <p className='fs-4 fw-bold'>Đánh giá của người dùng:</p>
+            </MDBRow>
+            {poiRatings.length > 0 ? poiRatings : <p>Địa điểm này vẫn chưa được mọi người đánh giá.</p>}
           </MDBCol>
         </MDBRow>
       </MDBContainer>

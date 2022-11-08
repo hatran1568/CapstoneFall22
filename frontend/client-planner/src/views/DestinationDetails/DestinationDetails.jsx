@@ -76,7 +76,7 @@ function DestinationDetails() {
       <br />
       <MDBContainer className={style.contentbox}>
         <br />
-        <h1>Explore {destination.name}</h1>
+        <h1>Khám phá {destination.name}</h1>
         <br />
         <br />
         <MyGallery images={imgs} />
@@ -85,13 +85,13 @@ function DestinationDetails() {
         <br />
         <br />
         <MDBCardBody className={style.container2}>
-          <h3>Traveling to {destination.name}?</h3>
-          <MDBBtn className={style.button2} id="generateTrip">
-            Plan your trip
+          <h3>Du lịch tới {destination.name}?</h3>
+          <MDBBtn href="../" className={style.button2} id="generateTrip">
+              Lên kế hoạch
           </MDBBtn>
           <br />
           <br />
-          <h2>Places and activities in {destination.name}</h2>
+          <h2>Địa điểm và hoạt động tại {destination.name}</h2>
         </MDBCardBody>
         <MDBCardBody>
           <MDBRow className={style.row}>{poiBox}</MDBRow>
@@ -99,7 +99,7 @@ function DestinationDetails() {
         <MDBCardBody className={style.container2}><br/>
           <a href={poiLink}>
             <MDBBtn className={style.button2} id="poiList">
-              Find more places in {destination.name}
+              Tìm thêm địa điểm tại {destination.name}
             </MDBBtn>
           </a>
           <br />

@@ -1,5 +1,6 @@
 import React from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { ProSidebarProvider } from "react-pro-sidebar";
 import Login from "../views/Login/Login";
 import Signup from "../views/Login/Signup";
 import OAuthHandler from "../views/Login/OauthHandler";
@@ -21,8 +22,12 @@ import Test from "../views/TestingScreen/Test";
 import ChangePassword from "../views/UserProfile/ChangePassword";
 import RequestResetPassword from "../views/Login/RequestResetPassword";
 import ResetPasswordConfirm from "../views/Login/ResetPasswordConfirm";
+import BlogAddUpdate from "../views/Blog/BlogAddUpdate";
 import CollectionDetail from "../views/CollectionDetail/CollectionDetail";
 import Map from "../views/Map/Map";
+import AdminSidebar from "../components/Admin/SideBar";
+import BlogList from "../views/Blog/BlogList";
+
 export default function RootRoutes() {
   return (
     <Router>
@@ -56,7 +61,32 @@ export default function RootRoutes() {
           <Route path="/test" element={<Test></Test>}></Route>
           <Route path="/map:id" element={<Map></Map>}></Route>
         </Route>
-
+        <Route element={<RequireAuth allowedRoles={["Admin"]} />}>
+          <Route
+            path="/blog/list"
+            element={
+              <ProSidebarProvider>
+                <AdminSidebar props={<BlogList />} />
+              </ProSidebarProvider>
+            }
+          />
+          <Route
+            path="/blog/update"
+            element={
+              <ProSidebarProvider>
+                <AdminSidebar props={<BlogAddUpdate />} />
+              </ProSidebarProvider>
+            }
+          />
+          <Route
+            path="/admin"
+            element={
+              <ProSidebarProvider>
+                <AdminSidebar />
+              </ProSidebarProvider>
+            }
+          />
+        </Route>
         {/*Routes that don't need a nav bar go out here.*/}
       </Routes>
     </Router>

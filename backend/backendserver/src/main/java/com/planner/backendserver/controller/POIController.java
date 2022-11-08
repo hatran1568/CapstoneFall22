@@ -1,6 +1,6 @@
 package com.planner.backendserver.controller;
 
-import com.planner.backendserver.DTO.POIofDestinationDTO;
+import com.planner.backendserver.DTO.request.POIofDestinationDTO;
 import com.planner.backendserver.DTO.response.RatingDTO;
 import com.planner.backendserver.entity.MasterActivity;
 import com.planner.backendserver.repository.POIRepository;
