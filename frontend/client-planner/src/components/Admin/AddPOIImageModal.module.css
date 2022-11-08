@@ -26,7 +26,7 @@
 }
 .imageAddBox{
   color: rgb(0, 174, 232);
-  border-radius: 10%;
+  border-radius: 25%;
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -34,11 +34,11 @@
   border-width: 5px;
   border-color: rgb(0, 174, 232);
   margin: 2vw;
-  height: 250px;
-  width: 250px;
+  height: 150px;
+  width: 150px;
 }
 .addIcon{
-  font-size: 80px;
+  font-size: 60px;
 }
 .imageAddBox:hover{
   color: rgb(0, 134, 179);
