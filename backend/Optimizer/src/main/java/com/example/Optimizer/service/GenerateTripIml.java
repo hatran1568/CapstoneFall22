@@ -110,7 +110,7 @@ public class GenerateTripIml implements GenerateTrip {
                 add.setName(data.getDayOfTrip() + " days in " + destinationRepository.findByDestinationId(input.getDestinationId()).getName());
                 add.setStartDate(sDate);
                 add.setEndDate(eDate);
-                add.setDeleted(false);
+                add.setStatus(TripStatus.PRIVATE);
                 User u = new User();
                 u.setUserID(input.getUserId());
                 add.setUser(u);

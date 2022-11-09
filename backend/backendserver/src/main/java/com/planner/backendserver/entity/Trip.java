@@ -48,6 +48,6 @@ public class Trip {
     @Temporal(TemporalType.TIMESTAMP)
     private Date dateModified;
 
-    @Column(name="is_deleted")
-    private boolean isDeleted;
+    @Column(name="status")
+    private TripStatus status;
 }

@@ -61,7 +61,10 @@ public class POI extends MasterActivity {
     @Temporal(TemporalType.TIMESTAMP)
     @UpdateTimestamp
     private Date dateModified;
-
+    @Column(name="longitude")
+    private double longitude;
+    @Column(name="latitude")
+    private double latitude;
     @Column(name="is_deleted")
     private boolean isDeleted;
 
