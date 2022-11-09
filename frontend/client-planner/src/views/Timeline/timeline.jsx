@@ -418,7 +418,7 @@ class Timeline extends Component {
           detailId={this.state.delete.detailId}
           name={this.state.delete.name}
         />
-        <div className="container ">
+        <div div className="container ">
           <div className="timeline-container row ">
             <div className="col-2">
               <div className={style.daysBox}>

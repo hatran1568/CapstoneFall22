@@ -1,17 +1,15 @@
 package com.planner.backendserver.repository;
 
-import com.planner.backendserver.DTO.GalleryImages;
-import com.planner.backendserver.DTO.POIBoxDTO;
+import com.planner.backendserver.DTO.request.GalleryImages;
+import com.planner.backendserver.DTO.request.POIBoxDTO;
 import com.planner.backendserver.entity.Destination;
 
 import java.util.ArrayList;
 
-import org.hibernate.sql.Select;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
-import java.util.ArrayList;
 import java.util.Optional;
 
 @Repository

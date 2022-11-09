@@ -1,7 +1,7 @@
 package com.planner.backendserver.controller;
 
-import com.planner.backendserver.DTO.GalleryImages;
-import com.planner.backendserver.DTO.POIBoxDTO;
+import com.planner.backendserver.DTO.request.GalleryImages;
+import com.planner.backendserver.DTO.request.POIBoxDTO;
 import com.planner.backendserver.entity.Destination;
 import com.planner.backendserver.repository.DestinationRepository;
 import com.planner.backendserver.service.UserDTOServiceImplementer;

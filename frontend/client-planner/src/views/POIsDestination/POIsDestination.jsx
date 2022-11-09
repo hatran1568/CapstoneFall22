@@ -109,7 +109,7 @@ function POIsDestination() {
     <div>
       <b>
         <a onClick={catBtnClick} id={0} className={style.removeFilterButton}>
-          Show All
+          Xem tất cả
         </a>
       </b>
     </div>
@@ -171,7 +171,7 @@ function POIsDestination() {
   filterRatingBox.push(
     <b>
       <a onClick={ratingBtnClick} id={0} className={style.removeFilterButton}>
-        Show All
+        Xem tất cả
       </a>
     </b>
   );
@@ -207,24 +207,24 @@ function POIsDestination() {
       <img className={style.thumbnail} src={thumbImage} />
       <MDBContainer className={style.headContainer}>
         <h1 className={style.title}>
-          Best things to do in<br></br> {destination.name}
+          Những hoạt động hay nhất tại<br></br> {destination.name}
         </h1>
       </MDBContainer>
       <MDBContainer className={style.bodyContainer} id="bodyContainer">
         <MDBRow>
           <MDBCol md="3" className={style.filterBox}>
-            <h2>Filter</h2>
-            <b>By Categories</b>
+            <h2>Bộ lọc</h2>
+            <b>Theo danh mục</b>
             <br />
             {filterBox}
             <br />
             <br />
-            <b>By Rating</b>
+            <b>Theo đánh giá</b>
             <br />
             {filterRatingBox}
           </MDBCol>
           <MDBCol>
-            <h2>Things to do in {destination.name}</h2>
+            <h2>Các hoạt động tại {destination.name}</h2>
             <MDBContainer id="poiSet">{poiBox}</MDBContainer>
             <br />
             <ReactPaginate

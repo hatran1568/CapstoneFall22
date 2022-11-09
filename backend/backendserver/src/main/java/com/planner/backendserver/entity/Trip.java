@@ -48,6 +48,7 @@ public class Trip {
     @Temporal(TemporalType.TIMESTAMP)
     private Date dateModified;
 
-    @Column(name="is_deleted")
-    private boolean isDeleted;
+    @Enumerated(EnumType.STRING)
+    @Column(name="status")
+    private TripStatus status;
 }

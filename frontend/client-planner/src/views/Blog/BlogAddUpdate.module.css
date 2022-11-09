@@ -1,0 +1,53 @@
+.mainContainer{
+  width: 70%;
+  margin-bottom: 5vh;
+  display:inline;
+  margin-top: 5vh;
+}
+.titleInput{
+  margin-bottom: 10px;
+  font-size: 25px;
+  overflow: hidden;
+  resize: none;
+}
+.thumbnail {
+  transition: all 0.5s;
+  height: 50vh;
+  width: 100%;
+  object-fit: cover;
+  margin-bottom: 10px;
+}
+.btnBar{
+  margin: 0;
+  border-radius: 0;
+}
+.rightBtn{
+  float: right;
+  margin-left: 1vw
+}
+.autosave{
+  margin-left: 10px;
+  color:rgb(139, 139, 139)
+}
+.editor{
+  border-style: solid;
+  border-radius: 5px;
+  padding-top: 0;
+  border-width: 1px;
+  border-color: rgb(193, 193, 193);
+  min-height: 50vh;
+}
+.editorContent{
+  padding: 5%;
+}
+.navItem{
+  text-decoration: none;
+  color: rgb(125, 125, 125);
+}
+.navItem:hover{
+  color: rgb(52, 52, 52);
+}
+.arrowIcon{
+  margin-left: 7px;
+  margin-right: 7px;
+}

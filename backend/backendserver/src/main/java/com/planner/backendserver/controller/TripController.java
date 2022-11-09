@@ -7,7 +7,7 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.planner.backendserver.DTO.GenerateTripUserInput;
-import com.planner.backendserver.DTO.TripDTO;
+import com.planner.backendserver.DTO.response.TripDTO;
 import com.planner.backendserver.DTO.UserDTO;
 import com.planner.backendserver.DTO.response.ChecklistItemDTO;
 import com.planner.backendserver.DTO.response.DetailedTripDTO;

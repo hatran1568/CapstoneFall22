@@ -25,8 +25,11 @@ public class ChecklistItem {
     @Column(name = "checked")
     private boolean checked;
 
-    @Column(name="content", columnDefinition = "text")
-    private String content;
+    @Column(name="title", columnDefinition = "text")
+    private String title;
+
+    @Column(name="note", columnDefinition = "text")
+    private String note;
 
     @Column(name="date_created")
     @Temporal(TemporalType.TIMESTAMP)
