@@ -309,9 +309,13 @@ class POIAddUpdate extends Component {
       document.getElementById("infoInput").style.height = (document.getElementById("infoInput").scrollHeight)+"px";
       if (this.state.images.length > 0)
         this.state.images.forEach((entry, index) => {
+          let imgLink = entry.url;
+          const imgArr = imgLink.split("/");
+          if (imgArr[0] == "img")
+            imgLink = "../" + imgLink;
           imageBox.push(
             <MDBCard className={style.imageBox}>
-              <img className={style.poiImage} title={entry.description} src={entry.url}/>
+              <img className={style.poiImage} title={entry.description} src={imgLink}/>
               <div className={style.imageContent}>
                 {entry.description}<br/>
                 <a className={style.deleteIcon} id={entry.imageId} onClick={this.deleteImage}><FontAwesomeIcon icon={faClose}/></a>
