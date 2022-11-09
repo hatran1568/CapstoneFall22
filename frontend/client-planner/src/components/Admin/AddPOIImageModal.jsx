@@ -21,7 +21,6 @@ import {
 } from "mdb-react-ui-kit";
 function AddPOIImageModal(props) {
   //Get category Data
-  const { refreshHandler } = props;
   //Add Expense
   const addImage = (event) => {
     const loadingIcon = document.getElementById("loadingIcon");
@@ -46,7 +45,7 @@ function AddPOIImageModal(props) {
         withCredentials: true,
       }).then(function (response) {
         //window.location.reload();
-        refreshHandler();
+        //refreshHandler();
         toggleShow();
       });
     }

@@ -16,4 +16,6 @@ public interface POIUpdateDTO {
     String getWebsite();
     int getCategoryId();
     String getCategoryName();
+    double getLat();
+    double getLon();
 }

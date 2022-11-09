@@ -212,7 +212,7 @@ public class POIController {
             poiRepo.updateMA(poi.getActivityId(), poi.getAddress(), poi.getName());
             poiRepo.updatePOI(poi.getActivityId(), poi.getDescription(), poi.getAdditionalInfo(),
                     poi.getEmail(), poi.getClosingTime(), date, poi.getDuration(), poi.getOpeningTime(),
-                    poi.getPhoneNumber(), poi.getPrice(), poi.getWebsite(), poi.getCategoryId());
+                    poi.getPhoneNumber(), poi.getPrice(), poi.getWebsite(), poi.getCategoryId(), poi.getRating(), poi.getLat(), poi.getLon());
             return new ResponseEntity<>(HttpStatus.OK);
         }
         catch (Exception e){
@@ -227,7 +227,7 @@ public class POIController {
             poiRepo.addMA(poi.getAddress(), poi.getName());
             poiRepo.addPOI(poi.getDescription(), poi.getAdditionalInfo(),
                     poi.getEmail(), poi.getClosingTime(), date, date, poi.getDuration(), poi.getOpeningTime(),
-                    poi.getPhoneNumber(), poi.getPrice(), poi.getWebsite(), poiRepo.getLastestPOI(), poi.getCategoryId(), 5, false);
+                    poi.getPhoneNumber(), poi.getPrice(), poi.getWebsite(), poiRepo.getLastestPOI(), poi.getCategoryId(), poi.getRating(), false, poi.getLat(), poi.getLon());
             return new ResponseEntity<>(poiRepo.getLastestPOI(), HttpStatus.OK);
         }
         catch (Exception e){

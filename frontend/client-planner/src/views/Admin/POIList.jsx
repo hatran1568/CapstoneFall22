@@ -146,13 +146,13 @@ class POIList extends Component {
       var dateCreated = new Date(dateCreatedRaw);
       dateCreated = dateCreated.toLocaleDateString("vi", options);
       var name = entry.name;
-      if (name == " ")
+      if (name == " " || name == "")
         name = "Chưa đặt tên";
       var website = entry.website;
-      if (website == null)
+      if (website == null || website == "")
         website = "Chưa có";
       var phone = entry.phoneNumber;
-      if (phone == null)
+      if (phone == null || phone == "")
         phone = "Chưa có";
       if (index % 2 == 0)
         poiTableData.push(

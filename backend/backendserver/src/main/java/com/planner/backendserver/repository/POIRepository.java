@@ -131,7 +131,7 @@ public interface POIRepository extends JpaRepository<POI, Integer> {
             value = "SELECT ma.activity_id as activityId, ma.address, ma.name, p.description, p.additional_information as additionalInfo,\n" +
                     "       p.business_email as email, p.opening_time as openingTime, p.closing_time as closingTime, p.duration, p.typical_price as price,\n" +
                     "       p.google_rate as rating, p.telephone_number as phoneNumber, p.website, p.category_id as categoryId,\n" +
-                    "       c.category_name as categoryName\n" +
+                    "       c.category_name as categoryName, p.latitude as lat, p.longitude as lon\n" +
                     "FROM master_activity ma\n" +
                     "    LEFT JOIN poi p on ma.activity_id = p.activity_id\n" +
                     "    LEFT JOIN category c on p.category_id = c.category_id\n" +
@@ -149,10 +149,10 @@ public interface POIRepository extends JpaRepository<POI, Integer> {
     @Query(
             value = "UPDATE poi SET description = ?2, additional_information = ?3, business_email = ?4, closing_time = ?5,\n" +
                     "               date_modified = ?6, duration = ?7, opening_time = ?8, telephone_number = ?9,\n" +
-                    "               typical_price = ?10, website = ?11, category_id = ?12\n" +
+                    "               typical_price = ?10, website = ?11, category_id = ?12, google_rate = ?13, latitude = ?14, longitude = ?15\n" +
                     "WHERE activity_id = ?1",
             nativeQuery = true)
-    void updatePOI(int poiId, String description, String info, String email, int close, Timestamp dateModified, int duration, int open, String phone, double price, String web, int catId);
+    void updatePOI(int poiId, String description, String info, String email, int close, Timestamp dateModified, int duration, int open, String phone, double price, String web, int catId, double rate, double lat, double lon);
     @Modifying
     @Transactional
     @Query(
@@ -193,8 +193,8 @@ public interface POIRepository extends JpaRepository<POI, Integer> {
     @Transactional
     @Query(
             value = "INSERT INTO poi(description, additional_information, business_email, closing_time, date_created, date_modified,\n" +
-                    "                duration, opening_time, telephone_number, typical_price, website, activity_id, category_id, google_rate, is_deleted)\n" +
-                    "VALUES (?1, ?2, ?3, ?4, ?5, ?6, ?7, ?8, ?9, ?10, ?11, ?12, ?13, ?14, ?15)",
+                    "                duration, opening_time, telephone_number, typical_price, website, activity_id, category_id, google_rate, is_deleted, latitude, longitude)\n" +
+                    "VALUES (?1, ?2, ?3, ?4, ?5, ?6, ?7, ?8, ?9, ?10, ?11, ?12, ?13, ?14, ?15, ?16, ?17)",
             nativeQuery = true)
-    void addPOI(String description, String info, String email, int close, Timestamp created, Timestamp modified, int duration, int open, String phone, double price, String web, int activityId, int catId, double rate, boolean deleted);
+    void addPOI(String description, String info, String email, int close, Timestamp created, Timestamp modified, int duration, int open, String phone, double price, String web, int activityId, int catId, double rate, boolean deleted, double lat, double lon);
 }

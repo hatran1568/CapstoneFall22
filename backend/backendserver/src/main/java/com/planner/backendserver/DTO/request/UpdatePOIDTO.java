@@ -16,7 +16,9 @@ public class UpdatePOIDTO {
     double price;
     String website;
     int categoryId;
-
+    double rating;
+    double lat;
+    double lon;
     public int getActivityId() {
         return activityId;
     }
@@ -67,5 +69,15 @@ public class UpdatePOIDTO {
 
     public int getCategoryId() {
         return categoryId;
+    }
+
+    public double getRating() {
+        return rating;
+    }
+    public double getLat() {
+        return lat;
+    }
+    public double getLon() {
+        return lon;
     }
 }

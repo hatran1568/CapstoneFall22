@@ -28,6 +28,9 @@
   margin-bottom: 20px;
   text-align: right;
 }
+.updateBtn{
+  margin-left: 20px;
+}
 .warningBox{
   font-size: 13px;
   color:rgb(148, 148, 148);
