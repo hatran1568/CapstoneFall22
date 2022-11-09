@@ -1,9 +1,6 @@
 package com.planner.backendserver.service.implementers;
 
-import com.planner.backendserver.DTO.response.DetailedTripDTO;
-import com.planner.backendserver.DTO.response.MasterActivityDTO;
-import com.planner.backendserver.DTO.response.POIDTO;
-import com.planner.backendserver.DTO.response.TripDetailDTO;
+import com.planner.backendserver.DTO.response.*;
 import com.planner.backendserver.dto.response.TripGeneralDTO;
 import com.planner.backendserver.entity.*;
 import com.planner.backendserver.repository.*;
@@ -244,12 +241,18 @@ public class TripServiceImpl implements TripService {
         tripRepository.updateStartAndEndDates(tripId, startDate, endDate);
         tripDetailRepository.deleteByRange(tripId, startDate, endDate);
     }
-    private void deleteTripDetailsOutOfRange(int tripId, Date oldStartDate, Date oldEndDate){
-        Trip trip = tripRepository.findById(tripId);
-        if(trip.getStartDate().after(oldStartDate) || trip.getEndDate().before(oldEndDate)){
-            tripDetailRepository.deleteByRange(tripId, (Date) trip.getStartDate(), (Date) trip.getEndDate());
+    public List<TripDetailDTO> getTripDetailsToBeDeleted(int tripId, Date newStartDate, Date newEndDate){
+        ArrayList<TripDetails> tripDetails = tripDetailRepository.getTripDetailsOutOfRange(tripId, newStartDate, newEndDate);
+        ArrayList<TripDetailDTO> tripDetailDTOS = new ArrayList<>();
+        for (TripDetails tripDetail: tripDetails) {
+            TripDetailDTO tripDetailDTO = mapper.map(tripDetail, TripDetailDTO.class);
+            MasterActivityDTO masterActivityDTO = tripDetailDTO.getMasterActivity();
+            tripDetailDTO.setMasterActivity(getMasterActivity(masterActivityDTO.getActivityId()));
+            tripDetailDTOS.add(tripDetailDTO);
         }
+        return tripDetailDTOS;
     }
+
     @Override
     public boolean tripExists(int tripId){
         return tripRepository.existsById(tripId);

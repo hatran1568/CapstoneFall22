@@ -5,12 +5,13 @@ import style from "./TripGeneralInfo.module.css";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import ConfirmEditModal from "./ConfirmEditDatesModal";
-import { start } from "@popperjs/core";
+import axios from "axios";
 function EditTripDatesModal(props) {
   const { onChange, onHide, trip, ...rest } = props;
   const [startDate, setStartDate] = useState(new Date(trip.startDate));
   const [endDate, setEndDate] = useState(new Date(trip.endDate));
   const [showConfirm, setShowConfirm] = useState(false);
+  const [warningDetails, setWarningDetails] = useState([]);
   const handleHide = () => {
     setShowConfirm(false);
   };
@@ -27,9 +28,9 @@ function EditTripDatesModal(props) {
     if (
       startDate > new Date(trip.startDate) ||
       endDate < new Date(trip.endDate)
-    )
-      setShowConfirm(true);
-    else handleConfirmed();
+    ) {
+      getEventsToBeDeleted();
+    } else handleConfirmed();
   };
   const handleCancel = () => {
     handleHide();
@@ -40,7 +41,21 @@ function EditTripDatesModal(props) {
   const onCancel = () => {
     setStartDate(new Date(trip.startDate));
     setEndDate(new Date(trip.endDate));
+    setWarningDetails([]);
     onHide();
+  };
+
+  const getEventsToBeDeleted = () => {
+    const data = {
+      tripId: trip.tripId,
+      startDate: startDate.toISOString().substring(0, 10),
+      endDate: endDate.toISOString().substring(0, 10),
+    };
+    axios
+      .post(`http://localhost:8080/trip/get-details-to-delete`, data)
+      .then((res) => {
+        setWarningDetails(res.data, setShowConfirm(true));
+      });
   };
   const diff =
     new Date(trip.endDate).getDate() - new Date(trip.startDate).getDate();
@@ -52,6 +67,7 @@ function EditTripDatesModal(props) {
         onHide={handleHide}
         message={""}
         onCancel={handleCancel}
+        listDetails={warningDetails}
       />
       <Modal
         {...rest}

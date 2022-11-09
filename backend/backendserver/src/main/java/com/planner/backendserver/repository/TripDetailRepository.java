@@ -29,4 +29,6 @@ public interface TripDetailRepository extends JpaRepository<TripDetails, Integer
     @Transactional
     @Query(value = "delete from trip_details where trip_id=:tripId and date < :startDate or date > :endDate", nativeQuery = true)
     void deleteByRange(int tripId, Date startDate, Date endDate);
+    @Query(value = "select * from trip_details where trip_id=:tripId and date < :newStartDate or date > :newEndDate order by date asc limit 5", nativeQuery = true)
+    ArrayList<TripDetails> getTripDetailsOutOfRange(int tripId, Date newStartDate, Date newEndDate);
 }

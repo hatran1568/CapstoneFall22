@@ -205,6 +205,13 @@
     margin: 1em;
     font-size: 1.2em;
   }
+  .confirmModalBody{
+    /* display: block; */
+    margin: 1em;
+    margin-top: 2em;
+    margin-bottom: 0;
+    font-size: 1.2em;
+  }
   .centerBtnGroup{
     margin: auto;
   display: flex;
@@ -217,6 +224,23 @@
   .modalMessage{
     text-align: center;
     font-weight: 500;
+  }
+  .listWarning{
+    margin-top: 1em;
+  }
+  .warningMessage{
+    font-style: italic;
+    color: rgba(255, 0, 72, 0.83);
+  }
+  .warningDiv{
+    font-size: medium;
+    margin: 1em 0;
+  }
+  .warningImage{
+    width: 100%;
+    max-height: 4em;
+    object-fit: cover;
+    border-radius: 5%;
   }
   @media (max-width: 550px) {
     .stickyNavFirst{

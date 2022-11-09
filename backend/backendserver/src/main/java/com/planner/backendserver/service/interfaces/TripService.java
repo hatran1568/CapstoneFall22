@@ -1,8 +1,10 @@
 package com.planner.backendserver.service.interfaces;
 
+import com.planner.backendserver.DTO.response.ChecklistItemDTO;
 import com.planner.backendserver.DTO.response.DetailedTripDTO;
 import com.planner.backendserver.DTO.response.TripDetailDTO;
 import com.planner.backendserver.dto.response.TripGeneralDTO;
+import com.planner.backendserver.entity.ChecklistItem;
 import com.planner.backendserver.entity.TripDetails;
 import org.springframework.stereotype.Service;
 
@@ -27,4 +29,5 @@ public interface TripService {
     public void editTripName(int tripId, String name);
     public boolean tripExists(int tripId);
     public void editStartAndEndDates(int tripId, Date startDate, Date endDate);
+    public List<TripDetailDTO> getTripDetailsToBeDeleted(int tripId, Date newStartDate, Date newEndDate);
 }

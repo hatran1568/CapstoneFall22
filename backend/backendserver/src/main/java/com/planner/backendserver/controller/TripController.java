@@ -9,12 +9,15 @@ import com.google.gson.GsonBuilder;
 import com.planner.backendserver.DTO.GenerateTripUserInput;
 import com.planner.backendserver.DTO.TripDTO;
 import com.planner.backendserver.DTO.UserDTO;
+import com.planner.backendserver.DTO.response.ChecklistItemDTO;
 import com.planner.backendserver.DTO.response.DetailedTripDTO;
 import com.planner.backendserver.DTO.response.TripDetailDTO;
 import com.planner.backendserver.DTO.response.SimpleResponse;
 import com.planner.backendserver.dto.response.TripGeneralDTO;
+import com.planner.backendserver.entity.ChecklistItem;
 import com.planner.backendserver.entity.MasterActivity;
 import com.planner.backendserver.entity.TripDetails;
+import com.planner.backendserver.repository.ChecklistItemRepository;
 import com.planner.backendserver.repository.POIRepository;
 import com.planner.backendserver.repository.TripRepository;
 import com.planner.backendserver.service.UserDTOServiceImplementer;
@@ -32,6 +35,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 
 import java.sql.Date;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 import java.util.Optional;
@@ -172,6 +176,18 @@ public class TripController {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+    @PostMapping("/get-details-to-delete")
+    public ResponseEntity<List<TripDetailDTO>> getDetailsToDelete(@RequestBody ObjectNode objectNode){
+        try{
+            Date startDate = Date.valueOf(objectNode.get("startDate").asText());
+            Date endDate = Date.valueOf(objectNode.get("endDate").asText());
+            int tripId = objectNode.get("tripId").asInt();
+            List<TripDetailDTO> tripDetailDTOS= tripService.getTripDetailsToBeDeleted(tripId, startDate, endDate);
+            return new ResponseEntity<>(tripDetailDTOS, HttpStatus.OK);
+        } catch (Exception e){
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
     @PutMapping("/put-detail")
     public ResponseEntity<TripDetailDTO> editTripDetail(@RequestBody TripDetails newDetail, @RequestParam int id){
         try{
@@ -206,7 +222,6 @@ public class TripController {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
-
     @PreAuthorize("hasAuthority('Admin')")
     @RequestMapping(value="/test/{id}", method = RequestMethod.GET)
 

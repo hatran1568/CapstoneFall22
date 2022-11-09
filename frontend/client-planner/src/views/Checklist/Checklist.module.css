@@ -1,0 +1,66 @@
+.checklistContainer{
+    width: 60vw;
+    margin: auto;
+}
+.cardBody:hover .deleteBtn{
+    display: block;
+}
+.itemCheckbox{
+    accent-color: orange;
+    width: 2em;
+    height: 2em;
+    /* transform : scale(2); */
+    display: inline-block;
+    margin: 0;
+    margin-right: 1em;
+}
+.itemContent{
+    min-height: 100%;
+    vertical-align: top;
+    display: inline-block;
+    margin: 0;
+}
+.content{
+    font-size: large;
+    font-weight: 500;
+}
+.dropdown{
+    /* display: none; */
+      position: absolute;
+      right: 0;
+      top: 0;
+  }
+  .dropdownMenu{
+    display: none;
+    position: absolute;
+    top: 1.5em;
+    left: 0;
+    transform: translateX(-30%);
+    background-color: #fff;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    padding: 0;
+    border-radius: 5px;
+    }
+    .dropdown:hover .dropdownMenu {
+      display: block;
+    }
+    .dropdownMenu a:hover {
+      background-color: #f1f1f1;
+    }
+    .dropdownMenu a {
+      color: black;
+      padding: 0.5em 1em;
+      text-decoration: none;
+      display: block;
+      font-size: medium;
+      text-align: left;
+      padding: none;
+    }
+.deleteBtn{
+    /* display: none; */
+    position: absolute;
+    right: 5px;
+    top: 5px;
+    background-color:transparent;
+    border: none;
+}

@@ -1,5 +1,6 @@
 package com.planner.backendserver.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
@@ -17,6 +18,7 @@ public class ChecklistItem {
     private int itemId;
 
     @ManyToOne
+    @JsonIgnore
     @JoinColumn(name = "trip_id", nullable = false)
     private Trip trip;
 

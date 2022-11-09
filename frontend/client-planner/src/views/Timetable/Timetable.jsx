@@ -297,6 +297,7 @@ class Timetable extends Component {
       November: "Tháng Mười Một",
       December: "Tháng Mười Hai",
     };
+    document.title = this.state.trip.name + " | Tripplanner";
     return (
       <>
         <TripGeneralInfo />

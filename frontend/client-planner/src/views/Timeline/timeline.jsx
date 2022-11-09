@@ -372,6 +372,7 @@ class Timeline extends Component {
           <div></div>
         </LoadingScreen>
       );
+    document.title = this.state.trip.name + " | Tripplanner";
     var allDates = this.getAllDates(
       this.state.trip.startDate,
       this.state.trip.endDate

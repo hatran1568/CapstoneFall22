@@ -75,10 +75,7 @@ class TripGeneralInfo extends Component {
   editDates = (data) => {
     axios.post("http://localhost:8080/trip/edit-dates", data);
     this.closeEditDates();
-    let newTrip = this.state.trip;
-    newTrip.startDate = data.startDate;
-    newTrip.endDate = data.endDate;
-    this.setState({ trip: newTrip });
+    window.location.reload();
   };
   render() {
     if (!this.state.dataLoaded)
