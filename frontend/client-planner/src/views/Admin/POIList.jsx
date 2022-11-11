@@ -159,8 +159,8 @@ class POIList extends Component {
           <tr className={style.tableDataGrey}>
             <th scope='col' className={style.tableIdData}>{entry.activityId}</th>
             <th scope='col'><a className={style.tableNameData}  href={"../poi?id=" + entry.activityId}>{name}</a></th>
-            <th scope='col' className={style.tableDateData}>{dateCreated}</th>
             <th scope='col' className={style.tableDateData}>{dateModified}</th>
+            <th scope='col' className={style.tableDateData}>{dateCreated}</th>
             <th scope='col' className={style.tableRateData}>{entry.rating}<FontAwesomeIcon className={style.star} icon={faStar}/></th>
             <th scope='col' className={style.tableCat}>{entry.categoryName}</th>
             <th scope='col' className={style.tableWeb}><a className={style.tableNameData} target="_blank" href={website}>{website}</a></th>
@@ -176,8 +176,8 @@ class POIList extends Component {
           <tr className={style.tableData}>
             <th scope='col' className={style.tableIdData}>{entry.activityId}</th>
             <th scope='col'><a className={style.tableNameData}  href={"../poi?id=" + entry.activityId}>{name}</a></th>
-            <th scope='col' className={style.tableDateData}>{dateCreated}</th>
             <th scope='col' className={style.tableDateData}>{dateModified}</th>
+            <th scope='col' className={style.tableDateData}>{dateCreated}</th>
             <th scope='col' className={style.tableRateData}>{entry.rating}<FontAwesomeIcon className={style.star} icon={faStar}/></th>
             <th scope='col' className={style.tableCat}>{entry.categoryName}</th>
             <th scope='col' className={style.tableWeb}><a className={style.tableNameData} target="_blank" href={website}>{website}</a></th>
