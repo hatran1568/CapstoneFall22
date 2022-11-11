@@ -1,14 +1,15 @@
 import React, { Component } from "react";
-import TripDetailTabs from "./TripDetailTabs";
+import TripDetailTabs from "../GeneralInfo/TripDetailTabs";
 import style from "./TripBudget.module.css";
 import axios from "axios";
 import { useParams } from "react-router-dom";
 import { Modal } from "antd";
-import { Progress } from 'antd';
+import { Progress } from "antd";
 import ModalGraph from "../../components/Trips/ModalGraph";
 import AddExpenseModal from "../../components/Trips/AddExpenseModal";
 import UpdateExpenseModal from "../../components/Trips/UpdateExpenseModal";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import TripGeneralInfo from "../GeneralInfo/TripGeneralInfo";
 import {
   faFilter,
   faTrash,
@@ -27,15 +28,30 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { library } from "@fortawesome/fontawesome-svg-core";
 import {
-    MDBContainer,
-    MDBCard,
-    MDBCardBody,
-    MDBRow,
-    MDBCol,
-    MDBBtn
-  } from "mdb-react-ui-kit";
-import Dropdown from 'react-bootstrap/Dropdown';
-library.add(faFilter, faTrash, faPlane, faBed, faTaxi, faBus, faUtensils, faWineGlass, faMonument, faTicket, faBagShopping, faGasPump, faBasketShopping, faNoteSticky);
+  MDBContainer,
+  MDBCard,
+  MDBCardBody,
+  MDBRow,
+  MDBCol,
+  MDBBtn,
+} from "mdb-react-ui-kit";
+import Dropdown from "react-bootstrap/Dropdown";
+library.add(
+  faFilter,
+  faTrash,
+  faPlane,
+  faBed,
+  faTaxi,
+  faBus,
+  faUtensils,
+  faWineGlass,
+  faMonument,
+  faTicket,
+  faBagShopping,
+  faGasPump,
+  faBasketShopping,
+  faNoteSticky
+);
 
 const { confirm } = Modal;
 class TripBudget extends Component {
@@ -50,107 +66,122 @@ class TripBudget extends Component {
       dataLoaded: false,
       tripIdLoaded: false,
       currentFilter: 0,
-      tripUser: null
+      tripUser: null,
     };
   }
   componentDidMount() {
     const { id } = this.props.params;
     //console.log("id:", id);
-    axios.get(`http://localhost:8080/trip/general/` + id).then((res) => {
-      const tripData = res.data;
-      this.setState({
-        trip: tripData,
-        dataLoaded: true,
+    axios
+      .get(`http://localhost:8080/trip/general/` + id)
+      .then((res) => {
+        const tripData = res.data;
+        this.setState({
+          trip: tripData,
+          dataLoaded: true,
+        });
+      })
+      .catch(function (error) {
+        console.log(error);
+        return Promise.reject(error);
       });
-    }).catch(
-      function (error) {
-        console.log(error)
-        return Promise.reject(error)
-      }
-    );
-    axios.get(`http://localhost:8080/api/expense/total/` + id).then((res) => {
-      const totalExpense = res.data;
-      this.setState({
-        totalBudget: totalExpense
+    axios
+      .get(`http://localhost:8080/api/expense/total/` + id)
+      .then((res) => {
+        const totalExpense = res.data;
+        this.setState({
+          totalBudget: totalExpense,
+        });
+      })
+      .catch(function (error) {
+        console.log(error);
+        return Promise.reject(error);
       });
-    }).catch(
-      function (error) {
-        console.log(error)
-        return Promise.reject(error)
-      }
-    );
-    axios.get(`http://localhost:8080/api/expense/graph/` + id).then((res) => {
-      const data = res.data;
-      this.setState({
-        graphData: data
-      });
-    }).catch(
-      function (error) {
-        console.log(error)
-        return Promise.reject(error)
-      }
-    );
-    axios.get(`http://localhost:8080/api/expense/` + id + "/0").then((res) => {
-      const data = res.data;
-      this.setState({
-        expenseData: data,
-      });
-      axios.get(`http://localhost:8080/api/expense/user/` + this.state.trip.tripId).then((res) => {
+    axios
+      .get(`http://localhost:8080/api/expense/graph/` + id)
+      .then((res) => {
         const data = res.data;
         this.setState({
-          tripUser: data,
-          tripIdLoaded: true
+          graphData: data,
         });
-      }).catch(
-        function (error) {
-          console.log(error)
-          return Promise.reject(error)
-        }
-      );
-    }).catch(
-      function (error) {
-        console.log(error)
-        return Promise.reject(error)
-      }
-    );
+      })
+      .catch(function (error) {
+        console.log(error);
+        return Promise.reject(error);
+      });
+    axios
+      .get(`http://localhost:8080/api/expense/` + id + "/0")
+      .then((res) => {
+        const data = res.data;
+        this.setState({
+          expenseData: data,
+        });
+        axios
+          .get(
+            `http://localhost:8080/api/expense/user/` + this.state.trip.tripId
+          )
+          .then((res) => {
+            const data = res.data;
+            this.setState({
+              tripUser: data,
+              tripIdLoaded: true,
+            });
+          })
+          .catch(function (error) {
+            console.log(error);
+            return Promise.reject(error);
+          });
+      })
+      .catch(function (error) {
+        console.log(error);
+        return Promise.reject(error);
+      });
   }
-  
+
   refreshHandler = () => {
-    const id = window.location.href.split('/')[4];
-    axios.get(`http://localhost:8080/api/expense/total/` + id).then((res) => {
-      const totalExpense = res.data;
-      this.setState({
-        totalBudget: totalExpense
+    const id = window.location.href.split("/")[4];
+    axios
+      .get(`http://localhost:8080/api/expense/total/` + id)
+      .then((res) => {
+        const totalExpense = res.data;
+        this.setState({
+          totalBudget: totalExpense,
+        });
+      })
+      .catch(function (error) {
+        console.log(error);
+        return Promise.reject(error);
       });
-    }).catch(
-      function (error) {
-        console.log(error)
-        return Promise.reject(error)
-      }
-    );
-    axios.get(`http://localhost:8080/api/expense/graph/` + id).then((res) => {
-      const data = res.data;
-      this.setState({
-        graphData: data
+    axios
+      .get(`http://localhost:8080/api/expense/graph/` + id)
+      .then((res) => {
+        const data = res.data;
+        this.setState({
+          graphData: data,
+        });
+      })
+      .catch(function (error) {
+        console.log(error);
+        return Promise.reject(error);
       });
-    }).catch(
-      function (error) {
-        console.log(error)
-        return Promise.reject(error)
-      }
-    );
-    axios.get(`http://localhost:8080/api/expense/` + id + "/" + this.state.currentFilter).then((res) => {
-      const data = res.data;
-      this.setState({
-        expenseData: data,
+    axios
+      .get(
+        `http://localhost:8080/api/expense/` +
+          id +
+          "/" +
+          this.state.currentFilter
+      )
+      .then((res) => {
+        const data = res.data;
+        this.setState({
+          expenseData: data,
+        });
+      })
+      .catch(function (error) {
+        console.log(error);
+        return Promise.reject(error);
       });
-    }).catch(
-      function (error) {
-        console.log(error)
-        return Promise.reject(error)
-      }
-    );
-  }
+  };
 
   toLongDate = (date) => {
     var options = {
@@ -161,30 +192,31 @@ class TripBudget extends Component {
     var today = new Date(date);
     return today.toLocaleDateString("vi", options);
   };
-  
+
   //Filter
   filterChanged = (event) => {
-    const id = window.location.href.split('/')[4];
+    const id = window.location.href.split("/")[4];
     const filterId = event.currentTarget.id;
     const filterDropdown = document.getElementById("filterDropdown");
     filterDropdown.innerHTML = " Filter: " + event.currentTarget.name;
     var elems = document.querySelectorAll(".active");
-    [].forEach.call(elems, function(el) {
+    [].forEach.call(elems, function (el) {
       el.classList.remove("active");
     });
     event.currentTarget.className += " active";
-    axios.get(`http://localhost:8080/api/expense/` + id + "/" + filterId).then((res) => {
-      const data = res.data;
-      this.setState({
-        expenseData: data,
-        currentFilter: filterId
+    axios
+      .get(`http://localhost:8080/api/expense/` + id + "/" + filterId)
+      .then((res) => {
+        const data = res.data;
+        this.setState({
+          expenseData: data,
+          currentFilter: filterId,
+        });
+      })
+      .catch(function (error) {
+        return Promise.reject(error);
       });
-    }).catch(
-      function (error) {
-        return Promise.reject(error)
-      }
-    );
-  }
+  };
 
   //Delete Expense
   deleteExpense = async (event) => {
@@ -197,19 +229,22 @@ class TripBudget extends Component {
       okType: "danger",
       cancelText: "Không",
       onOk: async () => {
-        const id = window.location.href.split('/')[4];
-        await axios.delete(`http://localhost:8080/api/expense/` + expenseId, {});
+        const id = window.location.href.split("/")[4];
+        await axios.delete(
+          `http://localhost:8080/api/expense/` + expenseId,
+          {}
+        );
         //window.location.reload();
         this.refreshHandler();
       },
       onCancel() {},
     });
-  }
+  };
 
   render() {
-    const formatter = new Intl.NumberFormat('vi', {
-      style: 'currency',
-      currency: 'VND',
+    const formatter = new Intl.NumberFormat("vi", {
+      style: "currency",
+      currency: "VND",
     });
     //Breakdown Data
     const graphData = this.state.graphData;
@@ -221,10 +256,13 @@ class TripBudget extends Component {
     });
     let graphProps = {
       categoryData: categoryData,
-      expenseData: expenseData
-    }
+      expenseData: expenseData,
+    };
     //Calculate % Expense and display Progress Bar
-    const expenseRate = Math.round((this.state.totalBudget / this.state.trip.budget) * 100 * 100) / 100;
+    const expenseRate =
+      Math.round(
+        (this.state.totalBudget / this.state.trip.budget) * 100 * 100
+      ) / 100;
     const exceedExpense = Math.round((expenseRate - 100) * 100) / 100;
     const progressBar = [];
     if (expenseRate >= 100) {
@@ -247,26 +285,41 @@ class TripBudget extends Component {
         <MDBCardBody className={style.expenseBox}>
           <MDBRow className={style.expenseBoxRow}>
             <MDBCol md={1} className={style.expenseBoxIcon}>
-              <FontAwesomeIcon icon={entry.icon}/>
+              <FontAwesomeIcon icon={entry.icon} />
             </MDBCol>
             <MDBCol md={6} className={style.expenseBoxMid}>
-              <b>{entry.name}</b><br/>{entry.description}
+              <b>{entry.name}</b>
+              <br />
+              {entry.description}
             </MDBCol>
             <MDBCol md={3} className={style.expenseBoxAmount}>
               {formatter.format(entry.amount)}
             </MDBCol>
-            <MDBCol md={1} onClick={this.updateExpense} id={entry.expenseId} className={style.expenseBoxDelete}>
-              <UpdateExpenseModal data={entry} refreshHandler={() => this.refreshHandler()}/>
+            <MDBCol
+              md={1}
+              onClick={this.updateExpense}
+              id={entry.expenseId}
+              className={style.expenseBoxDelete}
+            >
+              <UpdateExpenseModal
+                data={entry}
+                refreshHandler={() => this.refreshHandler()}
+              />
             </MDBCol>
-            <MDBCol md={1} onClick={this.deleteExpense} id={entry.expenseId} className={style.expenseBoxDelete}>
-              <FontAwesomeIcon icon="trash"/>
+            <MDBCol
+              md={1}
+              onClick={this.deleteExpense}
+              id={entry.expenseId}
+              className={style.expenseBoxDelete}
+            >
+              <FontAwesomeIcon icon="trash" />
             </MDBCol>
           </MDBRow>
         </MDBCardBody>
       );
     });
     //Check user
-    
+
     if (!this.state.dataLoaded)
     return (
       <div>
@@ -275,40 +328,22 @@ class TripBudget extends Component {
     );
     if (this.state.tripIdLoaded)
       if (localStorage.getItem("id") == null)
-        return(
+        return (
           <div className={style.errorText}>
             <h1> Đăng nhập để quản lí chi phí </h1>{" "}
           </div>
-        )
+        );
       else if (localStorage.getItem("id") != this.state.tripUser)
-        return(
+        return (
           <div className={style.errorText}>
             <h1> Không thể quản lí chi phí của một chuyến đi không phải của bạn </h1>{" "}
           </div>
-        )
+        );
     document.title = this.state.trip.name + " | Tripplanner";
     var imgUrl = this.state.trip.image;
     return (
       <div>
-        <div className={style.tripImageDiv}>
-          <img
-            src={
-              imgUrl
-                ? `../${imgUrl}`
-                : "https://twimg0-a.akamaihd.net/a/1350072692/t1/img/front_page/jp-mountain@2x.jpg"
-            }
-            className={style.tripImage}
-          ></img>
-          <div className={style.infoBox}>
-            <h1 className={style.planTitle}>
-              {this.state.trip.name ? this.state.trip.name : ""}
-            </h1>
-            <h2 className={style.dates}>
-              {this.toLongDate(this.state.trip.startDate)} -{" "}
-              {this.toLongDate(this.state.trip.endDate)}
-            </h2>
-          </div>
-        </div>
+        <TripGeneralInfo />
         <TripDetailTabs></TripDetailTabs>
         <MDBContainer className={style.mainContainer}>
           <h1>Ngân sách chuyến đi</h1><br/>
@@ -323,9 +358,9 @@ class TripBudget extends Component {
           <h2>Các chi tiêu</h2>
           <MDBRow className={style.btnGroup}>
             <MDBCol md={4} className={style.expenseAdd}>
-              <AddExpenseModal refreshHandler={() => this.refreshHandler()}/>
+              <AddExpenseModal refreshHandler={() => this.refreshHandler()} />
             </MDBCol>
-            <MDBCol md={4} className={style.expenseFilter}>            
+            <MDBCol md={4} className={style.expenseFilter}>
               <Dropdown>
                 <Dropdown.Toggle variant="info">
                   <FontAwesomeIcon icon="filter"/><span id="filterDropdown"> Bộ lọc: Theo ngày</span>
@@ -339,7 +374,8 @@ class TripBudget extends Component {
                 </Dropdown.Menu>
               </Dropdown>
             </MDBCol>
-          </MDBRow><br/>
+          </MDBRow>
+          <br />
           {expenseBox}
         </MDBContainer>
       </div>
@@ -348,6 +384,6 @@ class TripBudget extends Component {
 }
 
 function withParams(Component) {
-    return (props) => <Component {...props} params={useParams()} />;
-  }
+  return (props) => <Component {...props} params={useParams()} />;
+}
 export default withParams(TripBudget);

@@ -2,7 +2,14 @@ import React, { useEffect } from "react";
 import { Modal } from "antd";
 import "antd/dist/antd.css";
 import style from "./TripInfoCard.module.css";
-import { MDBIcon, MDBCardImage, MDBCard, MDBRow, MDBCol, MDBBtn } from "mdb-react-ui-kit";
+import {
+  MDBIcon,
+  MDBCardImage,
+  MDBCard,
+  MDBRow,
+  MDBCol,
+  MDBBtn,
+} from "mdb-react-ui-kit";
 import axios from "../../api/axios";
 import { useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -52,10 +59,10 @@ function TripInfoCard(trip) {
 
   return isDeleted ? null : (
     <MDBRow>
-      <MDBCol sm='12'>
+      <MDBCol sm="12">
         <MDBCard style={{ border: 0 }}>
           <MDBRow>
-            <MDBCol sm='3'>
+            <MDBCol sm="3">
               <MDBCardImage
                 className={style.cropped}
                 src={
@@ -66,11 +73,15 @@ function TripInfoCard(trip) {
                 fluid
               />
             </MDBCol>
-            <MDBCol sm='8'>
-              <a className={style.link} href={"http://localhost:3000/trip/" + trip.trip.tripId}>
-                <h5 className='mt-4'>{trip.trip.name}</h5>
-                <p className='mt-2 mb-0'>
-                  <MDBIcon far icon='calendar-alt' /> {toLongDate(trip.trip.startDate)}
+            <MDBCol sm="8">
+              <a
+                className={style.link}
+                href={"http://localhost:3000/timeline/" + trip.trip.tripId}
+              >
+                <h5 className="mt-4">{trip.trip.name}</h5>
+                <p className="mt-2 mb-0">
+                  <MDBIcon far icon="calendar-alt" />{" "}
+                  {toLongDate(trip.trip.startDate)}
                   &nbsp;-&nbsp;{toLongDate(trip.trip.endDate)}
                 </p>
                 <p style={{ position: "relative", top: 0 }}>
@@ -79,13 +90,21 @@ function TripInfoCard(trip) {
                 </p>
               </a>
               <small className={style.lastUpdated}>
-                <i>Last updated: {toLongDate(trip.trip.dateModified.split("T")[0])}</i>
+                <i>
+                  Last updated:{" "}
+                  {toLongDate(trip.trip.dateModified.split("T")[0])}
+                </i>
               </small>
             </MDBCol>
-            <MDBCol sm='1'>
-              <div className='m-1 mt-4'>
-                <MDBBtn tag='a' color='none' className={style.deleteButton} onClick={showDeleteConfirm}>
-                  <MDBIcon far icon='trash-alt' size='lg' />
+            <MDBCol sm="1">
+              <div className="m-1 mt-4">
+                <MDBBtn
+                  tag="a"
+                  color="none"
+                  className={style.deleteButton}
+                  onClick={showDeleteConfirm}
+                >
+                  <MDBIcon far icon="trash-alt" size="lg" />
                 </MDBBtn>
               </div>
             </MDBCol>

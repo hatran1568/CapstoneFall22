@@ -17,19 +17,6 @@ export default function Tabs() {
   return (
     <div className={style.stickyNavFirst}>
       <ul className={`nav nav-tabs justify-content-center ${style.navTabs} `}>
-        <li className={`nav-item`}>
-          <a
-            className={
-              path.toLowerCase() == "/trip"
-                ? `nav-link active ${style.navItem} ${style.navItemActive}`
-                : `nav-link ${style.navItem}`
-            }
-            aria-current="page"
-            href={"../trip/" + params.id}
-          >
-            Thông tin chung
-          </a>
-        </li>
         <li className={`nav-item ${style.dropDown}`}>
           <a
             className={

@@ -1,8 +1,10 @@
 package com.planner.backendserver.service.interfaces;
 
+import com.planner.backendserver.DTO.response.ChecklistItemDTO;
 import com.planner.backendserver.DTO.response.DetailedTripDTO;
 import com.planner.backendserver.DTO.response.TripDetailDTO;
 import com.planner.backendserver.dto.response.TripGeneralDTO;
+import com.planner.backendserver.entity.ChecklistItem;
 import com.planner.backendserver.entity.TripDetails;
 import org.springframework.stereotype.Service;
 
@@ -18,10 +20,14 @@ public interface TripService {
     public void deleteDetailById(int id);
     public Optional<Double> getDistanceBetweenTwoPOIs(int from, int to);
     public TripDetailDTO getTripDetailById(int id);
-    public TripDetailDTO editTripDetailById(TripDetails detail, int id);
-    public TripDetailDTO editCustomTripDetailById(TripDetails detail, int id);
+    public TripDetailDTO editTripDetailById(TripDetailDTO detail, int id);
+    public TripDetailDTO editCustomTripDetailById(TripDetailDTO detail, int detailId, int tripId);
     public List<TripGeneralDTO> getTripsByUser(int userId);
     public void deleteTripById(int id);
     public List<TripGeneralDTO> getLast3TripsByUser(int userId);
     public int countTripByUser(int userId);
+    public void editTripName(int tripId, String name);
+    public boolean tripExists(int tripId);
+    public void editStartAndEndDates(int tripId, Date startDate, Date endDate);
+    public List<TripDetailDTO> getTripDetailsToBeDeleted(int tripId, Date newStartDate, Date newEndDate);
 }

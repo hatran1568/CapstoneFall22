@@ -47,7 +47,8 @@ function TripInfoCardHomepage(trip) {
     <MDBCard
       className={style.card}
       onClick={() => {
-        window.location.href = "http://localhost:3000/trip/" + trip.trip.tripId;
+        window.location.href =
+          "http://localhost:3000/timeline/" + trip.trip.tripId;
       }}
     >
       <MDBCardImage

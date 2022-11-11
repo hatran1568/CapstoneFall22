@@ -1,19 +1,20 @@
 package com.planner.backendserver.service.implementers;
 
-import com.planner.backendserver.DTO.response.DetailedTripDTO;
-import com.planner.backendserver.DTO.response.MasterActivityDTO;
-import com.planner.backendserver.DTO.response.POIDTO;
-import com.planner.backendserver.DTO.response.TripDetailDTO;
+import com.planner.backendserver.DTO.response.*;
 import com.planner.backendserver.dto.response.TripGeneralDTO;
 import com.planner.backendserver.entity.*;
 import com.planner.backendserver.repository.*;
 import com.planner.backendserver.service.interfaces.TripService;
 import org.modelmapper.ModelMapper;
+import org.modelmapper.convention.MatchingStrategies;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.sql.Date;
+import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -43,16 +44,18 @@ public class TripServiceImpl implements TripService {
         Trip trip = tripRepository.findById(tripId);
         if(trip == null) return null;
         DetailedTripDTO tripDetailedDTO = mapper.map(trip, DetailedTripDTO.class);
-        tripDetailedDTO.setListTripDetails(getListTripDetailDTO(tripId));
+        tripDetailedDTO.setListTripDetails(getListTripDetailDTO(trip));
         return tripDetailedDTO;
     }
-    public ArrayList<TripDetailDTO> getListTripDetailDTO(int tripId){
-        ArrayList<TripDetails> tripDetails = tripDetailRepository.getListByTripId(tripId);
+    public ArrayList<TripDetailDTO> getListTripDetailDTO(Trip trip){
+        ArrayList<TripDetails> tripDetails = tripDetailRepository.getListByTripId(trip.getTripId());
+        Date startDate = (Date) trip.getStartDate();
         ArrayList<TripDetailDTO> tripDetailDTOS = new ArrayList<>();
         for (TripDetails tripDetail: tripDetails) {
             TripDetailDTO tripDetailDTO = mapper.map(tripDetail, TripDetailDTO.class);
             MasterActivityDTO masterActivityDTO = tripDetailDTO.getMasterActivity();
             tripDetailDTO.setMasterActivity(getMasterActivity(masterActivityDTO.getActivityId()));
+            tripDetailDTO.setDate(getDateByTripAndDayNumber(startDate, tripDetailDTO.getDayNumber()));
             tripDetailDTOS.add(tripDetailDTO);
         }
         return tripDetailDTOS;
@@ -68,19 +71,19 @@ public class TripServiceImpl implements TripService {
 
     @Override
     public TripDetailDTO addTripDetail(Date date, int startTime, int endTime, int activityId, int tripId) {
+        Trip trip = tripRepository.findById(tripId);
         TripDetails tripDetails = new TripDetails();
-        tripDetails.setDate(date);
+        tripDetails.setDayNumber(getDayNumberByDetailDate((Date) trip.getStartDate(), date));
         tripDetails.setStartTime(startTime);
         tripDetails.setEndTime(endTime);
         MasterActivity masterActivity = new MasterActivity();
         masterActivity.setActivityId(activityId);
         tripDetails.setMasterActivity(masterActivity);
-        Trip trip = new Trip();
-        trip.setTripId(tripId);
         tripDetails.setTrip(trip);
         TripDetailDTO saved = mapper.map(tripDetailRepository.save(tripDetails), TripDetailDTO.class);
         addPOICostToExpenses(tripId, activityId);
         saved.setMasterActivity(getMasterActivity(saved.getMasterActivity().getActivityId()));
+        saved.setDate(date);
         return saved;
     }
 
@@ -112,6 +115,7 @@ public class TripServiceImpl implements TripService {
 
     @Override
     public TripDetailDTO addCustomTripDetail(Date date, int startTime, int endTime, int tripId, String name, String address) {
+        Trip trip = tripRepository.findById(tripId);
         MasterActivity masterActivity = new MasterActivity();
         masterActivity.setName(name);
         masterActivity.setAddress(address);
@@ -121,19 +125,18 @@ public class TripServiceImpl implements TripService {
         customActivityRepository.save(customActivity);
 
         TripDetails tripDetails = new TripDetails();
-        tripDetails.setDate(date);
         tripDetails.setStartTime(startTime);
         tripDetails.setEndTime(endTime);
         tripDetails.setMasterActivity(savedMasterActivity);
+        tripDetails.setDayNumber(getDayNumberByDetailDate((Date) trip.getStartDate(), date));
 
         MasterActivityDTO masterActivityDTO = mapper.map(savedMasterActivity, MasterActivityDTO.class);
         masterActivityDTO.setCustom(true);
 
-        Trip trip = new Trip();
-        trip.setTripId(tripId);
         tripDetails.setTrip(trip);
         TripDetailDTO saved = mapper.map(tripDetailRepository.save(tripDetails), TripDetailDTO.class);
         saved.setMasterActivity(masterActivityDTO);
+        saved.setDate(date);
         return saved;
     }
 
@@ -154,29 +157,47 @@ public class TripServiceImpl implements TripService {
         TripDetailDTO tripDetailDTO = mapper.map(tripDetails, TripDetailDTO.class);
         int masterActivityId = tripDetailDTO.getMasterActivity().getActivityId();
         tripDetailDTO.setMasterActivity(getMasterActivity(masterActivityId));
+        Trip trip = tripDetails.getTrip();
+        Date newDate = getDateByTripAndDayNumber((Date) trip.getStartDate(), tripDetails.getDayNumber());
+        tripDetailDTO.setDate(newDate);
         return tripDetailDTO;
     }
-
+    private Date getDateByTripAndDayNumber(Date startDate, int dayNumber){
+        Calendar c = Calendar.getInstance();
+        c.setTime(startDate);
+        c.add(Calendar.DATE, dayNumber);
+        return new Date(c.getTimeInMillis());
+    }
+    private int getDayNumberByDetailDate(Date tripStartDate, Date date){
+        LocalDate dateBefore = tripStartDate.toLocalDate();
+        LocalDate dateAfter = date.toLocalDate();
+        long noOfDaysBetween = ChronoUnit.DAYS.between(dateBefore, dateAfter);
+        return (int) noOfDaysBetween;
+    }
     @Override
-    public TripDetailDTO editTripDetailById(TripDetails newDetail, int id) {
+    public TripDetailDTO editTripDetailById(TripDetailDTO newDetail, int id) {
         return tripDetailRepository.findById(id)
                 .map(detail -> {
-                    detail.setDate(newDetail.getDate());
+                    Trip trip = detail.getTrip();
+                    detail.setDayNumber(getDayNumberByDetailDate((Date) trip.getStartDate(), newDetail.getDate()));
+//                    detail.setDate(newDetail.getDate());
                     detail.setStartTime(newDetail.getStartTime());
                     detail.setEndTime(newDetail.getEndTime());
                     TripDetailDTO saved = mapper.map(tripDetailRepository.save(detail), TripDetailDTO.class);
                     int masterActivityId = saved.getMasterActivity().getActivityId();
                     saved.setMasterActivity(getMasterActivity(masterActivityId));
+                    Date newDate = getDateByTripAndDayNumber((Date) trip.getStartDate(), saved.getDayNumber());
+                    saved.setDate(newDate);
                     return saved;
                 })
                 .orElseGet(() -> {
-                    return mapper.map(tripDetailRepository.save(newDetail), TripDetailDTO.class);
+                    return null;
                 });
     }
 
     @Override
-    public TripDetailDTO editCustomTripDetailById(TripDetails newDetail, int id) {
-        MasterActivity masterActivity = newDetail.getMasterActivity();
+    public TripDetailDTO editCustomTripDetailById(TripDetailDTO newDetail, int detailId, int tripId) {
+        MasterActivityDTO masterActivity = newDetail.getMasterActivity();
         int maId = masterActivity.getActivityId();
         masterActivityRepository.findById(maId)
                 .map(activity -> {
@@ -184,8 +205,8 @@ public class TripServiceImpl implements TripService {
                     activity.setAddress(masterActivity.getAddress());
                     return masterActivityRepository.save(activity);
 
-                }).orElseGet(() -> masterActivityRepository.save(masterActivity));
-        return editTripDetailById(newDetail, id);
+                }).orElseGet(() -> null);
+        return editTripDetailById(newDetail, detailId);
     }
 
     @Override
@@ -232,6 +253,34 @@ public class TripServiceImpl implements TripService {
         return tripRepository.getNumberOfTripsByUser(userId);
     }
 
+    @Override
+    public void editTripName(int tripId, String name) {
+        tripRepository.updateTripName(tripId, name);
+    }
+    @Override
+    public void editStartAndEndDates(int tripId, Date startDate, Date endDate){
+        Trip trip = tripRepository.findById(tripId);
+        Date oldStartDate = (Date) trip.getStartDate();
+        Date oldEndDate = (Date) trip.getEndDate();
+        tripRepository.updateStartAndEndDates(tripId, startDate, endDate);
+        tripDetailRepository.deleteByRange(tripId, startDate, endDate);
+    }
+    public List<TripDetailDTO> getTripDetailsToBeDeleted(int tripId, Date newStartDate, Date newEndDate){
+        ArrayList<TripDetails> tripDetails = tripDetailRepository.getTripDetailsOutOfRange(tripId, newStartDate, newEndDate);
+        ArrayList<TripDetailDTO> tripDetailDTOS = new ArrayList<>();
+        for (TripDetails tripDetail: tripDetails) {
+            TripDetailDTO tripDetailDTO = mapper.map(tripDetail, TripDetailDTO.class);
+            MasterActivityDTO masterActivityDTO = tripDetailDTO.getMasterActivity();
+            tripDetailDTO.setMasterActivity(getMasterActivity(masterActivityDTO.getActivityId()));
+            tripDetailDTOS.add(tripDetailDTO);
+        }
+        return tripDetailDTOS;
+    }
+
+    @Override
+    public boolean tripExists(int tripId){
+        return tripRepository.existsById(tripId);
+    }
     private String getTripThumbnail(List<TripDetails> tripDetails) {
         if (tripDetails.size() == 0) {
             return null;

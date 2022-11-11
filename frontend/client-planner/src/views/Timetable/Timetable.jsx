@@ -6,12 +6,13 @@ import dayGridPlugin from "@fullcalendar/daygrid";
 import timeGridPlugin from "@fullcalendar/timegrid";
 import interactionPlugin from "@fullcalendar/interaction";
 import { INITIAL_EVENTS, createEventId } from "./event-utils";
-import TripDetailTabs from "../Timeline/TripDetailTabs";
+import TripDetailTabs from "../GeneralInfo/TripDetailTabs";
 import style from "./timetable.module.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import LoadingScreen from "react-loading-screen";
 import ConfirmDelete from "./ConfirmDelete";
 import NotificationModal from "./NotificationModal";
+import TripGeneralInfo from "../GeneralInfo/TripGeneralInfo";
 import {
   faPlus,
   faCaretRight,
@@ -296,8 +297,10 @@ class Timetable extends Component {
       November: "Tháng Mười Một",
       December: "Tháng Mười Hai",
     };
+    document.title = this.state.trip.name + " | Tripplanner";
     return (
       <>
+        <TripGeneralInfo />
         <TripDetailTabs />
         <a className={` ${style.btnAdd}`} onClick={this.toggleAddModal}>
           <FontAwesomeIcon icon={faPlus} className={style.addIcon} />
@@ -683,7 +686,9 @@ class Timetable extends Component {
       method: "put",
       url:
         "http://localhost:8080/trip/put-custom-detail?id=" +
-        detail.tripDetailsId,
+        detail.tripDetailsId +
+        "&tripId=" +
+        this.state.trip.tripId,
       headers: {
         "Content-Type": "application/json",
       },
