@@ -13,6 +13,7 @@
     display: flex;
     flex-direction: row;
     justify-content: center;
+    margin-bottom: 1em;
 }
 .centerBtnGroup button{
     margin: 0 1em;
@@ -42,6 +43,9 @@
 .inputContent{
     margin-top: 1em;
 }
+.inputNote{
+    margin-top: 0.5em;
+}
 .uncheckedBtn{
     border: solid 1px #34a9d9 !important;
     background-color: #ffffff !important;
@@ -52,3 +56,13 @@
     background-color: #267A9C !important;
     border-color: #267A9C !important;
 }
+.warningMessage{
+    color: red;
+    font-size: small;
+    height: auto;
+    margin-left: 1em;
+  
+  }
+  .warningMessage.hide{
+    visibility: hidden;
+  }

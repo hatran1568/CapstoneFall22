@@ -20,8 +20,8 @@ public interface TripService {
     public void deleteDetailById(int id);
     public Optional<Double> getDistanceBetweenTwoPOIs(int from, int to);
     public TripDetailDTO getTripDetailById(int id);
-    public TripDetailDTO editTripDetailById(TripDetails detail, int id);
-    public TripDetailDTO editCustomTripDetailById(TripDetails detail, int id);
+    public TripDetailDTO editTripDetailById(TripDetailDTO detail, int id);
+    public TripDetailDTO editCustomTripDetailById(TripDetailDTO detail, int detailId, int tripId);
     public List<TripGeneralDTO> getTripsByUser(int userId);
     public void deleteTripById(int id);
     public List<TripGeneralDTO> getLast3TripsByUser(int userId);

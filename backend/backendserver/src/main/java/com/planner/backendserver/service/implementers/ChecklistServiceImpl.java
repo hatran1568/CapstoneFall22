@@ -1,6 +1,7 @@
 package com.planner.backendserver.service.implementers;
 
 import com.planner.backendserver.DTO.response.ChecklistItemDTO;
+import com.planner.backendserver.DTO.response.TripDetailDTO;
 import com.planner.backendserver.entity.ChecklistItem;
 import com.planner.backendserver.repository.ChecklistItemRepository;
 import com.planner.backendserver.service.interfaces.ChecklistService;
@@ -39,5 +40,23 @@ public class ChecklistServiceImpl implements ChecklistService {
     @Override
     public void deleteItemById(int id){
         checklistItemRepository.deleteItemById(id);
+    }
+
+    @Override
+    public ChecklistItemDTO editItemById(ChecklistItemDTO newItem, int id) {
+        return checklistItemRepository.findById(id).map(item -> {
+            item.setTitle(newItem.getTitle());
+            item.setNote(newItem.getNote());
+            item.setChecked(newItem.isChecked());
+            return mapper.map(checklistItemRepository.save(item), ChecklistItemDTO.class);
+        }).orElseGet(() -> {
+            return null;
+        });
+    }
+
+    @Override
+    public ChecklistItemDTO addItem(ChecklistItemDTO checklistItemDTO) {
+        ChecklistItem item = mapper.map(checklistItemDTO, ChecklistItem.class);
+        return mapper.map(checklistItemRepository.save(item), ChecklistItemDTO.class);
     }
 }

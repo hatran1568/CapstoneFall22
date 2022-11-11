@@ -686,7 +686,9 @@ class Timetable extends Component {
       method: "put",
       url:
         "http://localhost:8080/trip/put-custom-detail?id=" +
-        detail.tripDetailsId,
+        detail.tripDetailsId +
+        "&tripId=" +
+        this.state.trip.tripId,
       headers: {
         "Content-Type": "application/json",
       },

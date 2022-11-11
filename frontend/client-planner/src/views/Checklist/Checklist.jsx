@@ -7,10 +7,12 @@ import LoadingScreen from "react-loading-screen";
 import style from "./Checklist.module.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import EditItemModal from "./EditModal";
+import AddItemModal from "./AddModal";
 import {
   faXmark,
   faPen,
   faEllipsisVertical,
+  faPlus,
 } from "@fortawesome/free-solid-svg-icons";
 import ConfirmDeleteModal from "./ConfirmDelete";
 class Checklist extends Component {
@@ -25,10 +27,9 @@ class Checklist extends Component {
         itemId: "",
         show: false,
       },
-      edit: {
-        show: false,
-        item: {},
-      },
+      showEditModal: false,
+      itemInEdit: {},
+      showAddModal: false,
     };
   }
   //get request to get trip info
@@ -40,6 +41,7 @@ class Checklist extends Component {
         this.setState({
           checklistItems: res.data,
           dataLoaded: true,
+          tripId: id,
         });
       });
   }
@@ -75,6 +77,7 @@ class Checklist extends Component {
       });
   };
   editItem = (item) => {
+    console.log("editing");
     axios({
       method: "put",
       url: "http://localhost:8080/api/checklist/put-item?id=" + item.itemId,
@@ -84,16 +87,29 @@ class Checklist extends Component {
       data: item,
     })
       .then((response) => {
-        var curItem = this.state.checklistItems.find((el) => el.itemId == id);
+        var curItem = this.state.checklistItems.find(
+          (el) => el.itemId == item.itemId
+        );
         var index = -1;
         if (curItem) index = this.state.checklistItems.indexOf(curItem);
         var newList = this.state.checklistItems;
-        newList[index] = item;
+        newList[index] = response.data;
         this.setState({ checklistItems: newList });
         this.closeEditModal();
+        this.setState({ itemInEdit: {} });
       })
       .catch(function (error) {
         console.log(error);
+      });
+  };
+  insertItem = (event, item) => {
+    item.tripId = this.state.tripId;
+    axios
+      .post(`http://localhost:8080/api/checklist/add-item`, item)
+      .then((response) => {
+        var newList = this.state.checklistItems;
+        newList.push(response.data);
+        this.setState({ checklistItems: newList, showAddModal: false });
       });
   };
   closeConfirmDelete = () => {
@@ -114,19 +130,19 @@ class Checklist extends Component {
   };
   closeEditModal = () => {
     this.setState({
-      edit: {
-        item: {},
-        show: false,
-      },
+      itemInEdit: {},
+      showEditModal: false,
     });
   };
   openEditModal = (event, item) => {
-    this.setState({
-      edit: {
-        item: item,
-        show: true,
-      },
+    this.setState({ itemInEdit: item }, () => {
+      this.setState({ showEditModal: true });
     });
+  };
+  //toggle add modal
+  toggleAddModal = () => {
+    var newShow = this.state.showAddModal;
+    this.setState({ showAddModal: !newShow });
   };
   render() {
     if (!this.state.dataLoaded)
@@ -156,56 +172,84 @@ class Checklist extends Component {
           }}
         />
         <EditItemModal
-          show={this.state.edit.show}
-          item={this.state.edit.item}
+          show={this.state.showEditModal}
+          item={this.state.itemInEdit}
+          key={this.state.itemInEdit.itemId}
           onHide={this.closeEditModal}
-          onSubmit={(item) => {
+          onSubmit={(event, item) => {
             this.editItem(item);
           }}
         />
+        <AddItemModal
+          show={this.state.showAddModal}
+          onHide={this.toggleAddModal}
+          itemAdded={(event, input) => this.insertItem(event, input)}
+        />
         <div className="container">
-          <div className={style.checklistContainer}>
-            {this.state.checklistItems.map((item) => (
-              <div className="card" key={item.itemId}>
-                <div className={`card-body ${style.cardBody}`}>
-                  <input
-                    type="checkbox"
-                    defaultChecked={item.checked}
-                    className={` ${style.itemCheckbox}`}
-                    onChange={(event) =>
-                      this.updateCheckedInState(event, item.itemId)
-                    }
-                  />
-                  <label className={style.itemContent}>
-                    <div className={style.content}>{item.content}</div>
-                  </label>
-                  <div className={style.dropdown}>
-                    <button type="button" className={style.deleteBtn}>
-                      <FontAwesomeIcon icon={faEllipsisVertical} size="lg" />
-                    </button>
-                    <div className={style.dropdownMenu}>
-                      <a
-                        className="dropdown-item"
-                        onClick={(event) => {
-                          this.openConfirmDelete(event, item.itemId);
-                        }}
-                      >
-                        Xóa
-                      </a>
-                      <a
-                        className="dropdown-item"
-                        onClick={(event) => {
-                          this.openEditModal(event, item);
-                        }}
-                      >
-                        Chỉnh sửa
-                      </a>
+          {this.state.checklistItems.length > 0 ? (
+            <div className={style.checklistContainer}>
+              {this.state.checklistItems.map((item) => (
+                <div className={`card ${style.card}`} key={item.itemId}>
+                  <div className={`card-body ${style.cardBody}`}>
+                    <input
+                      type="checkbox"
+                      checked={item.checked}
+                      className={` ${style.itemCheckbox}`}
+                      onChange={(event) =>
+                        this.updateCheckedInState(event, item.itemId)
+                      }
+                    />
+                    <label className={style.itemContent}>
+                      <div className={style.itemTitle}>{item.title}</div>
+                    </label>
+                    {item.note != "" ? (
+                      <div className={style.noteDiv}>
+                        <span>Ghi chú:</span>
+                        <div>{item.note}</div>
+                      </div>
+                    ) : null}
+
+                    <div className={style.dropdown}>
+                      <button type="button" className={style.deleteBtn}>
+                        <FontAwesomeIcon icon={faEllipsisVertical} size="lg" />
+                      </button>
+                      <div className={style.dropdownMenu}>
+                        <a
+                          className="dropdown-item"
+                          onClick={(event) => {
+                            this.openConfirmDelete(event, item.itemId);
+                          }}
+                        >
+                          Xóa
+                        </a>
+                        <a
+                          className="dropdown-item"
+                          onClick={(event) => {
+                            this.openEditModal(event, item);
+                          }}
+                        >
+                          Chỉnh sửa
+                        </a>
+                      </div>
                     </div>
                   </div>
                 </div>
-              </div>
-            ))}
-          </div>
+              ))}
+
+              <a className={` ${style.btnAdd}`} onClick={this.toggleAddModal}>
+                <FontAwesomeIcon icon={faPlus} className={style.addIcon} />
+                Thêm mục
+              </a>
+            </div>
+          ) : (
+            <div className={style.checklistContainer}>
+              <div style={{ fontSize: "large" }}>Bạn chưa có mục nào.</div>
+              <a className={` ${style.btnAdd}`} onClick={this.toggleAddModal}>
+                <FontAwesomeIcon icon={faPlus} className={style.addIcon} />
+                Thêm mục
+              </a>
+            </div>
+          )}
         </div>
       </div>
     );

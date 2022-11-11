@@ -166,15 +166,15 @@ public class TripController {
     }
     @GetMapping("/get-detail")
     public ResponseEntity<TripDetailDTO> getTripDetail(@RequestParam int id){
-        try{
+//        try{
             TripDetailDTO detail = tripService.getTripDetailById(id);
             if (detail ==null){
                 return new ResponseEntity<>(HttpStatus.NOT_FOUND);
             }
             return new ResponseEntity<>(detail, HttpStatus.OK);
-        } catch (Exception e){
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-        }
+//        } catch (Exception e){
+//            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+//        }
     }
     @PostMapping("/get-details-to-delete")
     public ResponseEntity<List<TripDetailDTO>> getDetailsToDelete(@RequestBody ObjectNode objectNode){
@@ -189,7 +189,7 @@ public class TripController {
         }
     }
     @PutMapping("/put-detail")
-    public ResponseEntity<TripDetailDTO> editTripDetail(@RequestBody TripDetails newDetail, @RequestParam int id){
+    public ResponseEntity<TripDetailDTO> editTripDetail(@RequestBody TripDetailDTO newDetail, @RequestParam int id){
         try{
             TripDetailDTO detail = tripService.editTripDetailById(newDetail,id);
             if (detail==null){
@@ -201,9 +201,9 @@ public class TripController {
         }
     }
     @PutMapping("/put-custom-detail")
-    public ResponseEntity<TripDetailDTO> editCustomTripDetail(@RequestBody TripDetails newDetail, @RequestParam int id){
+    public ResponseEntity<TripDetailDTO> editCustomTripDetail(@RequestBody TripDetailDTO newDetail, @RequestParam int detailId, @RequestParam int tripId){
         try{
-            TripDetailDTO detail = tripService.editCustomTripDetailById(newDetail,id);
+            TripDetailDTO detail = tripService.editCustomTripDetailById(newDetail,detailId,tripId);
             if (detail == null){
                 return new ResponseEntity<>(HttpStatus.NOT_FOUND);
             }
@@ -254,7 +254,7 @@ public class TripController {
     public ResponseEntity<?> createEmptyTrip(@RequestBody TripDTO tripDTO) {
         try{
             java.sql.Date date = new java.sql.Date(Calendar.getInstance().getTime().getTime());
-            tripRepo.createEmptyTrip(date, date, false, tripDTO.getBudget(), tripDTO.getName(), tripDTO.getUserId(), tripDTO.getStartDate(), tripDTO.getEndDate());
+            tripRepo.createEmptyTrip(date, date, "PRIVATE", tripDTO.getBudget(), tripDTO.getName(), tripDTO.getUserId(), tripDTO.getStartDate(), tripDTO.getEndDate());
             return new ResponseEntity<>(tripRepo.getNewestTripId(), HttpStatus.OK);
         }
         catch (Exception e){

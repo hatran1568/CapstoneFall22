@@ -41,12 +41,33 @@ public class ChecklistController {
     }
     @DeleteMapping("/delete-item")
     public ResponseEntity<?> deleteItem(@RequestBody ObjectNode objectNode){
-//        try{
+        try{
             int itemId = objectNode.get("itemId").asInt();
             checklistService.deleteItemById(itemId);
             return new ResponseEntity<>(HttpStatus.OK);
-//        } catch(Exception e){
-//            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-//        }
+        } catch(Exception e){
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+    @PutMapping("/put-item")
+    public ResponseEntity<ChecklistItemDTO> editTripDetail(@RequestBody ChecklistItemDTO newItem, @RequestParam int id){
+        try{
+            ChecklistItemDTO item = checklistService.editItemById(newItem,id);
+            if (item==null){
+                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            }
+            return new ResponseEntity<>(item, HttpStatus.OK);
+        } catch (Exception e){
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+    @PostMapping("/add-item")
+    public ResponseEntity<ChecklistItemDTO> addItem(@RequestBody ChecklistItemDTO checklistItemDTO){
+        try{
+            ChecklistItemDTO result = checklistService.addItem(checklistItemDTO);
+            return new ResponseEntity<>(result, HttpStatus.OK);
+        } catch (Exception e){
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 }

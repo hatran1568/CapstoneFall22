@@ -12,4 +12,8 @@ public interface ChecklistService {
 
     void updateCheckedState(int itemId, Boolean checked);
     void deleteItemById(int id);
+
+    ChecklistItemDTO editItemById(ChecklistItemDTO newItem, int id);
+
+    ChecklistItemDTO addItem(ChecklistItemDTO checklistItemDTO);
 }

@@ -177,8 +177,10 @@ class Timeline extends Component {
     axios({
       method: "put",
       url:
-        "http://localhost:8080/trip/put-custom-detail?id=" +
-        detail.tripDetailsId,
+        "http://localhost:8080/trip/put-custom-detail?detailId=" +
+        detail.tripDetailsId +
+        "&tripId=" +
+        this.state.trip.tripId,
       headers: {
         "Content-Type": "application/json",
       },
@@ -418,7 +420,7 @@ class Timeline extends Component {
           detailId={this.state.delete.detailId}
           name={this.state.delete.name}
         />
-        <div div className="container ">
+        <div className="container ">
           <div className="timeline-container row ">
             <div className="col-2">
               <div className={style.daysBox}>

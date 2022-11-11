@@ -5,29 +5,23 @@ import style from "./modals.module.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faC, faCheck } from "@fortawesome/free-solid-svg-icons";
 import { useState } from "react";
-function EditItemModal(props) {
-  const { onSubmit, onHide, item, ...rest } = props;
-  var clone = JSON.parse(JSON.stringify(item));
-  const [checked, setChecked] = useState(clone.checked == true);
-  const [title, setTitle] = useState(clone.title);
-  const [note, setNote] = useState(clone.note);
+function AddItemModal(props) {
+  const { itemAdded, onHide, ...rest } = props;
+  const [checked, setChecked] = useState(false);
+  const [title, setTitle] = useState("");
+  const [note, setNote] = useState("");
   const [showWarningTitle, setShowWarningTitle] = useState(false);
   const submit = (event) => {
     if (title == "") {
       setShowWarningTitle(true);
       return;
     }
-    if (title == item.title && note == item.note && checked == item.checked) {
-      onHide();
-    } else {
-      let data = {
-        itemId: item.itemId,
-        title: title,
-        note: note,
-        checked: checked,
-      };
-      onSubmit(event, data);
-    }
+    let data = {
+      title: title,
+      note: note,
+      checked: checked,
+    };
+    itemAdded(event, data);
   };
   return (
     <>
@@ -43,9 +37,7 @@ function EditItemModal(props) {
             onClick={onHide}
           ></button>
           <div className={style.modalBody}>
-            <div className={style.modalTitle}>
-              {item.title ? item.title : ""}
-            </div>
+            <div className={style.modalTitle}>Thêm mục</div>
             {checked ? (
               <Button
                 variant="outline-dark"
@@ -72,7 +64,6 @@ function EditItemModal(props) {
                 <input
                   type="text"
                   className={`form-control ${style.inputContent}`}
-                  defaultValue={item.title}
                   placeholder="Nội dung"
                   onChange={(e) => {
                     setTitle(e.target.value);
@@ -89,10 +80,8 @@ function EditItemModal(props) {
                 </div>
               </div>
               <textarea
-                className={`form-control ${style.inputNote}`}
-                placeholder="Ghi chú"
+                className={`form-control ${style.inputContent}`}
                 rows={3}
-                defaultValue={item.note}
                 onChange={(e) => {
                   setNote(e.target.value);
                 }}
@@ -116,4 +105,4 @@ function EditItemModal(props) {
   );
 }
 
-export default EditItemModal;
+export default AddItemModal;

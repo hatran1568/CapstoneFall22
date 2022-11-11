@@ -2,13 +2,17 @@
     width: 60vw;
     margin: auto;
 }
+.card{
+  margin-top: 2em;
+  padding: 0.5em;
+}
 .cardBody:hover .deleteBtn{
     display: block;
 }
 .itemCheckbox{
     accent-color: orange;
-    width: 2em;
-    height: 2em;
+    width: 1.5em;
+    height: 1.5em;
     /* transform : scale(2); */
     display: inline-block;
     margin: 0;
@@ -20,7 +24,7 @@
     display: inline-block;
     margin: 0;
 }
-.content{
+.itemTitle{
     font-size: large;
     font-weight: 500;
 }
@@ -40,6 +44,7 @@
     box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
     padding: 0;
     border-radius: 5px;
+    z-index: 1;
     }
     .dropdown:hover .dropdownMenu {
       display: block;
@@ -64,3 +69,38 @@
     background-color:transparent;
     border: none;
 }
+.btnAdd {
+    text-decoration: none;
+    background: #0e0e0f;
+    text-align: center;
+    display: inline-flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    font-size: large;
+    color: white;
+    font-weight: 500;
+    z-index: 10;
+    cursor: pointer;
+    padding: 0.3em 0.5em;
+    border-radius: 5px;
+    margin-top: 1.5em;
+  }
+  .btnAdd:hover{
+    color: wheat;
+  }
+  .addIcon {
+    display: inline;
+    vertical-align: middle;
+    padding: 0;
+    margin: 0;
+    font-size: medium;
+    margin-right: 0.5em;
+  }
+  .noteDiv{
+    margin-top: 0.5em;
+  }
+  .noteDiv span{
+    font-size: medium;
+    font-weight: 500;
+  }
