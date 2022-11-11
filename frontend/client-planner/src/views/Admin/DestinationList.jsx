@@ -29,29 +29,29 @@ import {
   faSort,
   faSortUp,
   faSortDown,
+  faMarker,
 } from "@fortawesome/free-solid-svg-icons";
-import style from "./POIList.module.css";
+import style from "./DestinationList.module.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 const { confirm } = Modal;
-class POIList extends Component {
+class DestinationList extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      pois: [],
+      destinations: [],
       dataLoaded: false,
       currentNameKey: '*',
       currentPage: 0,
-      currentCatId: 0,
       pageCount: 0,
       currentFilter: 'idASC'
     };
   }
   componentDidMount() {
-    axios.get("http://localhost:8080/api/pois/list/admin/" + this.state.currentFilter + "/" + this.state.currentCatId
+    axios.get("http://localhost:8080/api/destination/admin/list/" + this.state.currentFilter
               + "/" + this.state.currentNameKey + "/" + this.state.currentPage).then((res) => {
       const data = res.data;
       this.setState({
-        pois: data,
+        destinations: data,
         dataLoaded: true,
       });
     }).catch(
@@ -60,7 +60,7 @@ class POIList extends Component {
         return Promise.reject(error)
       }
     );
-    axios.get("http://localhost:8080/api/pois/list/admin/count/" + this.state.currentCatId + "/" + this.state.currentNameKey).then((res) => {
+    axios.get("http://localhost:8080/api/destination/admin/list/" + this.state.currentNameKey + "/count").then((res) => {
       const data = res.data;
       this.setState({
         pageCount: data / 30,
@@ -93,35 +93,20 @@ class POIList extends Component {
     this.componentDidMount();
   };
 
-  deletePOI = async (event) => {
+  deleteDes = async (event) => {
     const poiId = event.currentTarget.id;
     confirm({
-      title: "Bạn có chắc mình muốn xóa địa điểm này không?",
-      content: "Địa điểm " + event.currentTarget.name + " sẽ bị xóa",
+      title: "Bạn có chắc mình muốn xóa điểm đến này không?",
+      content: "Điểm đến " + event.currentTarget.name + " sẽ bị xóa",
       okText: "Có",
       okType: "danger",
       cancelText: "Không",
       onOk: async () => {
-        await axios.post(`http://localhost:8080/api/pois/delete/` + poiId, {});
+        await axios.post(`http://localhost:8080/api/destination/delete/` + poiId, {});
         this.componentDidMount();
       },
       onCancel() {},
     });
-  }
-
-  filterChanged = async (event) => {
-    const filterId = event.currentTarget.id;
-    const filterDropdown = document.getElementById("filterDropdown");
-    filterDropdown.innerHTML = " Danh mục: " + event.currentTarget.name;
-    var elems = document.querySelectorAll(".active");
-    [].forEach.call(elems, function(el) {
-      el.classList.remove("active");
-    });
-    event.currentTarget.className += " active";
-    this.setState({
-      currentCatId: filterId
-    });
-    this.componentDidMount();
   }
 
   sortClick = async (event) => {
@@ -133,7 +118,7 @@ class POIList extends Component {
 
   render() {
     const poiTableData = [];
-    this.state.pois.forEach((entry, index) => {
+    this.state.destinations.forEach((entry, index) => {
       const dateModifiedRaw = entry.dateModified;
       const dateCreatedRaw = entry.dateCreated;
       var options = {
@@ -148,43 +133,33 @@ class POIList extends Component {
       var name = entry.name;
       if (name == " " || name == "")
         name = "Chưa đặt tên";
-      var website = entry.website;
-      if (website == null || website == "")
-        website = "Chưa có";
-      var phone = entry.phoneNumber;
-      if (phone == null || phone == "")
-        phone = "Chưa có";
       if (index % 2 == 0)
         poiTableData.push(
           <tr className={style.tableDataGrey}>
-            <th scope='col' className={style.tableIdData}>{entry.activityId}</th>
-            <th scope='col'><a className={style.tableNameData}  href={"../poi?id=" + entry.activityId}>{name}</a></th>
-            <th scope='col' className={style.tableDateData}>{dateCreated}</th>
+            <th scope='col' className={style.tableIdData}>{entry.desId}</th>
+            <th scope='col'><a className={style.tableNameData}  href={"../destination?id=" + entry.desId}>{name}</a></th>
             <th scope='col' className={style.tableDateData}>{dateModified}</th>
-            <th scope='col' className={style.tableRateData}>{entry.rating}<FontAwesomeIcon className={style.star} icon={faStar}/></th>
-            <th scope='col' className={style.tableCat}>{entry.categoryName}</th>
-            <th scope='col' className={style.tableWeb}><a className={style.tableNameData} target="_blank" href={website}>{website}</a></th>
-            <th scope='col' className={style.tablePhone}>{phone}</th>
+            <th scope='col' className={style.tableDateData}>{dateCreated}</th>
+            <th scope='col' className={style.tableBelongData}>{entry.belongTo}</th>
+            <th scope='col' className={style.tablePOI}>{entry.pois}</th>
             <th scope='col' className={style.tableActions}>
-              <a className={style.tableIcons} href={"./update?id=" + entry.activityId}><FontAwesomeIcon icon={faPenToSquare}/></a>
-              <a className={style.tableIcons} id={entry.activityId} name={name} onClick={this.deletePOI}><FontAwesomeIcon icon={faTrash}/></a>
+              <a className={style.tableIcons} href={"./update?id=" + entry.desId}><FontAwesomeIcon icon={faPenToSquare}/></a>
+              <a className={style.tableIcons} id={entry.desId} name={name} onClick={this.deleteDes}><FontAwesomeIcon icon={faTrash}/></a>
             </th>
           </tr>
         );
       else
         poiTableData.push(
           <tr className={style.tableData}>
-            <th scope='col' className={style.tableIdData}>{entry.activityId}</th>
-            <th scope='col'><a className={style.tableNameData}  href={"../poi?id=" + entry.activityId}>{name}</a></th>
-            <th scope='col' className={style.tableDateData}>{dateCreated}</th>
+            <th scope='col' className={style.tableIdData}>{entry.desId}</th>
+            <th scope='col'><a className={style.tableNameData}  href={"../destination?id=" + entry.desId}>{name}</a></th>
             <th scope='col' className={style.tableDateData}>{dateModified}</th>
-            <th scope='col' className={style.tableRateData}>{entry.rating}<FontAwesomeIcon className={style.star} icon={faStar}/></th>
-            <th scope='col' className={style.tableCat}>{entry.categoryName}</th>
-            <th scope='col' className={style.tableWeb}><a className={style.tableNameData} target="_blank" href={website}>{website}</a></th>
-            <th scope='col' className={style.tablePhone}>{phone}</th>
+            <th scope='col' className={style.tableDateData}>{dateCreated}</th>
+            <th scope='col' className={style.tableBelongData}>{entry.belongTo}</th>
+            <th scope='col' className={style.tablePOI}>{entry.pois}</th>
             <th scope='col' className={style.tableActions}>
-              <a className={style.tableIcons} href={"./update?id=" + entry.activityId}><FontAwesomeIcon icon={faPenToSquare}/></a>
-              <a className={style.tableIcons} id={entry.activityId} name={name} onClick={this.deletePOI}><FontAwesomeIcon icon={faTrash}/></a>
+              <a className={style.tableIcons} href={"./update?id=" + entry.desId}><FontAwesomeIcon icon={faPenToSquare}/></a>
+              <a className={style.tableIcons} id={entry.desId} name={name} onClick={this.deleteDes}><FontAwesomeIcon icon={faTrash}/></a>
             </th>
           </tr>
         );
@@ -197,16 +172,16 @@ class POIList extends Component {
       tableId.push(
         <th scope='col' className={style.tableId} onClick={this.sortClick} id="idASC">ID<FontAwesomeIcon className={style.sortIcon} icon={faSort}/></th>);
 
-    const tableRate = [];
-    if (this.state.currentFilter == "ratingASC")
-      tableRate.push(
-        <th scope='col' className={style.tableRate} onClick={this.sortClick} id="ratingDESC">ĐÁNH GIÁ<FontAwesomeIcon className={style.sortIcon} icon={faSortUp}/></th>);
-    else if (this.state.currentFilter == "ratingDESC")
-      tableRate.push(
-        <th scope='col' className={style.tableRate} onClick={this.sortClick} id="ratingASC">ĐÁNH GIÁ<FontAwesomeIcon className={style.sortIcon} icon={faSortDown}/></th>);
+    const tableBelongTo = [];
+    if (this.state.currentFilter == "belongASC")
+      tableBelongTo.push(
+        <th scope='col' className={style.tableBelong} onClick={this.sortClick} id="belongDESC">TRỰC THUỘC<FontAwesomeIcon className={style.sortIcon} icon={faSortUp}/></th>);
+    else if (this.state.currentFilter == "belongDESC")
+      tableBelongTo.push(
+        <th scope='col' className={style.tableBelong} onClick={this.sortClick} id="belongASC">TRỰC THUỘC<FontAwesomeIcon className={style.sortIcon} icon={faSortDown}/></th>);
     else
-      tableRate.push(
-        <th scope='col' className={style.tableRate} onClick={this.sortClick} id="ratingDESC">ĐÁNH GIÁ<FontAwesomeIcon className={style.sortIcon} icon={faSort}/></th>);
+      tableBelongTo.push(
+        <th scope='col' className={style.tableBelong} onClick={this.sortClick} id="belongDESC">TRỰC THUỘC<FontAwesomeIcon className={style.sortIcon} icon={faSort}/></th>);
 
     const tableName = [];
     if (this.state.currentFilter == "nameASC")
@@ -230,46 +205,24 @@ class POIList extends Component {
       tableName.push(
         <th scope='col' className={style.tableDate} onClick={this.sortClick} id="dateDESC">NGÀY SỬA<FontAwesomeIcon className={style.sortIcon} icon={faSort}/></th>);
 
+        
     return (
       <MDBContainer className={style.bodyContainer}>
-        <h2>Quản lí Địa điểm</h2>
+        <h2>Quản lí Điểm đến</h2>
         <MDBRow>
           <MDBCol md={1} style={{width:200}}>
-            <MDBBtn href="./update?id=0" className={style.createBtn} color="info">Thêm địa điểm</MDBBtn>
+            <MDBBtn href="./update?id=0" className={style.createBtn} color="info">Thêm điểm đến</MDBBtn>
           </MDBCol>
           <MDBCol md={6} className={style.searchBar}>
             <MDBInputGroup>
               <span className="input-group-text">
-                <FontAwesomeIcon icon={faPlaceOfWorship} />
+                <FontAwesomeIcon icon={faLocationDot} />
               </span>
               <MDBInput label='Tìm theo tên' id="searchBarName" className={style.searchInput}/>
               <MDBBtn color="info" onClick={this.searchPOIs} onMouseUp={this.searchPOIs} rippleColor='dark'>
                 <MDBIcon icon='search' />
               </MDBBtn>
             </MDBInputGroup>
-          </MDBCol>
-          <MDBCol md={3}>
-            <Dropdown>
-              <Dropdown.Toggle variant="info">
-                <FontAwesomeIcon icon="filter"/><span id="filterDropdown"> Danh mục: Tất cả</span>
-              </Dropdown.Toggle>
-
-              <Dropdown.Menu>
-                <Dropdown.Item onClick={this.filterChanged} onMouseUp={this.filterChanged} id={0} active name="Tất cả">Tất cả</Dropdown.Item>
-                <Dropdown.Item onClick={this.filterChanged} onMouseUp={this.filterChanged} id={1} name="Văn hóa, nghệ thuật">Văn hóa, nghệ thuật</Dropdown.Item>
-                <Dropdown.Item onClick={this.filterChanged} onMouseUp={this.filterChanged} id={2} name="Hoạt động ngoài trời">Hoạt động ngoài trời</Dropdown.Item>
-                <Dropdown.Item onClick={this.filterChanged} onMouseUp={this.filterChanged} id={3} name="Tôn giáo">Tôn giáo</Dropdown.Item>
-                <Dropdown.Item onClick={this.filterChanged} onMouseUp={this.filterChanged} id={4} name="Lịch sử">Lịch sử</Dropdown.Item>
-                <Dropdown.Item onClick={this.filterChanged} onMouseUp={this.filterChanged} id={5} name="Bảo tàng">Bảo tàng</Dropdown.Item>
-                <Dropdown.Item onClick={this.filterChanged} onMouseUp={this.filterChanged} id={6} name="Spa & Sức khỏe">Spa & Sức khỏe</Dropdown.Item>
-                <Dropdown.Item onClick={this.filterChanged} onMouseUp={this.filterChanged} id={7} name="Mua sắm">Mua sắm</Dropdown.Item>
-                <Dropdown.Item onClick={this.filterChanged} onMouseUp={this.filterChanged} id={8} name="Bãi biển">Bãi biển</Dropdown.Item>
-                <Dropdown.Item onClick={this.filterChanged} onMouseUp={this.filterChanged} id={9} name="Hoạt động đêm">Hoạt động đêm</Dropdown.Item>
-                <Dropdown.Item onClick={this.filterChanged} onMouseUp={this.filterChanged} id={10} name="Khách sạn">Khách sạn</Dropdown.Item>
-                <Dropdown.Item onClick={this.filterChanged} onMouseUp={this.filterChanged} id={11} name="Nhà hàng">Nhà hàng</Dropdown.Item>
-                <Dropdown.Item onClick={this.filterChanged} onMouseUp={this.filterChanged} id={12} name="Vui chơi giải trí">Vui chơi giải trí</Dropdown.Item>
-              </Dropdown.Menu>
-            </Dropdown>
           </MDBCol>
         </MDBRow>
         <MDBTable>
@@ -279,10 +232,8 @@ class POIList extends Component {
             {tableName}
             <th scope='col'>NGÀY TẠO</th>
             {tableDate}
-            {tableRate}
-            <th scope='col' className={style.tableCat}>DANH MỤC</th>
-            <th scope='col' className={style.tableWeb}>TRANG WEB</th>
-            <th scope='col' className={style.tablePhone}>ĐIỆN THOẠI</th>
+            {tableBelongTo}
+            <th scope='col' className={style.tablePOI}>SỐ ĐỊA ĐIỂM</th>
             <th scope='col'>HÀNH ĐỘNG</th>
           </tr>
           </MDBTableHead>
@@ -314,4 +265,4 @@ class POIList extends Component {
     )
   }
 }
-export default POIList;
+export default DestinationList;

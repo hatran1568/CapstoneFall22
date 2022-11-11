@@ -12,7 +12,8 @@ import draftToHtmlPuri from "draftjs-to-html";
 import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
 import axios from "../../api/axios";
 import Dropdown from 'react-bootstrap/Dropdown';
-import AddPOIImageModal from "../../components/Admin/AddPOIImageModal";
+import { MultiSelect } from "react-multi-select-component";
+import Select from 'react-select';
 import { Modal } from "antd";
 import {
   MDBBtn,
@@ -38,7 +39,10 @@ class POIAddUpdate extends Component {
       poi: {},
       images: [],
       dataLoaded: false,
+      desDataLoaded: false,
       destinations: [],
+      selectedDestinations: [],
+      destinationChanged: false,
       newImages: [],
       deletedImages: [],
     };
@@ -46,8 +50,30 @@ class POIAddUpdate extends Component {
   componentDidMount() {
     const queryParams = new URLSearchParams(window.location.search);
     const id = queryParams.get("id");
-    
+    axios.get(`http://localhost:8080/api/destination/select/all`).then((res) => {
+        const data = res.data;
+        this.setState({
+          destinations: data,
+          desDataLoaded: true,
+        });
+      }).catch(
+        function (error) {
+          console.log(error)
+          return Promise.reject(error)
+        }
+      );
     if (id > 0) {
+      axios.get(`http://localhost:8080/api/destination/select/` + id).then((res) => {
+        const data = res.data;
+        this.setState({
+          selectedDestinations: data,
+        });
+      }).catch(
+        function (error) {
+          console.log(error)
+          return Promise.reject(error)
+        }
+      );
       axios.get(`http://localhost:8080/api/pois/list/admin/update/` + id).then((res) => {
         const data = res.data;
         this.setState({
@@ -71,7 +97,10 @@ class POIAddUpdate extends Component {
           return Promise.reject(error)
         }
       );
-    }
+    } else 
+    this.setState({
+      dataLoaded: true,
+    });
   }
   reloadImgs() {
     const queryParams = new URLSearchParams(window.location.search);
@@ -99,6 +128,14 @@ class POIAddUpdate extends Component {
     filterDropdown.name = event.currentTarget.id;
   }
 
+  desChanged = async (event) => {
+    var items = event.options;
+    console.log(items)
+    // this.setState({
+    //   selectedDestinations: event.currentTarget
+    // })
+  }
+
   delay = ms => new Promise(
     resolve => setTimeout(resolve, ms)
   );
@@ -106,6 +143,7 @@ class POIAddUpdate extends Component {
   updateClick = async (event) => {
     const queryParams = new URLSearchParams(window.location.search);
     var id = queryParams.get("id");
+    var curDes = this.state.currentDestinations;
     var validated = true;
     if (document.getElementById("nameInput").value == null || document.getElementById("nameInput").value == "" ||
           document.getElementById("addressInput").value == null || document.getElementById("addressInput").value == "" ||
@@ -119,7 +157,9 @@ class POIAddUpdate extends Component {
           document.getElementById("latInput").value == null || document.getElementById("latInput").value == "" ||
           document.getElementById("lonInput").value == null || document.getElementById("lonInput").value == "" ||
           document.getElementById("filterDropdown").name == "category")
-        validated = false;
+      validated = false;
+    if (curDes == null && this.state.destinationChanged == true)
+      validated = false;
         // console.log(document.getElementById("nameInput").value);
         // console.log(document.getElementById("addressInput").value);
         // console.log(document.getElementById("descInput").value);
@@ -183,6 +223,18 @@ class POIAddUpdate extends Component {
           }).then(function (response) {
           });
         })
+        if (this.state.destinationChanged) {
+          const desData = this.state.currentDestinations;
+          await axios({
+            method: "post",
+            url: "http://localhost:8080/api/destination/poi/update/" + id,
+            data: desData,
+            headers: {
+              "Content-Type": "application/json",
+            },
+          });
+        }
+        
         await this.delay(3000);
         window.location.href = "../poi/adminlist";
       }
@@ -240,6 +292,17 @@ class POIAddUpdate extends Component {
             }).then(function (response) {
             });
           });
+          if (curDes != null){
+            const desData = curDes;
+            axios({
+              method: "post",
+              url: "http://localhost:8080/api/destination/poi/update/" + id,
+              data: desData,
+              headers: {
+                "Content-Type": "application/json",
+              },
+            });
+          }
         });
         await this.delay(3000);
         window.location.href = "../poi/update?id=" + id;
@@ -365,69 +428,88 @@ class POIAddUpdate extends Component {
       </MDBContainer>
     )
     //Set initial content
-    if (this.state.dataLoaded){
-      document.getElementById("nameInput").value = this.state.poi.name;
-      document.getElementById("addressInput").value = this.state.poi.address;
-      document.getElementById("descInput").value = this.state.poi.description;
-      document.getElementById("infoInput").value = this.state.poi.additionalInfo;
-      document.getElementById("webInput").value = this.state.poi.website;
-      document.getElementById("phoneInput").value = this.state.poi.phoneNumber;
-      document.getElementById("emailInput").value = this.state.poi.email;
-      document.getElementById("priceInput").value = this.state.poi.price;
-      document.getElementById("rateInput").value = this.state.poi.rating;
-      document.getElementById("latInput").value = this.state.poi.lat;
-      document.getElementById("lonInput").value = this.state.poi.lon;
-      const duration = this.state.poi.duration/60/60;
-      document.getElementById("durationInput").value = duration;
-      //Opening Time
-      var sec_num = parseInt(this.state.poi.openingTime, 10);
-      var hours   = Math.floor(sec_num / 3600);
-      var minutes = Math.floor((sec_num - (hours * 3600)) / 60);
-      var seconds = sec_num - (hours * 3600) - (minutes * 60);
+    const selectDestination = [];
+    if (this.state.dataLoaded && this.state.desDataLoaded){
+      selectDestination.push(
+        <Select
+          defaultValue={this.state.selectedDestinations}
+          isMulti
+          id="desSelect"
+          onChange={async value => {
+            const v = value;
+            await this.setState({currentDestinations: v, destinationChanged: true});
+          }}
+          options={this.state.destinations}
+          className="basic-multi-select"
+          classNamePrefix="select"
+          placeholder="Chọn điểm đến"
+        />
+      );
+      if (id > 0){
+        document.getElementById("nameInput").value = this.state.poi.name;
+        document.getElementById("addressInput").value = this.state.poi.address;
+        document.getElementById("descInput").value = this.state.poi.description;
+        document.getElementById("infoInput").value = this.state.poi.additionalInfo;
+        document.getElementById("webInput").value = this.state.poi.website;
+        document.getElementById("phoneInput").value = this.state.poi.phoneNumber;
+        document.getElementById("emailInput").value = this.state.poi.email;
+        document.getElementById("priceInput").value = this.state.poi.price;
+        document.getElementById("rateInput").value = this.state.poi.rating;
+        document.getElementById("latInput").value = this.state.poi.lat;
+        document.getElementById("lonInput").value = this.state.poi.lon;
+        const duration = this.state.poi.duration/60/60;
+        document.getElementById("durationInput").value = duration;
+        //Opening Time
+        var sec_num = parseInt(this.state.poi.openingTime, 10);
+        var hours   = Math.floor(sec_num / 3600);
+        var minutes = Math.floor((sec_num - (hours * 3600)) / 60);
+        var seconds = sec_num - (hours * 3600) - (minutes * 60);
 
-      if (hours   < 10) {hours   = "0"+hours;}
-      if (minutes < 10) {minutes = "0"+minutes;}
-      if (seconds < 10) {seconds = "0"+seconds;}
-      var openTime =  hours+':'+minutes+':'+seconds;
-      document.getElementById("openInput").value = openTime;
-      //Closing Time
-      var sec_num = parseInt(this.state.poi.closingTime, 10);
-      var hours   = Math.floor(sec_num / 3600);
-      var minutes = Math.floor((sec_num - (hours * 3600)) / 60);
-      var seconds = sec_num - (hours * 3600) - (minutes * 60);
+        if (hours   < 10) {hours   = "0"+hours;}
+        if (minutes < 10) {minutes = "0"+minutes;}
+        if (seconds < 10) {seconds = "0"+seconds;}
+        var openTime =  hours+':'+minutes+':'+seconds;
+        document.getElementById("openInput").value = openTime;
+        //Closing Time
+        var sec_num = parseInt(this.state.poi.closingTime, 10);
+        var hours   = Math.floor(sec_num / 3600);
+        var minutes = Math.floor((sec_num - (hours * 3600)) / 60);
+        var seconds = sec_num - (hours * 3600) - (minutes * 60);
 
-      if (hours   < 10) {hours   = "0"+hours;}
-      if (minutes < 10) {minutes = "0"+minutes;}
-      if (seconds < 10) {seconds = "0"+seconds;}
-      var closeTime =  hours+':'+minutes+':'+seconds;
-      document.getElementById("closeInput").value = closeTime;
+        if (hours   < 10) {hours   = "0"+hours;}
+        if (minutes < 10) {minutes = "0"+minutes;}
+        if (seconds < 10) {seconds = "0"+seconds;}
+        var closeTime =  hours+':'+minutes+':'+seconds;
+        document.getElementById("closeInput").value = closeTime;
 
-      const filterDropdown = document.getElementById("filterDropdown");
-      filterDropdown.innerHTML = this.state.poi.categoryName;
-      filterDropdown.name = this.state.poi.categoryId;
-      //Change height of textboxes
-      document.getElementById("nameInput").style.height = (document.getElementById("nameInput").scrollHeight)+"px";
-      document.getElementById("descInput").style.height = (document.getElementById("descInput").scrollHeight)+"px";
-      document.getElementById("addressInput").style.height = (document.getElementById("addressInput").scrollHeight)+"px";
-      document.getElementById("infoInput").style.height = (document.getElementById("infoInput").scrollHeight)+"px";
-      if (this.state.images.length > 0) {
-        this.state.images.forEach((entry, index) => {
-          let imgLink = entry.url;
-          const imgArr = imgLink.split("/");
-          if (imgArr[0] == "img")
-            imgLink = "../" + imgLink;
-          imageBox.push(
-            <MDBCard className={style.imageBox}>
-              <img className={style.poiImage} title={entry.description} src={imgLink}/>
-              <div className={style.imageContent}>
-                {entry.description}<br/>
-                <a className={style.deleteIcon} id={entry.imageId} onClick={this.deleteImage}><FontAwesomeIcon icon={faClose}/></a>
-              </div>
-            </MDBCard>
-          )
-        });
+        const filterDropdown = document.getElementById("filterDropdown");
+        filterDropdown.innerHTML = this.state.poi.categoryName;
+        filterDropdown.name = this.state.poi.categoryId;
+        //Change height of textboxes
+        document.getElementById("nameInput").style.height = (document.getElementById("nameInput").scrollHeight)+"px";
+        document.getElementById("descInput").style.height = (document.getElementById("descInput").scrollHeight)+"px";
+        document.getElementById("addressInput").style.height = (document.getElementById("addressInput").scrollHeight)+"px";
+        document.getElementById("infoInput").style.height = (document.getElementById("infoInput").scrollHeight)+"px";
+        if (this.state.images.length > 0) {
+          this.state.images.forEach((entry, index) => {
+            let imgLink = entry.url;
+            const imgArr = imgLink.split("/");
+            if (imgArr[0] == "img")
+              imgLink = "../" + imgLink;
+            imageBox.push(
+              <MDBCard className={style.imageBox}>
+                <img className={style.poiImage} title={entry.description} src={imgLink}/>
+                <div className={style.imageContent}>
+                  {entry.description}<br/>
+                  <a className={style.deleteIcon} id={entry.imageId} onClick={this.deleteImage}><FontAwesomeIcon icon={faClose}/></a>
+                </div>
+              </MDBCard>
+            )
+          });
+        }
       }
     }
+
     if (this.state.newImages.length > 0) {
       this.state.newImages.forEach((entry, index) => {
         let imgLink = URL.createObjectURL(entry);
@@ -664,6 +746,10 @@ class POIAddUpdate extends Component {
               />
             </div>
           </MDBCol>
+        </MDBRow>
+        <MDBRow>
+          <label>Thuộc điểm đến</label>
+          {selectDestination}
         </MDBRow>
         <br/><br/>
         <h3 style={{'textAlign':'center'}}>Ảnh Địa điểm<br/>

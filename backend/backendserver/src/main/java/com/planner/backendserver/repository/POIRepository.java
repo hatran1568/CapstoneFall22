@@ -197,4 +197,10 @@ public interface POIRepository extends JpaRepository<POI, Integer> {
                     "VALUES (?1, ?2, ?3, ?4, ?5, ?6, ?7, ?8, ?9, ?10, ?11, ?12, ?13, ?14, ?15, ?16, ?17)",
             nativeQuery = true)
     void addPOI(String description, String info, String email, int close, Timestamp created, Timestamp modified, int duration, int open, String phone, double price, String web, int activityId, int catId, double rate, boolean deleted, double lat, double lon);
+    @Modifying
+    @Transactional
+    @Query(
+            value = "INSERT INTO poi_destination(poi_id, destination_id) VALUES (?1, ?2)",
+            nativeQuery = true)
+    void addPoiDes(int poiId, int desId);
 }

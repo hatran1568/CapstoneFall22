@@ -45,6 +45,8 @@ function DestinationDetails() {
       console.log(error);
     }
   }, []);
+  if (destination.deleted == true)
+    window.location.href = "/";
   const [pois, setPOIs] = useState([]);
   useEffect(() => {
     try {
