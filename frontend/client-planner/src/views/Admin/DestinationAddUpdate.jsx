@@ -436,7 +436,7 @@ class DestinationAddUpdate extends Component {
         {headerText}
         {submitBtn}
         <div id="errorMessage" className={style.errorMessage}></div>
-        <label>Tên</label>
+        <label><b>Tên</b></label>
         <MDBTextArea
           id="nameInput"
           type="text"
@@ -446,7 +446,7 @@ class DestinationAddUpdate extends Component {
           onChange={onTextAreaInput}
           rows={1}
         />
-        <label>Mô tả</label>
+        <label><b>Mô tả</b></label>
         <MDBTextArea
           id="descInput"
           type="text"
@@ -457,7 +457,7 @@ class DestinationAddUpdate extends Component {
           rows={7}
         />
         <MDBRow>
-          <label>Trực thuộc điểm đến</label>
+          <label><b>Trực thuộc điểm đến</b></label>
           {selectDestination}
         </MDBRow>
         <br/><br/>

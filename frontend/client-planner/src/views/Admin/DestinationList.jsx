@@ -218,7 +218,7 @@ class DestinationList extends Component {
               <span className="input-group-text">
                 <FontAwesomeIcon icon={faLocationDot} />
               </span>
-              <MDBInput label='Tìm theo tên' id="searchBarName" className={style.searchInput}/>
+              <MDBInput label='Tìm theo tên' id="searchBarName" maxLength={100} className={style.searchInput}/>
               <MDBBtn color="info" onClick={this.searchPOIs} onMouseUp={this.searchPOIs} rippleColor='dark'>
                 <MDBIcon icon='search' />
               </MDBBtn>

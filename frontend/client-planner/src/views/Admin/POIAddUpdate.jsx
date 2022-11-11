@@ -532,7 +532,7 @@ class POIAddUpdate extends Component {
         {headerText}
         {submitBtn}
         <div id="errorMessage" className={style.errorMessage}></div>
-        <label>Tên</label>
+        <label><b>Tên</b></label>
         <MDBTextArea
           id="nameInput"
           type="text"
@@ -542,7 +542,7 @@ class POIAddUpdate extends Component {
           onChange={onTextAreaInput}
           rows={1}
         />
-        <label>Địa chỉ</label>
+        <label><b>Địa chỉ</b></label>
         <MDBTextArea
           id="addressInput"
           type="text"
@@ -552,7 +552,7 @@ class POIAddUpdate extends Component {
           onChange={onTextAreaInput}
           rows={1}
         />
-        <label>Mô tả</label>
+        <label><b>Mô tả</b></label>
         <MDBTextArea
           id="descInput"
           type="text"
@@ -562,7 +562,7 @@ class POIAddUpdate extends Component {
           onChange={onTextAreaInput}
           rows={7}
         />
-        <label>Thông tin thêm</label>
+        <label><b>Thông tin thêm</b></label>
         <MDBTextArea
           id="infoInput"
           type="text"
@@ -572,7 +572,7 @@ class POIAddUpdate extends Component {
           onChange={onTextAreaInput}
           rows={1}
         />
-        <label>Trang web</label>
+        <label><b>Trang web</b></label>
         <MDBInput
           id="webInput"
           type="text"
@@ -582,7 +582,7 @@ class POIAddUpdate extends Component {
         />
         <MDBRow>
           <MDBCol md={4}>
-            <label>Điện thoại</label>
+            <label><b>Điện thoại</b></label>
             <div className="input-group mb-3">
               <span className="input-group-text">
                 <FontAwesomeIcon icon={faPhone} />
@@ -597,7 +597,7 @@ class POIAddUpdate extends Component {
             </div>
           </MDBCol>
           <MDBCol md={8}>
-            <label>Email</label>
+            <label><b>Email</b></label>
             <MDBInput
               id="emailInput"
               type="text"
@@ -609,7 +609,7 @@ class POIAddUpdate extends Component {
         </MDBRow>
         <MDBRow>
           <MDBCol>
-            <label>Khoảng thời gian</label>
+            <label><b>Khoảng thời gian</b></label>
             <div className="input-group mb-3">
               <span className="input-group-text">
                 <FontAwesomeIcon icon={faClock} />
@@ -628,7 +628,7 @@ class POIAddUpdate extends Component {
             </div>
           </MDBCol>
           <MDBCol>
-            <label>Giờ mở cửa</label>
+            <label><b>Giờ mở cửa</b></label>
             <div className="input-group mb-3">
               <span className="input-group-text">
                 <FontAwesomeIcon icon={faDoorOpen} />
@@ -641,7 +641,7 @@ class POIAddUpdate extends Component {
             </div>
           </MDBCol>
           <MDBCol>
-            <label>Giờ đóng cửa</label>
+            <label><b>Giờ đóng cửa</b></label>
             <div className="input-group mb-3">
               <span className="input-group-text">
                 <FontAwesomeIcon icon={faDoorClosed} />
@@ -656,7 +656,7 @@ class POIAddUpdate extends Component {
         </MDBRow>
         <MDBRow>
           <MDBCol>
-            <label>Giá trung bình</label>
+            <label><b>Giá trung bình</b></label>
             <div className="input-group mb-3">
               <span className="input-group-text">
                 <FontAwesomeIcon icon={faMoneyBill} />
@@ -675,7 +675,7 @@ class POIAddUpdate extends Component {
             </div>
           </MDBCol>
           <MDBCol>
-            <label>Danh mục</label>
+            <label><b>Danh mục</b></label>
             <Dropdown>
               <Dropdown.Toggle variant="info">
                 <span id="filterDropdown" name="category"> Chọn danh mục</span>
@@ -697,7 +697,7 @@ class POIAddUpdate extends Component {
             </Dropdown>
           </MDBCol>
           <MDBCol>
-            <label>Đánh giá từ Google</label><br/>
+            <label><b>Đánh giá từ Google</b></label><br/>
             <div className="input-group mb-3">
               <span className="input-group-text">
                 <FontAwesomeIcon icon={faStar} />
@@ -715,7 +715,7 @@ class POIAddUpdate extends Component {
         </MDBRow>
         <MDBRow>
           <MDBCol md={4}>
-            <label>Vĩ độ</label>
+            <label><b>Vĩ độ</b></label>
             <div className="input-group mb-3">
               <span className="input-group-text">
                 <FontAwesomeIcon icon={faRulerVertical} />
@@ -731,7 +731,7 @@ class POIAddUpdate extends Component {
             </div>
           </MDBCol>
           <MDBCol md={4}>
-            <label>Kinh độ</label>
+            <label><b>Kinh độ</b></label>
             <div className="input-group mb-3">
               <span className="input-group-text">
                 <FontAwesomeIcon icon={faRulerHorizontal} />
@@ -748,7 +748,7 @@ class POIAddUpdate extends Component {
           </MDBCol>
         </MDBRow>
         <MDBRow>
-          <label>Thuộc điểm đến</label>
+          <label><b>Thuộc điểm đến</b></label>
           {selectDestination}
         </MDBRow>
         <br/><br/>

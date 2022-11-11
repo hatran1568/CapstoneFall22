@@ -229,7 +229,7 @@ class BlogList extends Component {
           </MDBCol>
           <MDBCol md={6} className={style.searchBar}>
             <MDBInputGroup>
-              <MDBInput label='Tìm kiếm' id="searchBar" onChange={this.searchBlogs} onKeyUp={this.searchBlogs} className={style.searchInput}/>
+              <MDBInput label='Tìm kiếm' id="searchBar" maxLength={300} onChange={this.searchBlogs} onKeyUp={this.searchBlogs} className={style.searchInput}/>
               <MDBBtn color="info" onClick={this.searchBlogs} rippleColor='dark'>
                 <MDBIcon icon='search' />
               </MDBBtn>
