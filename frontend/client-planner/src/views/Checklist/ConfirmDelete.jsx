@@ -3,7 +3,7 @@ import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
 import style from "./modals.module.css";
 function ConfirmDeleteModal(props) {
-  const { onConfirmed, onHide, detailId, ...rest } = props;
+  const { onConfirmed, onHide, itemId, message, ...rest } = props;
   return (
     <>
       <Modal
@@ -17,23 +17,23 @@ function ConfirmDeleteModal(props) {
             className={`btn-close ${style.closeBtn}`}
             onClick={onHide}
           ></button>
-          <div className={style.deleteBody}>
-            Bạn chắc chắn muốn xóa hoạt động <strong>{rest.name}</strong>?
-          </div>
+          <div className={style.deleteBody}>{message}</div>
         </Modal.Body>
         <Modal.Footer>
-          <Button
-            variant="outline-dark"
-            onClick={(event) => {
-              onConfirmed(event, detailId);
-            }}
-            className={style.submitBtn}
-          >
-            Xóa
-          </Button>
-          <Button onClick={onHide} variant="outline-secondary">
-            Hủy
-          </Button>
+          <div className={style.centerBtnGroup}>
+            <Button
+              variant="outline-dark"
+              onClick={(event) => {
+                onConfirmed(event, itemId);
+              }}
+              className={style.submitBtn}
+            >
+              Xóa
+            </Button>
+            <Button onClick={onHide} variant="outline-secondary">
+              Hủy
+            </Button>
+          </div>
         </Modal.Footer>
       </Modal>
     </>

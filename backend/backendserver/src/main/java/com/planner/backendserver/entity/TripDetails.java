@@ -15,7 +15,7 @@ public class TripDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name="trip_details_id",columnDefinition = "INT(1)")
-    private int tripDetailsId;
+    private Integer tripDetailsId;
 
     @ManyToOne
     @JoinColumn(name = "master_activity_id", nullable = false,referencedColumnName = "activity_id")
@@ -28,13 +28,13 @@ public class TripDetails {
     private Trip trip;
 
     @Column(name = "start_time")
-    private  int startTime;
+    private  Integer startTime;
 
     @Column(name="end_time")
-    private  int endTime;
+    private  Integer endTime;
 
-    @Column(name="date")
-    private Date date;
+    @Column(name="day_number")
+    private Integer dayNumber;
 
     @Column(name="note",columnDefinition = "text")
     private String note;

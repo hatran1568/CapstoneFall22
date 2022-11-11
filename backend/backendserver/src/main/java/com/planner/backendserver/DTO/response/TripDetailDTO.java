@@ -17,4 +17,5 @@ public class TripDetailDTO {
     private  int endTime;
     private Date date;
     private String note;
+    private int dayNumber;
 }
