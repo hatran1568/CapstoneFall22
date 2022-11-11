@@ -8,7 +8,7 @@ import ProfilePage from "../views/UserProfile/ProfilePage";
 import RequireAuth from "../components/RequireAuth";
 import Timeline from "../views/Timeline/timeline";
 import TripBudget from "../views/Timeline/TripBudget";
-import TripGeneralInfo from "../views/Timeline/TripGeneralInfo";
+import Checklist from "../views/Checklist/Checklist";
 import DestinationDetails from "../views/DestinationDetails/DestinationDetails";
 import POIsDestination from "../views/POIsDestination/POIsDestination";
 import POIAndDestinationSearchBar from "../components/searchBar/POIAndDestinationSearchBar";
@@ -52,7 +52,7 @@ export default function RootRoutes() {
           <Route exact path="/Destination/POIs" element={<POIsDestination />} />
           <Route path="/timeline/:id" element={<Timeline />} />
           <Route path="/timetable/:id" element={<Timetable />} />
-          <Route path="/trip/:id" element={<TripGeneralInfo />} />
+          <Route path="/checklist/:id" element={<Checklist />} />
           <Route path="/budget/:id" element={<TripBudget />} />
           <Route path="/search" element={<POIAndDestinationSearchBar />} />
           <Route path="/blog" element={<BlogDetails />} />

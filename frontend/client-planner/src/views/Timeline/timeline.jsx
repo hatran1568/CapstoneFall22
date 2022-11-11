@@ -3,7 +3,7 @@ import { withRouter } from "react-router-dom";
 import TripDetail from "./TimelineTripDetail";
 import AddActivityModal from "./AddActivityModal";
 import axios from "axios";
-import TripDetailTabs from "./TripDetailTabs";
+import TripDetailTabs from "../GeneralInfo/TripDetailTabs";
 import style from "./timeline.module.css";
 import { useParams } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -11,6 +11,7 @@ import { faPlus } from "@fortawesome/free-solid-svg-icons";
 import LoadingScreen from "react-loading-screen";
 import ConfirmDelete from "../Timetable/ConfirmDelete";
 import EditActivityModal from "./EditActivityModal";
+import TripGeneralInfo from "../GeneralInfo/TripGeneralInfo";
 class Timeline extends Component {
   state = {};
   //set state of component
@@ -176,8 +177,10 @@ class Timeline extends Component {
     axios({
       method: "put",
       url:
-        "http://localhost:8080/trip/put-custom-detail?id=" +
-        detail.tripDetailsId,
+        "http://localhost:8080/trip/put-custom-detail?detailId=" +
+        detail.tripDetailsId +
+        "&tripId=" +
+        this.state.trip.tripId,
       headers: {
         "Content-Type": "application/json",
       },
@@ -371,6 +374,7 @@ class Timeline extends Component {
           <div></div>
         </LoadingScreen>
       );
+    document.title = this.state.trip.name + " | Tripplanner";
     var allDates = this.getAllDates(
       this.state.trip.startDate,
       this.state.trip.endDate
@@ -398,6 +402,7 @@ class Timeline extends Component {
     };
     return (
       <div>
+        <TripGeneralInfo />
         <TripDetailTabs />
         {this.state.showEditModal ? (
           <EditActivityModal
@@ -415,7 +420,7 @@ class Timeline extends Component {
           detailId={this.state.delete.detailId}
           name={this.state.delete.name}
         />
-        <div div className="container ">
+        <div className="container ">
           <div className="timeline-container row ">
             <div className="col-2">
               <div className={style.daysBox}>
