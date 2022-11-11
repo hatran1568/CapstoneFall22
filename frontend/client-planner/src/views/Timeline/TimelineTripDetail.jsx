@@ -15,7 +15,7 @@ import {
 import OverlayTrigger from "react-bootstrap/OverlayTrigger";
 import Popover from "react-bootstrap/Popover";
 import axios from "axios";
-// import "moment/locale/vi";
+import "moment/locale/vi";
 class TripDetail extends Component {
   state = {};
   //set state of component based on props from timeline

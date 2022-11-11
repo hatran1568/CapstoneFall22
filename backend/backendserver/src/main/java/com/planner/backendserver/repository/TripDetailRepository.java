@@ -2,9 +2,12 @@ package com.planner.backendserver.repository;
 
 import com.planner.backendserver.entity.TripDetails;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Optional;
 
 public interface TripDetailRepository extends JpaRepository<TripDetails, Integer> {
@@ -22,5 +25,10 @@ public interface TripDetailRepository extends JpaRepository<TripDetails, Integer
 
     @Query("select td from TripDetails td where td.trip.tripId = :tripId")
     ArrayList<TripDetails> getListByTripId(int tripId);
-
+    @Modifying
+    @Transactional
+    @Query(value = "delete from trip_details where trip_id=:tripId and date < :startDate or date > :endDate", nativeQuery = true)
+    void deleteByRange(int tripId, Date startDate, Date endDate);
+    @Query(value = "select * from trip_details where trip_id=:tripId and date < :newStartDate or date > :newEndDate order by date asc limit 5", nativeQuery = true)
+    ArrayList<TripDetails> getTripDetailsOutOfRange(int tripId, Date newStartDate, Date newEndDate);
 }
