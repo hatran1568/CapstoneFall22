@@ -199,7 +199,10 @@ class DestinationAddUpdate extends Component {
       if (validated) {
         const loadingIcon = document.getElementById("loadingIcon");
         loadingIcon.style.display = "inline";
-        const belong = this.state.currentDestinations[0];
+        var images = this.state.newImages;
+        var belong;
+        if (this.state.destinationChanged)
+          belong = this.state.currentDestinations["value"];
         //console.log(images);
         await axios({
           method: "post",
@@ -208,7 +211,7 @@ class DestinationAddUpdate extends Component {
             desId: id,
             name: document.getElementById("nameInput").value,
             description: document.getElementById("descInput").value,
-            belongTo: belong.value,
+            belongTo: belong,
           },
           headers: {
             "Content-Type": "application/json",
