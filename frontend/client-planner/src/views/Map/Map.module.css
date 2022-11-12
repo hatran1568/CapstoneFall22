@@ -1,0 +1,385 @@
+.timeline-container {
+    min-width: 1000px;
+}
+
+.timeline {
+    border-left: 1px solid hsl(0, 0%, 90%);
+    position: relative;
+    list-style: none;
+    margin-bottom: 50px;
+}
+
+.timeline .timelineItem,
+.timelineTransport {
+    position: relative;
+}
+
+.timeline .timelineItem:after,
+.timelineTransport:after {
+    position: absolute;
+    display: block;
+    top: 0;
+}
+
+.timeline .timelineItem:after,
+.timelineTransport:after {
+    background-color: hsl(0, 0%, 90%);
+    left: -38px;
+    border-radius: 50%;
+    height: 11px;
+    width: 11px;
+    content: "";
+}
+
+.timeline .timelineItem {
+    flex-direction: row;
+}
+
+.page {
+    z-index: -1;
+}
+
+.timeline .btn-delete {
+    margin: auto;
+}
+
+.timeline .timelineTransport {
+    margin: 30px 0px;
+}
+
+.edit-form,
+.add-form {
+    z-index: 1;
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    background-color: rgba(0, 0, 0, 0.2);
+    display: none;
+    transition: 1s;
+}
+
+.form-group {
+    margin: 10px;
+}
+
+.btnAdd {
+    text-decoration: none;
+    background: #97c83e;
+    text-align: center;
+    width: 65px;
+    height: 65px;
+    border-radius: 100%;
+    display: inline-flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    font-size: 35px;
+    color: white;
+    font-weight: bold;
+    position: fixed;
+    right: 30px;
+    bottom: 30px;
+    z-index: 10;
+    cursor: pointer;
+}
+
+.btnAdd:hover {
+    color: wheat;
+}
+
+.addIcon {
+    display: inline-block;
+    vertical-align: middle;
+    padding: 0;
+    margin: 0;
+}
+
+.foreIcon {
+    margin-right: 10px;
+}
+
+.activityImg {
+    border-radius: 5px;
+    width: 100%;
+    height: 150px;
+    object-fit: cover;
+}
+
+.btnMore {
+    margin: 0;
+    float: right;
+    border: none;
+    background-color: #fff;
+    cursor: pointer;
+    padding: 5px;
+    padding-top: 0;
+}
+
+.daysBox {
+    position: sticky;
+    top: 10vh;
+    overflow-y: auto;
+    height: 80vh;
+    padding: 0;
+    overflow-x: hidden;
+}
+
+.month {
+    font-weight: 500;
+    text-transform: uppercase;
+    font-size: 16px;
+    color: #0e0e0f;
+    margin-top: 20px;
+    text-align: center;
+}
+
+.date {
+    display: block;
+    font-weight: 600;
+    text-transform: uppercase;
+    font-size: 20px;
+    color: #0e0e0f;
+    text-decoration: none;
+    text-align: center;
+    margin-top: 20px;
+}
+
+.date:hover {
+    color: #0e0e0f;
+    text-decoration: none;
+    text-decoration: underline;
+}
+
+.detailsGroupDate {
+    font-size: large;
+    font-weight: 500;
+    margin-bottom: 50px;
+}
+
+.emptyDay {
+    font-size: 18px;
+    color: #0e0e0f;
+}
+
+.dayNum {
+    font-weight: 500;
+    font-size: large;
+    background: #267b9ca4;
+    color: white;
+    padding: 5px 10px;
+    border-radius: 20px;
+    margin-right: 1em;
+}
+
+.modal .display-block {
+    display: block;
+}
+
+.topLeft {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    font-size: 18px;
+    color: red;
+}
+
+.popover {
+    text-align: center;
+}
+
+.popoverIcon {
+    margin: auto;
+    font-size: 18px;
+    color: red;
+}
+
+.timeText {
+    margin-top: 15px;
+}
+
+.ttip {
+    display: none;
+}
+
+.scrollspyExample {
+    position: relative;
+    height: 200px;
+    overflow: auto;
+}
+
+.formField {
+    margin-top: 10px;
+}
+
+.customBtn {
+    font-size: 13px !important;
+    text-transform: none !important;
+    width: 100%;
+    max-height: 100%;
+    border: solid 1px #267A9C !important;
+    border-radius: 10px;
+    color: #267A9C !important;
+    background-color: #fff !important;
+    font-weight: 500 !important;
+}
+
+.submitBtn {
+    border: solid 1px #34a9d9 !important;
+    background-color: #34a9d9 !important;
+    color: #fff !important;
+}
+
+.submitBtn:hover {
+    color: #fff !important;
+    background-color: #267A9C !important;
+    border-color: #267A9C !important;
+}
+
+.customBtn:hover {
+    color: #fff !important;
+    background-color: #267A9C !important;
+}
+
+.editForm {
+    display: block;
+    margin-left: 40px;
+    margin-right: 40px;
+    padding-top: 40px !important;
+}
+
+.timeGroupDiv {
+    padding: 0 !important;
+}
+
+.timeGroupDiv label {
+    font-size: large;
+}
+
+.timeGroupDiv select {
+    margin-top: 5px;
+}
+
+.timeGroupDiv input {
+    margin-top: 5px;
+}
+
+.closeBtn {
+    float: right;
+}
+
+.activityInfo {
+    display: block;
+    margin-left: 40px;
+    margin-right: 40px;
+    padding-top: 30px;
+    max-height: 600px;
+    overflow: auto;
+}
+
+.poiImage {
+    width: 200px;
+    height: 200px;
+    border-radius: 5px;
+    text-align: center;
+    font-size: 30px;
+    font-weight: bold;
+    margin-top: 5px;
+    margin-right: 15px;
+}
+
+.poiDiv {
+    float: left;
+}
+
+.poiDescription {
+    text-align: justify;
+    font-size: 16px;
+    margin-top: 5px;
+}
+
+.ratingNum {
+    position: relative;
+    bottom: 0px;
+    margin-left: 10px;
+    font-size: 12px;
+}
+
+.detailLink {
+    color: #267A9C;
+    text-decoration: none;
+    font-size: 16px;
+    font-weight: 500;
+    text-align: right;
+}
+
+.linkDiv {
+    text-align: right;
+}
+
+.detailLink:hover {
+    color: #267A9C;
+    text-decoration: underline;
+}
+
+.customLabel {
+    margin-bottom: 15px;
+    display: block;
+}
+
+.addActivity {
+    text-decoration: none;
+    color: #267A9C;
+    font-weight: 500;
+    margin-left: 1.5em;
+}
+
+.addActivity:hover {
+    text-decoration: underline;
+    color: #267A9C;
+    font-weight: 500;
+}
+
+.mapBox {
+    padding: 10px;
+}
+
+.numberCircle {
+    border-radius: 50%;
+    width: 25px;
+    height: 25px;
+    background: black;
+    border: 2px solid #666;
+    color: pink;
+    text-align: center;
+    font: 16px Arial, sans-serif;
+}
+
+.numberCircle:hover {
+    cursor: pointer;
+}
+
+.poiContainer {
+    margin: 8px 0;
+}
+
+.poiTime {
+    text-align: center;
+}
+
+.poiName {
+    text-decoration: none;
+    color: black;
+    margin-bottom: 50px;
+}
+
+.tripName {
+    margin-bottom: 20px;
+}
+
+.infoBox {
+    padding: 15px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
