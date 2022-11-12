@@ -10,6 +10,8 @@ import { useMap } from "react-leaflet/hooks";
 import { Marker, Tooltip } from "react-leaflet";
 import { Popup } from "react-leaflet";
 import L from "leaflet";
+import TripGeneralInfo from "../GeneralInfo/TripGeneralInfo";
+import TripDetailTabs from "../GeneralInfo/TripDetailTabs";
 function Map(props) {
   const { id } = useParams();
   const [selectedPoi, setSelectedPOI] = useState();
@@ -20,12 +22,16 @@ function Map(props) {
   const markerRef = useRef(null);
 
   useEffect(() => {
-    console.log("render");
-    setTrip(data);
-    setDaySelected(1);
-    setAllDates(getAllDates(data.startDate, data.endDate));
+    console.log(id);
 
-    setAllMonths(getAllMonths(getAllDates(data.startDate, data.endDate)));
+    axios.get(`http://localhost:8080/trip/` + id).then((res) => {
+      setTrip(res.data);
+      setDaySelected(1);
+      setAllDates(getAllDates(res.data.startDate, res.data.endDate));
+      setAllMonths(
+        getAllMonths(getAllDates(res.data.startDate, res.data.endDate))
+      );
+    });
   }, []);
 
   const getAllMonths = (dateArr) => {
@@ -46,7 +52,7 @@ function Map(props) {
     ) {
       arr.push(new Date(dt));
     }
-
+    console.log(arr);
     return arr;
   };
 
@@ -131,6 +137,8 @@ function Map(props) {
   };
   return (
     <div>
+      <TripGeneralInfo />
+      <TripDetailTabs />
       <div div className="container ">
         <div className="timeline-container row ">
           <div className="col-2">
@@ -159,90 +167,102 @@ function Map(props) {
                 ))}
             </div>
           </div>
-          <div className={"col-6 " + style.mapBox}>
-            <MapContainer
-              center={[21.0285649, 105.8492929]}
-              zoom={15}
-              scrollWheelZoom={true}
-            >
-              <TileLayer
-                attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-                url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-              />
-              {trip &&
-                trip.listTripDetails.map(
-                  (mark, index) =>
-                    (daySelected == 0 || daySelected == mark.dayNumber) && (
-                      <Marker
-                        ref={selectedPoi == index + 1 ? markerRef : null}
-                        position={[
-                          mark.masterActivity.latitude,
-                          mark.masterActivity.longitude,
-                        ]}
-                        icon={getMarker(index + 1)}
-                      >
-                        <Tooltip direction="top" offset={[0, -30]}>
-                          <h5>{mark.masterActivity.name}</h5>
-                          <div className={style.poiTime}>
-                            {new Date(
-                              new Date(trip.startDate).getTime() +
-                                (mark.dayNumber - 1) * 86400000
-                            ).toDateString()}
+          <div className="col-10 ">
+            <div className="container">
+              <div className={"row " + style.infoBox}>
+                <div className={"col-8 " + style.mapBox}>
+                  <MapContainer
+                    center={[21.0285649, 105.8492929]}
+                    zoom={15}
+                    scrollWheelZoom={true}
+                  >
+                    <TileLayer
+                      attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+                      url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+                    />
+                    {trip &&
+                      trip.listTripDetails.map(
+                        (mark, index) =>
+                          (daySelected == 0 ||
+                            daySelected == mark.dayNumber) && (
+                            <Marker
+                              ref={selectedPoi == index + 1 ? markerRef : null}
+                              position={[
+                                mark.masterActivity.latitude,
+                                mark.masterActivity.longitude,
+                              ]}
+                              icon={getMarker(index + 1)}
+                            >
+                              <Tooltip direction="top" offset={[0, -30]}>
+                                <h5>{mark.masterActivity.name}</h5>
+                                <div className={style.poiTime}>
+                                  {new Date(
+                                    new Date(trip.startDate).getTime() +
+                                      (mark.dayNumber - 1) * 86400000
+                                  ).toDateString()}
+                                </div>
+                                <div className={style.poiTime}>
+                                  {toHHMMSS(mark.startTime)} -{" "}
+                                  {toHHMMSS(mark.endTime)}
+                                </div>
+                              </Tooltip>
+                            </Marker>
+                          )
+                      )}
+                  </MapContainer>
+                  <button
+                    onClick={() => {
+                      setSelectedPOI(Math.floor(Math.random() * 5) + 1);
+                      markerRef.current.fire("mouseout");
+                    }}
+                  >
+                    Test
+                  </button>
+                </div>
+                <div className={"col-4 " + style.mapBox}>
+                  <h4 className={style.tripName}>
+                    &nbsp;&nbsp;{trip && trip.name}
+                  </h4>
+                  {trip &&
+                    trip.listTripDetails.map(
+                      (mark, index) =>
+                        (daySelected == 0 || daySelected == mark.dayNumber) && (
+                          <div className={"container " + style.poiContainer}>
+                            <div className="row">
+                              <div className={"col-2 "}>
+                                <div
+                                  onMouseOver={() => {
+                                    setSelectedPOI(index + 1);
+                                    markerRef.current.fire("mouseout");
+                                  }}
+                                  onMouseLeave={() => {
+                                    setSelectedPOI(-1);
+                                    markerRef.current.fire("mouseout");
+                                  }}
+                                  className={style.numberCircle}
+                                >
+                                  {" "}
+                                  {index + 1}
+                                </div>
+                              </div>
+                              <div className={"col-8 "}>
+                                <a
+                                  href={
+                                    "../poi?id=" +
+                                    mark.masterActivity.activityId
+                                  }
+                                  className={style.poiName}
+                                >
+                                  {mark.masterActivity.name}{" "}
+                                </a>
+                              </div>
+                            </div>
                           </div>
-                          <div className={style.poiTime}>
-                            {toHHMMSS(mark.startTime)} -{" "}
-                            {toHHMMSS(mark.endTime)}
-                          </div>
-                        </Tooltip>
-                      </Marker>
-                    )
-                )}
-            </MapContainer>
-            <button
-              onClick={() => {
-                setSelectedPOI(Math.floor(Math.random() * 5) + 1);
-                markerRef.current.fire("mouseout");
-              }}
-            >
-              Test
-            </button>
-          </div>
-          <div className={"col-4 " + style.mapBox}>
-            <h4>&nbsp;&nbsp;{trip && trip.name}</h4>
-            {trip &&
-              trip.listTripDetails.map(
-                (mark, index) =>
-                  (daySelected == 0 || daySelected == mark.dayNumber) && (
-                    <div className={"container " + style.poiContainer}>
-                      <div className="row">
-                        <div className={"col-2 "}>
-                          <div
-                            onMouseOver={() => {
-                              setSelectedPOI(index + 1);
-                              markerRef.current.fire("mouseout");
-                            }}
-                            onMouseLeave={() => {
-                              setSelectedPOI(-1);
-                              markerRef.current.fire("mouseout");
-                            }}
-                            className={style.numberCircle}
-                          >
-                            {" "}
-                            {index + 1}
-                          </div>
-                        </div>
-                        <div className={"col-8 "}>
-                          <a
-                            href={"../poi?id=" + mark.masterActivity.activityId}
-                            className={style.poiName}
-                          >
-                            {mark.masterActivity.name}{" "}
-                          </a>
-                        </div>
-                      </div>
-                    </div>
-                  )
-              )}
+                        )
+                    )}
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </div>

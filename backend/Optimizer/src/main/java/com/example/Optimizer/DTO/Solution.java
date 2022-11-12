@@ -104,7 +104,7 @@ public class Solution {
                 double currentTime = data.getDailyStartTime()[index-1];
             for(int i=0;i<list.size();i++){
                 TripDetails tripDetails = new TripDetails();
-                tripDetails.setDate(currentDay);
+                tripDetails.setDayNumber(index);
                 MasterActivity activity = new MasterActivity();
                 activity = data.getPOIs()[list.get(i)];
                 tripDetails.setMasterActivity(activity);
