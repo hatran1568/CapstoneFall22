@@ -97,7 +97,7 @@ function EditActivityModal(props) {
                     href={"../poi?id=" + tripDetail.masterActivity.activityId}
                     className={style.detailLink}
                   >
-                    See full attraction detail
+                    Xem chi tiết địa điểm
                   </a>
                 </div>
               </div>
@@ -193,6 +193,16 @@ function EditActivityModal(props) {
                     Thời gian kết thúc phải lớn hơn thời gian bắt đầu
                   </div>
                 </label>
+              </div>
+              <div>
+                <textarea
+                  className={`form-control ${style.noteInput}`}
+                  rows="3"
+                  defaultValue={tripDetail.note}
+                  onChange={(e) => {
+                    inputField.note = e.target.value;
+                  }}
+                ></textarea>
               </div>
             </form>
           </Modal.Body>

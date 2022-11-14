@@ -8,8 +8,7 @@ import {
   faCheck,
   faCaretDown,
 } from "@fortawesome/free-solid-svg-icons";
-import { Route, Link, Routes, useLocation, useParams } from "react-router-dom";
-import { getPath } from "@mui/system";
+import { useLocation, useParams } from "react-router-dom";
 export default function Tabs() {
   const location = useLocation();
   var path = location.pathname.slice(0, location.pathname.lastIndexOf("/"));
