@@ -15,7 +15,7 @@ import java.util.Optional;
 public interface TripService {
     public DetailedTripDTO getDetailedTripById(int id);
     public TripGeneralDTO getTripGeneralById(int id);
-    public TripDetailDTO addTripDetail(Date date, int startTime, int endTime, int activityId, int tripId);
+    public TripDetailDTO addTripDetail(Date date, int startTime, int endTime, int activityId, int tripId, String note);
     public TripDetailDTO addCustomTripDetail(Date date, int startTime, int endTime, int tripId, String name, String address);
     public void deleteDetailById(int id);
     public Optional<Double> getDistanceBetweenTwoPOIs(int from, int to);
@@ -29,5 +29,6 @@ public interface TripService {
     public void editTripName(int tripId, String name);
     public boolean tripExists(int tripId);
     public void editStartAndEndDates(int tripId, Date startDate, Date endDate);
-    public List<TripDetailDTO> getTripDetailsToBeDeleted(int tripId, Date newStartDate, Date newEndDate);
+    public List<TripDetailDTO> getTripDetailsToBeDeleted(int tripId, int numberOfDays);
+    TripGeneralDTO cloneTrip(int userId, int tripId, Date startDate);
 }

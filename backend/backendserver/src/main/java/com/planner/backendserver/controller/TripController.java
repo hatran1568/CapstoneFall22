@@ -52,9 +52,6 @@ public class TripController {
     @Autowired
     private TripRepository tripRepo;
     @Autowired
-    private ModelMapper mapper;
-
-    @Autowired
     private AsyncManager asyncManager;
     @Autowired
     private DiscoveryClient discoveryClient;
@@ -82,8 +79,20 @@ public class TripController {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+    @PostMapping("/clone-trip")
+    public ResponseEntity<TripGeneralDTO> cloneTrip(@RequestBody ObjectNode objectNode){
+        try{
+            Date startDate = Date.valueOf(objectNode.get("startDate").asText());
+            int tripId = objectNode.get("tripId").asInt();
+            int userId = objectNode.get("userId").asInt();
+            TripGeneralDTO result = tripService.cloneTrip(userId, tripId, startDate);
+            return new ResponseEntity<>(result, HttpStatus.OK);
+        } catch (Exception e){
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
     @PostMapping("/edit-name")
-    public ResponseEntity<?> updateUsername(@RequestBody ObjectNode request){
+    public ResponseEntity<?> updateTripName(@RequestBody ObjectNode request){
         try{
             int tripId = request.get("tripId").asInt();
             String newName = request.get("name").asText();
@@ -143,7 +152,8 @@ public class TripController {
             int endTime = objectNode.get("endTime").asInt();
             int tripId = objectNode.get("tripId").asInt();
             int activityId = objectNode.get("activityId").asInt();
-            TripDetailDTO result = tripService.addTripDetail(date, startTime, endTime, activityId, tripId);
+            String note = objectNode.get("note").asText();
+            TripDetailDTO result = tripService.addTripDetail(date, startTime, endTime, activityId, tripId, note);
             return new ResponseEntity<>(result, HttpStatus.OK);
         } catch (Exception e){
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
@@ -166,23 +176,22 @@ public class TripController {
     }
     @GetMapping("/get-detail")
     public ResponseEntity<TripDetailDTO> getTripDetail(@RequestParam int id){
-//        try{
+        try{
             TripDetailDTO detail = tripService.getTripDetailById(id);
             if (detail ==null){
                 return new ResponseEntity<>(HttpStatus.NOT_FOUND);
             }
             return new ResponseEntity<>(detail, HttpStatus.OK);
-//        } catch (Exception e){
-//            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-//        }
+        } catch (Exception e){
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
     @PostMapping("/get-details-to-delete")
     public ResponseEntity<List<TripDetailDTO>> getDetailsToDelete(@RequestBody ObjectNode objectNode){
         try{
-            Date startDate = Date.valueOf(objectNode.get("startDate").asText());
-            Date endDate = Date.valueOf(objectNode.get("endDate").asText());
             int tripId = objectNode.get("tripId").asInt();
-            List<TripDetailDTO> tripDetailDTOS= tripService.getTripDetailsToBeDeleted(tripId, startDate, endDate);
+            int numberOfDays = objectNode.get("numberOfDays").asInt();
+            List<TripDetailDTO> tripDetailDTOS= tripService.getTripDetailsToBeDeleted(tripId, numberOfDays);
             return new ResponseEntity<>(tripDetailDTOS, HttpStatus.OK);
         } catch (Exception e){
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
