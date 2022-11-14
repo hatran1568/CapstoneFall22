@@ -24,8 +24,6 @@ public class POI extends MasterActivity {
     @Column(name="description", columnDefinition = "text")
     private String Description;
 
-
-
     @Column(name="google_rate")
     private double googleRate;
 
@@ -62,7 +60,10 @@ public class POI extends MasterActivity {
     @Temporal(TemporalType.TIMESTAMP)
     @UpdateTimestamp
     private Date dateModified;
-
+    @Column(name="longitude")
+    private Double longitude;
+    @Column(name="latitude")
+    private Double latitude;
     @Column(name="is_deleted")
     private boolean isDeleted;
 

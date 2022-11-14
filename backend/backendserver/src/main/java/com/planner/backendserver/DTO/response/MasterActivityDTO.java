@@ -8,4 +8,6 @@ public class MasterActivityDTO {
     protected String name;
     protected String address;
     protected boolean isCustom;
+    protected  Double latitude;
+    protected  Double longitude;
 }

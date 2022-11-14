@@ -28,4 +28,9 @@ public class TripExpense {
 
     @Column(name="Description",columnDefinition = "text")
     private String description;
+
+    @ManyToOne
+    @JoinColumn(name = "trip_details_id", nullable = true)
+    private TripDetails tripDetails;
+
 }
