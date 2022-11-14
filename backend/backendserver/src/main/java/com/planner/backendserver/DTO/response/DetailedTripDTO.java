@@ -14,4 +14,5 @@ public class DetailedTripDTO {
     private String name;
     private Date dateModified;
     private ArrayList<TripDetailDTO> listTripDetails;
+    private int userID;
 }

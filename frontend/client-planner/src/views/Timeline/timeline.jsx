@@ -2,7 +2,7 @@ import React, { Component, useRef } from "react";
 import { withRouter } from "react-router-dom";
 import TripDetail from "./TimelineTripDetail";
 import AddActivityModal from "./AddActivityModal";
-import axios from "axios";
+import axios from "../../api/axios";
 import TripDetailTabs from "../GeneralInfo/TripDetailTabs";
 import style from "./timeline.module.css";
 import { useParams } from "react-router-dom";
@@ -12,6 +12,7 @@ import LoadingScreen from "react-loading-screen";
 import ConfirmDelete from "../Timetable/ConfirmDelete";
 import EditActivityModal from "./EditActivityModal";
 import TripGeneralInfo from "../GeneralInfo/TripGeneralInfo";
+import CloneTripModal from "../../components/Trips/CloneTripModal";
 class Timeline extends Component {
   state = {};
   //set state of component
@@ -30,44 +31,27 @@ class Timeline extends Component {
         name: "",
         show: false,
       },
+      showCloneModal: false,
     };
   }
   //get request to get trip info
   componentDidMount() {
     const { id } = this.props.params;
-    axios.get(`http://localhost:8080/trip/` + id).then((res) => {
+    axios.get(`/trip/` + id).then((res) => {
       const tripData = res.data;
+      var own = false;
+      if (tripData.userID && tripData.userID == localStorage.getItem("id")) {
+        own = true;
+      }
       this.setState({
         trip: tripData,
         showAddModal: false,
         showEditModal: false,
         dataLoaded: true,
+        own: own,
       });
     });
   }
-  //order all tripDetails by date and time
-  orderTripDetails = () => {
-    var newState = this.state;
-    var sortedDetails = this.state.trip.listTripDetails
-      .sort((a, b) =>
-        new Date("1970-01-01T" + a.startTime) >
-        new Date("1970-01-01T" + b.startTime)
-          ? 1
-          : new Date("1970-01-01T" + b.startTime) >
-            new Date("1970-01-01T" + a.startTime)
-          ? -1
-          : 0
-      )
-      .sort((a, b) =>
-        Date.parse(a.date) > Date.parse(b.date)
-          ? 1
-          : Date.parse(b.date) > Date.parse(a.date)
-          ? -1
-          : 0
-      );
-    newState.trip.listTripDetails = sortedDetails;
-    this.setState(newState);
-  };
   //get all months of a trip
   getAllMonths = (dateArr) => {
     var monthArr = [];
@@ -114,6 +98,10 @@ class Timeline extends Component {
   };
   //toggle add modal
   toggleAddModal = () => {
+    if (!this.state.own) {
+      this.openCloneModal();
+      return;
+    }
     var newShow = this.state.showAddModal;
     this.setState({ showAddModal: !newShow });
   };
@@ -135,9 +123,18 @@ class Timeline extends Component {
   //delete an activity
   deleteTripDetail = (event, detailId) => {
     axios
-      .delete(`http://localhost:8080/trip/delete-detail`, {
-        data: { id: detailId },
-      })
+      .delete(
+        `/trip/delete-detail`,
+        {
+          data: { id: detailId },
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+          withCredentials: true,
+        }
+      )
       .then((response) => {
         if (response.status == 200) {
           var newTrip = this.state.trip;
@@ -177,14 +174,15 @@ class Timeline extends Component {
     axios({
       method: "put",
       url:
-        "http://localhost:8080/trip/put-custom-detail?detailId=" +
+        "/trip/put-custom-detail?detailId=" +
         detail.tripDetailsId +
         "&tripId=" +
         this.state.trip.tripId,
-      headers: {
-        "Content-Type": "application/json",
-      },
       data: detail,
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+      },
+      withCredentials: true,
     })
       .then((response) => {
         this.updateDetail(detail.tripDetailsId, response.data);
@@ -206,10 +204,13 @@ class Timeline extends Component {
     detail.endTime = +end[0] * 60 * 60 + +end[1] * 60;
     axios({
       method: "put",
-      url: "http://localhost:8080/trip/put-detail?id=" + detail.tripDetailsId,
+      url: "/trip/put-detail?id=" + detail.tripDetailsId,
+
       headers: {
-        "Content-Type": "application/json",
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
       },
+      withCredentials: true,
+
       data: detail,
     })
       .then((response) => {
@@ -238,14 +239,24 @@ class Timeline extends Component {
     var end = input.end_time.split(":");
     var endSeconds = +end[0] * 60 * 60 + +end[1] * 60;
     axios
-      .post(`http://localhost:8080/trip/add-custom-detail`, {
-        date: input.date,
-        startTime: startSeconds,
-        endTime: endSeconds,
-        name: input.name,
-        address: input.address,
-        tripId: this.state.trip.tripId,
-      })
+      .post(
+        `/trip/add-custom-detail`,
+        {
+          date: input.date,
+          startTime: startSeconds,
+          endTime: endSeconds,
+          name: input.name,
+          address: input.address,
+          tripId: this.state.trip.tripId,
+          note: input.note,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+          withCredentials: true,
+        }
+      )
       .then((response) => {
         console.log("custom response: ", response);
         var newDetail = response.data;
@@ -274,13 +285,21 @@ class Timeline extends Component {
     var startSeconds = +start[0] * 60 * 60 + +start[1] * 60;
     var end = input.end_time.split(":");
     var endSeconds = +end[0] * 60 * 60 + +end[1] * 60;
+    const data = {
+      date: input.date,
+      startTime: startSeconds,
+      endTime: endSeconds,
+      activityId: input.activity_id,
+      tripId: this.state.trip.tripId,
+      note: input.note ? input.note : "",
+    };
+    console.log("data: ", data);
     axios
-      .post(`http://localhost:8080/trip/add-detail`, {
-        date: input.date,
-        startTime: startSeconds,
-        endTime: endSeconds,
-        activityId: input.activity_id,
-        tripId: this.state.trip.tripId,
+      .post(`/trip/add-detail`, data, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+        withCredentials: true,
       })
       .then((response) => {
         var newDetail = response.data;
@@ -329,36 +348,53 @@ class Timeline extends Component {
   };
   //open confirm delete modal
   openConfirmDelete = (event, detailId, name) => {
-    this.setState({
-      delete: {
-        detailId: detailId,
-        name: name,
-        show: true,
-      },
-    });
+    if (!this.state.own) {
+      this.openCloneModal();
+      return;
+    } else {
+      this.setState({
+        delete: {
+          detailId: detailId,
+          name: name,
+          show: true,
+        },
+      });
+    }
   };
   //open edit modal with event data
   openEditModal = (event, detail) => {
     event.preventDefault();
-    var newDetail = {};
-    newDetail.date = detail.date;
-    var date = new Date(detail.date);
-    date.setSeconds(detail.startTime);
-    var timeString = date.toISOString().substring(11, 16);
-    newDetail.startTime = timeString;
-    var enddate = new Date(detail.date);
-    enddate.setSeconds(detail.endTime);
-    var endtimeString = enddate.toISOString().substring(11, 16);
-    newDetail.endTime = endtimeString;
-    newDetail.masterActivity = detail.masterActivity;
-    newDetail.tripDetailsId = detail.tripDetailsId;
-    this.setState({ detailInEdit: newDetail }, () => {
-      this.setState({ showEditModal: true });
-    });
+    if (!this.state.own) {
+      this.openCloneModal();
+      return;
+    } else {
+      var newDetail = {};
+      newDetail.date = detail.date;
+      var date = new Date(detail.date);
+      date.setSeconds(detail.startTime);
+      var timeString = date.toISOString().substring(11, 16);
+      newDetail.startTime = timeString;
+      var enddate = new Date(detail.date);
+      enddate.setSeconds(detail.endTime);
+      var endtimeString = enddate.toISOString().substring(11, 16);
+      newDetail.endTime = endtimeString;
+      newDetail.masterActivity = detail.masterActivity;
+      newDetail.tripDetailsId = detail.tripDetailsId;
+      newDetail.note = detail.note;
+      this.setState({ detailInEdit: newDetail }, () => {
+        this.setState({ showEditModal: true });
+      });
+    }
   };
   //close edit modal
   closeEditModal = () => {
     this.setState({ showEditModal: false, detailInEdit: {} });
+  };
+  closeCloneModal = () => {
+    this.setState({ showCloneModal: false });
+  };
+  openCloneModal = () => {
+    this.setState({ showCloneModal: true });
   };
   render() {
     if (!this.state.dataLoaded)
@@ -413,13 +449,21 @@ class Timeline extends Component {
             activityEdited={(event, input) => this.editTripDetail(event, input)}
           ></EditActivityModal>
         ) : null}
-        <ConfirmDelete
-          show={this.state.delete.show}
-          onHide={this.closeConfirmDelete}
-          onConfirmed={(event, id) => this.deleteTripDetail(event, id)}
-          detailId={this.state.delete.detailId}
-          name={this.state.delete.name}
-        />
+        {!this.state.own ? (
+          <CloneTripModal
+            show={this.state.showCloneModal}
+            onHide={this.closeCloneModal}
+            tripId={this.state.trip.tripId}
+          />
+        ) : (
+          <ConfirmDelete
+            show={this.state.delete.show}
+            onHide={this.closeConfirmDelete}
+            onConfirmed={(event, id) => this.deleteTripDetail(event, id)}
+            detailId={this.state.delete.detailId}
+            name={this.state.delete.name}
+          />
+        )}
         <div className="container ">
           <div className="timeline-container row ">
             <div className="col-2">
@@ -460,9 +504,10 @@ class Timeline extends Component {
                             deleteEvent={(event, detailId, name) =>
                               this.openConfirmDelete(event, detailId, name)
                             }
-                            editEvent={(event, detail) =>
-                              this.openEditModal(event, detail)
-                            }
+                            editEvent={(event, detail) => {
+                              console.log("opening edit");
+                              this.openEditModal(event, detail);
+                            }}
                             nextActivityId={this.getNextTripDetail(
                               this.getTripDetailsByDate(date),
                               tripDetail
