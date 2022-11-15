@@ -35,15 +35,13 @@ class Checklist extends Component {
   //get request to get trip info
   componentDidMount() {
     const { id } = this.props.params;
-    axios
-      .get(`http://localhost:8080/api/checklist/get-by-trip?tripId=` + id)
-      .then((res) => {
-        this.setState({
-          checklistItems: res.data,
-          dataLoaded: true,
-          tripId: id,
-        });
+    axios.get(`/api/checklist/get-by-trip?tripId=` + id).then((res) => {
+      this.setState({
+        checklistItems: res.data,
+        dataLoaded: true,
+        tripId: id,
       });
+    });
   }
   updateCheckedInState = (event, id) => {
     var curItem = this.state.checklistItems.find((el) => el.itemId == id);
@@ -52,7 +50,7 @@ class Checklist extends Component {
     var newList = this.state.checklistItems;
     curItem.checked = !curItem.checked;
     axios
-      .post("http://localhost:8080/api/checklist/toggle-checked", {
+      .post("/api/checklist/toggle-checked", {
         itemId: id,
         checked: curItem.checked,
       })
@@ -63,7 +61,7 @@ class Checklist extends Component {
   };
   deleteItem = (event, id) => {
     axios
-      .delete(`http://localhost:8080/api/checklist/delete-item`, {
+      .delete(`/api/checklist/delete-item`, {
         data: { itemId: id },
       })
       .then((response) => {
@@ -80,7 +78,7 @@ class Checklist extends Component {
     console.log("editing");
     axios({
       method: "put",
-      url: "http://localhost:8080/api/checklist/put-item?id=" + item.itemId,
+      url: "/api/checklist/put-item?id=" + item.itemId,
       headers: {
         "Content-Type": "application/json",
       },
@@ -104,13 +102,11 @@ class Checklist extends Component {
   };
   insertItem = (event, item) => {
     item.tripId = this.state.tripId;
-    axios
-      .post(`http://localhost:8080/api/checklist/add-item`, item)
-      .then((response) => {
-        var newList = this.state.checklistItems;
-        newList.push(response.data);
-        this.setState({ checklistItems: newList, showAddModal: false });
-      });
+    axios.post(`/api/checklist/add-item`, item).then((response) => {
+      var newList = this.state.checklistItems;
+      newList.push(response.data);
+      this.setState({ checklistItems: newList, showAddModal: false });
+    });
   };
   closeConfirmDelete = () => {
     this.setState({
@@ -202,7 +198,7 @@ class Checklist extends Component {
                     <label className={style.itemContent}>
                       <div className={style.itemTitle}>{item.title}</div>
                     </label>
-                    {item.note != "" ? (
+                    {item.note && item.note != "" ? (
                       <div className={style.noteDiv}>
                         <span>Ghi chú:</span>
                         <div>{item.note}</div>

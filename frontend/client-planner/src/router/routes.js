@@ -65,7 +65,7 @@ export default function RootRoutes() {
           <Route path="/SearchResults" element={<SearchResults />} />
           <Route path="/poi" element={<POIDetails />} />
           <Route path="/test" element={<Test></Test>}></Route>
-          <Route path="/map:id" element={<Map></Map>}></Route>
+          <Route path="/map/:id" element={<Map></Map>}></Route>
         </Route>
         <Route element={<RequireAuth allowedRoles={["Admin"]} />}>
           <Route path='/blog/list' element={<ProSidebarProvider><AdminSidebar props={<BlogList/>}/></ProSidebarProvider>} />

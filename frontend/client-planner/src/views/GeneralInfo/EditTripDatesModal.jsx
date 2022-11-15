@@ -5,31 +5,32 @@ import style from "./TripGeneralInfo.module.css";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import ConfirmEditModal from "./ConfirmEditDatesModal";
-import axios from "axios";
+import axios from "../../api/axios";
 function EditTripDatesModal(props) {
   const { onChange, onHide, trip, ...rest } = props;
   const [startDate, setStartDate] = useState(new Date(trip.startDate));
   const [endDate, setEndDate] = useState(new Date(trip.endDate));
   const [showConfirm, setShowConfirm] = useState(false);
   const [warningDetails, setWarningDetails] = useState([]);
+  const diff =
+    new Date(trip.endDate).getDate() - new Date(trip.startDate).getDate();
   const handleHide = () => {
     setShowConfirm(false);
   };
   const handleConfirmed = () => {
     setShowConfirm(false);
+    var tzoffset = new Date().getTimezoneOffset() * 60000;
     const data = {
       tripId: trip.tripId,
-      startDate: startDate.toISOString().substring(0, 10),
-      endDate: endDate.toISOString().substring(0, 10),
+      startDate: new Date(startDate - tzoffset).toISOString().substring(0, 10),
+      endDate: new Date(endDate - tzoffset).toISOString().substring(0, 10),
     };
     onChange(data);
   };
   const onSave = () => {
-    if (
-      startDate > new Date(trip.startDate) ||
-      endDate < new Date(trip.endDate)
-    ) {
-      getEventsToBeDeleted();
+    let dayNum = new Date(endDate).getDate() - new Date(startDate).getDate();
+    if (dayNum < diff) {
+      getEventsToBeDeleted(dayNum);
     } else handleConfirmed();
   };
   const handleCancel = () => {
@@ -45,20 +46,15 @@ function EditTripDatesModal(props) {
     onHide();
   };
 
-  const getEventsToBeDeleted = () => {
+  const getEventsToBeDeleted = (dayNum) => {
     const data = {
       tripId: trip.tripId,
-      startDate: startDate.toISOString().substring(0, 10),
-      endDate: endDate.toISOString().substring(0, 10),
+      numberOfDays: dayNum + 1,
     };
-    axios
-      .post(`http://localhost:8080/trip/get-details-to-delete`, data)
-      .then((res) => {
-        setWarningDetails(res.data, setShowConfirm(true));
-      });
+    axios.post(`/trip/get-details-to-delete`, data).then((res) => {
+      setWarningDetails(res.data, setShowConfirm(true));
+    });
   };
-  const diff =
-    new Date(trip.endDate).getDate() - new Date(trip.startDate).getDate();
   return (
     <>
       <ConfirmEditModal

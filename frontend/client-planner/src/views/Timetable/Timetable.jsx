@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { useParams } from "react-router-dom";
-import axios from "axios";
+import axios from "../../api/axios";
 import FullCalendar, { formatDate } from "@fullcalendar/react";
 import dayGridPlugin from "@fullcalendar/daygrid";
 import timeGridPlugin from "@fullcalendar/timegrid";
@@ -13,6 +13,8 @@ import LoadingScreen from "react-loading-screen";
 import ConfirmDelete from "./ConfirmDelete";
 import NotificationModal from "./NotificationModal";
 import TripGeneralInfo from "../GeneralInfo/TripGeneralInfo";
+import CloneTripModal from "../../components/Trips/CloneTripModal";
+import DetailActivityModal from "./DetailActivityModal";
 import {
   faPlus,
   faCaretRight,
@@ -53,11 +55,14 @@ class Timetable extends Component {
         show: false,
       },
       showNotiModal: false,
+      showCloneModal: false,
+      detailInView: {},
+      showDetailModal: false,
     };
   }
   componentDidMount() {
     const { id } = this.props.params;
-    axios.get(`http://localhost:8080/trip/` + id).then((res) => {
+    axios.get(`/trip/` + id).then((res) => {
       const tripData = res.data;
       var tempEvents = [];
       tripData.listTripDetails.forEach((detail) => {
@@ -92,6 +97,10 @@ class Timetable extends Component {
       ) {
         snext = true;
       }
+      var own = false;
+      if (tripData.userID && tripData.userID == localStorage.getItem("id")) {
+        own = true;
+      }
       this.setState(
         {
           trip: tripData,
@@ -100,6 +109,7 @@ class Timetable extends Component {
           initialDate: tripData.startDate,
           currentDate: tripData.startDate,
           showNext: snext,
+          own: own,
         },
         () => {
           window.scrollTo(0, 600);
@@ -166,6 +176,10 @@ class Timetable extends Component {
   };
   //toggle add modal
   toggleAddModal = () => {
+    if (!this.state.own) {
+      this.openCloneModal();
+      return;
+    }
     var newShow = this.state.showAddModal;
     this.setState({ showAddModal: !newShow });
   };
@@ -184,6 +198,17 @@ class Timetable extends Component {
     event.preventDefault();
     this.setState({ detailInEdit: detail }, () => {
       this.setState({ showEditModal: true });
+    });
+  };
+  //close detail modal
+  closeDetailModal = () => {
+    this.setState({ showDetailModal: false, detailInView: {} });
+  };
+  //open detail modal with event data
+  openDetailModal = (event, detail) => {
+    event.preventDefault();
+    this.setState({ detailInView: detail }, () => {
+      this.setState({ showDetailModal: true });
     });
   };
   //get the current date in the view
@@ -263,6 +288,12 @@ class Timetable extends Component {
       },
     });
   };
+  closeCloneModal = () => {
+    this.setState({ showCloneModal: false });
+  };
+  openCloneModal = () => {
+    this.setState({ showCloneModal: true });
+  };
   //rendering
   render() {
     if (!this.state.dataLoaded)
@@ -305,24 +336,44 @@ class Timetable extends Component {
         <a className={` ${style.btnAdd}`} onClick={this.toggleAddModal}>
           <FontAwesomeIcon icon={faPlus} className={style.addIcon} />
         </a>
-        <ConfirmDelete
-          show={this.state.delete.show}
-          onHide={this.closeConfirmDelete}
-          onConfirmed={(event, id) => this.deleteEvent(event, id)}
-          detailId={this.state.delete.detailId}
-          name={this.state.delete.name}
+        <DetailActivityModal
+          show={this.state.showDetailModal}
+          onHide={this.closeDetailModal}
+          tripDetail={this.state.detailInView}
         />
-        <AddActivityModal
-          show={this.state.showAddModal}
-          onHide={this.toggleAddModal}
-          allDates={allDates}
-          activityAdded={(event, input) => this.insertTripDetail(event, input)}
-        />
-        <NotificationModal
-          show={this.state.showNotiModal}
-          message="Hoạt động không thể kéo dài trên 1 ngày."
-          onHide={this.toggleNotification}
-        />
+        {!this.state.own ? (
+          <>
+            <CloneTripModal
+              show={this.state.showCloneModal}
+              onHide={this.closeCloneModal}
+              tripId={this.state.trip.tripId}
+            />
+          </>
+        ) : (
+          <>
+            <ConfirmDelete
+              show={this.state.delete.show}
+              onHide={this.closeConfirmDelete}
+              onConfirmed={(event, id) => this.deleteEvent(event, id)}
+              detailId={this.state.delete.detailId}
+              name={this.state.delete.name}
+            />
+            <AddActivityModal
+              show={this.state.showAddModal}
+              onHide={this.toggleAddModal}
+              allDates={allDates}
+              activityAdded={(event, input) =>
+                this.insertTripDetail(event, input)
+              }
+            />
+            <NotificationModal
+              show={this.state.showNotiModal}
+              message="Hoạt động không thể kéo dài trên 1 ngày."
+              onHide={this.toggleNotification}
+            />
+          </>
+        )}
+
         {this.state.showEditModal ? (
           <EditActivityModal
             show={this.state.showEditModal}
@@ -424,7 +475,7 @@ class Timetable extends Component {
                 eventBackgroundColor="white"
                 eventTextColor="black"
                 initialDate={this.state.trip.startDate}
-                editable={true}
+                editable={this.state.own}
                 selectable={false}
                 selectMirror={true}
                 dayMaxEvents={true}
@@ -467,7 +518,10 @@ class Timetable extends Component {
     return (
       <div
         className={style.fcEvent}
-        onClick={(event) => this.openEditModal(event, newProps)}
+        onClick={(event) => {
+          if (!this.state.own) this.openDetailModal(event, newProps);
+          else this.openEditModal(event, newProps);
+        }}
       >
         <div className={style.eventTitle}>{eventInfo.event.title}</div>
         <div>
@@ -482,21 +536,23 @@ class Timetable extends Component {
             {")"}
           </span>
         </div>
-        <div className={style.dropdown}>
-          <button
-            type="button"
-            className={style.moreBtn}
-            onClick={(event) =>
-              this.openConfirmDelete(
-                event,
-                eventInfo.event.id,
-                eventInfo.event.title
-              )
-            }
-          >
-            <FontAwesomeIcon icon={faXmark} size="lg" />
-          </button>
-        </div>
+        {this.state.own ? (
+          <div className={style.dropdown}>
+            <button
+              type="button"
+              className={style.moreBtn}
+              onClick={(event) =>
+                this.openConfirmDelete(
+                  event,
+                  eventInfo.event.id,
+                  eventInfo.event.title
+                )
+              }
+            >
+              <FontAwesomeIcon icon={faXmark} size="lg" />
+            </button>
+          </div>
+        ) : null}
       </div>
     );
   };
@@ -520,7 +576,7 @@ class Timetable extends Component {
       .substring(0, 10);
     axios({
       method: "put",
-      url: "http://localhost:8080/trip/put-detail?id=" + detail.tripDetailsId,
+      url: "/trip/put-detail?id=" + detail.tripDetailsId,
       headers: {
         "Content-Type": "application/json",
       },
@@ -541,7 +597,7 @@ class Timetable extends Component {
   deleteEventApi = (eventInfo) => {
     var detailId = eventInfo.event.id;
     axios
-      .delete(`http://localhost:8080/trip/delete-detail`, {
+      .delete(`/trip/delete-detail`, {
         data: { id: detailId },
       })
       .then((response) => {
@@ -584,7 +640,7 @@ class Timetable extends Component {
     var end = input.end_time.split(":");
     var endSeconds = +end[0] * 60 * 60 + +end[1] * 60;
     axios
-      .post(`http://localhost:8080/trip/add-custom-detail`, {
+      .post(`/trip/add-custom-detail`, {
         date: input.date,
         startTime: startSeconds,
         endTime: endSeconds,
@@ -614,7 +670,7 @@ class Timetable extends Component {
     var end = input.end_time.split(":");
     var endSeconds = +end[0] * 60 * 60 + +end[1] * 60;
     axios
-      .post(`http://localhost:8080/trip/add-detail`, {
+      .post(`/trip/add-detail`, {
         date: input.date,
         startTime: startSeconds,
         endTime: endSeconds,
@@ -663,7 +719,7 @@ class Timetable extends Component {
     detail.endTime = +end[0] * 60 * 60 + +end[1] * 60;
     axios({
       method: "put",
-      url: "http://localhost:8080/trip/put-detail?id=" + detail.tripDetailsId,
+      url: "/trip/put-detail?id=" + detail.tripDetailsId,
       headers: {
         "Content-Type": "application/json",
       },
@@ -685,7 +741,7 @@ class Timetable extends Component {
     axios({
       method: "put",
       url:
-        "http://localhost:8080/trip/put-custom-detail?id=" +
+        "/trip/put-custom-detail?id=" +
         detail.tripDetailsId +
         "&tripId=" +
         this.state.trip.tripId,
@@ -695,7 +751,6 @@ class Timetable extends Component {
       data: detail,
     })
       .then((response) => {
-        console.log(response.data);
         this.editCustomEventInView(response.data);
       })
       .catch(function (error) {
