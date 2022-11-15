@@ -1,0 +1,81 @@
+.bodyContainer{
+  margin: 0px;
+  margin-top: 10vh;
+}
+.tableHead{
+  color:white;
+  background-color: rgb(17, 0, 42);
+}
+.createBtn{
+  margin-bottom: 10px;
+  display: inline;
+}
+.tableName{
+  cursor: pointer;
+  max-width: 450px !important;
+}
+.tableId{
+  cursor: pointer;
+  max-width: 35px;
+}
+.sortIcon{
+  margin-left: 4px;
+}
+.tableDate{
+  cursor: pointer;
+  max-width: 200px !important;
+}
+.tableRate{
+  cursor: pointer;
+}
+.tableRole{
+  cursor: pointer;
+}
+/*
+.tableDes{
+  width: 150px !important;
+}
+.tableWeb{
+  max-width: 250px !important;
+}
+.tableCat{
+  width: 250px !important;
+} */
+.tableStatus{
+  min-width: 120px !important;
+}
+.star{
+  color: rgb(255, 225, 0);
+  margin-left: 2px;
+}
+.tableIcons{
+  font-size: 20px;
+  margin: 5px;
+  color: rgb(0, 174, 232);
+}
+.tableIcons:hover{
+  color: black;
+}
+.tableActions{
+  width: 100px !important;
+}
+.searchBar{
+  margin-bottom: 10px;
+}
+.tableDataGrey{
+  background-color: rgb(243, 242, 242);
+}
+.navItem{
+  text-decoration: none;
+  color: black;
+}
+.navItem:hover{
+  text-decoration: underline;
+  color: rgb(0, 170, 255);
+}
+.avatar{
+  width: 50px;
+  height: 50px;
+  object-fit: cover;
+  border-radius: 50%;
+}

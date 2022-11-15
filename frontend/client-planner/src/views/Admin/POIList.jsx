@@ -48,7 +48,10 @@ class POIList extends Component {
   }
   componentDidMount() {
     axios.get("http://localhost:8080/api/pois/list/admin/" + this.state.currentFilter + "/" + this.state.currentCatId
-              + "/" + this.state.currentNameKey + "/" + this.state.currentPage).then((res) => {
+              + "/" + this.state.currentNameKey + "/" + this.state.currentPage, {
+                headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+                withCredentials: true,
+              }).then((res) => {
       const data = res.data;
       this.setState({
         pois: data,
@@ -60,7 +63,10 @@ class POIList extends Component {
         return Promise.reject(error)
       }
     );
-    axios.get("http://localhost:8080/api/pois/list/admin/count/" + this.state.currentCatId + "/" + this.state.currentNameKey).then((res) => {
+    axios.get("http://localhost:8080/api/pois/list/admin/count/" + this.state.currentCatId + "/" + this.state.currentNameKey, {
+      headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+      withCredentials: true,
+    }).then((res) => {
       const data = res.data;
       this.setState({
         pageCount: data / 30,
@@ -102,7 +108,10 @@ class POIList extends Component {
       okType: "danger",
       cancelText: "Không",
       onOk: async () => {
-        await axios.post(`http://localhost:8080/api/pois/delete/` + poiId, {});
+        await axios.post(`http://localhost:8080/api/pois/delete/` + poiId, {
+          headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+          withCredentials: true,
+        });
         this.componentDidMount();
       },
       onCancel() {},

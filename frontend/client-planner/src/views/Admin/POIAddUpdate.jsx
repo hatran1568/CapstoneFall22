@@ -50,7 +50,10 @@ class POIAddUpdate extends Component {
   componentDidMount() {
     const queryParams = new URLSearchParams(window.location.search);
     const id = queryParams.get("id");
-    axios.get(`http://localhost:8080/api/destination/select/all`).then((res) => {
+    axios.get(`http://localhost:8080/api/destination/select/all`, {
+      headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+      withCredentials: true,
+    }).then((res) => {
         const data = res.data;
         this.setState({
           destinations: data,
@@ -63,7 +66,10 @@ class POIAddUpdate extends Component {
         }
       );
     if (id > 0) {
-      axios.get(`http://localhost:8080/api/destination/select/` + id).then((res) => {
+      axios.get(`http://localhost:8080/api/destination/select/` + id, {
+        headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+        withCredentials: true,
+      }).then((res) => {
         const data = res.data;
         this.setState({
           selectedDestinations: data,
@@ -74,7 +80,10 @@ class POIAddUpdate extends Component {
           return Promise.reject(error)
         }
       );
-      axios.get(`http://localhost:8080/api/pois/list/admin/update/` + id).then((res) => {
+      axios.get(`http://localhost:8080/api/pois/list/admin/update/` + id, {
+        headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+        withCredentials: true,
+      }).then((res) => {
         const data = res.data;
         this.setState({
           poi: data,
@@ -85,7 +94,10 @@ class POIAddUpdate extends Component {
           return Promise.reject(error)
         }
       );
-      axios.get(`http://localhost:8080/api/pois/list/admin/update/images/` + id).then((res) => {
+      axios.get(`http://localhost:8080/api/pois/list/admin/update/images/` + id, {
+        headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+        withCredentials: true,
+      }).then((res) => {
         const data = res.data;
         this.setState({
           images: data,
@@ -107,7 +119,10 @@ class POIAddUpdate extends Component {
     const id = queryParams.get("id");
     
     if (id > 0) {
-      axios.get(`http://localhost:8080/api/pois/list/admin/update/images/` + id).then((res) => {
+      axios.get(`http://localhost:8080/api/pois/list/admin/update/images/` + id, {
+        headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+        withCredentials: true,
+      }).then((res) => {
         const data = res.data;
         this.setState({
           images: data,
@@ -205,10 +220,15 @@ class POIAddUpdate extends Component {
           },
           headers: {
             "Content-Type": "application/json",
+            Authorization: `Bearer ${localStorage.getItem("token")}`
           },
+          withCredentials: true,
         });
         await this.state.deletedImages.forEach((entry, index) => {
-          axios.post(`http://localhost:8080/api/pois/deleteImg/` + entry, {});
+          axios.post(`http://localhost:8080/api/pois/deleteImg/` + entry, {
+            headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+            withCredentials: true,
+          });
         })
         await this.state.newImages.forEach((entry, index) => {
           const formData = new FormData();
@@ -230,8 +250,10 @@ class POIAddUpdate extends Component {
             url: "http://localhost:8080/api/destination/poi/update/" + id,
             data: desData,
             headers: {
-              "Content-Type": "application/json",
+              Authorization: `Bearer ${localStorage.getItem("token")}`,
+              "Content-Type": "multipart/form-data",
             },
+            withCredentials: true,
           });
         }
         
@@ -275,8 +297,10 @@ class POIAddUpdate extends Component {
             lon: document.getElementById("lonInput").value,
           },
           headers: {
-            "Content-Type": "application/json",
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+            "Content-Type": "multipart/form-data",
           },
+          withCredentials: true,
         }).then(function (response) {
           id = response.data;
           images.forEach((entry, index) => {
@@ -299,8 +323,10 @@ class POIAddUpdate extends Component {
               url: "http://localhost:8080/api/destination/poi/update/" + id,
               data: desData,
               headers: {
-                "Content-Type": "application/json",
+                Authorization: `Bearer ${localStorage.getItem("token")}`,
+                "Content-Type": "multipart/form-data",
               },
+              withCredentials: true,
             });
           }
         });
@@ -322,7 +348,6 @@ class POIAddUpdate extends Component {
       okType: "danger",
       cancelText: "Không",
       onOk: async () => {
-        // await axios.post(`http://localhost:8080/api/pois/deleteImg/` + imgId, {});
         var currentImg = this.state.images;
         var deleted = this.state.deletedImages;
         currentImg.forEach((entry, index) => {
@@ -498,7 +523,7 @@ class POIAddUpdate extends Component {
               imgLink = "../" + imgLink;
             imageBox.push(
               <MDBCard className={style.imageBox}>
-                <img className={style.poiImage} title={entry.description} src={imgLink}/>
+                <a href={imgLink} target="_blank"><img className={style.poiImage} title={entry.description} src={imgLink}/></a>
                 <div className={style.imageContent}>
                   {entry.description}<br/>
                   <a className={style.deleteIcon} id={entry.imageId} onClick={this.deleteImage}><FontAwesomeIcon icon={faClose}/></a>

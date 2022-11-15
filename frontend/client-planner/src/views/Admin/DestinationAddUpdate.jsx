@@ -50,7 +50,10 @@ class DestinationAddUpdate extends Component {
   componentDidMount() {
     const queryParams = new URLSearchParams(window.location.search);
     const id = queryParams.get("id");
-    axios.get(`http://localhost:8080/api/destination/select/all`).then((res) => {
+    axios.get(`http://localhost:8080/api/destination/select/all`, {
+      headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+      withCredentials: true,
+    }).then((res) => {
         const data = res.data;
         this.setState({
           destinations: data,
@@ -63,7 +66,10 @@ class DestinationAddUpdate extends Component {
         }
       );
     if (id > 0) {
-      axios.get(`http://localhost:8080/api/destination/admin/list/update/` + id).then((res) => {
+      axios.get(`http://localhost:8080/api/destination/admin/list/update/` + id, {
+        headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+        withCredentials: true,
+      }).then((res) => {
         const data = res.data;
         this.setState({
           destination: data,
@@ -74,7 +80,10 @@ class DestinationAddUpdate extends Component {
           return Promise.reject(error)
         }
       );
-      axios.get(`http://localhost:8080/api/destination/admin/list/update/images/` + id).then((res) => {
+      axios.get(`http://localhost:8080/api/destination/admin/list/update/images/` + id, {
+        headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+        withCredentials: true,
+      }).then((res) => {
         const data = res.data;
         this.setState({
           images: data,
@@ -96,7 +105,10 @@ class DestinationAddUpdate extends Component {
     const id = queryParams.get("id");
     
     if (id > 0) {
-      axios.get(`http://localhost:8080/api/destination/admin/list/update/images/` + id).then((res) => {
+      axios.get(`http://localhost:8080/api/destination/admin/list/update/images/` + id, {
+        headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+        withCredentials: true,
+      }).then((res) => {
         const data = res.data;
         this.setState({
           images: data,
@@ -171,10 +183,15 @@ class DestinationAddUpdate extends Component {
           },
           headers: {
             "Content-Type": "application/json",
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
           },
+          withCredentials: true,
         });
         await this.state.deletedImages.forEach((entry, index) => {
-          axios.post(`http://localhost:8080/api/destination/deleteImg/` + entry, {});
+          axios.post(`http://localhost:8080/api/destination/deleteImg/` + entry, {
+            headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+            withCredentials: true,
+          });
         })
         await this.state.newImages.forEach((entry, index) => {
           const formData = new FormData();
@@ -214,8 +231,10 @@ class DestinationAddUpdate extends Component {
             belongTo: belong,
           },
           headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
             "Content-Type": "application/json",
           },
+          withCredentials: true,
         }).then(function (response) {
           id = response.data;
           images.forEach((entry, index) => {
@@ -239,7 +258,9 @@ class DestinationAddUpdate extends Component {
               data: desData,
               headers: {
                 "Content-Type": "application/json",
+                Authorization: `Bearer ${localStorage.getItem("token")}`
               },
+              withCredentials: true,
             });
           }
         });
@@ -261,7 +282,10 @@ class DestinationAddUpdate extends Component {
       okType: "danger",
       cancelText: "Không",
       onOk: async () => {
-        await axios.post(`http://localhost:8080/api/destination/deleteImg/` + imgId, {});
+        await axios.post(`http://localhost:8080/api/destination/deleteImg/` + imgId, {
+          headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+          withCredentials: true,
+        });
         var currentImg = this.state.images;
         var deleted = this.state.deletedImages;
         currentImg.forEach((entry, index) => {

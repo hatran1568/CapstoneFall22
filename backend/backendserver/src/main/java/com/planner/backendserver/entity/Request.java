@@ -28,7 +28,8 @@ public class Request {
     @Column(name="Name")
     private String name;
 
-
+    @Column(name="description")
+    private String description;
 
     @Column(name="address")
     private String Address;
@@ -70,4 +71,8 @@ public class Request {
     @Temporal(TemporalType.TIMESTAMP)
     @UpdateTimestamp
     private Date dateModified;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name="status")
+    private RequestStatus status;
 }

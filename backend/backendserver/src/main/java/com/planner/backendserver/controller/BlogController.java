@@ -40,6 +40,7 @@ public class BlogController {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+    @PreAuthorize("hasAuthority('Admin')")
     @GetMapping("/blog/admin/{filter}/{page}")
     public ResponseEntity<ArrayList<BlogListDTO>> searchBlogsAdmin(@PathVariable String filter, @PathVariable int page){
         try{
@@ -53,6 +54,7 @@ public class BlogController {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+    @PreAuthorize("hasAuthority('Admin')")
     @GetMapping("/blog/admin/{filter}/{page}/count")
     public ResponseEntity<Integer> searchBlogsAdminCount(@PathVariable String filter, @PathVariable int page){
         try{

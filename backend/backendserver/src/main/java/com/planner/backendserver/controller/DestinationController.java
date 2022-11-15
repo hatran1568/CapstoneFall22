@@ -9,6 +9,7 @@ import com.planner.backendserver.utils.GoogleDriveManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -73,6 +74,7 @@ public class DestinationController {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+    @PreAuthorize("hasAuthority('Admin')")
     @GetMapping("/destination/admin/list/{filter}/{nameKey}/{page}")
     public ResponseEntity<ArrayList<DesListDTO>> getDesListAdmin(@PathVariable("filter") String filter, @PathVariable("page") int page, @PathVariable("nameKey") String nameKey) {
         try {
@@ -85,6 +87,7 @@ public class DestinationController {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+    @PreAuthorize("hasAuthority('Admin')")
     @GetMapping("/destination/admin/list/{nameKey}/count")
     public ResponseEntity<Integer> getDesListAdminCount(@PathVariable("nameKey") String nameKey) {
         try {
@@ -97,6 +100,7 @@ public class DestinationController {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+    @PreAuthorize("hasAuthority('Admin')")
     @GetMapping("/destination/select/all")
     public ResponseEntity<ArrayList<DesSelectDTO>> getAllDesSelect() {
         try {
@@ -107,6 +111,7 @@ public class DestinationController {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+    @PreAuthorize("hasAuthority('Admin')")
     @GetMapping("/destination/select/{poiId}")
     public ResponseEntity<ArrayList<DesSelectDTO>> getDesSelectOfPOI(@PathVariable("poiId") int poiId) {
         try {
@@ -117,6 +122,7 @@ public class DestinationController {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+    @PreAuthorize("hasAuthority('Admin')")
     @RequestMapping(value = "/destination/poi/update/{poiId}", consumes = "application/json", produces = { "*/*" }, method = RequestMethod.POST)
     public ResponseEntity<?> updateExpense(@RequestBody ArrayList<POIDesRequestDTO> poides, @PathVariable("poiId") int poiId) {
         try{
@@ -133,6 +139,7 @@ public class DestinationController {
             return  new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+    @PreAuthorize("hasAuthority('Admin')")
     @RequestMapping(value = "/destination/delete/{desId}", produces = { "*/*" }, method = RequestMethod.POST)
     public ResponseEntity<?> deletePOI(@PathVariable int desId) {
         try{
@@ -146,6 +153,7 @@ public class DestinationController {
             return  new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+    @PreAuthorize("hasAuthority('Admin')")
     @GetMapping("/destination/admin/list/update/{desId}")
     public ResponseEntity<DesAddUpdateDTO> getDesListAdmin(@PathVariable("desId") int desId) {
         try {
@@ -158,6 +166,7 @@ public class DestinationController {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+    @PreAuthorize("hasAuthority('Admin')")
     @GetMapping("/destination/admin/list/update/images/{desId}")
     public ResponseEntity<ArrayList<POIImageUpdateDTO>> getPOIImageUpdate(@PathVariable("desId") int desId) {
         try {
@@ -170,7 +179,7 @@ public class DestinationController {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
-    //@PreAuthorize("hasAuthority('Admin')")
+    @PreAuthorize("hasAuthority('Admin')")
     @RequestMapping(value = "/destination/update", consumes = "application/json", produces = { "*/*" }, method = RequestMethod.POST)
     public ResponseEntity<?> updateDes(@RequestBody UpdateDesDTO destination) {
         try{
@@ -182,7 +191,7 @@ public class DestinationController {
             return  new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
-    //@PreAuthorize("hasAuthority('Admin')")
+    @PreAuthorize("hasAuthority('Admin')")
     @RequestMapping(value = "/destination/add", consumes = "application/json", produces = { "*/*" }, method = RequestMethod.POST)
     public ResponseEntity<?> addPOI(@RequestBody UpdateDesDTO destination) {
         try{
@@ -195,6 +204,7 @@ public class DestinationController {
             return  new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+    @PreAuthorize("hasAuthority('Admin')")
     @PostMapping("/destination/addImg/{desId}/{description}")
     @ResponseBody
     public ResponseEntity<?> addImage(@PathVariable int desId, @PathVariable String description, @RequestPart("File") MultipartFile file) throws Exception{
@@ -209,6 +219,7 @@ public class DestinationController {
 //            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
 //        }
     }
+    @PreAuthorize("hasAuthority('Admin')")
     @RequestMapping(value = "/destination/deleteImg/{imgId}", produces = { "*/*" }, method = RequestMethod.POST)
     public ResponseEntity<?> deleteImg(@PathVariable int imgId){
         try{

@@ -22,23 +22,22 @@ import {
 } from "mdb-react-ui-kit";
 import {
   faTrash,
-  faPenToSquare,
-  faStar,
-  faPlaceOfWorship,
+  faEye,
+  faEyeSlash,
   faLocationDot,
   faSort,
   faSortUp,
   faSortDown,
-  faMarker,
+  faUsers,
 } from "@fortawesome/free-solid-svg-icons";
-import style from "./DestinationList.module.css";
+import style from "./UserList.module.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 const { confirm } = Modal;
-class DestinationList extends Component {
+class UserList extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      destinations: [],
+      users: [],
       dataLoaded: false,
       currentNameKey: '*',
       currentPage: 0,
@@ -47,14 +46,14 @@ class DestinationList extends Component {
     };
   }
   componentDidMount() {
-    axios.get("http://localhost:8080/api/destination/admin/list/" + this.state.currentFilter
+    axios.get("http://localhost:8080/api/user/list/admin/" + this.state.currentFilter
               + "/" + this.state.currentNameKey + "/" + this.state.currentPage, {
                 headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
                 withCredentials: true,
               }).then((res) => {
       const data = res.data;
       this.setState({
-        destinations: data,
+        users: data,
         dataLoaded: true,
       });
     }).catch(
@@ -63,7 +62,7 @@ class DestinationList extends Component {
         return Promise.reject(error)
       }
     );
-    axios.get("http://localhost:8080/api/destination/admin/list/" + this.state.currentNameKey + "/count", {
+    axios.get("http://localhost:8080/api/user/list/count/" + this.state.currentNameKey, {
       headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
       withCredentials: true,
     }).then((res) => {
@@ -99,25 +98,6 @@ class DestinationList extends Component {
     this.componentDidMount();
   };
 
-  deleteDes = async (event) => {
-    const poiId = event.currentTarget.id;
-    confirm({
-      title: "Bạn có chắc mình muốn xóa điểm đến này không?",
-      content: "Điểm đến " + event.currentTarget.name + " sẽ bị xóa",
-      okText: "Có",
-      okType: "danger",
-      cancelText: "Không",
-      onOk: async () => {
-        await axios.post(`http://localhost:8080/api/destination/delete/` + poiId, {
-          headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
-          withCredentials: true,
-        });
-        this.componentDidMount();
-      },
-      onCancel() {},
-    });
-  }
-
   sortClick = async (event) => {
     await this.setState({
       currentFilter: event.currentTarget.id
@@ -127,9 +107,9 @@ class DestinationList extends Component {
 
   render() {
     const poiTableData = [];
-    this.state.destinations.forEach((entry, index) => {
-      const dateModifiedRaw = entry.dateModified;
-      const dateCreatedRaw = entry.dateCreated;
+    this.state.users.forEach((entry, index) => {
+      const dateModifiedRaw = entry.modified;
+      const dateCreatedRaw = entry.created;
       var options = {
         month: "numeric",
         day: "numeric",
@@ -142,34 +122,50 @@ class DestinationList extends Component {
       var name = entry.name;
       if (name == " " || name == "")
         name = "Chưa đặt tên";
+      var avatar = entry.avatar;
+      if (avatar == null)
+        avatar = "https://t4.ftcdn.net/jpg/03/59/58/91/360_F_359589186_JDLl8dIWoBNf1iqEkHxhUeeOulx0wOC5.jpg";
+      const hideBtn = [];
+      if (entry.status == "ACTIVE")
+        hideBtn.push( 
+        <a className={style.tableIcons} id={entry.userId} name={name} onClick={this.deactivateUser}><FontAwesomeIcon icon={faEyeSlash}/></a>
+        );
+      if (entry.status == "DEACTIVATED")
+        hideBtn.push( 
+        <a className={style.tableIcons} id={entry.userId} name={name} onClick={this.activateUser}><FontAwesomeIcon icon={faEye}/></a>
+        );
       if (index % 2 == 0)
         poiTableData.push(
           <tr className={style.tableDataGrey}>
-            <th scope='col' className={style.tableIdData}>{entry.desId}</th>
-            <th scope='col'><a className={style.tableNameData}  href={"../destination?id=" + entry.desId}>{name}</a></th>
+            <th scope='col' className={style.tableIdData}>{entry.userId}</th>
+            <th scope='col' className={style.tableAvatar}><img className={style.avatar} src={avatar}/></th>
+            <th scope='col' className={style.tableNameData}>{entry.name}</th>
             <th scope='col' className={style.tableDateData}>{dateModified}</th>
             <th scope='col' className={style.tableDateData}>{dateCreated}</th>
-            <th scope='col' className={style.tableBelongData}>{entry.belongTo}</th>
-            <th scope='col' className={style.tablePOI}>{entry.pois}</th>
-            <th scope='col' className={style.tableActions}>
-              <a className={style.tableIcons} href={"./update?id=" + entry.desId}><FontAwesomeIcon icon={faPenToSquare}/></a>
-              <a className={style.tableIcons} id={entry.desId} name={name} onClick={this.deleteDes}><FontAwesomeIcon icon={faTrash}/></a>
-            </th>
+            <th scope='col' className={style.tableEmailData}>{entry.email}</th>
+            <th scope='col' className={style.tableStatus}>{entry.trips}</th>
+            <th scope='col' className={style.tableRoleData}>{entry.roleName}</th>
+            {/* <th scope='col' className={style.tableActions}>
+              {hideBtn}
+              <a className={style.tableIcons} id={entry.userId} name={name} onClick={this.deleteUser}><FontAwesomeIcon icon={faTrash}/></a>
+            </th> */}
           </tr>
         );
       else
         poiTableData.push(
           <tr className={style.tableData}>
-            <th scope='col' className={style.tableIdData}>{entry.desId}</th>
-            <th scope='col'><a className={style.tableNameData}  href={"../destination?id=" + entry.desId}>{name}</a></th>
+            <th scope='col' className={style.tableIdData}>{entry.userId}</th>
+            <th scope='col' className={style.tableAvatar}><img className={style.avatar} src={avatar}/></th>
+            <th scope='col' className={style.tableNameData}>{entry.name}</th>
             <th scope='col' className={style.tableDateData}>{dateModified}</th>
             <th scope='col' className={style.tableDateData}>{dateCreated}</th>
-            <th scope='col' className={style.tableBelongData}>{entry.belongTo}</th>
-            <th scope='col' className={style.tablePOI}>{entry.pois}</th>
-            <th scope='col' className={style.tableActions}>
-              <a className={style.tableIcons} href={"./update?id=" + entry.desId}><FontAwesomeIcon icon={faPenToSquare}/></a>
-              <a className={style.tableIcons} id={entry.desId} name={name} onClick={this.deleteDes}><FontAwesomeIcon icon={faTrash}/></a>
-            </th>
+            <th scope='col' className={style.tableEmailData}>{entry.email}</th>
+            <th scope='col' className={style.tableStatus}>{entry.trips}</th>
+            <th scope='col' className={style.tableRoleData}>{entry.roleName}</th>
+            {/* <th scope='col' className={style.tableActions}>
+              {hideBtn}
+              <a className={style.tableIcons} id={entry.userId} name={name} onClick={this.deleteDes}><FontAwesomeIcon icon={faTrash}/></a>
+            </th> */}
           </tr>
         );
     })
@@ -181,16 +177,16 @@ class DestinationList extends Component {
       tableId.push(
         <th scope='col' className={style.tableId} onClick={this.sortClick} id="idASC">ID<FontAwesomeIcon className={style.sortIcon} icon={faSort}/></th>);
 
-    const tableBelongTo = [];
-    if (this.state.currentFilter == "belongASC")
-      tableBelongTo.push(
-        <th scope='col' className={style.tableBelong} onClick={this.sortClick} id="belongDESC">TRỰC THUỘC<FontAwesomeIcon className={style.sortIcon} icon={faSortUp}/></th>);
-    else if (this.state.currentFilter == "belongDESC")
-      tableBelongTo.push(
-        <th scope='col' className={style.tableBelong} onClick={this.sortClick} id="belongASC">TRỰC THUỘC<FontAwesomeIcon className={style.sortIcon} icon={faSortDown}/></th>);
+    const tableRole = [];
+    if (this.state.currentFilter == "roleASC")
+      tableRole.push(
+        <th scope='col' className={style.tableRole} onClick={this.sortClick} id="roleDESC">VAI TRÒ<FontAwesomeIcon className={style.sortIcon} icon={faSortUp}/></th>);
+    else if (this.state.currentFilter == "roleDESC")
+      tableRole.push(
+        <th scope='col' className={style.tableRole} onClick={this.sortClick} id="roleASC">VAI TRÒ<FontAwesomeIcon className={style.sortIcon} icon={faSortDown}/></th>);
     else
-      tableBelongTo.push(
-        <th scope='col' className={style.tableBelong} onClick={this.sortClick} id="belongDESC">TRỰC THUỘC<FontAwesomeIcon className={style.sortIcon} icon={faSort}/></th>);
+      tableRole.push(
+        <th scope='col' className={style.tableRole} onClick={this.sortClick} id="roleDESC">VAI TRÒ<FontAwesomeIcon className={style.sortIcon} icon={faSort}/></th>);
 
     const tableName = [];
     if (this.state.currentFilter == "nameASC")
@@ -217,15 +213,12 @@ class DestinationList extends Component {
         
     return (
       <MDBContainer className={style.bodyContainer}>
-        <h2>Quản lí Điểm đến</h2>
+        <h2>Quản lí Người dùng</h2>
         <MDBRow>
-          <MDBCol md={1} style={{width:200}}>
-            <MDBBtn href="./update?id=0" className={style.createBtn} color="info">Thêm điểm đến</MDBBtn>
-          </MDBCol>
           <MDBCol md={6} className={style.searchBar}>
             <MDBInputGroup>
               <span className="input-group-text">
-                <FontAwesomeIcon icon={faLocationDot} />
+                <FontAwesomeIcon icon={faUsers} />
               </span>
               <MDBInput label='Tìm theo tên' id="searchBarName" maxLength={100} className={style.searchInput}/>
               <MDBBtn color="info" onClick={this.searchPOIs} onMouseUp={this.searchPOIs} rippleColor='dark'>
@@ -238,12 +231,14 @@ class DestinationList extends Component {
           <MDBTableHead className={style.tableHead}>
           <tr>
             {tableId}
+            <th scope='col'>ẢNH ĐẠI DIỆN</th>
             {tableName}
             <th scope='col'>NGÀY TẠO</th>
             {tableDate}
-            {tableBelongTo}
-            <th scope='col' className={style.tablePOI}>SỐ ĐỊA ĐIỂM</th>
-            <th scope='col'>HÀNH ĐỘNG</th>
+            <th scope='col'>EMAIL</th>
+            <th scope='col'>SỐ CHUYẾN ĐI</th>
+            {tableRole}
+            {/* <th scope='col'>HÀNH ĐỘNG</th> */}
           </tr>
           </MDBTableHead>
           <MDBTableBody>
@@ -274,4 +269,4 @@ class DestinationList extends Component {
     )
   }
 }
-export default DestinationList;
+export default UserList;

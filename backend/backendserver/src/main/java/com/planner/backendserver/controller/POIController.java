@@ -137,7 +137,7 @@ public class POIController {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
-    //@PreAuthorize("hasAuthority('Admin')")
+    @PreAuthorize("hasAuthority('Admin')")
     @GetMapping("/list/admin/{filter}/{catId}/{nameKey}/{page}")
     public ResponseEntity<ArrayList<POIListDTO>> getPOIListAdmin(@PathVariable("filter") String filter, @PathVariable("page") int page, @PathVariable("catId") int catId, @PathVariable("nameKey") String nameKey) {
         try {
@@ -150,7 +150,7 @@ public class POIController {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
-    //@PreAuthorize("hasAuthority('Admin')")
+    @PreAuthorize("hasAuthority('Admin')")
     @GetMapping("/list/admin/count/{catId}/{nameKey}")
     public ResponseEntity<Integer> getPOIListAdminCount(@PathVariable("catId") int catId, @PathVariable("nameKey") String nameKey) {
         try {
@@ -163,7 +163,7 @@ public class POIController {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
-    //@PreAuthorize("hasAuthority('Admin')")
+    @PreAuthorize("hasAuthority('Admin')")
     @RequestMapping(value = "/delete/{poiId}", produces = { "*/*" }, method = RequestMethod.POST)
     public ResponseEntity<?> deletePOI(@PathVariable int poiId) {
         try{
@@ -177,7 +177,7 @@ public class POIController {
             return  new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
-    //@PreAuthorize("hasAuthority('Admin')")
+    @PreAuthorize("hasAuthority('Admin')")
     @GetMapping("/list/admin/update/{poiId}")
     public ResponseEntity<POIUpdateDTO> getPOIUpdate(@PathVariable("poiId") int poiId) {
         try {
@@ -191,7 +191,7 @@ public class POIController {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
-    //@PreAuthorize("hasAuthority('Admin')")
+    @PreAuthorize("hasAuthority('Admin')")
     @GetMapping("/list/admin/update/images/{poiId}")
     public ResponseEntity<ArrayList<POIImageUpdateDTO>> getPOIImageUpdate(@PathVariable("poiId") int poiId) {
         try {
@@ -204,7 +204,7 @@ public class POIController {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
-    //@PreAuthorize("hasAuthority('Admin')")
+    @PreAuthorize("hasAuthority('Admin')")
     @RequestMapping(value = "/update", consumes = "application/json", produces = { "*/*" }, method = RequestMethod.POST)
     public ResponseEntity<?> updatePOI(@RequestBody UpdatePOIDTO poi) {
         try{
@@ -219,7 +219,7 @@ public class POIController {
             return  new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
-    //@PreAuthorize("hasAuthority('Admin')")
+    @PreAuthorize("hasAuthority('Admin')")
     @RequestMapping(value = "/add", consumes = "application/json", produces = { "*/*" }, method = RequestMethod.POST)
     public ResponseEntity<?> addPOI(@RequestBody UpdatePOIDTO poi) {
         try{
@@ -234,6 +234,7 @@ public class POIController {
             return  new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+    @PreAuthorize("hasAuthority('Admin')")
     @PostMapping("/addImg/{poiId}/{description}")
     @ResponseBody
     public ResponseEntity<?> addImage(@PathVariable int poiId, @PathVariable String description, @RequestPart("File") MultipartFile file) throws Exception{
@@ -248,6 +249,7 @@ public class POIController {
 //            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
 //        }
     }
+    @PreAuthorize("hasAuthority('Admin')")
     @RequestMapping(value = "/deleteImg/{imgId}", produces = { "*/*" }, method = RequestMethod.POST)
     public ResponseEntity<?> deleteImg(@PathVariable int imgId){
         try{

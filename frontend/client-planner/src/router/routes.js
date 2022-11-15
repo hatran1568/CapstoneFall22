@@ -29,6 +29,8 @@ import BlogList from "../views/Admin/BlogList";
 import POIList from "../views/Admin/POIList";
 import POIAddUpdate from "../views/Admin/POIAddUpdate";
 import DestinationList from "../views/Admin/DestinationList";
+import UserList from "../views/Admin/UserList";
+import UserRequestList from "../views/Admin/UserRequestList";
 import DestinationAddUpdate from "../views/Admin/DestinationAddUpdate";
 import Map from "../views/Map/Map";
 
@@ -73,6 +75,9 @@ export default function RootRoutes() {
           <Route path='/poi/update' element={<ProSidebarProvider><AdminSidebar props={<POIAddUpdate/>}/></ProSidebarProvider>} />
           <Route path='/destination/adminlist' element={<ProSidebarProvider><AdminSidebar props={<DestinationList/>}/></ProSidebarProvider>} />
           <Route path='/destination/update' element={<ProSidebarProvider><AdminSidebar props={<DestinationAddUpdate/>}/></ProSidebarProvider>} />
+          <Route path='/user/list' element={<ProSidebarProvider><AdminSidebar props={<UserList/>}/></ProSidebarProvider>} />
+          <Route path='/request/list' element={<ProSidebarProvider><AdminSidebar props={<UserRequestList/>}/></ProSidebarProvider>} />
+
 
         </Route>
         {/*Routes that don't need a nav bar go out here.*/}
