@@ -29,7 +29,7 @@ public interface BlogRepository  extends JpaRepository<Blog,Integer> {
             nativeQuery = true)
     Integer getBlogsByKeywordAllCount(String keyword, int start, int count);
     @Query(
-            value = "SELECT b.blog_id as blogId, b.date_modified as dateModified, b.content, b.status, b.thumbnail, b.title, u.user_id as userId, u.name as username, u.avatar FROM blog b LEFT JOIN user u ON b.user_id = u.user_id WHERE b.blog_id = ?1",
+            value = "SELECT b.blog_id as blogId, b.date_modified as dateModified, b.content, b.status, b.thumbnail, b.title, u.user_id as userId, u.name as username, u.avatar, u.status as userStatus FROM blog b LEFT JOIN user u ON b.user_id = u.user_id WHERE b.blog_id = ?1",
             nativeQuery = true)
     BlogDetailsDTO getBlogById(int blogId);
     @Query(

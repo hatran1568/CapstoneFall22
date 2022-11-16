@@ -15,4 +15,5 @@ public interface BlogDetailsDTO {
     int getUserId();
     String getUsername();
     String getAvatar();
+    String getUserStatus();
 }

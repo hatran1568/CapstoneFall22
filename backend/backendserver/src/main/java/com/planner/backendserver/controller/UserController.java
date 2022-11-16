@@ -1,20 +1,29 @@
 package com.planner.backendserver.controller;
 
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import com.planner.backendserver.DTO.request.BlogDetailsDTO;
+import com.planner.backendserver.DTO.request.POIListDTO;
+import com.planner.backendserver.DTO.response.UserListDTO;
 import com.planner.backendserver.dto.request.ChangePwdRequestDTO;
 import com.planner.backendserver.dto.request.PasswordResetRequestDTO;
+import com.planner.backendserver.repository.POIRepository;
+import com.planner.backendserver.repository.UserRepository;
 import com.planner.backendserver.service.interfaces.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.security.Principal;
+import java.util.ArrayList;
 
 @RestController
 @RequestMapping("/api/user")
 public class UserController {
+    @Autowired
+    private UserRepository userRepo;
     @Autowired
     private UserService userService;
     @GetMapping("/findById/{id}")
@@ -95,6 +104,65 @@ public class UserController {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         } catch (Exception e){
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+    @PreAuthorize("hasAuthority('Admin')")
+    @GetMapping("/list/admin/{filter}/{nameKey}/{page}")
+    public ResponseEntity<ArrayList<UserListDTO>> getUserListAdmin(@PathVariable("filter") String filter, @PathVariable("page") int page, @PathVariable("nameKey") String nameKey) {
+        try {
+            ArrayList<UserListDTO> users;
+            if (nameKey.equals("*"))
+                nameKey = "";
+            users = userRepo.getUserList(filter, nameKey, page*30, 30);
+            return new ResponseEntity<>(users, HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+    @PreAuthorize("hasAuthority('Admin')")
+    @GetMapping("/list/count/{nameKey}")
+    public ResponseEntity<Integer> getPOIListAdminCount(@PathVariable("nameKey") String nameKey) {
+        try {
+            int count;
+            if (nameKey.equals("*"))
+                nameKey = "";
+            count = userRepo.getUserListAdminCount(nameKey);
+            return new ResponseEntity<>(count, HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+    @PreAuthorize("hasAuthority('Admin')")
+    @RequestMapping(value = "/activate/{userId}", produces = { "*/*" }, method = RequestMethod.POST)
+    public ResponseEntity<?> activateUser(@PathVariable int userId) {
+        try{
+            userRepo.activateUser(userId);
+            return new ResponseEntity<>(HttpStatus.OK);
+        }
+        catch (Exception e){
+            return  new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+    @PreAuthorize("hasAuthority('Admin')")
+    @RequestMapping(value = "/deactivate/{userId}", produces = { "*/*" }, method = RequestMethod.POST)
+    public ResponseEntity<?> deactivateUser(@PathVariable int userId) {
+        try{
+            userRepo.deactivateUser(userId);
+            return new ResponseEntity<>(HttpStatus.OK);
+        }
+        catch (Exception e){
+            return  new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+    @PreAuthorize("hasAuthority('Admin')")
+    @RequestMapping(value = "/delete/{userId}", produces = { "*/*" }, method = RequestMethod.POST)
+    public ResponseEntity<?> deleteUser(@PathVariable int userId) {
+        try{
+            userRepo.deleteUser(userId);
+            return new ResponseEntity<>(HttpStatus.OK);
+        }
+        catch (Exception e){
+            return  new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 }

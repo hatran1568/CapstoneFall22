@@ -1,5 +1,5 @@
 import { Sidebar, Menu, MenuItem, useProSidebar } from 'react-pro-sidebar';
-import BlogAddUpdate from "../../views/Blog/BlogAddUpdate";
+import BlogAddUpdate from "../../views/Admin/BlogAddUpdate";
 import { ProSidebarProvider } from 'react-pro-sidebar';
 import axios from "../../api/axios";
 import { useState } from "react";
@@ -64,24 +64,34 @@ function AdminSidebar({props}) {
             </p>
           </MDBNavbarBrand>
           <MenuItem>
+            <a href="/poi/adminlist" className={style.sidebarItem}>
             <MDBRow><MDBCol md={2} className={style.sidebarIcon}><FontAwesomeIcon icon={faPlaceOfWorship}/></MDBCol> 
             <MDBCol md={2} className={style.sidebarText}>Địa điểm</MDBCol></MDBRow>
+            </a>
           </MenuItem>
           <MenuItem>
+            <a href="/destination/adminlist" className={style.sidebarItem}>
             <MDBRow><MDBCol md={2} className={style.sidebarIcon}><FontAwesomeIcon icon={faLocationDot}/></MDBCol> 
             <MDBCol md={2} className={style.sidebarText}>Điểm đến</MDBCol></MDBRow>
+            </a>
           </MenuItem>
           <MenuItem>
+            <a href="/blog/list" className={style.sidebarItem}>
             <MDBRow><MDBCol md={2} className={style.sidebarIcon}><FontAwesomeIcon icon={faBook}/></MDBCol> 
             <MDBCol md={2} className={style.sidebarText}>Blogs</MDBCol></MDBRow>
+            </a>
           </MenuItem>
           <MenuItem>
+            <a href="/request/list" className={style.sidebarItem}>
             <MDBRow><MDBCol md={2} className={style.sidebarIcon}><FontAwesomeIcon icon={faPenToSquare}/></MDBCol> 
             <MDBCol md={2} className={style.sidebarText}>Yêu cầu chỉnh sửa</MDBCol></MDBRow>
+            </a>
           </MenuItem>
           <MenuItem>
+            <a href="/user/list" className={style.sidebarItem}>
             <MDBRow><MDBCol md={2} className={style.sidebarIcon}><FontAwesomeIcon icon={faUsers}/></MDBCol> 
             <MDBCol md={2} className={style.sidebarText}>Tài khoản người dùng</MDBCol></MDBRow>
+            </a>
           </MenuItem>
           
           {isLogged ? (

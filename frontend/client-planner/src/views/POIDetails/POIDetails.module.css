@@ -16,3 +16,12 @@
 .addCol:hover {
   color: red;
 }
+
+.requestLink{
+  color: rgb(50, 217, 255);
+  text-decoration: none;
+}
+
+.requestLink:hover{
+  color: rgb(0, 183, 255);
+}

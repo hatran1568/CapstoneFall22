@@ -41,7 +41,10 @@ class BlogList extends Component {
     };
   }
   componentDidMount() {
-    axios.get("http://localhost:8080/api/blog/admin/" + this.state.currentKeyword + "/" + this.state.currentPage).then((res) => {
+    axios.get("http://localhost:8080/api/blog/admin/" + this.state.currentKeyword + "/" + this.state.currentPage, {
+      headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+      withCredentials: true,
+    }).then((res) => {
       const data = res.data;
       this.setState({
         blogs: data,
@@ -53,7 +56,10 @@ class BlogList extends Component {
         return Promise.reject(error)
       }
     );
-    axios.get("http://localhost:8080/api/blog/admin/" + this.state.currentKeyword + "/" + this.state.currentPage + "/count").then((res) => {
+    axios.get("http://localhost:8080/api/blog/admin/" + this.state.currentKeyword + "/" + this.state.currentPage + "/count", {
+      headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+      withCredentials: true,
+    }).then((res) => {
       const data = res.data;
       this.setState({
         pageCount: data / 10,
@@ -73,7 +79,10 @@ class BlogList extends Component {
         "http://localhost:8080/api/blog/admin/" +
           this.state.currentKeyword +
           "/" +
-          event.selected
+          event.selected, {
+            headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+            withCredentials: true,
+          }
       )
       .then((response) => this.setState({blogs: response.data}));
   };
@@ -84,7 +93,9 @@ class BlogList extends Component {
       url: "http://localhost:8080/api/blog/new/" + localStorage.getItem("id"),
       headers: {
         "Content-Type": "application/json",
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
       },
+      withCredentials: true,
     }).then(function (response) {
       //window.location.reload();
       window.location.replace("./update?id=" + response.data);
@@ -114,7 +125,10 @@ class BlogList extends Component {
       okType: "danger",
       cancelText: "Không",
       onOk: async () => {
-        await axios.post(`http://localhost:8080/api/blog/delete/` + blogId, {});
+        await axios.post(`http://localhost:8080/api/blog/delete/` + blogId, {
+          headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+          withCredentials: true,
+        });
         //window.location.reload();
         this.componentDidMount();
       },
@@ -131,7 +145,10 @@ class BlogList extends Component {
       okType: "danger",
       cancelText: "Không",
       onOk: async () => {
-        await axios.post(`http://localhost:8080/api/blog/hide/` + blogId, {});
+        await axios.post(`http://localhost:8080/api/blog/hide/` + blogId, {
+          headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+          withCredentials: true,
+        });
         //window.location.reload();
         this.componentDidMount();
       },
@@ -148,7 +165,10 @@ class BlogList extends Component {
       okType: "danger",
       cancelText: "Không",
       onOk: async () => {
-        await axios.post(`http://localhost:8080/api/blog/unhide/` + blogId, {});
+        await axios.post(`http://localhost:8080/api/blog/unhide/` + blogId, {
+          headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+          withCredentials: true,
+        });
         //window.location.reload();
         this.componentDidMount();
       },
@@ -229,7 +249,7 @@ class BlogList extends Component {
           </MDBCol>
           <MDBCol md={6} className={style.searchBar}>
             <MDBInputGroup>
-              <MDBInput label='Tìm kiếm' id="searchBar" onChange={this.searchBlogs} onKeyUp={this.searchBlogs} className={style.searchInput}/>
+              <MDBInput label='Tìm kiếm' id="searchBar" maxLength={300} onChange={this.searchBlogs} onKeyUp={this.searchBlogs} className={style.searchInput}/>
               <MDBBtn color="info" onClick={this.searchBlogs} rippleColor='dark'>
                 <MDBIcon icon='search' />
               </MDBBtn>
