@@ -123,7 +123,7 @@ class POIRequest extends Component {
         images.forEach((entry, index) => {
           const formData = new FormData();
           formData.append("File", entry);
-          axios.post(`http://localhost:8080/api/request/reqImg/` + id, {
+          axios.post(`http://localhost:8080/api/request/reqImg/` + id, formData, {
             headers: {
               Authorization: `Bearer ${localStorage.getItem("token")}`,
               "Content-Type": "multipart/form-data",

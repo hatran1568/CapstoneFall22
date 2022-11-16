@@ -7,9 +7,9 @@
   max-width: 1200px;
 }
 .requestLink{
-  color: rgb(142, 142, 142);
+  color: rgb(50, 217, 255);
   text-decoration: none;
 }
 .requestLink:hover{
-  color: rgb(59, 59, 59);
+  color: rgb(0, 183, 255);
 }

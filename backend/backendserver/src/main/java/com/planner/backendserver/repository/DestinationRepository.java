@@ -103,7 +103,7 @@ public interface DestinationRepository extends JpaRepository<Destination,Integer
             nativeQuery = true)
     void deleteDes(int desId);
     @Query(
-            value = "SELECT d.destination_id as desId, d.name, d.description, d.belong_to as belongId, d2.name as belongName\n" +
+            value = "SELECT d.destination_id as desId, d.name, d.description, IF(d.belong_to IS NULL, '0', d.belong_to) as belongId, IF(d.belong_to IS NULL, 'Chưa có', d2.name) as belongName\n" +
                     "FROM destination d2 RIGHT JOIN destination d ON d.belong_to = d2.destination_id\n" +
                     "WHERE d.destination_id = ?1",
             nativeQuery = true)

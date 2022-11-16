@@ -225,10 +225,7 @@ class POIAddUpdate extends Component {
           withCredentials: true,
         });
         await this.state.deletedImages.forEach((entry, index) => {
-          axios.post(`http://localhost:8080/api/pois/deleteImg/` + entry, {
-            headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
-            withCredentials: true,
-          });
+          axios.post(`http://localhost:8080/api/pois/deleteImg/` + entry);
         })
         await this.state.newImages.forEach((entry, index) => {
           const formData = new FormData();

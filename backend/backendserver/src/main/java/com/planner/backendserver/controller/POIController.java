@@ -163,7 +163,6 @@ public class POIController {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
-    @PreAuthorize("hasAuthority('Admin')")
     @RequestMapping(value = "/delete/{poiId}", produces = { "*/*" }, method = RequestMethod.POST)
     public ResponseEntity<?> deletePOI(@PathVariable int poiId) {
         try{
@@ -248,7 +247,6 @@ public class POIController {
 //            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
 //        }
     }
-    @PreAuthorize("hasAuthority('Admin')")
     @RequestMapping(value = "/deleteImg/{imgId}", produces = { "*/*" }, method = RequestMethod.POST)
     public ResponseEntity<?> deleteImg(@PathVariable int imgId){
         try{

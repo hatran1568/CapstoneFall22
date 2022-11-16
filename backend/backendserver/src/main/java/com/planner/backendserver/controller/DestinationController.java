@@ -139,8 +139,7 @@ public class DestinationController {
             return  new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
-    @PreAuthorize("hasAuthority('Admin')")
-    @RequestMapping(value = "/destination/delete/{desId}", produces = { "*/*" }, method = RequestMethod.POST)
+    @RequestMapping(value = "/destination/delete/{desId}", consumes = "application/json", method = RequestMethod.POST)
     public ResponseEntity<?> deletePOI(@PathVariable int desId) {
         try{
             if (destinationRepo.getDestinationById(desId) == null){
@@ -219,7 +218,6 @@ public class DestinationController {
 //            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
 //        }
     }
-    @PreAuthorize("hasAuthority('Admin')")
     @RequestMapping(value = "/destination/deleteImg/{imgId}", produces = { "*/*" }, method = RequestMethod.POST)
     public ResponseEntity<?> deleteImg(@PathVariable int imgId){
         try{

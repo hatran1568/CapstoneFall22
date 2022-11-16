@@ -74,7 +74,6 @@ public class RequestController {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
-    @PreAuthorize("hasAuthority('Admin')")
     @RequestMapping(value = "/accept/{reqId}", produces = { "*/*" }, method = RequestMethod.POST)
     public ResponseEntity<?> acceptRequest(@PathVariable int reqId) {
         try{
@@ -85,7 +84,6 @@ public class RequestController {
             return  new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
-    @PreAuthorize("hasAuthority('Admin')")
     @RequestMapping(value = "/reject/{reqId}", produces = { "*/*" }, method = RequestMethod.POST)
     public ResponseEntity<?> rejectRequest(@PathVariable int reqId) {
         try{

@@ -151,6 +151,8 @@ class DestinationAddUpdate extends Component {
       validated = false;
     if (curDes == null && this.state.destinationChanged == true)
       validated = false;
+    if (this.state.currentDestinations == null && this.state.destination.belongId == 0)
+      validated = false;
         // console.log(document.getElementById("nameInput").value);
         // console.log(document.getElementById("addressInput").value);
         // console.log(document.getElementById("descInput").value);
@@ -188,10 +190,7 @@ class DestinationAddUpdate extends Component {
           withCredentials: true,
         });
         await this.state.deletedImages.forEach((entry, index) => {
-          axios.post(`http://localhost:8080/api/destination/deleteImg/` + entry, {
-            headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
-            withCredentials: true,
-          });
+          axios.post(`http://localhost:8080/api/destination/deleteImg/` + entry);
         })
         await this.state.newImages.forEach((entry, index) => {
           const formData = new FormData();
@@ -282,10 +281,6 @@ class DestinationAddUpdate extends Component {
       okType: "danger",
       cancelText: "Không",
       onOk: async () => {
-        await axios.post(`http://localhost:8080/api/destination/deleteImg/` + imgId, {
-          headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
-          withCredentials: true,
-        });
         var currentImg = this.state.images;
         var deleted = this.state.deletedImages;
         currentImg.forEach((entry, index) => {
