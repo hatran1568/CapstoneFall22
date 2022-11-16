@@ -1,12 +1,24 @@
 import React, { useEffect, useState } from "react";
 import axios from "../../api/axios";
-import { MDBBtn, MDBCol, MDBContainer, MDBRow, MDBTextArea } from "mdb-react-ui-kit";
+import {
+  MDBBtn,
+  MDBCol,
+  MDBContainer,
+  MDBDropdown,
+  MDBDropdownItem,
+  MDBDropdownMenu,
+  MDBDropdownToggle,
+  MDBIcon,
+  MDBRow,
+  MDBTextArea,
+} from "mdb-react-ui-kit";
 import StarRatings from "react-star-ratings";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faGoogle } from "@fortawesome/free-brands-svg-icons";
-import ImageGallery from "react-image-gallery";
-import { Input, Modal } from "antd";
+import MyGallery from "../../components/POIs/MyGallery.jsx";
+import { Dropdown, Input, Menu, Modal, Tooltip } from "antd";
 import style from "./POIDetails.module.css";
+import AddCollectionModal from "../../components/Collections/AddCollectionModal";
 
 const POIDetails = () => {
   const [curPOI, setCurPOI] = useState();
@@ -14,6 +26,9 @@ const POIDetails = () => {
   const [images, setImages] = useState([]);
   const [comment, setComment] = useState("");
   const [rate, setRate] = useState(0);
+  const [colList, setColList] = useState([]);
+
+  const [open, setOpen] = useState(false);
 
   const { TextArea } = Input;
   const { error } = Modal;
@@ -34,11 +49,18 @@ const POIDetails = () => {
       await axios.get("/api/pois/" + poiId + "/images").then((res) => setImages(res.data));
     };
 
+    const getColList = async () => {
+      if (localStorage.getItem("id") != undefined) {
+        await axios.get("/api/collection/list/" + localStorage.getItem("id")).then((res) => setColList(res.data));
+      }
+    };
+
     document.title = "Trip planner | POIDetails";
     getPOI();
     getRatings();
     getImages();
-  }, []);
+    getColList();
+  }, [poiId]);
 
   const timeConverter = (seconds, format) => {
     var dateObj = new Date(seconds * 1000);
@@ -53,14 +75,40 @@ const POIDetails = () => {
         timeString = hours.toString().padStart(2, "0") + ":" + minutes.toString().padStart(2, "0") + " am";
       }
     } else if (format === "x hours y minutes") {
-      timeString = hours.toString() + " hours " + minutes.toString() + " minutes";
+      if (minutes > 0) {
+        timeString = hours.toString() + " giờ " + minutes.toString() + " phút";
+      } else {
+        timeString = hours.toString() + " giờ";
+      }
     }
 
     return timeString;
   };
 
   const handleClick = (e) => {
-    e.preventDefault();
+    axios
+      .post(
+        "/api/collection/addPoi2",
+        {
+          colId: e.key,
+          poiId: curPOI.activityId,
+          uid: localStorage.getItem("id"),
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+          withCredentials: true,
+        },
+      )
+      .then((res) => {
+        setColList(res.data);
+        setOpen(true);
+      });
+  };
+
+  const handleOpenChange = () => {
+    setOpen(true);
   };
 
   const handleChange = (e) => {
@@ -122,11 +170,23 @@ const POIDetails = () => {
         });
     } else {
       error({
-        title: "CLỗi đánh giá",
+        title: "Lỗi đánh giá",
         content: "Xin hãy đánh giá ít nhất 1 sao cho địa điểm.",
       });
     }
   };
+
+  var items = [];
+  if (colList.length > 0) {
+    colList.forEach((col) => {
+      if (col.poiList.some((poi) => poi.activityId === curPOI.activityId)) {
+        items.push({ key: col.collectionId, label: col.title, disabled: true });
+      } else {
+        items.push({ key: col.collectionId, label: col.title });
+      }
+    });
+  }
+  var menu = <Menu items={items} open={open} onClick={handleClick} />;
 
   var poiImages = [];
   if (images.length > 0) {
@@ -227,7 +287,7 @@ const POIDetails = () => {
           maxLength={500}
           className='mt-2'
           style={{ height: 120, resize: "none" }}
-          placeholder='Share your thoughts about this place...'
+          placeholder='Chia sẻ trải nghiệm của bạn về nơi này'
           onChange={handleChange}
           value={comment}
         />
@@ -254,7 +314,7 @@ const POIDetails = () => {
           maxLength={500}
           className='mt-2'
           style={{ height: 120, resize: "none" }}
-          placeholder='Share your thoughts about this place...'
+          placeholder='Chia sẻ trải nghiệm của bạn về nơi này'
           onChange={handleChange}
           value={comment}
         />
@@ -269,7 +329,22 @@ const POIDetails = () => {
     return (
       <MDBContainer className={style.container}>
         <MDBRow className='pb-3 pt-5'>
-          <h2 className='fw-bold'>{curPOI.name}</h2>
+          <MDBRow>
+            <MDBCol size='auto' className='pe-0'>
+              <h2 className='fw-bold'>{curPOI.name}</h2>
+            </MDBCol>
+            <MDBCol size='auto'>
+              {localStorage.getItem("token") != null ? (
+                <Dropdown overlay={menu} onOpenChange={handleOpenChange}>
+                  <MDBBtn tag='a' color='none' className={style.addCol}>
+                    <Tooltip title='Thêm địa điểm vào bộ sưu tập của bạn'>
+                      <MDBIcon fas icon='heart' />
+                    </Tooltip>
+                  </MDBBtn>
+                </Dropdown>
+              ) : null}
+            </MDBCol>
+          </MDBRow>
           <MDBRow className='m-0'>
             <MDBCol size='auto' className='p-0'>
               <StarRatings rating={curPOI.googleRate} starDimension='1em' starSpacing='0.1em' starRatedColor='orange' />
@@ -284,7 +359,7 @@ const POIDetails = () => {
         </MDBRow>
         <MDBRow className='pb-4'>
           <MDBCol size='8'>
-            <ImageGallery items={poiImages} showPlayButton={false} />
+            <MyGallery images={poiImages} />
             <p>{curPOI.description}</p>
           </MDBCol>
           <MDBCol size='4'>
@@ -320,9 +395,6 @@ const POIDetails = () => {
             ) : (
               <></>
             )}
-            <button className='btn btn-info' onClick={handleClick}>
-              Tạo kế hoạch
-            </button>
           </MDBCol>
         </MDBRow>
 
@@ -350,7 +422,7 @@ const POIDetails = () => {
             <MDBRow className='mt-4'>
               <p className='fs-4 fw-bold'>Đánh giá của bạn:</p>
             </MDBRow>
-            {userRating.length > 0 ? userRating : <p>Bạn vẫn chưa có đánh giá gì về địa điểm này.</p>}
+            {userRating.length > 0 ? userRating : <p>Bạn vẫn chưa có đánh giá về địa điểm này.</p>}
             <MDBRow className='mt-5'>
               <p className='fs-4 fw-bold'>Đánh giá của người dùng:</p>
             </MDBRow>

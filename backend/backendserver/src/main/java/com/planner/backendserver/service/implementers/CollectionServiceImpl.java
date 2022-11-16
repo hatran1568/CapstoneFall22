@@ -32,8 +32,8 @@ public class CollectionServiceImpl implements CollectionService {
         ArrayList<CollectionDTO> list = new ArrayList<>();
         ArrayList<Collection> collections = collectionRepository.getCollectionsByUserID(uid);
         for (Collection collection : collections) {
-            CollectionDTO collectionDTO = new CollectionDTO(collection.getCollectionId(), collection.getTitle(), collection.getDescription(), collection.getDateModified(), collection.isDeleted(), collection.getUser().getUserID(), getFirstImageOfCollection(collection.getCollectionId()));
-            if(!collectionDTO.isDeleted()) {
+            CollectionDTO collectionDTO = new CollectionDTO(collection.getCollectionId(), collection.getTitle(), collection.getDescription(), collection.getDateModified(), collection.isDeleted(), collection.getUser().getUserID(), getFirstImageOfCollection(collection.getCollectionId()), getPOIListOfCollection(collection.getCollectionId()));
+            if (!collectionDTO.isDeleted()) {
                 list.add(collectionDTO);
             }
         }
@@ -43,7 +43,7 @@ public class CollectionServiceImpl implements CollectionService {
     @Override
     public CollectionDTO getCollectionById(int colId) {
         Collection collection = collectionRepository.getCollectionByID(colId);
-        return new CollectionDTO(collection.getCollectionId(), collection.getTitle(), collection.getDescription(), collection.getDateModified(), collection.isDeleted(), collection.getUser().getUserID(), getFirstImageOfCollection(collection.getCollectionId()));
+        return new CollectionDTO(collection.getCollectionId(), collection.getTitle(), collection.getDescription(), collection.getDateModified(), collection.isDeleted(), collection.getUser().getUserID(), getFirstImageOfCollection(collection.getCollectionId()), getPOIListOfCollection(colId));
     }
 
     @Override

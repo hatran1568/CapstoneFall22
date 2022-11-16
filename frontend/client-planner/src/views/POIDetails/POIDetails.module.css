@@ -6,3 +6,13 @@
 .container {
   max-width: 1200px;
 }
+
+.addCol {
+  font-size: 1.5em;
+  color: palevioletred;
+  text-decoration: none;
+}
+
+.addCol:hover {
+  color: red;
+}

@@ -20,7 +20,7 @@ import AddCollectionModal from "../../components/Collections/AddCollectionModal"
 function ProfilePage() {
   const [curUser, setCurUser] = useState();
   const [myTrips, setMyTrips] = useState();
-  const [myCollections, setMyCollections] = useState();
+  const [collectionList, setCollectionList] = useState();
   const [basicActive, setBasicActive] = useState("myTrips");
 
   const handleBasicClick = (value) => {
@@ -58,7 +58,7 @@ function ProfilePage() {
         withCredentials: true,
       });
 
-      setMyCollections(response.data);
+      setCollectionList(response.data);
     }
 
     document.title = "Profile | Tripplanner";
@@ -97,9 +97,9 @@ function ProfilePage() {
               {myTrips ? myTrips.map((trip) => <TripInfoCard trip={trip} key={trip.tripId} />) : null}
             </MDBTabsPane>
             <MDBTabsPane show={basicActive === "myCollection"}>
-              <AddCollectionModal />
-              {myCollections
-                ? myCollections.map((collection) => (
+              <AddCollectionModal refresh={setCollectionList} />
+              {collectionList
+                ? collectionList.map((collection) => (
                     <CollectionInfoCard collection={collection} key={collection.collectionId} />
                   ))
                 : null}

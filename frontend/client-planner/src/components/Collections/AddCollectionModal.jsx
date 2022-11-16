@@ -6,7 +6,7 @@ import Input from "antd/lib/input/Input";
 import axios from "../../api/axios";
 import { useNavigate } from "react-router-dom";
 
-const AddCollectionModal = () => {
+const AddCollectionModal = (prop) => {
   const [open, setOpen] = useState(false);
   const [titleInput, setTitleInput] = useState("");
   const [descriptionInput, setDescriptionInput] = useState("");
@@ -19,11 +19,11 @@ const AddCollectionModal = () => {
 
   const handleOk = () => {
     confirm({
-      title: "Confirm create?",
-      content: "A new collection will be added",
-      okText: "Yes",
+      title: "Đồng ý tạo mới?",
+      content: "Bạn sẽ khởi tạo một bộ sưu tập mới.",
+      okText: "Có",
       okType: "primary",
-      cancelText: "No",
+      cancelText: "Không",
       centered: true,
       onOk() {
         var title;
@@ -31,7 +31,7 @@ const AddCollectionModal = () => {
         if (titleInput.trim().length > 0) {
           title = titleInput.trim();
         } else {
-          title = "Untitled";
+          title = "Không có tiêu đề";
         }
         if (descriptionInput.trim().length > 0) {
           description = descriptionInput.trim();
@@ -54,7 +54,10 @@ const AddCollectionModal = () => {
               withCredentials: true,
             },
           )
-          .then((response) => navigate("/collection?id=" + response.data.collectionId));
+          .then((response) => {
+            prop.refresh(response.data);
+            handleCancel();
+          });
       },
     });
   };
@@ -66,16 +69,11 @@ const AddCollectionModal = () => {
   return (
     <>
       <MDBBtn tag='a' color='none' className='m-2' onClick={handleCreate} style={{ textDecoration: "none" }}>
-        <MDBIcon fas icon='plus-circle' /> Create new...
+        <MDBIcon fas icon='plus-circle' /> Tạo mới
       </MDBBtn>
-      <Modal
-        title='Create new collection'
-        open={open}
-        onOk={handleOk}
-        onCancel={handleCancel}
-      >
+      <Modal title='Bộ sưu tập mới' open={open} onOk={handleOk} onCancel={handleCancel}>
         <MDBInputGroup className='px-2 mb-3'>
-          <p className='fs-5 fw-bold'>Title</p>
+          <p className='fs-5 fw-bold'>Tiêu đề</p>
           <Input
             showCount
             maxLength={30}
@@ -86,7 +84,7 @@ const AddCollectionModal = () => {
           />
         </MDBInputGroup>
         <MDBInputGroup className='px-2'>
-          <p className='fs-5 fw-bold'>Description</p>
+          <p className='fs-5 fw-bold'>Mô tả</p>
           <TextArea
             showCount
             rows={3}

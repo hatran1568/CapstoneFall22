@@ -85,7 +85,7 @@ public class CollectionController {
 
     // modifying collection list here
     @PostMapping("/create")
-    public ResponseEntity<Collection> createNewCollection(@RequestBody ObjectNode objectNode) {
+    public ResponseEntity<ArrayList<CollectionDTO>> createNewCollection(@RequestBody ObjectNode objectNode) {
         try {
             Date dateCreated = new Date(System.currentTimeMillis());
             String description = objectNode.get("description").asText();
@@ -93,8 +93,8 @@ public class CollectionController {
             String title = objectNode.get("title").asText();
             int uid = objectNode.get("uid").asInt();
             collectionRepository.createNewCollection(dateCreated, dateCreated, description, isDeleted, title, uid);
-            Collection newest = collectionRepository.getNewestCollectionID();
-            return new ResponseEntity<>(newest, HttpStatus.OK);
+            ArrayList<CollectionDTO> collections = collectionService.getCollectionListByUid(uid);
+            return new ResponseEntity<>(collections, HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
@@ -128,42 +128,40 @@ public class CollectionController {
 
     // modifying POI list here
     @PostMapping("/addPoi")
-    public ResponseEntity<ArrayList<POIOfCollectionDTO>> addPOI(@RequestBody ObjectNode objectNode) {
+    public ResponseEntity<CollectionDTO> addPOI(@RequestBody ObjectNode objectNode) {
         try {
             int poiId = objectNode.get("poiId").asInt();
             int colId = objectNode.get("colId").asInt();
             collectionRepository.addPOIIntoCollection(poiId, colId);
-            ArrayList<POIOfCollectionDTO> poiList = collectionService.getPOIListOfCollection(colId);
-            return new ResponseEntity<>(poiList, HttpStatus.OK);
+            CollectionDTO collection = collectionService.getCollectionById(colId);
+            return new ResponseEntity<>(collection, HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
     @DeleteMapping("/deletePoi")
-    public ResponseEntity<ArrayList<POIOfCollectionDTO>> deletePOI(@RequestBody DeletePOIFromCollectionDTO dto) {
+    public ResponseEntity<CollectionDTO> deletePOI(@RequestBody DeletePOIFromCollectionDTO dto) {
         try {
             int poiId = dto.getPoiId();
             int colId = dto.getColId();
             collectionService.deletePOIFromCollection(poiId, colId);
-            ArrayList<POIOfCollectionDTO> poiList = collectionService.getPOIListOfCollection(colId);
-            return new ResponseEntity<>(poiList, HttpStatus.OK);
+            CollectionDTO collection = collectionService.getCollectionById(colId);
+            return new ResponseEntity<>(collection, HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
-    @PutMapping("/updatePoi")
-    public ResponseEntity<?> updatePOI(@RequestBody ObjectNode objectNode) {
+    @PostMapping("/addPoi2")
+    public ResponseEntity<ArrayList<CollectionDTO>> addPOI2(@RequestBody ObjectNode objectNode) {
         try {
             int poiId = objectNode.get("poiId").asInt();
             int colId = objectNode.get("colId").asInt();
-            CollectionPOI poi = collectionRepository.getPOIFromCollection(poiId, colId);
-            if (poi == null) {
-                return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-            }
-            collectionRepository.updatePOIInCollection(poiId, colId);
-            return new ResponseEntity<>(HttpStatus.OK);
+            int uid = objectNode.get("uid").asInt();
+            collectionRepository.addPOIIntoCollection(poiId, colId);
+            ArrayList<CollectionDTO> collections = collectionService.getCollectionListByUid(uid);
+            return new ResponseEntity<>(collections, HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
