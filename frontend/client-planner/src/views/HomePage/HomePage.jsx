@@ -215,12 +215,15 @@ function HomePage() {
     } 
     else if (document.getElementById("startDateInput").value > document.getElementById("endDateInput").value)
       document.getElementById("errorEmptyPlan1").innerHTML = "Please enter valid dates.";
-    else
+    else {
+      var userId = 2;
+      if (localStorage.getItem("id") != null)
+        userId = localStorage.getItem("id");
       axios({
         method: "post",
         url: "http://localhost:8080/trip/createTrip",
         data: {
-          userId: localStorage.getItem("id"),
+          userId: userId,
           budget: document.getElementById("budgetInput").value,
           name: document.getElementById("tripNameInput").value,
           startDate: document.getElementById("startDateInput").value,
@@ -233,6 +236,7 @@ function HomePage() {
         navigate("../Timeline/" + response.data);
         window.location.reload(false);
       });
+    }
   };
   useEffect(() => {
     if (progress != 0) {
