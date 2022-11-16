@@ -177,7 +177,6 @@ public class POIController {
             return  new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
-    @PreAuthorize("hasAuthority('Admin')")
     @GetMapping("/list/admin/update/{poiId}")
     public ResponseEntity<POIUpdateDTO> getPOIUpdate(@PathVariable("poiId") int poiId) {
         try {

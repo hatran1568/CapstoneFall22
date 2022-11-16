@@ -324,8 +324,8 @@ const POIDetails = () => {
               Tạo kế hoạch
             </button>
           </MDBCol>
+          <a className={style.requestLink} href={"./poi/request?id=" + poiId}><b><i>Phát hiện thông tin sai? Bấm vào đây để yêu cầu sửa đổi</i></b></a>
         </MDBRow>
-
         <MDBRow className='pb-3'>
           <h2 className='fw-bold'>Đánh giá về {curPOI.name}</h2>
         </MDBRow>

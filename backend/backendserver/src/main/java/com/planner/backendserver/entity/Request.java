@@ -28,8 +28,8 @@ public class Request {
     @Column(name="Name")
     private String name;
 
-    @Column(name="description")
-    private String description;
+    @Column(name="description", columnDefinition = "text")
+    private String Description;
 
     @Column(name="address")
     private String Address;

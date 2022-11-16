@@ -16,6 +16,7 @@ import HomePage from "../views/HomePage/HomePage";
 import LayoutsWithNavbar from "../components/NavBar/LayoutsWithNavbar";
 import SearchResults from "../views/SearchResults/SearchResults";
 import POIDetails from "../views/POIDetails/POIDetails";
+import POIRequest from "../views/POIDetails/POIRequest";
 import BlogDetails from "../views/Blog/BlogDetails";
 import Timetable from "../views/Timetable/Timetable";
 import Test from "../views/TestingScreen/Test";
@@ -64,6 +65,7 @@ export default function RootRoutes() {
           <Route path="/blog" element={<BlogDetails />} />
           <Route path="/SearchResults" element={<SearchResults />} />
           <Route path="/poi" element={<POIDetails />} />
+          <Route path="/poi/request" element={<POIRequest />} />
           <Route path="/test" element={<Test></Test>}></Route>
           <Route path="/map/:id" element={<Map></Map>}></Route>
         </Route>

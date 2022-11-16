@@ -84,4 +84,23 @@ public interface RequestRepository extends JpaRepository<Request, Integer> {
                     "WHERE request_id = ?1",
             nativeQuery = true)
     void rejectBlog(int reqId);
+    @Modifying
+    @Transactional
+    @Query(
+            value = "INSERT INTO request(name, address, description, additional_information, business_email, telephone_number,\n" +
+                    "                    date_modified, date_created, closing_time, opening_time, duration, typical_price, website,\n" +
+                    "                    poi_id, user_id, status)\n" +
+                    "VALUES (?1,?2,?3,?4,?5,?6,?7,?8,?9,?10,?11,?12,?13,?14,?15,?16)",
+            nativeQuery = true)
+    void newRequest(String name, String address, String desc, String info, String email, String phone, Timestamp modified, Timestamp created, int close, int open, int duration, double price, String web, int poiId, int userId, String status);
+    @Modifying
+    @Transactional
+    @Query(
+            value = "INSERT INTO request_attachment(url, request_id) VALUES (?2, ?1)",
+            nativeQuery = true)
+    void addRequestImage(int reqId, String url);
+    @Query(
+            value = "SELECT request_id FROM request ORDER BY request_id DESC LIMIT 1",
+            nativeQuery = true)
+    int getNewestRequest();
 }

@@ -1,9 +1,6 @@
 package com.planner.backendserver.controller;
 
-import com.planner.backendserver.DTO.request.BlogDetailsDTO;
-import com.planner.backendserver.DTO.request.POIListDTO;
-import com.planner.backendserver.DTO.request.POIofDestinationDTO;
-import com.planner.backendserver.DTO.request.UpdatePOIDTO;
+import com.planner.backendserver.DTO.request.*;
 import com.planner.backendserver.DTO.response.*;
 import com.planner.backendserver.entity.MasterActivity;
 import com.planner.backendserver.repository.POIRepository;
@@ -26,6 +23,8 @@ import java.util.Date;
 public class RequestController {
     @Autowired
     private RequestRepository requestRepo;
+    @Autowired
+    GoogleDriveManager driveManager;
 
     @PreAuthorize("hasAuthority('Admin')")
     @GetMapping("/list/{filter}/{nameKey}/{page}")
@@ -96,5 +95,29 @@ public class RequestController {
         catch (Exception e){
             return  new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
+    }
+    @RequestMapping(value = "/new", consumes = "application/json", produces = { "*/*" }, method = RequestMethod.POST)
+    public ResponseEntity<?> newRequest(@RequestBody NewRequestDTO req) {
+        try{
+            java.sql.Timestamp date = new java.sql.Timestamp(Calendar.getInstance().getTime().getTime());
+            requestRepo.newRequest(req.getName(), req.getAddress(), req.getDescription(), req.getInfo(),
+                    req.getEmail(), req.getPhone(), date, date, req.getClose(), req.getOpen(), req.getDuration(),
+                    req.getPrice(), req.getWebsite(), req.getPoiId(), req.getUserId(), "PENDING");
+            return new ResponseEntity<>(requestRepo.getNewestRequest(), HttpStatus.OK);
+        }
+        catch (Exception e){
+            return  new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+    @PostMapping("/reqImg/{reqId}")
+    @ResponseBody
+    public ResponseEntity<?> addRequestImage(@PathVariable int reqId, @RequestPart("File") MultipartFile file) throws Exception{
+//        try{
+        String webViewLink = driveManager.uploadFile(file, "tripplanner/img/poi");
+        requestRepo.addRequestImage(reqId, webViewLink);
+        return new ResponseEntity<>(HttpStatus.OK);
+//        } catch (Exception e){
+//            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+//        }
     }
 }

@@ -251,7 +251,7 @@ class POIAddUpdate extends Component {
             data: desData,
             headers: {
               Authorization: `Bearer ${localStorage.getItem("token")}`,
-              "Content-Type": "multipart/form-data",
+              "Content-Type": "application/json",
             },
             withCredentials: true,
           });
@@ -298,7 +298,7 @@ class POIAddUpdate extends Component {
           },
           headers: {
             Authorization: `Bearer ${localStorage.getItem("token")}`,
-            "Content-Type": "multipart/form-data",
+            "Content-Type": "application/json",
           },
           withCredentials: true,
         }).then(function (response) {
@@ -324,7 +324,7 @@ class POIAddUpdate extends Component {
               data: desData,
               headers: {
                 Authorization: `Bearer ${localStorage.getItem("token")}`,
-                "Content-Type": "multipart/form-data",
+                "Content-Type": "application/json",
               },
               withCredentials: true,
             });
