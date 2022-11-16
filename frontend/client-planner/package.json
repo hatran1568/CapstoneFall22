@@ -47,7 +47,6 @@
     "react-dom": "^18.2.0",
     "react-draft-wysiwyg": "^1.15.0",
     "react-dropdown-select": "^4.9.0",
-    "react-google-maps": "^9.4.5",
     "react-image-gallery": "^1.2.11",
     "react-leaflet": "^4.1.0",
     "react-loading-screen": "0.0.17",
