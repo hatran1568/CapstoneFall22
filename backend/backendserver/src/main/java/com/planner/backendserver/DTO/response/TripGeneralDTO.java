@@ -1,5 +1,6 @@
 package com.planner.backendserver.dto.response;
 
+import com.planner.backendserver.entity.TripStatus;
 import lombok.Builder;
 import lombok.Data;
 
@@ -15,5 +16,6 @@ public class TripGeneralDTO {
     private Date endDate;
     private String name;
     private Date dateModified;
-
+    private TripStatus status;
+    private int userID;
 }

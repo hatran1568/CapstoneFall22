@@ -126,6 +126,8 @@ public class GenerateTripIml implements GenerateTrip {
                     category.setExpenseCategoryId(8);
                     ex.setExpenseCategory(category);
                     poi.setTrip(tour);
+                    ex.setDescription(poi.getMasterActivity().getName());
+                    ex.setTripDetails(poi);
                     tripDetailRepository.save(poi);
                     tripExpenseRepository.save(ex);
                 }

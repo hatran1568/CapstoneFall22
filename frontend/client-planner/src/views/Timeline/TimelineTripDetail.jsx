@@ -16,6 +16,8 @@ import OverlayTrigger from "react-bootstrap/OverlayTrigger";
 import Popover from "react-bootstrap/Popover";
 import axios from "axios";
 import "moment/locale/vi";
+import { Link } from "react-router-dom";
+import ShowMoreText from "react-show-more-text";
 class TripDetail extends Component {
   state = {};
   //set state of component based on props from timeline
@@ -101,124 +103,172 @@ class TripDetail extends Component {
     return (
       <React.Fragment>
         <li className={`${style.timelineItem} card`}>
-          <div className="card-body row">
-            <div className="col-2">
-              {this.props.isConflicting && (
-                <>
-                  <OverlayTrigger
-                    trigger={["hover", "focus"]}
-                    placement={"bottom"}
-                    overlay={
-                      <Popover id={`popover-positioned-bottom`}>
-                        <Popover.Body className={style.popover}>
-                          <FontAwesomeIcon
-                            variant="secondary"
-                            icon={faCircleExclamation}
-                            className={style.popoverIcon}
-                          />
-                          <div>
-                            Hoạt động này trùng thời gian với hoạt động khác.
-                          </div>
-                        </Popover.Body>
-                      </Popover>
+          <div className="card-body">
+            <div className="row">
+              <div className="col-2">
+                {this.props.isConflicting && (
+                  <>
+                    <OverlayTrigger
+                      trigger={["hover", "focus"]}
+                      placement={"bottom"}
+                      overlay={
+                        <Popover id={`popover-positioned-bottom`}>
+                          <Popover.Body className={style.popover}>
+                            <FontAwesomeIcon
+                              variant="secondary"
+                              icon={faCircleExclamation}
+                              className={style.popoverIcon}
+                            />
+                            <div>
+                              Hoạt động này trùng thời gian với hoạt động khác.
+                            </div>
+                          </Popover.Body>
+                        </Popover>
+                      }
+                    >
+                      <FontAwesomeIcon
+                        variant="secondary"
+                        icon={faCircleExclamation}
+                        className={style.topLeft}
+                      />
+                    </OverlayTrigger>
+                  </>
+                )}
+                <p className={`text-muted card-text ${style.timeText}`}>
+                  {moment(
+                    this.getTimeFromSecs(this.state.tripDetail.startTime),
+                    "HH:mm:ss"
+                  )
+                    .locale("en")
+                    .format("hh:mm a")}
+                  <br />
+                  {moment(
+                    this.getTimeFromSecs(this.state.tripDetail.endTime),
+                    "HH:mm:ss"
+                  )
+                    .locale("en")
+                    .format("hh:mm a")}
+                </p>
+              </div>
+              {!isCustom ? (
+                <div className="col-4">
+                  <Link
+                    to={
+                      "../poi?id=" +
+                      this.state.tripDetail.masterActivity.activityId
                     }
                   >
-                    <FontAwesomeIcon
-                      variant="secondary"
-                      icon={faCircleExclamation}
-                      className={style.topLeft}
-                    />
-                  </OverlayTrigger>
-                </>
+                    <img
+                      src={
+                        this.state.tripDetail.masterActivity.images
+                          ? this.state.tripDetail.masterActivity.images[0]
+                            ? `../${this.state.tripDetail.masterActivity.images[0].url}`
+                            : "https://picsum.photos/seed/picsum/300/200"
+                          : "https://picsum.photos/seed/picsum/300/200"
+                      }
+                      className={style.activityImg}
+                    ></img>
+                  </Link>
+                </div>
+              ) : (
+                <></>
               )}
-              <p className={`text-muted card-text ${style.timeText}`}>
-                {moment(
-                  this.getTimeFromSecs(this.state.tripDetail.startTime),
-                  "HH:mm:ss"
-                ).format("hh:mm a")}
-                <br />
-                {moment(
-                  this.getTimeFromSecs(this.state.tripDetail.endTime),
-                  "HH:mm:ss"
-                ).format("hh:mm a")}
-              </p>
-            </div>
-            {!isCustom ? (
-              <div className="col-4">
-                <img
-                  src={
-                    this.state.tripDetail.masterActivity.images
-                      ? this.state.tripDetail.masterActivity.images[0]
-                        ? `../${this.state.tripDetail.masterActivity.images[0].url}`
-                        : "https://picsum.photos/seed/picsum/300/200"
-                      : "https://picsum.photos/seed/picsum/300/200"
-                  }
-                  className={style.activityImg}
-                ></img>
-              </div>
-            ) : (
-              <></>
-            )}
 
-            <div className={!isCustom ? "col-6" : "col-10"}>
-              <MDBDropdown animation={false} className={style.btnMore}>
-                <MDBDropdownToggle color="light"></MDBDropdownToggle>
-                <MDBDropdownMenu>
-                  {!isCustom ? (
+              <div className={!isCustom ? "col-6" : "col-10"}>
+                <MDBDropdown animation={false} className={style.btnMore}>
+                  <MDBDropdownToggle color="light"></MDBDropdownToggle>
+                  <MDBDropdownMenu>
+                    {!isCustom ? (
+                      <MDBDropdownItem
+                        link
+                        href={
+                          "../poi?id=" +
+                          this.state.tripDetail.masterActivity.activityId
+                        }
+                      >
+                        Xem chi tiết
+                      </MDBDropdownItem>
+                    ) : (
+                      <></>
+                    )}
+
                     <MDBDropdownItem
                       link
-                      href={
+                      onClick={(event) =>
+                        this.props.editEvent(event, this.state.tripDetail)
+                      }
+                    >
+                      Chỉnh sửa
+                    </MDBDropdownItem>
+                    <MDBDropdownItem
+                      link
+                      onClick={(event) =>
+                        this.props.deleteEvent(
+                          event,
+                          this.state.tripDetail.tripDetailsId,
+                          this.state.tripDetail.masterActivity.name
+                        )
+                      }
+                    >
+                      Xóa hoạt động
+                    </MDBDropdownItem>
+                  </MDBDropdownMenu>
+                </MDBDropdown>
+                <div className="fw-bold card-title name-value">
+                  {!isCustom ? (
+                    <Link
+                      to={
                         "../poi?id=" +
                         this.state.tripDetail.masterActivity.activityId
                       }
+                      className={style.detailTitleLink}
                     >
-                      Details
-                    </MDBDropdownItem>
+                      {this.state.tripDetail.masterActivity.name}
+                    </Link>
                   ) : (
-                    <></>
+                    <Link
+                      onClick={(event) =>
+                        this.props.editEvent(event, this.state.tripDetail)
+                      }
+                      className={style.detailTitleLink}
+                    >
+                      {this.state.tripDetail.masterActivity.name}
+                    </Link>
                   )}
+                </div>
+                <p className="text-muted card-text">
+                  <FontAwesomeIcon
+                    icon={faCalendarDays}
+                    className={style.foreIcon}
+                  />
+                  <span className="date-value">
+                    {moment(this.state.tripDetail.date)
+                      .locale("vi")
+                      .format("L")}
+                  </span>
+                </p>
 
-                  <MDBDropdownItem
-                    link
-                    onClick={(event) =>
-                      this.props.editEvent(event, this.state.tripDetail)
-                    }
-                  >
-                    Edit Event
-                  </MDBDropdownItem>
-                  <MDBDropdownItem
-                    link
-                    onClick={(event) =>
-                      this.props.deleteEvent(
-                        event,
-                        this.state.tripDetail.tripDetailsId,
-                        this.state.tripDetail.masterActivity.name
-                      )
-                    }
-                  >
-                    Delete event
-                  </MDBDropdownItem>
-                </MDBDropdownMenu>
-              </MDBDropdown>
-              <div className="fw-bold card-title name-value">
-                {this.state.tripDetail.masterActivity.name
-                  ? this.state.tripDetail.masterActivity.name
-                  : ""}
+                <p className="text-muted card-text address-value">
+                  {this.state.tripDetail.masterActivity.address}
+                </p>
               </div>
-              <p className="text-muted card-text">
-                <FontAwesomeIcon
-                  icon={faCalendarDays}
-                  className={style.foreIcon}
-                />
-                <span className="date-value">
-                  {moment(this.state.tripDetail.date).locale("vi").format("L")}
-                </span>
-              </p>
-
-              <p className="text-muted card-text address-value">
-                {this.state.tripDetail.masterActivity.address}
-              </p>
             </div>
+            {this.state.tripDetail.note && this.state.tripDetail.note != "" ? (
+              <div className={style.noteDiv}>
+                <span style={{ fontWeight: 500 }}>Ghi chú:</span>
+                <ShowMoreText
+                  /* Default options */
+                  lines={2}
+                  more="Xem thêm"
+                  less="Rút gọn"
+                  anchorClass="show-more-less-clickable"
+                  expanded={false}
+                  truncatedEndingComponent={"... "}
+                >
+                  <div>{this.state.tripDetail.note}</div>
+                </ShowMoreText>
+              </div>
+            ) : null}
           </div>
         </li>
         <li className={style.timelineTransport}>

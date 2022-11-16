@@ -30,9 +30,9 @@ function ConfirmEditModal(props) {
             </div>
             {listDetails.length > 0 ? (
               <div className={style.listWarning}>
-                <span className={style.warningMessage}>
+                <div className={style.warningMessage}>
                   Một số hoạt động đã được lên lịch sẽ bị xóa:
-                </span>
+                </div>
                 {listDetails.map((detail) =>
                   !detail.masterActivity.custom ? (
                     <div

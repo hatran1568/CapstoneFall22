@@ -16,6 +16,7 @@ function AddActivityModal(props) {
     custom: false,
     name: "",
     address: "",
+    note: "",
   });
   const handleChange = (event) => {
     setInputField({ ...inputField, [event.target.name]: event.target.value });
@@ -73,6 +74,7 @@ function AddActivityModal(props) {
       custom: false,
       name: "",
       address: "",
+      note: "",
     });
     setShowWarningName(false);
     setShowWarningTime(false);
@@ -131,9 +133,7 @@ function AddActivityModal(props) {
                   className={`btn ${style.customBtn}`}
                   onClick={toggleCustom}
                 >
-                  {showAddCustomModal
-                    ? "Select a Place"
-                    : "Add Custom Activity"}
+                  {showAddCustomModal ? "Chọn địa điểm" : "Hoạt động khác"}
                 </button>
               </div>
             </div>
@@ -160,6 +160,7 @@ function AddActivityModal(props) {
                     inputField.date = date.toISOString().split("T")[0];
                   }}
                   dateFormat="dd/MM/yyyy"
+                  placeholderText="Chọn ngày đi"
                 />
               </label>
               <label className="col-4">
@@ -196,6 +197,15 @@ function AddActivityModal(props) {
                   Thời gian kết thúc phải lớn hơn thời gian bắt đầu
                 </div>
               </label>
+            </div>
+            <div>
+              <textarea
+                className={`form-control ${style.noteInput}`}
+                rows="3"
+                onChange={(e) => {
+                  inputField.note = e.target.value;
+                }}
+              ></textarea>
             </div>
           </form>
         </Modal.Body>

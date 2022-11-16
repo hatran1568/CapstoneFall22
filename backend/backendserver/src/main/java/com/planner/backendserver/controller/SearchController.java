@@ -36,7 +36,7 @@ public class SearchController {
     }
     @GetMapping("/Destination/{keyword}")
     public ResponseEntity<List<SearchPOIAndDestinationDTO>> searchDestinationByKeyword(@PathVariable String keyword) {
-        try {
+//        try {
             List<SearchPOIAndDestinationDTO> results = searchService.suggestSearchPOIAndDestinationByKeyword(keyword);
             if (results.isEmpty()) {
                 return new ResponseEntity<>(HttpStatus.NOT_FOUND);
@@ -48,9 +48,9 @@ public class SearchController {
                 }
             }
             return new ResponseEntity<List<SearchPOIAndDestinationDTO>>(result, HttpStatus.OK);
-        } catch (Exception e) {
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-        }
+//        } catch (Exception e) {
+//            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+//        }
     }
     @GetMapping("/{keyword}/{page}")
     public ResponseEntity<SearchRespondeDTO> searchByKeyword(@PathVariable String keyword, @PathVariable int page) {
