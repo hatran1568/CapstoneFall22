@@ -44,3 +44,7 @@
 .sidebar{
   background-color: rgb(240, 240, 240);
 }
+.sidebarItem{
+  color: black;
+  text-decoration: none;
+}

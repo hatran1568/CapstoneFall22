@@ -40,6 +40,7 @@ public class BlogController {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+    @PreAuthorize("hasAuthority('Admin')")
     @GetMapping("/blog/admin/{filter}/{page}")
     public ResponseEntity<ArrayList<BlogListDTO>> searchBlogsAdmin(@PathVariable String filter, @PathVariable int page){
         try{
@@ -53,6 +54,7 @@ public class BlogController {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+    @PreAuthorize("hasAuthority('Admin')")
     @GetMapping("/blog/admin/{filter}/{page}/count")
     public ResponseEntity<Integer> searchBlogsAdminCount(@PathVariable String filter, @PathVariable int page){
         try{
@@ -96,7 +98,6 @@ public class BlogController {
 //            return  new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
 //        }
     }
-    @PreAuthorize("hasAuthority('Admin')")
     @RequestMapping(value = "/blog/hide/{blogId}", produces = { "*/*" }, method = RequestMethod.POST)
     public ResponseEntity<?> hideBlog(@PathVariable int blogId) {
         try{
@@ -111,7 +112,6 @@ public class BlogController {
             return  new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
-    @PreAuthorize("hasAuthority('Admin')")
     @RequestMapping(value = "/blog/unhide/{blogId}", produces = { "*/*" }, method = RequestMethod.POST)
     public ResponseEntity<?> unhideBlog(@PathVariable int blogId) {
         try{
@@ -126,7 +126,6 @@ public class BlogController {
             return  new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
-    @PreAuthorize("hasAuthority('Admin')")
     @RequestMapping(value = "/blog/delete/{blogId}", produces = { "*/*" }, method = RequestMethod.POST)
     public ResponseEntity<?> deleteBlog(@PathVariable int blogId) {
         try{

@@ -322,10 +322,10 @@ const POIDetails = () => {
             )}
             <button className='btn btn-info' onClick={handleClick}>
               Tạo kế hoạch
-            </button>
-          </MDBCol>
-        </MDBRow>
-
+            </button><br/><br/>
+            <a className={style.requestLink} href={"./poi/request?id=" + poiId}><b><i>Phát hiện thông tin sai? Bấm vào đây để yêu cầu sửa đổi</i></b></a>
+        </MDBCol>
+          </MDBRow>
         <MDBRow className='pb-3'>
           <h2 className='fw-bold'>Đánh giá về {curPOI.name}</h2>
         </MDBRow>
