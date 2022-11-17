@@ -43,8 +43,6 @@ const CollectionDetail = () => {
     getCurCol();
   }, [colId]);
 
-  console.log(curCol);
-
   const handleAdd = () => {
     setOpen(true);
   };
