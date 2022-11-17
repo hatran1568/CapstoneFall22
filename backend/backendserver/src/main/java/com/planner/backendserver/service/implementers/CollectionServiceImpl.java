@@ -67,11 +67,12 @@ public class CollectionServiceImpl implements CollectionService {
     }
 
     private String getFirstImageOfCollection(int colId) {
-        POI collectionPOI = collectionRepository.getFirstPOIInCollection(colId);
-        if (collectionPOI == null) {
+        ArrayList<POIOfCollectionDTO> POIList = getPOIListOfCollection(colId);
+        if (POIList.size() == 0) {
             return null;
         }
-        POIImage poiImage = poiImageRepository.findFirstByPoiId(collectionPOI.getActivityId());
+        POIOfCollectionDTO rndmPOI = POIList.get(POIList.size() / 2);
+        POIImage poiImage = poiImageRepository.findFirstByPoiId(rndmPOI.getActivityId());
         if (poiImage == null) {
             return null;
         }

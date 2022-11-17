@@ -45,15 +45,12 @@ public class CollectionController {
 
     @GetMapping("/list/{uid}")
     public ResponseEntity<ArrayList<CollectionDTO>> getCollections(@PathVariable int uid) {
-        try {
             ArrayList<CollectionDTO> collections = collectionService.getCollectionListByUid(uid);
             if (collections.isEmpty()) {
                 return new ResponseEntity<>(HttpStatus.NO_CONTENT);
             }
             return new ResponseEntity<>(collections, HttpStatus.OK);
-        } catch (Exception e) {
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-        }
+
     }
 
     @GetMapping("/get/{colId}")

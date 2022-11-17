@@ -1,3 +1,17 @@
+.img {
+  width: auto;
+  height: 250px;
+  background-position: center center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  border-radius: 0.5em;
+}
+
+.card {
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+}
+
 .addCol {
   font-size: 1.5em;
   color: palevioletred;
@@ -6,18 +20,4 @@
 
 .addCol:hover {
   color: red;
-}
-
-.colBtn {
-  color: black;
-  text-decoration: none;
-}
-
-.colBtn2 {
-  color: red;
-  text-decoration: none;
-}
-
-.icon {
-  font-size: 0.8em;
 }
