@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import axios from "../../api/axios";
 import {
   MDBBtn,
+  MDBCheckbox,
   MDBCol,
   MDBContainer,
   MDBDropdown,
@@ -12,9 +13,10 @@ import {
   MDBRow,
   MDBTextArea,
 } from "mdb-react-ui-kit";
-import { Dropdown, Input, Menu, Modal, Tooltip } from "antd";
+import { Button, Checkbox, Dropdown, Input, Menu, Modal, Tooltip } from "antd";
 import style from "./AddPOIToCollectionModal.module.css";
 import AddCollectionModal from "../Collections/AddCollectionModal";
+import CollectionInfoCard from "../Collections/CollectionInfoCard";
 
 const AddPOIToCollectionModal = (prop) => {
   const [open, setOpen] = useState(false);
@@ -83,19 +85,19 @@ const AddPOIToCollectionModal = (prop) => {
       if (col.poiList.some((poi) => poi.activityId === prop.poiId)) {
         cols.push(
           <MDBRow>
-            <MDBBtn tag='a' color='none' className={style.colBtn2} onClick={() => handleDelete(col.collectionId)}>
-              <MDBIcon fas icon='times' className='me-2' />
-              {col.title}
-            </MDBBtn>
+            <Tooltip title='Xóa địa điểm khỏi bộ sưu tập này'>
+              <Checkbox checked={true} onClick={() => handleDelete(col.collectionId)} />
+            </Tooltip>
+            <CollectionInfoCard collection={col} />
           </MDBRow>,
         );
       } else {
         cols.push(
           <MDBRow>
-            <MDBBtn tag='a' color='none' className={style.colBtn} onClick={() => handleAdd(col.collectionId)}>
-              <MDBIcon fas icon='plus' className={`me-2 ${style.icon}`} />
-              {col.title}
-            </MDBBtn>
+            <Tooltip title='Thêm địa điểm vào bộ sưu tập này'>
+              <Checkbox checked={false} onClick={() => handleAdd(col.collectionId)} />
+            </Tooltip>
+            <CollectionInfoCard collection={col} />
           </MDBRow>,
         );
       }
@@ -111,7 +113,7 @@ const AddPOIToCollectionModal = (prop) => {
       </MDBBtn>
       <Modal
         open={open}
-        title='Thêm vào bộ sưu tập'
+        title='Các bộ sưu tập của bạn'
         onCancel={handleCancel}
         footer={null}
         bodyStyle={{ paddingTop: "0" }}
