@@ -18,7 +18,7 @@ import { faGoogle } from "@fortawesome/free-brands-svg-icons";
 import MyGallery from "../../components/POIs/MyGallery.jsx";
 import { Dropdown, Input, Menu, Modal, Tooltip } from "antd";
 import style from "./POIDetails.module.css";
-import AddCollectionModal from "../../components/Collections/AddCollectionModal";
+import AddPOIToCollectionModal from "../../components/POIs/AddPOIToCollectionModal";
 
 const POIDetails = () => {
   const [curPOI, setCurPOI] = useState();
@@ -26,9 +26,6 @@ const POIDetails = () => {
   const [images, setImages] = useState([]);
   const [comment, setComment] = useState("");
   const [rate, setRate] = useState(0);
-  const [colList, setColList] = useState([]);
-
-  const [open, setOpen] = useState(false);
 
   const { TextArea } = Input;
   const { error } = Modal;
@@ -49,17 +46,10 @@ const POIDetails = () => {
       await axios.get("/api/pois/" + poiId + "/images").then((res) => setImages(res.data));
     };
 
-    const getColList = async () => {
-      if (localStorage.getItem("id") != undefined) {
-        await axios.get("/api/collection/list/" + localStorage.getItem("id")).then((res) => setColList(res.data));
-      }
-    };
-
     document.title = "Trip planner | POIDetails";
     getPOI();
     getRatings();
     getImages();
-    getColList();
   }, [poiId]);
 
   const timeConverter = (seconds, format) => {
@@ -83,32 +73,6 @@ const POIDetails = () => {
     }
 
     return timeString;
-  };
-
-  const handleClick = (e) => {
-    axios
-      .post(
-        "/api/collection/addPoi2",
-        {
-          colId: e.key,
-          poiId: curPOI.activityId,
-          uid: localStorage.getItem("id"),
-        },
-        {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
-          },
-          withCredentials: true,
-        },
-      )
-      .then((res) => {
-        setColList(res.data);
-        setOpen(true);
-      });
-  };
-
-  const handleOpenChange = () => {
-    setOpen(true);
   };
 
   const handleChange = (e) => {
@@ -175,18 +139,6 @@ const POIDetails = () => {
       });
     }
   };
-
-  var items = [];
-  if (colList.length > 0) {
-    colList.forEach((col) => {
-      if (col.poiList.some((poi) => poi.activityId === curPOI.activityId)) {
-        items.push({ key: col.collectionId, label: col.title, disabled: true });
-      } else {
-        items.push({ key: col.collectionId, label: col.title });
-      }
-    });
-  }
-  var menu = <Menu items={items} open={open} onClick={handleClick} />;
 
   var poiImages = [];
   if (images.length > 0) {
@@ -334,15 +286,7 @@ const POIDetails = () => {
               <h2 className='fw-bold'>{curPOI.name}</h2>
             </MDBCol>
             <MDBCol size='auto'>
-              {localStorage.getItem("token") != null ? (
-                <Dropdown overlay={menu} onOpenChange={handleOpenChange}>
-                  <MDBBtn tag='a' color='none' className={style.addCol}>
-                    <Tooltip title='Thêm địa điểm vào bộ sưu tập của bạn'>
-                      <MDBIcon fas icon='heart' />
-                    </Tooltip>
-                  </MDBBtn>
-                </Dropdown>
-              ) : null}
+              {localStorage.getItem("token") != null ? <AddPOIToCollectionModal poiId={curPOI.activityId} /> : null}
             </MDBCol>
           </MDBRow>
           <MDBRow className='m-0'>
@@ -397,7 +341,7 @@ const POIDetails = () => {
             )}
           </MDBCol>
         </MDBRow>
-        <MDBRow className="pb-5">
+        <MDBRow className='pb-5'>
           <a className={style.requestLink} href={"./poi/request?id=" + poiId}>
             <b>
               <i>Phát hiện thông tin sai? Bấm vào đây để yêu cầu sửa đổi</i>

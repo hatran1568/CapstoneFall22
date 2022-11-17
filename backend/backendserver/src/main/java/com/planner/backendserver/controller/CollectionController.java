@@ -166,4 +166,18 @@ public class CollectionController {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+
+    @DeleteMapping("/deletePoi2")
+    public ResponseEntity<ArrayList<CollectionDTO>> deletePOI2(@RequestBody DeletePOIFromCollectionDTO dto) {
+        try {
+            int poiId = dto.getPoiId();
+            int colId = dto.getColId();
+            int uid = dto.getUid();
+            collectionService.deletePOIFromCollection(poiId, colId);
+            ArrayList<CollectionDTO> collections = collectionService.getCollectionListByUid(uid);
+            return new ResponseEntity<>(collections, HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
 }

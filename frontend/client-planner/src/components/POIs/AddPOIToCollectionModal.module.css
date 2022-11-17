@@ -1,0 +1,23 @@
+.addCol {
+  font-size: 1.5em;
+  color: palevioletred;
+  text-decoration: none;
+}
+
+.addCol:hover {
+  color: red;
+}
+
+.colBtn {
+  color: black;
+  text-decoration: none;
+}
+
+.colBtn2 {
+  color: red;
+  text-decoration: none;
+}
+
+.icon {
+  font-size: 0.8em;
+}

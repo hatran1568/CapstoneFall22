@@ -7,16 +7,6 @@
   max-width: 1200px;
 }
 
-.addCol {
-  font-size: 1.5em;
-  color: palevioletred;
-  text-decoration: none;
-}
-
-.addCol:hover {
-  color: red;
-}
-
 .requestLink{
   color: rgb(50, 217, 255);
   text-decoration: none;
