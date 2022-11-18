@@ -32,8 +32,8 @@ public class CollectionServiceImpl implements CollectionService {
         ArrayList<CollectionDTO> list = new ArrayList<>();
         ArrayList<Collection> collections = collectionRepository.getCollectionsByUserID(uid);
         for (Collection collection : collections) {
-            CollectionDTO collectionDTO = new CollectionDTO(collection.getCollectionId(), collection.getTitle(), collection.getDescription(), collection.getDateModified(), collection.isDeleted(), collection.getUser().getUserID(), getFirstImageOfCollection(collection.getCollectionId()));
-            if(!collectionDTO.isDeleted()) {
+            CollectionDTO collectionDTO = new CollectionDTO(collection.getCollectionId(), collection.getTitle(), collection.getDescription(), collection.getDateModified(), collection.isDeleted(), collection.getUser().getUserID(), getFirstImageOfCollection(collection.getCollectionId()), getPOIListOfCollection(collection.getCollectionId()));
+            if (!collectionDTO.isDeleted()) {
                 list.add(collectionDTO);
             }
         }
@@ -43,7 +43,7 @@ public class CollectionServiceImpl implements CollectionService {
     @Override
     public CollectionDTO getCollectionById(int colId) {
         Collection collection = collectionRepository.getCollectionByID(colId);
-        return new CollectionDTO(collection.getCollectionId(), collection.getTitle(), collection.getDescription(), collection.getDateModified(), collection.isDeleted(), collection.getUser().getUserID(), getFirstImageOfCollection(collection.getCollectionId()));
+        return new CollectionDTO(collection.getCollectionId(), collection.getTitle(), collection.getDescription(), collection.getDateModified(), collection.isDeleted(), collection.getUser().getUserID(), getFirstImageOfCollection(collection.getCollectionId()), getPOIListOfCollection(colId));
     }
 
     @Override
@@ -67,11 +67,12 @@ public class CollectionServiceImpl implements CollectionService {
     }
 
     private String getFirstImageOfCollection(int colId) {
-        POI collectionPOI = collectionRepository.getFirstPOIInCollection(colId);
-        if (collectionPOI == null) {
+        ArrayList<POIOfCollectionDTO> POIList = getPOIListOfCollection(colId);
+        if (POIList.size() == 0) {
             return null;
         }
-        POIImage poiImage = poiImageRepository.findFirstByPoiId(collectionPOI.getActivityId());
+        POIOfCollectionDTO rndmPOI = POIList.get(POIList.size() / 2);
+        POIImage poiImage = poiImageRepository.findFirstByPoiId(rndmPOI.getActivityId());
         if (poiImage == null) {
             return null;
         }
