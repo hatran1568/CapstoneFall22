@@ -146,7 +146,6 @@ const AddPOIToCollectionModal = (prop) => {
       }
     });
   }
-  console.log(colList);
 
   return (
     <>
