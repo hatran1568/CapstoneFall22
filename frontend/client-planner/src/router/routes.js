@@ -34,6 +34,7 @@ import UserList from "../views/Admin/UserList";
 import UserRequestList from "../views/Admin/UserRequestList";
 import DestinationAddUpdate from "../views/Admin/DestinationAddUpdate";
 import Map from "../views/Map/Map";
+import Dashboard from "../views/Admin/Dashboard";
 
 export default function RootRoutes() {
   return (
@@ -79,8 +80,7 @@ export default function RootRoutes() {
           <Route path='/destination/update' element={<ProSidebarProvider><AdminSidebar props={<DestinationAddUpdate/>}/></ProSidebarProvider>} />
           <Route path='/user/list' element={<ProSidebarProvider><AdminSidebar props={<UserList/>}/></ProSidebarProvider>} />
           <Route path='/request/list' element={<ProSidebarProvider><AdminSidebar props={<UserRequestList/>}/></ProSidebarProvider>} />
-
-
+          <Route path='/admin/dashboard' element={<ProSidebarProvider><AdminSidebar props={<Dashboard/>}/></ProSidebarProvider>} />
         </Route>
         {/*Routes that don't need a nav bar go out here.*/}
       </Routes>
