@@ -21,14 +21,14 @@ public interface TripRepository extends JpaRepository<Trip, Integer> {
     Optional<Trip> getTripById(int id);
     @Query("select t from Trip t where t.tripId = :id")
     Trip findById(int id);
-    @Query("select t from Trip t where t.user.userID = :id and t.status = 'PUBLIC' or t.status = 'PRIVATE' order by t.dateModified desc")
+    @Query("select t from Trip t where t.user.userID = :id and t.status <>'DELETED' order by t.dateModified desc")
     ArrayList<Trip> getTripsByUser(int id);
     @Modifying
     @Query("update Trip t set t.status = 'DELETED' where t.tripId = :id")
     void deleteTripById(int id);
-    @Query(value = "select * from Trip t where t.user_id = :id and t.status = 'PUBLIC' or t.status = 'PRIVATE' order by t.date_modified desc limit 3", nativeQuery = true)
+    @Query(value = "select * from Trip t where t.user_id = :id and t.status <>'DELETED' order by t.date_modified desc limit 3", nativeQuery = true)
     ArrayList<Trip> getLast3TripsByUser(int id);
-    @Query("SELECT COUNT(t) FROM Trip t WHERE t.user.userID = :id and t.status = 'PUBLIC' or t.status = 'PRIVATE'")
+    @Query("SELECT COUNT(t) FROM Trip t WHERE t.user.userID = :id and t.status <>'DELETED'")
     int getNumberOfTripsByUser(int id);
     @Modifying
     @Query(
