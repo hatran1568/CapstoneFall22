@@ -1,0 +1,32 @@
+.star {
+    height: fit-content;
+}
+
+.cardBody {
+    padding-top: 0;
+}
+
+.item {
+    border-radius: 0;
+    background-color: inherit !important;
+    border: none;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+
+.image {
+    height: 140px;
+    width: 100%;
+}
+
+.type:first-letter {
+    text-transform: uppercase;
+}
+
+.link {
+    text-decoration: none;
+    color: black;
+}
+
+.link:hover {
+    color: black;
+}

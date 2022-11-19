@@ -76,4 +76,9 @@ public interface POIRepository extends JpaRepository<POI, Integer> {
     @Query("SELECT p FROM POI p left join MasterActivity m on p.activityId = m.activityId where p.activityId = :masterActivityId")
     Optional<POI> getPOIByMasterActivity(int masterActivityId);
 
+    @Query("SELECT p FROM POI p left join MasterActivity m on p.activityId = m.activityId  left join Distance dis on dis.startStation.activityId =p.activityId where  p.category.categoryID=10 and dis.distance< :distance and dis.endStation.activityId=:src and (p.typicalPrice =:minPrice or p.typicalPrice>:minPrice) and (p.typicalPrice =:maxPrice or p.typicalPrice<:maxPrice) and (p.googleRate =:minRate or p.typicalPrice>:minRate) and (p.googleRate =:maxRate or p.typicalPrice>:maxRate)")
+    Optional<ArrayList<POI>> getHotelByDestination(double distance,int src,double maxRate,double minRate,double maxPrice,double minPrice);
+
+    @Query("SELECT p FROM POI p left join MasterActivity m on p.activityId = m.activityId  where  p.category.categoryID=10  and (p.typicalPrice =:minPrice or p.typicalPrice>:minPrice) and (p.typicalPrice =:maxPrice or p.typicalPrice<:maxPrice) and (p.googleRate =:minRate or p.typicalPrice>:minRate) and (p.googleRate =:maxRate or p.typicalPrice>:maxRate)")
+    Optional<ArrayList<POI>> getHotelByPriceAndRate(double maxRate,double minRate,double maxPrice,double minPrice);
 }

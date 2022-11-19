@@ -1,18 +1,24 @@
 package com.planner.backendserver.controller;
 
+import com.planner.backendserver.DTO.SearchPOIAndDestinationDTO;
+import com.planner.backendserver.DTO.request.HotelsRequestDTO;
 import com.planner.backendserver.DTO.request.POIofDestinationDTO;
 import com.planner.backendserver.DTO.response.RatingDTO;
+import com.planner.backendserver.DTO.response.SearchRespondeDTO;
 import com.planner.backendserver.entity.MasterActivity;
+import com.planner.backendserver.entity.POI;
 import com.planner.backendserver.repository.POIRepository;
 import com.planner.backendserver.service.interfaces.POIService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.Date;
-
+@Slf4j
 @RestController
 @RequestMapping("/api/pois")
 public class POIController {
@@ -124,5 +130,24 @@ public class POIController {
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
+    }
+    @PostMapping("/hotel/query")
+    public ResponseEntity<SearchRespondeDTO> getHotelsByDestination(@RequestBody HotelsRequestDTO input){
+            log.info(input.toString());
+        try {
+            ArrayList<SearchPOIAndDestinationDTO> results = poiService.getHotelsByDestination(input);
+            Page<SearchPOIAndDestinationDTO> paging = poiService.listToPage(results, input.getPage(), 10);
+            if (paging.getContent().isEmpty()) {
+                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            }
+            SearchRespondeDTO respondeDTO = new SearchRespondeDTO();
+            respondeDTO.setList(paging.getContent());
+            respondeDTO.setTotalPage((int) Math.ceil(results.size() / 10.0));
+            respondeDTO.setCurrentPage(input.getPage());
+            return new ResponseEntity<SearchRespondeDTO>(respondeDTO, HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+
     }
 }

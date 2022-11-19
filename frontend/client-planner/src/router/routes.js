@@ -27,7 +27,7 @@ import CollectionDetail from "../views/CollectionDetail/CollectionDetail";
 import Map from "../views/Map/Map";
 import AdminSidebar from "../components/Admin/SideBar";
 import BlogList from "../views/Blog/BlogList";
-
+import Hotel from "../views/Hotel/Hotel";
 export default function RootRoutes() {
   return (
     <Router>
@@ -60,6 +60,7 @@ export default function RootRoutes() {
           <Route path="/poi" element={<POIDetails />} />
           <Route path="/test" element={<Test></Test>}></Route>
           <Route path="/map/:id" element={<Map></Map>}></Route>
+          <Route path="/hotel/:tripId" element={<Hotel></Hotel>}></Route>
         </Route>
         <Route element={<RequireAuth allowedRoles={["Admin"]} />}>
           <Route
