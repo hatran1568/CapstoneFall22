@@ -16,18 +16,27 @@ import HomePage from "../views/HomePage/HomePage";
 import LayoutsWithNavbar from "../components/NavBar/LayoutsWithNavbar";
 import SearchResults from "../views/SearchResults/SearchResults";
 import POIDetails from "../views/POIDetails/POIDetails";
+import POIRequest from "../views/POIDetails/POIRequest";
 import BlogDetails from "../views/Blog/BlogDetails";
 import Timetable from "../views/Timetable/Timetable";
 import Test from "../views/TestingScreen/Test";
 import ChangePassword from "../views/UserProfile/ChangePassword";
 import RequestResetPassword from "../views/Login/RequestResetPassword";
 import ResetPasswordConfirm from "../views/Login/ResetPasswordConfirm";
-import BlogAddUpdate from "../views/Blog/BlogAddUpdate";
+import BlogAddUpdate from "../views/Admin/BlogAddUpdate";
 import CollectionDetail from "../views/CollectionDetail/CollectionDetail";
-import Map from "../views/Map/Map";
 import AdminSidebar from "../components/Admin/SideBar";
-import BlogList from "../views/Blog/BlogList";
+import BlogList from "../views/Admin/BlogList";
+import POIList from "../views/Admin/POIList";
+import POIAddUpdate from "../views/Admin/POIAddUpdate";
+import DestinationList from "../views/Admin/DestinationList";
+import UserList from "../views/Admin/UserList";
+import UserRequestList from "../views/Admin/UserRequestList";
+import DestinationAddUpdate from "../views/Admin/DestinationAddUpdate";
+import Map from "../views/Map/Map";
+
 import Hotel from "../views/Hotel/Hotel";
+
 export default function RootRoutes() {
   return (
     <Router>
@@ -58,6 +67,7 @@ export default function RootRoutes() {
           <Route path="/blog" element={<BlogDetails />} />
           <Route path="/SearchResults" element={<SearchResults />} />
           <Route path="/poi" element={<POIDetails />} />
+          <Route path="/poi/request" element={<POIRequest />} />
           <Route path="/test" element={<Test></Test>}></Route>
           <Route path="/map/:id" element={<Map></Map>}></Route>
           <Route path="/hotel/:tripId" element={<Hotel></Hotel>}></Route>
@@ -68,6 +78,14 @@ export default function RootRoutes() {
             element={
               <ProSidebarProvider>
                 <AdminSidebar props={<BlogList />} />
+              </ProSidebarProvider>
+            }
+          />
+          <Route
+            path="/poi/adminlist"
+            element={
+              <ProSidebarProvider>
+                <AdminSidebar props={<POIList />} />
               </ProSidebarProvider>
             }
           />
@@ -84,6 +102,46 @@ export default function RootRoutes() {
             element={
               <ProSidebarProvider>
                 <AdminSidebar />
+              </ProSidebarProvider>
+            }
+          />
+          <Route
+            path="/poi/update"
+            element={
+              <ProSidebarProvider>
+                <AdminSidebar props={<POIAddUpdate />} />
+              </ProSidebarProvider>
+            }
+          />
+          <Route
+            path="/destination/adminlist"
+            element={
+              <ProSidebarProvider>
+                <AdminSidebar props={<DestinationList />} />
+              </ProSidebarProvider>
+            }
+          />
+          <Route
+            path="/destination/update"
+            element={
+              <ProSidebarProvider>
+                <AdminSidebar props={<DestinationAddUpdate />} />
+              </ProSidebarProvider>
+            }
+          />
+          <Route
+            path="/user/list"
+            element={
+              <ProSidebarProvider>
+                <AdminSidebar props={<UserList />} />
+              </ProSidebarProvider>
+            }
+          />
+          <Route
+            path="/request/list"
+            element={
+              <ProSidebarProvider>
+                <AdminSidebar props={<UserRequestList />} />
               </ProSidebarProvider>
             }
           />

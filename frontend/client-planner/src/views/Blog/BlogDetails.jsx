@@ -66,6 +66,14 @@ function BlogDetails() {
       year: "numeric",
     };
     var date = new Date(dateRaw);
+    var username = blog.username;
+    var avatar = blog.avatar;
+    if (avatar == null || avatar == "")
+      avatar = "https://t4.ftcdn.net/jpg/03/59/58/91/360_F_359589186_JDLl8dIWoBNf1iqEkHxhUeeOulx0wOC5.jpg";
+    if (blog.userStatus == "DELETED") {
+      username = "Người dùng này đã bị xóa"
+      avatar = "https://static.thenounproject.com/png/418543-200.png";
+    }
     date = date.toLocaleDateString("vi", options);
     console.log(date);
     return (
@@ -80,7 +88,7 @@ function BlogDetails() {
                 <FontAwesomeIcon icon={faClock} size="sm" />
                 <span className={style.date}>{date}</span>
                 <FontAwesomeIcon icon={faUser} size="sm" />
-                <span className={style.date}>{blog.username}</span>
+                <span className={style.date}>{username}</span>
               </div>
               <div
                 dangerouslySetInnerHTML={{ __html: blog.content }}
@@ -88,12 +96,12 @@ function BlogDetails() {
               ></div>
               <MDBRow className={style.authorBox}>
                 <MDBCol md={1}>
-                  <img src={blog.avatar} className={style.avatar} />
+                  <img src={avatar} className={style.avatar} />
                 </MDBCol>
                 <MDBCol md={8}>
                   <b>Tác giả</b>
                   <br />
-                  {blog.username}
+                  {username}
                 </MDBCol>
               </MDBRow>
             </MDBCardBody>

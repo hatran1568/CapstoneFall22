@@ -84,7 +84,7 @@ const POISearchBar = (props) => {
           type="text"
           placeholder={
             props.placeholder == null
-              ? "Find a place of interest"
+              ? "Hãy tìm một địa điểm"
               : props.placeholder
           }
           onChange={(e) => {
