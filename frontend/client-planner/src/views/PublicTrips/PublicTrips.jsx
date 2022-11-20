@@ -148,8 +148,10 @@ class PublicTrips extends Component {
           <div></div>
         </LoadingScreen>
       );
+    document.title = "Chuyến đi gần đây | Tripplanner";
     return (
       <div>
+        <h1 className={style.pageTitle}>Những chuyến đi được tạo gần đây</h1>
         <div className={`container ${style.mainContainer}`}>
           <div className="row">
             <div className="col-3"></div>

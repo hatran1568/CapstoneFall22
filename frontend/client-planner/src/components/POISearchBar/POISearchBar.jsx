@@ -95,7 +95,7 @@ const POISearchBar = (props) => {
           size="small"
           id="inputSearchString"
         />
-        <button onClick={handleRemovePOI} className={style.clear}>
+        <button type="button" onClick={handleRemovePOI} className={style.clear}>
           <FontAwesomeIcon icon={faCircleXmark} />
         </button>
       </MDBInputGroup>

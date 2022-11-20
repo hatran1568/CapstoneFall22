@@ -216,4 +216,7 @@ public interface POIRepository extends JpaRepository<POI, Integer> {
             value = "INSERT INTO poi_destination(poi_id, destination_id) VALUES (?1, ?2)",
             nativeQuery = true)
     void addPoiDes(int poiId, int desId);
+
+    @Query("Select p from POI p join POIDest pd on p.activityId = pd.poi.activityId where pd.destination.destinationId=:id and pd.poi.category.categoryID <>10 and pd.poi.category.categoryID <>11")
+    public ArrayList<POI> getPOIsByDestinationId(int id);
 }

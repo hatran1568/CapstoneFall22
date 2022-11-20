@@ -109,3 +109,11 @@ label{
 input[type=search]::-webkit-search-cancel-button {
     -webkit-appearance: searchfield-cancel-button;
 }
+.pageTitle{
+    font-size: 65px;
+    text-align: center;
+    margin: 1em;
+    font-family: Klarna Display,Helvetica Neue,Arial,Helvetica,sans-serif;
+    font-weight: 700;
+
+}
