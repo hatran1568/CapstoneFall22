@@ -28,7 +28,9 @@ import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.client.RestTemplate;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.ArrayList;
@@ -38,6 +40,7 @@ import java.util.Date;
 @RestController
 @RequestMapping("/api/pois")
 public class POIController {
+    private final String distanceToken ="dfSi1azlI6gjmUz4R8yMccBW2JGvb";
     @Autowired
     private POIRepository poiRepo;
 
@@ -250,9 +253,13 @@ public class POIController {
         }
     }
     @PreAuthorize("hasAuthority('Admin')")
+    @Transactional(rollbackFor = {Exception.class, Throwable.class})
     @RequestMapping(value = "/add", consumes = "application/json", produces = { "*/*" }, method = RequestMethod.POST)
-    public ResponseEntity<?> addPOI(@RequestBody UpdatePOIDTO poi) {
+    public ResponseEntity<?> addPOI(@RequestBody UpdatePOIDTO poi) throws Exception {
         try{
+            String uri ="https://api.distancematrix.ai/maps/api/distancematrix/json?origins=";
+            String origin=poi.getLat()+","+poi.getLon();
+            RestTemplate restTemplate = new RestTemplate();
             java.sql.Timestamp date = new java.sql.Timestamp(Calendar.getInstance().getTime().getTime());
             poiRepo.addMA(poi.getAddress(), poi.getName());
             poiRepo.addPOI(poi.getDescription(), poi.getAdditionalInfo(),
