@@ -10,4 +10,5 @@ import lombok.NoArgsConstructor;
 public class DeletePOIFromCollectionDTO {
     int colId;
     int poiId;
+    int uid;
 }

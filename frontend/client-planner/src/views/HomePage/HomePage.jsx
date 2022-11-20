@@ -58,18 +58,14 @@ function HomePage() {
     if ((userId, port)) {
       var socket = new SockJS("http://localhost:" + port + "/ws");
       stompClient = over(socket);
-      console.log("connected");
       stompClient.connect({}, onConnected, onError);
     }
   };
-  const onError = (err) => {
-    console.log(err);
-  };
+  const onError = (err) => {};
   useEffect(() => {
     checkGenerating();
   }, []);
   const onConnected = () => {
-    console.log("onConnected");
     // Subscribe to the Public Topic
     // stompClient.subscribe("/chatroom", onMessageReceived);
     stompClient.subscribe(
@@ -92,7 +88,6 @@ function HomePage() {
             }
           )
           .then((response) => {
-            console.log(response.data);
             setTripCount(response.data);
           });
         await axios
@@ -106,8 +101,6 @@ function HomePage() {
             }
           )
           .then((response) => {
-            console.log("COunt" + response.data);
-
             setTrips(response.data);
           });
       }
@@ -121,7 +114,6 @@ function HomePage() {
   };
   const onPrivateMessage = (payload) => {
     if (isNumeric(payload.body)) {
-      console.log(payload.body);
       setProgress(payload.body);
     }
   };
@@ -152,7 +144,6 @@ function HomePage() {
 
   useEffect(() => {
     if (isFirst) {
-      console.log(isFirst);
       setIsFirst(false);
       return;
     }
@@ -181,7 +172,6 @@ function HomePage() {
             }
           )
           .then((response) => {
-            console.log(response.data);
             setTripCount(response.data);
           });
         await axios
@@ -195,8 +185,6 @@ function HomePage() {
             }
           )
           .then((response) => {
-            console.log("COunt" + response.data);
-
             setTrips(response.data);
           });
       }
@@ -307,10 +295,8 @@ function HomePage() {
     }).then(function (response) {
       if (response.data == true) {
         setIsGenerating(true);
-        console.log(isGenerating);
       } else {
         setIsGenerating(false);
-        console.log(isGenerating);
       }
       //connect(id,response.data);
     });
@@ -342,12 +328,10 @@ function HomePage() {
       let preferences = [];
       for (let i = 1; i <= 9; i++) {
         let value = document.getElementById(i);
-        console.log(value);
         if (value.checked) {
           preferences.push(i);
         }
       }
-      console.log(preferences);
       axios({
         method: "post",
         url: "http://localhost:8080/trip/generate",
@@ -368,7 +352,6 @@ function HomePage() {
         setIsGenerating(true);
         setRequest(response.data.id);
         setPort(response.data.port);
-        console.log(response.data);
         //connect(id,response.data);
       });
     }
@@ -386,10 +369,16 @@ function HomePage() {
         <div className="mask" style={{ backgroundColor: "rgba(0, 0, 0, 0)" }}>
           <div className={style.splashContainer}>
             <div className={style.splash}>
-              <div className="px-5" id={style["splash-text"]}>
-                <h2 className="text-dark text-center">Make planning great!</h2>
-                <p className="text-muted text-center">
-                  Ease your head on decisions.
+              <div className="px-3" id={style["splash-text"]}>
+                <h3 className="text-dark text-center">
+                  Lên kế hoạch cho chuyến đi của bạn
+                </h3>
+                <p
+                  className="text-muted text-center"
+                  style={{ fontSize: "1rem" }}
+                >
+                  Sử dụng dịch vụ gợi ý của chúng tôi, hoặc tự tạo kế hoạch của
+                  riêng bạn
                 </p>
                 <MDBBtnGroup className={style.btn}>
                   {isGenerating ? (

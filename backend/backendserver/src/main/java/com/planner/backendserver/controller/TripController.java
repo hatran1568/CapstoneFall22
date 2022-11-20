@@ -23,6 +23,7 @@ import com.planner.backendserver.repository.TripRepository;
 import com.planner.backendserver.service.UserDTOServiceImplementer;
 import com.planner.backendserver.service.implementers.AsyncManager;
 import com.planner.backendserver.service.interfaces.TripService;
+import lombok.extern.slf4j.Slf4j;
 import net.minidev.json.JSONObject;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,7 +40,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 import java.util.Optional;
-
+@Slf4j
 @RestController
 @RequestMapping("/trip")
 public class TripController {
@@ -146,7 +147,8 @@ public class TripController {
     }
     @PostMapping("/add-detail")
     public ResponseEntity<TripDetailDTO> addTripDetail(@RequestBody ObjectNode objectNode){
-        try{
+//        try{
+            String dateString =objectNode.get("date").asText();
             Date date = Date.valueOf(objectNode.get("date").asText());
             int startTime = objectNode.get("startTime").asInt();
             int endTime = objectNode.get("endTime").asInt();
@@ -155,9 +157,10 @@ public class TripController {
             String note = objectNode.get("note").asText();
             TripDetailDTO result = tripService.addTripDetail(date, startTime, endTime, activityId, tripId, note);
             return new ResponseEntity<>(result, HttpStatus.OK);
-        } catch (Exception e){
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-        }
+//        } catch (Exception e){
+//            log.info(e.getMessage());
+//            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+//        }
     }
     @PostMapping("/add-custom-detail")
     public ResponseEntity<TripDetailDTO> addCustomTripDetail(@RequestBody ObjectNode objectNode){

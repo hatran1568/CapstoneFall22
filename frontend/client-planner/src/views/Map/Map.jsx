@@ -139,14 +139,14 @@ function Map(props) {
     <div>
       <TripGeneralInfo />
       <TripDetailTabs />
-      <div div className="container ">
+      <div className="container ">
         <div className="timeline-container row ">
           <div className="col-2">
             <div className={style.daysBox}>
               {allMonths.length > 0 &&
                 allMonths.map((month, index) => (
                   <div key={month} className={style.monthsBox}>
-                    <div className={style.month}>{vietMonths[month]}</div>
+                    <div className={style.month}>{month}</div>
                     {getAllDatesOfMonth(allDates, month).map(
                       (date, subindex, arr) => (
                         <a
@@ -210,14 +210,6 @@ function Map(props) {
                           )
                       )}
                   </MapContainer>
-                  <button
-                    onClick={() => {
-                      setSelectedPOI(Math.floor(Math.random() * 5) + 1);
-                      markerRef.current.fire("mouseout");
-                    }}
-                  >
-                    Test
-                  </button>
                 </div>
                 <div className={"col-4 " + style.mapBox}>
                   <h4 className={style.tripName}>

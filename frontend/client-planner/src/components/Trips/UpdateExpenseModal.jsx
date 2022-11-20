@@ -53,10 +53,10 @@ function UpdateExpenseModal(props) {
       document.getElementById(modalDescName).value = " ";
     if (document.getElementById(modalAmountName).value == "") {
       document.getElementById(modalErrorName).innerHTML =
-        "Please enter an amount.";
+        "Hãy nhập giá tiền.";
     } else if (currentCat == 0)
       document.getElementById(modalErrorName).innerHTML =
-        "Please select a category.";
+        "Hãy chọn danh mục.";
     else
       axios({
         method: "post",

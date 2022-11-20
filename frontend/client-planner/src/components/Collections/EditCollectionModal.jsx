@@ -19,11 +19,11 @@ const EditCollectionModal = (prop) => {
 
   const handleOk = () => {
     confirm({
-      title: "Confirm edit?",
-      content: "Your collection will be updated",
-      okText: "Yes",
+      title: "Đồng ý?",
+      content: "Thông tin sẽ được cập nhật",
+      okText: "Có",
       okType: "primary",
-      cancelText: "No",
+      cancelText: "Không",
       centered: true,
       onOk() {
         var title;
@@ -71,9 +71,9 @@ const EditCollectionModal = (prop) => {
       <button className={`${style.editBtn}`} onClick={handleEdit}>
         <MDBIcon far icon='edit' size='lg' />
       </button>
-      <Modal title='Edit collection info' open={open} onOk={handleOk} onCancel={handleCancel}>
+      <Modal title='Chỉnh sửa thông tin bộ sưu tập' open={open} onOk={handleOk} onCancel={handleCancel}>
         <MDBInputGroup className='px-2 mb-3'>
-          <p className='fs-5 fw-bold'>Title</p>
+          <p className='fs-5 fw-bold'>Tiêu đề</p>
           <Input
             showCount
             maxLength={30}
@@ -84,7 +84,7 @@ const EditCollectionModal = (prop) => {
           />
         </MDBInputGroup>
         <MDBInputGroup className='px-2'>
-          <p className='fs-5 fw-bold'>Description</p>
+          <p className='fs-5 fw-bold'>Mô tả</p>
           <TextArea
             showCount
             rows={3}

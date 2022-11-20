@@ -39,7 +39,10 @@ class BlogAddUpdate extends Component {
   componentDidMount() {
     const queryParams = new URLSearchParams(window.location.search);
     const id = queryParams.get("id");
-    axios.get(`http://localhost:8080/api/blog/` + id).then((res) => {
+    axios.get(`http://localhost:8080/api/blog/` + id, {
+      headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+      withCredentials: true,
+    }).then((res) => {
       const data = res.data;
       this.setState({
         blog: data,
@@ -73,7 +76,9 @@ class BlogAddUpdate extends Component {
           },
           headers: {
             "Content-Type": "application/json",
+            Authorization: `Bearer ${localStorage.getItem("token")}`
           },
+          withCredentials: true,
         }).then(function (response) {
           console.log("Draft saved.")
         });
@@ -160,7 +165,9 @@ class BlogAddUpdate extends Component {
         },
         headers: {
           "Content-Type": "application/json",
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
+        withCredentials: true,
       }).then(function (response) {
         window.location.href = "./?id=" + id;
       });
@@ -184,7 +191,9 @@ class BlogAddUpdate extends Component {
         },
         headers: {
           "Content-Type": "application/json",
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
+        withCredentials: true,
       }).then(function (response) {
         window.location.href = "./list";
     });
@@ -259,7 +268,7 @@ class BlogAddUpdate extends Component {
           id="blogTitleInput"
           type="text"
           maxLength="200"
-          placeholder="Enter a title for your blog."
+          placeholder="Thêm tiêu đề cho blog."
           onClick={onInput}
           onChange={titleChanged}
           onInput={onInput}

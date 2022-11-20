@@ -41,7 +41,7 @@ public class SearchServiceImpl implements SearchService {
             int numberOfRate = 0;
             if (poiRepository.getNumberOfRateByActivityId(poi.getActivityId()).isPresent())
                 numberOfRate = poiRepository.getNumberOfRateByActivityId(poi.getActivityId()).get();
-            SearchPOIAndDestinationDTO PoiDTO = new SearchPOIAndDestinationDTO(poi.getActivityId(), poi.getName(), mapFromPOICategory(poi), poi.getGoogleRate(), numberOfRate, poi.getDescription(), poiRepository.getThumbnailById(poi.getActivityId()).isPresent()?poiRepository.getThumbnailById(poi.getActivityId()).get():null, true);
+            SearchPOIAndDestinationDTO PoiDTO = new SearchPOIAndDestinationDTO(poi.getActivityId(), poi.getName(), POI.mapFromPOICategory(poi), poi.getGoogleRate(), numberOfRate, poi.getDescription(), poiRepository.getThumbnailById(poi.getActivityId()).isPresent()?poiRepository.getThumbnailById(poi.getActivityId()).get():null, true);
             list.add(PoiDTO);
         }
 
@@ -76,7 +76,7 @@ public class SearchServiceImpl implements SearchService {
             int numberOfRate = 0;
             if (poiRepository.getNumberOfRateByActivityId(poi.getActivityId()).isPresent())
                 numberOfRate = poiRepository.getNumberOfRateByActivityId(poi.getActivityId()).get();
-            SearchPOIAndDestinationDTO PoiDTO = new SearchPOIAndDestinationDTO(poi.getActivityId(), poi.getName(), mapFromPOICategory(poi), poi.getGoogleRate(), numberOfRate, poi.getDescription(), poiRepository.getThumbnailById(poi.getActivityId()).isPresent()?poiRepository.getThumbnailById(poi.getActivityId()).get():null, true);
+            SearchPOIAndDestinationDTO PoiDTO = new SearchPOIAndDestinationDTO(poi.getActivityId(), poi.getName(), POI.mapFromPOICategory(poi), poi.getGoogleRate(), numberOfRate, poi.getDescription(), poiRepository.getThumbnailById(poi.getActivityId()).isPresent()?poiRepository.getThumbnailById(poi.getActivityId()).get():null, true);
             list.add(PoiDTO);
         }
 
@@ -108,32 +108,7 @@ public class SearchServiceImpl implements SearchService {
         return enumValues;
     }
 
-    public SearchType mapFromPOICategory(POI poi) {
-        switch (poi.getCategory().getCategoryName()) {
-            case "Art and Culture":
-                return SearchType.ART_AND_CULTURE;
-            case "Outdoors":
-                return SearchType.OUTDOORS;
-            case "Religion":
-                return SearchType.RELIGION;
-            case "Historic sights":
-                return SearchType.HISTORIC_SIGHTS;
-            case "Museums":
-                return SearchType.MUSEUMS;
-            case "Spas & Wellness":
-                return SearchType.SPAS_AND_WELLNESS;
-            case "Beaches":
-                return SearchType.BEACHES;
-            case "Hotels":
-                return SearchType.HOTELS;
-            case "Restaurants":
-                return SearchType.RESTAURANTS;
-            case "Shopping":
-                return SearchType.SHOPPING;
-            default:
-                return SearchType.ENTERTAINMENTS;
-        }
-    }
+
 
     public ArrayList<SearchPOIAndDestinationDTO> searchPOIByKeyword(String keyword) {
         ArrayList<SearchPOIAndDestinationDTO> list = new ArrayList<>();
@@ -142,7 +117,7 @@ public class SearchServiceImpl implements SearchService {
             int numberOfRate = 0;
             if (poiRepository.getNumberOfRateByActivityId(poi.getActivityId()).isPresent())
                 numberOfRate = poiRepository.getNumberOfRateByActivityId(poi.getActivityId()).get();
-            SearchPOIAndDestinationDTO PoiDTO = new SearchPOIAndDestinationDTO(poi.getActivityId(), poi.getName(), mapFromPOICategory(poi), poi.getGoogleRate(), numberOfRate, poi.getDescription(), poiRepository.getThumbnailById(poi.getActivityId()).isPresent()?poiRepository.getThumbnailById(poi.getActivityId()).get():null, true);
+            SearchPOIAndDestinationDTO PoiDTO = new SearchPOIAndDestinationDTO(poi.getActivityId(), poi.getName(), POI.mapFromPOICategory(poi), poi.getGoogleRate(), numberOfRate, poi.getDescription(), poiRepository.getThumbnailById(poi.getActivityId()).isPresent()?poiRepository.getThumbnailById(poi.getActivityId()).get():null, true);
             list.add(PoiDTO);
         }
 
