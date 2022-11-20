@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.ArrayList;
 import java.util.Date;
 
 @Data
@@ -17,4 +18,5 @@ public class CollectionDTO {
     private boolean isDeleted;
     private int userID;
     private String imgUrl;
+    private ArrayList<POIOfCollectionDTO> poiList;
 }

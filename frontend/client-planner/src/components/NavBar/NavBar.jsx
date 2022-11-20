@@ -11,6 +11,7 @@ import {
   MDBDropdownToggle,
   MDBDropdownMenu,
   MDBDropdownItem,
+  MDBCollapse,
 } from "mdb-react-ui-kit";
 import PersonIcon from "@mui/icons-material/Person";
 import SearchBar from "../searchBar/POIAndDestinationSearchBar";
@@ -20,6 +21,11 @@ import useAuth from "../../hooks/useAuth";
 import "bootstrap/dist/css/bootstrap.min.css";
 
 const NavBar = () => {
+  const [windowDimenion, detectHW] = useState({
+    winWidth: window.innerWidth,
+    winHeight: window.innerHeight,
+  });
+
   const pathname = window.location.pathname;
   const isLogged = localStorage.getItem("token");
   const handleLogout = () => {
@@ -28,68 +34,87 @@ const NavBar = () => {
     localStorage.removeItem("id");
     window.location.href = "/";
   };
-  return (
-    <MDBNavbar expand="lg" light className={style.navBar}>
-      <MDBContainer fluid>
-        <MDBNavbarBrand href="/" className="me-0">
-          <p className="mb-0 d-flex align-items-center">
-            <span className="fs-3 me-2">TPS</span>
-            <span className="fs-5 text-muted">Itinerary planner</span>
+
+  const detectSize = () => {
+    detectHW({
+      winWidth: window.innerWidth,
+      winHeight: window.innerHeight,
+    });
+  };
+
+  useEffect(() => {
+    window.addEventListener("resize", detectSize);
+
+    return () => {
+      window.removeEventListener("resize", detectSize);
+    };
+  }, [windowDimenion]);
+
+  var searchBar = [];
+  if (windowDimenion.winWidth > 575) {
+    searchBar.push(
+      <>
+        <MDBNavbarBrand href='/' className='me-0'>
+          <p className='mb-0 d-flex align-items-center'>
+            <span className='fs-3 me-2'>TPS</span>
+            <span className='fs-5 text-muted'>Itinerary planner</span>
           </p>
         </MDBNavbarBrand>
 
-        <MDBNavbarNav>
-          <MDBNavbarItem>
-            <MDBNavbarLink
-              className={pathname === "/" ? "active" : ""}
-              href="/"
-            ></MDBNavbarLink>
-          </MDBNavbarItem>
-
-          {/*<MDBNavbarItem>
-            <MDBNavbarLink className={pathname === "/login" ? "active" : ""} href='/login'>
-              Login
-            </MDBNavbarLink>
-          </MDBNavbarItem>*/}
-        </MDBNavbarNav>
-
-        <MDBNavbarNav center="true">
+        <MDBNavbarNav className='justify-content-center'>
           <MDBNavbarItem>
             <SearchBar />
           </MDBNavbarItem>
         </MDBNavbarNav>
+      </>,
+    );
+  } else {
+    searchBar.push(
+      <MDBNavbarNav className='justify-content-center' fullWidth={false}>
+        <MDBNavbarItem>
+          <SearchBar />
+        </MDBNavbarItem>
+      </MDBNavbarNav>,
+    );
+  }
 
-        <MDBNavbarNav right fullWidth={false}>
-          {isLogged ? (
-            <MDBNavbarItem>
-              <MDBDropdown>
-                <MDBDropdownToggle tag="a" className="nav-link link-dark">
-                  <PersonIcon />
-                </MDBDropdownToggle>
-                <MDBDropdownMenu>
-                  <MDBDropdownItem link href="/profile">
-                    Hồ sơ cá nhân
-                  </MDBDropdownItem>
-                  <MDBDropdownItem link href="/change-password">
-                    Đổi mật khẩu
-                  </MDBDropdownItem>
-                  <MDBDropdownItem link href="/" onClick={handleLogout}>
-                    Đăng xuất
-                  </MDBDropdownItem>
-                </MDBDropdownMenu>
-              </MDBDropdown>
-            </MDBNavbarItem>
-          ) : (
-            <MDBNavbarItem>
-              <MDBBtn style={{width:150}} href="/login" color="info">
-                Đăng nhập
-              </MDBBtn>
-            </MDBNavbarItem>
-          )}
-        </MDBNavbarNav>
-      </MDBContainer>
-    </MDBNavbar>
-  );
+  if (window)
+    return (
+      <MDBNavbar expand='sm' light className={`${style.navBar}`}>
+        <MDBContainer fluid>
+          {searchBar}
+
+          <MDBNavbarNav right fullWidth={false}>
+            {isLogged ? (
+              <MDBNavbarItem>
+                <MDBDropdown>
+                  <MDBDropdownToggle tag='a' className='nav-link link-dark'>
+                    <PersonIcon />
+                  </MDBDropdownToggle>
+                  <MDBDropdownMenu>
+                    <MDBDropdownItem link href='/profile'>
+                      Hồ sơ cá nhân
+                    </MDBDropdownItem>
+                    <MDBDropdownItem link href='/change-password'>
+                      Đổi mật khẩu
+                    </MDBDropdownItem>
+                    <MDBDropdownItem link href='/' onClick={handleLogout}>
+                      Đăng xuất
+                    </MDBDropdownItem>
+                  </MDBDropdownMenu>
+                </MDBDropdown>
+              </MDBNavbarItem>
+            ) : (
+              <MDBNavbarItem>
+                <MDBBtn style={{ width: 150 }} href='/login' color='info'>
+                  Đăng nhập
+                </MDBBtn>
+              </MDBNavbarItem>
+            )}
+          </MDBNavbarNav>
+        </MDBContainer>
+      </MDBNavbar>
+    );
 };
 
 export default NavBar;

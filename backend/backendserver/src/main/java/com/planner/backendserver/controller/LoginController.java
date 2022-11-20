@@ -51,7 +51,6 @@ public class LoginController {
     @RequestMapping(value = "/api/loginByOAuth", produces = { "*/*" }, method = RequestMethod.POST)
     public String authenticateUserOAuth(String jwt) {
         return jwt;
-
     }
 
     @RequestMapping(value = "/wrongUser",produces = {"*/*"},method = RequestMethod.GET)

@@ -25,7 +25,7 @@ import RequestResetPassword from "../views/Login/RequestResetPassword";
 import ResetPasswordConfirm from "../views/Login/ResetPasswordConfirm";
 import BlogAddUpdate from "../views/Admin/BlogAddUpdate";
 import CollectionDetail from "../views/CollectionDetail/CollectionDetail";
-import AdminSidebar from "../components/Admin/SideBar"
+import AdminSidebar from "../components/Admin/SideBar";
 import BlogList from "../views/Admin/BlogList";
 import POIList from "../views/Admin/POIList";
 import POIAddUpdate from "../views/Admin/POIAddUpdate";
@@ -35,6 +35,8 @@ import UserRequestList from "../views/Admin/UserRequestList";
 import DestinationAddUpdate from "../views/Admin/DestinationAddUpdate";
 import Map from "../views/Map/Map";
 import Dashboard from "../views/Admin/Dashboard";
+
+import Hotel from "../views/Hotel/Hotel";
 
 export default function RootRoutes() {
   return (
@@ -69,6 +71,7 @@ export default function RootRoutes() {
           <Route path="/poi/request" element={<POIRequest />} />
           <Route path="/test" element={<Test></Test>}></Route>
           <Route path="/map/:id" element={<Map></Map>}></Route>
+          <Route path="/hotel/:tripId" element={<Hotel></Hotel>}></Route>
         </Route>
         <Route element={<RequireAuth allowedRoles={["Admin"]} />}>
           <Route path='/blog/list' element={<ProSidebarProvider><AdminSidebar props={<BlogList/>}/></ProSidebarProvider>} />

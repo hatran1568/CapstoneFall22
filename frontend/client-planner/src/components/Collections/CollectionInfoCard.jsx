@@ -12,11 +12,11 @@ const CollectionInfoCard = (prop) => {
 
   const handleDelete = () => {
     confirm({
-      title: "Are you sure you want to delete " + prop.collection.title + "?",
-      content: "This collection and all its contents will be deleted.",
-      okText: "Yes",
+      title: "Đồng ý xóa " + prop.collection.title + "?",
+      content: "Bộ sưu tập này cùng toàn bộ các địa điểm đã lưu sẽ bị xóa.",
+      okText: "Có",
       okType: "danger",
-      cancelText: "No",
+      cancelText: "Không",
       centered: true,
       onOk() {
         axios
@@ -62,7 +62,7 @@ const CollectionInfoCard = (prop) => {
                 <p className='fs-5 fw-bold mt-4'>{info.title}</p>
                 <p className='mt-2 mb-0'>{info.description}</p>
                 <small className='text-mute' style={{ position: "absolute", bottom: "2vh" }}>
-                  <i>Last updated: {formatDate(prop.collection.dateModified)}</i>
+                  <i>Cập nhật lần cuối: {formatDate(prop.collection.dateModified)}</i>
                 </small>
               </MDBCardBody>
             </a>

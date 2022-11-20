@@ -21,7 +21,6 @@ import POISearchBar from "../../components/POISearchBar/POISearchBar";
 import style from "./CollectionDetail.module.css";
 
 const CollectionDetail = () => {
-  const [POIList, setPOIList] = useState([]);
   const [curCol, setCurCol] = useState();
   const [open, setOpen] = useState(false);
 
@@ -31,15 +30,6 @@ const CollectionDetail = () => {
   const colId = urlParams.get("id");
 
   useEffect(() => {
-    const getPOIList = async () => {
-      const response = await axios.get("/api/collection/poiList/" + colId, {
-        headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
-        withCredentials: true,
-      });
-
-      setPOIList(response.data);
-    };
-
     const getCurCol = async () => {
       const response = await axios.get("/api/collection/get/" + colId, {
         headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
@@ -51,8 +41,7 @@ const CollectionDetail = () => {
 
     document.title = "Trip planner | Collection Details";
     getCurCol();
-    getPOIList();
-  }, []);
+  }, [colId]);
 
   const handleAdd = () => {
     setOpen(true);
@@ -64,7 +53,7 @@ const CollectionDetail = () => {
   };
 
   const handleOk = () => {
-    var poi = POIList.filter((item) => item.activityId === id);
+    var poi = curCol.poiList.filter((item) => item.activityId === id);
     if (poi.length === 0) {
       axios
         .post(
@@ -81,7 +70,7 @@ const CollectionDetail = () => {
           },
         )
         .then((res) => {
-          setPOIList(res.data);
+          setCurCol(res.data);
           setOpen(false);
         });
     } else {
@@ -119,7 +108,7 @@ const CollectionDetail = () => {
             },
           })
           .then((res) => {
-            setPOIList(res.data);
+            setCurCol(res.data);
           });
       },
     });
@@ -168,8 +157,8 @@ const CollectionDetail = () => {
             <h4>Những địa điểm đã lưu</h4>
           </MDBRow>
           <MDBRow className='row-cols-1 row-cols-md-3 g-4'>
-            {POIList ? (
-              POIList.map((poi) => (
+            {curCol.poiList.length > 0 ? (
+              curCol.poiList.map((poi) => (
                 <MDBCol key={poi.activityId}>
                   <a href={"/poi?id=" + poi.activityId} style={{ textDecoration: "none" }}>
                     <div overlay='true' className={style.img} style={{ backgroundImage: `url(${poi.imgUrl})` }}>
@@ -181,7 +170,7 @@ const CollectionDetail = () => {
                             className={style.delBtn}
                             onClick={(e) => handleDelete(e, poi.activityId)}
                           >
-                            <MDBIcon far icon='trash-alt' size="lg"/>
+                            <MDBIcon far icon='trash-alt' size='lg' />
                           </MDBBtn>
                         </div>
                         <MDBCardBody className='mt-5 pt-5'>
@@ -214,7 +203,7 @@ const CollectionDetail = () => {
                 <MDBBtn tag='a' color='none' className={`${style.btn}`} onClick={handleAdd}>
                   <MDBIcon fas icon='plus-circle' style={{ fontSize: "5em" }} />
                 </MDBBtn>
-                <Modal title='Find a point of interest' open={open} onOk={handleOk} onCancel={handleCancel}>
+                <Modal title='Tìm một điểm đến' open={open} onOk={handleOk} onCancel={handleCancel}>
                   <POISearchBar POISelected={setSelectedPOI} />
                 </Modal>
               </div>

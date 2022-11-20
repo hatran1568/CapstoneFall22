@@ -1,0 +1,146 @@
+.mapBox {
+    z-index: 3;
+    position: absolute;
+    left: 44%;
+    height: 80vh;
+    width: 56%;
+    padding: 0px;
+    border-width: 0px;
+    margin: 0px;
+    margin-top: 5px;
+    touch-action: pan-x pan-y;
+    overflow: hidden;
+}
+
+.listBox {
+    height: 80vh;
+    overflow: auto;
+}
+
+.listBox::-webkit-scrollbar {
+    width: 6px;
+    background-color: #F5F5F5;
+}
+
+.listBox::-webkit-scrollbar-thumb {
+    background-color: #000000;
+}
+
+.listBox::-webkit-scrollbar-track {
+    -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+    background-color: #F5F5F5;
+}
+
+.numberCircle {
+    border-radius: 50%;
+    width: 25px;
+    height: 25px;
+    background: black;
+    border: 2px solid #666;
+    color: pink;
+    text-align: center;
+    font: 16px Arial, sans-serif;
+}
+
+.numberCircle:hover {
+    cursor: pointer;
+}
+
+.poiContainer {
+    margin: 8px 0;
+}
+
+.poiTime {
+    text-align: center;
+}
+
+.poiName {
+    text-decoration: none;
+    color: black;
+    margin-bottom: 50px;
+}
+
+.tripName {
+    margin-bottom: 20px;
+}
+
+.infoBox {
+    padding: 15px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+
+.content {
+    margin-top: 30px;
+}
+
+.item {
+    padding: 0;
+    margin: 2px 0;
+    border-radius: 10px;
+    cursor: pointer;
+}
+
+.card {
+    width: 300px;
+    height: 300px;
+    opacity: 1;
+}
+
+.tooltip {
+    border: none;
+    width: fit-content;
+    padding: 0;
+    opacity: 1!important;
+    z-index: 40000;
+}
+
+.cardBody {
+    padding-top: 0;
+}
+
+.cardItemName {
+    white-space: pre-wrap;
+}
+
+.showMore {
+    color: #fff;
+    background-color: #363f45;
+    padding: 0;
+    border-radius: 10px;
+    outline: inherit;
+    white-space: normal;
+    text-overflow: inherit;
+    overflow: visible;
+    height: auto;
+    box-shadow: none;
+    text-decoration: inherit;
+    line-height: normal;
+    width: 100%;
+    min-height: 44px;
+    max-height: 44px;
+    line-height: 16px!important;
+    font-size: 14px!important;
+    font-weight: 600!important;
+}
+
+.poiSearchBar {
+    margin: 0;
+    position: absolute;
+    top: 50%;
+    -ms-transform: translateY(-50%);
+    transform: translateY(-50%);
+    width: 90%;
+    z-index: 100;
+}
+
+.searchBox {
+    position: relative;
+}
+
+.notFound {
+    color: black;
+    font-size: 25px;
+    font-weight: 700;
+    line-height: 29px;
+}

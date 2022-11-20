@@ -80,6 +80,13 @@ public interface POIRepository extends JpaRepository<POI, Integer> {
     @Query("SELECT p FROM POI p left join MasterActivity m on p.activityId = m.activityId where p.activityId = :masterActivityId")
     Optional<POI> getPOIByMasterActivity(int masterActivityId);
 
+
+    @Query("SELECT p FROM POI p left join MasterActivity m on p.activityId = m.activityId  left join Distance dis on dis.startStation.activityId =p.activityId where  p.category.categoryID=10 and dis.distance< :distance and dis.endStation.activityId=:src and (p.typicalPrice =:minPrice or p.typicalPrice>:minPrice) and (p.typicalPrice =:maxPrice or p.typicalPrice<:maxPrice) and (p.googleRate =:minRate or p.typicalPrice>:minRate) and (p.googleRate =:maxRate or p.typicalPrice>:maxRate)")
+    Optional<ArrayList<POI>> getHotelByDestination(double distance,int src,double maxRate,double minRate,double maxPrice,double minPrice);
+
+    @Query("SELECT p FROM POI p left join MasterActivity m on p.activityId = m.activityId  where  p.category.categoryID=10  and (p.typicalPrice =:minPrice or p.typicalPrice>:minPrice) and (p.typicalPrice =:maxPrice or p.typicalPrice<:maxPrice) and (p.googleRate =:minRate or p.typicalPrice>:minRate) and (p.googleRate =:maxRate or p.typicalPrice>:maxRate)")
+    Optional<ArrayList<POI>> getHotelByPriceAndRate(double maxRate,double minRate,double maxPrice,double minPrice);
+
     @Query(
             value = "SELECT ma.activity_id as activityId, ma.name, p.google_rate as rating, p.website,\n" +
                     "       p.telephone_number as phoneNumber, c.category_name as categoryName, c.category_id as categoryId, p.date_created as dateCreated, p.date_modified as dateModified\n" +
@@ -203,4 +210,9 @@ public interface POIRepository extends JpaRepository<POI, Integer> {
             value = "INSERT INTO poi_destination(poi_id, destination_id) VALUES (?1, ?2)",
             nativeQuery = true)
     void addPoiDes(int poiId, int desId);
+
+
+
+    @Query("Select p from POI p join POIDest pd on p.activityId = pd.poi.activityId where pd.destination.destinationId=:id and pd.poi.category.categoryID <>10 and pd.poi.category.categoryID <>11")
+    public ArrayList<POI> getPOIsByDestinationId(int id);
 }

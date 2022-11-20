@@ -14,7 +14,7 @@ body {
 }
 
 .leaflet-container {
-     max-width: 100%;
+    max-width: 100%;
     max-height: 100%;
     width: 100vw;
     height: 100vh;
@@ -53,6 +53,51 @@ body {
 }
 
 .custom-div-icon i.awesome {
+    margin: 12px auto;
+    font-size: 17px;
+}
+
+.hotel-marker-pin {
+    background: #0bc34e;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    margin: -15px 0 0 -15px;
+}
+
+.hotel-marker-pin::after {
+    content: '';
+    width: 24px;
+    height: 24px;
+    margin: 3px 0 0 3px;
+    position: absolute;
+    border-radius: 50%;
+}
+
+.hotel-custom-div-icon span {
+    background: #004f32;
+    font-size: 14px;
+    font-weight: 700;
+    position: absolute;
+    width: max-content;
+    left: 0;
+    right: 0;
+    margin: 10px auto;
+    text-align: center;
+    height: fit-content;
+    border-radius: 15%;
+    color: white;
+    padding: 0 6px;
+    border: 1px solid white;
+    box-shadow: 0 1px 1px 1px rgb(0 0 0 / 20%);
+}
+
+.hotel-custom-div-icon span:hover {
+    background-color: white;
+    color: #000;
+}
+
+.hotel-custom-div-icon i.awesome {
     margin: 12px auto;
     font-size: 17px;
 }

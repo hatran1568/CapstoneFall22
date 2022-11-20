@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useState, useRef, memo } from "react";
 import {
   MDBCard,
   MDBCardBody,
@@ -13,7 +13,12 @@ import {
 import style from "./POISearchBar.module.css";
 import axios from "../../api/axios";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faMapLocationDot } from "@fortawesome/free-solid-svg-icons";
+import {
+  faMapLocationDot,
+  faCircleMinus,
+  faCircleXmark,
+} from "@fortawesome/free-solid-svg-icons";
+
 import { Input, OutlinedInput } from "@mui/material";
 
 const POISearchBar = (props) => {
@@ -34,6 +39,18 @@ const POISearchBar = (props) => {
   };
   useEffect(getResults, [searchInput]);
   const wrapperRef = useRef(null);
+  const handleRemovePOI = () => {
+    document.getElementById("inputSearchString").placeholder =
+      props.placeholder == null
+        ? "Find a place of interest"
+        : props.placeholder;
+    document.getElementById("inputSearchString").value = "";
+
+    setSearchInput("");
+    setResults([]);
+    setSelectedPOI("");
+    props.POISelected("");
+  };
   //useOutsideAlerter(wrapperRef);
   useEffect(() => {
     /**
@@ -54,11 +71,22 @@ const POISearchBar = (props) => {
     };
   }, [wrapperRef]);
   return (
-    <div className={` ${style.container}`} ref={wrapperRef}>
+    <div
+      className={
+        ` ${style.container}` +
+        " " +
+        (props.customStyle == null ? "" : props.customStyle)
+      }
+      ref={wrapperRef}
+    >
       <MDBInputGroup>
         <OutlinedInput
           type="text"
-          placeholder="Find a place of interest"
+          placeholder={
+            props.placeholder == null
+              ? "Hãy tìm một địa điểm"
+              : props.placeholder
+          }
           onChange={(e) => {
             setSearchInput(e.target.value);
           }}
@@ -67,6 +95,9 @@ const POISearchBar = (props) => {
           size="small"
           id="inputSearchString"
         />
+        <button onClick={handleRemovePOI} className={style.clear}>
+          <FontAwesomeIcon icon={faCircleXmark} />
+        </button>
       </MDBInputGroup>
 
       <MDBListGroup className={style.list}>
@@ -81,6 +112,7 @@ const POISearchBar = (props) => {
                 document.getElementById("inputSearchString").placeholder =
                   item.name;
                 document.getElementById("inputSearchString").value = "";
+
                 setSearchInput("");
                 setResults([]);
                 setSelectedPOI(item);

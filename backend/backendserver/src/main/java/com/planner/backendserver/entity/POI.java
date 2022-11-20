@@ -1,5 +1,6 @@
 package com.planner.backendserver.entity;
 
+import com.planner.backendserver.DTO.SearchType;
 import lombok.Data;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
@@ -67,5 +68,31 @@ public class POI extends MasterActivity {
     private Double latitude;
     @Column(name="is_deleted")
     private boolean isDeleted;
+    public static SearchType mapFromPOICategory(POI poi) {
+        switch (poi.getCategory().getCategoryName()) {
+            case "Art and Culture":
+                return SearchType.ART_AND_CULTURE;
+            case "Outdoors":
+                return SearchType.OUTDOORS;
+            case "Religion":
+                return SearchType.RELIGION;
+            case "Historic sights":
+                return SearchType.HISTORIC_SIGHTS;
+            case "Museums":
+                return SearchType.MUSEUMS;
+            case "Spas & Wellness":
+                return SearchType.SPAS_AND_WELLNESS;
+            case "Beaches":
+                return SearchType.BEACHES;
+            case "Hotels":
+                return SearchType.HOTELS;
+            case "Restaurants":
+                return SearchType.RESTAURANTS;
+            case "Shopping":
+                return SearchType.SHOPPING;
 
+            default:
+                return SearchType.ENTERTAINMENTS;
+        }
+    }
 }
