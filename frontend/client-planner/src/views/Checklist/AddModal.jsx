@@ -7,7 +7,6 @@ import { faC, faCheck } from "@fortawesome/free-solid-svg-icons";
 import { useState } from "react";
 function AddItemModal(props) {
   const { itemAdded, onHide, ...rest } = props;
-  const [checked, setChecked] = useState(false);
   const [title, setTitle] = useState("");
   const [note, setNote] = useState("");
   const [showWarningTitle, setShowWarningTitle] = useState(false);
@@ -19,7 +18,7 @@ function AddItemModal(props) {
     let data = {
       title: title,
       note: note,
-      checked: checked,
+      checked: false,
     };
     itemAdded(event, data);
   };
@@ -27,7 +26,7 @@ function AddItemModal(props) {
     <>
       <Modal
         {...rest}
-        size="lg"
+        size="md"
         aria-labelledby="contained-modal-title-vcenter"
         centered
       >
@@ -38,27 +37,6 @@ function AddItemModal(props) {
           ></button>
           <div className={style.modalBody}>
             <div className={style.modalTitle}>Thêm mục</div>
-            {checked ? (
-              <Button
-                variant="outline-dark"
-                onClick={(event) => {
-                  setChecked(!checked);
-                }}
-                className={style.submitBtn}
-              >
-                Đã xong <FontAwesomeIcon icon={faCheck} />
-              </Button>
-            ) : (
-              <Button
-                variant="outline-dark"
-                onClick={(event) => {
-                  setChecked(!checked);
-                }}
-                className={style.uncheckedBtn}
-              >
-                Chưa xong
-              </Button>
-            )}
             <div>
               <div>
                 <input

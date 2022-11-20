@@ -15,6 +15,7 @@ import NotificationModal from "./NotificationModal";
 import TripGeneralInfo from "../GeneralInfo/TripGeneralInfo";
 import CloneTripModal from "../../components/Trips/CloneTripModal";
 import DetailActivityModal from "./DetailActivityModal";
+import TripNotFound from "../../components/Trips/TripNotFound";
 import {
   faPlus,
   faCaretRight,
@@ -62,60 +63,79 @@ class Timetable extends Component {
   }
   componentDidMount() {
     const { id } = this.props.params;
-    axios.get(`/trip/` + id).then((res) => {
-      const tripData = res.data;
-      var tempEvents = [];
-      tripData.listTripDetails.forEach((detail) => {
-        if (detail.startTime < detail.endTime) {
-          var event = {};
-          event.id = detail.tripDetailsId;
-          event.title = detail.masterActivity.name;
-          var date = new Date(detail.date);
-          date.setSeconds(detail.startTime);
-          event.start = date.toISOString().substring(0, 19);
-          var endDate = new Date(detail.date);
-          endDate.setSeconds(detail.endTime);
-          event.end = endDate.toISOString().substring(0, 19);
-          event.detail = detail;
-          event.constraint = "available";
-          tempEvents.push(event);
+    const userId = localStorage.getItem("id") ? localStorage.getItem("id") : -1;
+    axios
+      .get(`/trip/` + id + "?userId=" + userId)
+      .then((res) => {
+        const tripData = res.data;
+        var tempEvents = [];
+        tripData.listTripDetails.forEach((detail) => {
+          if (detail.startTime < detail.endTime) {
+            var event = {};
+            event.id = detail.tripDetailsId;
+            event.title = detail.masterActivity.name;
+            var date = new Date(detail.date);
+            date.setSeconds(detail.startTime);
+            event.start = date.toISOString().substring(0, 19);
+            var endDate = new Date(detail.date);
+            endDate.setSeconds(detail.endTime);
+            event.end = endDate.toISOString().substring(0, 19);
+            event.detail = detail;
+            event.constraint = "available";
+            tempEvents.push(event);
+          }
+        });
+        var tzoffset = new Date().getTimezoneOffset() * 60000;
+        var endDt = new Date(tripData.endDate);
+        var newEndDt = new Date(endDt - tzoffset);
+        newEndDt.setDate(newEndDt.getDate() + 1);
+        tempEvents.push({
+          groupId: "available",
+          start: tripData.startDate,
+          end: newEndDt.toISOString().substring(0, 10),
+          display: "background",
+        });
+        var snext = false;
+        if (
+          this.addDays(tripData.endDate, 0) >
+          this.addDays(tripData.startDate, 3)
+        ) {
+          snext = true;
+        }
+        var own = false;
+        if (tripData.userID && tripData.userID == localStorage.getItem("id")) {
+          own = true;
+        }
+        this.setState(
+          {
+            trip: tripData,
+            dataLoaded: true,
+            currentEvents: tempEvents,
+            initialDate: tripData.startDate,
+            currentDate: tripData.startDate,
+            showNext: snext,
+            own: own,
+          },
+          () => {
+            window.scrollTo(0, 600);
+          }
+        );
+      })
+      .catch((error) => {
+        if (error.response) {
+          // The request was made and the server responded with a status code
+          // that falls out of the range of 2xx
+          console.log(error.response.data);
+          console.log(error.response.status);
+          console.log(error.response.headers);
+          if (error.response.status == 404) {
+            this.setState({
+              dataLoaded: true,
+              trip: null,
+            });
+          }
         }
       });
-      var tzoffset = new Date().getTimezoneOffset() * 60000;
-      var endDt = new Date(tripData.endDate);
-      var newEndDt = new Date(endDt - tzoffset);
-      newEndDt.setDate(newEndDt.getDate() + 1);
-      tempEvents.push({
-        groupId: "available",
-        start: tripData.startDate,
-        end: newEndDt.toISOString().substring(0, 10),
-        display: "background",
-      });
-      var snext = false;
-      if (
-        this.addDays(tripData.endDate, 0) > this.addDays(tripData.startDate, 3)
-      ) {
-        snext = true;
-      }
-      var own = false;
-      if (tripData.userID && tripData.userID == localStorage.getItem("id")) {
-        own = true;
-      }
-      this.setState(
-        {
-          trip: tripData,
-          dataLoaded: true,
-          currentEvents: tempEvents,
-          initialDate: tripData.startDate,
-          currentDate: tripData.startDate,
-          showNext: snext,
-          own: own,
-        },
-        () => {
-          window.scrollTo(0, 600);
-        }
-      );
-    });
   }
   //get all dates in the trip
   getAllDates = (start, end) => {
@@ -131,7 +151,7 @@ class Timetable extends Component {
   getAllMonths = (dateArr) => {
     var monthArr = [];
     dateArr.forEach((date) => {
-      var month = date.toLocaleString("default", { month: "long" });
+      var month = date.toLocaleString("vi", { month: "long" });
       if (!monthArr.includes(month)) monthArr.push(month);
     });
     return monthArr;
@@ -139,7 +159,7 @@ class Timetable extends Component {
   getAllDatesOfMonth = (dateArr, month) => {
     var arr = [];
     dateArr.forEach((dt) => {
-      if (dt.toLocaleString("default", { month: "long" }) == month) {
+      if (dt.toLocaleString("vi", { month: "long" }) == month) {
         arr.push(new Date(dt));
       }
     });
@@ -309,25 +329,14 @@ class Timetable extends Component {
           <div></div>
         </LoadingScreen>
       );
+    if (this.state.dataLoaded && this.state.trip == null) {
+      return <TripNotFound />;
+    }
     var allDates = this.getAllDates(
       this.state.trip.startDate,
       this.state.trip.endDate
     );
     var allMonths = this.getAllMonths(allDates);
-    const vietMonths = {
-      January: "Tháng Một",
-      February: "Tháng Hai",
-      March: "Tháng Ba",
-      April: "Tháng Tư",
-      May: "Tháng Năm",
-      June: "Tháng Sáu",
-      July: "Tháng Bảy",
-      August: "Tháng Tám",
-      September: "Tháng Chín",
-      October: "Tháng Mười",
-      November: "Tháng Mười Một",
-      December: "Tháng Mười Hai",
-    };
     document.title = this.state.trip.name + " | Tripplanner";
     return (
       <>
@@ -347,6 +356,8 @@ class Timetable extends Component {
               show={this.state.showCloneModal}
               onHide={this.closeCloneModal}
               tripId={this.state.trip.tripId}
+              tripStartDate={this.state.trip.startDate}
+              tripEndDate={this.state.trip.endDate}
             />
           </>
         ) : (
@@ -390,7 +401,7 @@ class Timetable extends Component {
               <div className={style.daysBox}>
                 {allMonths.map((month) => (
                   <div key={month}>
-                    <div className={style.month}>{vietMonths[month]}</div>
+                    <div className={style.month}>{month}</div>
                     {this.getAllDatesOfMonth(allDates, month).map((date) => (
                       <a
                         href=""
@@ -412,7 +423,7 @@ class Timetable extends Component {
                 ))}
               </div>
             </div>
-            <div className={`col-11 ${style.calendarDiv}`}>
+            <div className={`col-10 ${style.calendarDiv}`}>
               {this.state.showNext && (
                 <a
                   className={` ${style.nextBtn} ${style.navBtn}`}
@@ -639,15 +650,18 @@ class Timetable extends Component {
     var startSeconds = +start[0] * 60 * 60 + +start[1] * 60;
     var end = input.end_time.split(":");
     var endSeconds = +end[0] * 60 * 60 + +end[1] * 60;
+    const data = {
+      date: input.date,
+      startTime: startSeconds,
+      endTime: endSeconds,
+      name: input.name,
+      address: input.address,
+      tripId: this.state.trip.tripId,
+      note: input.note ? input.note : "",
+    };
+    console.log("custom data: ", data);
     axios
-      .post(`/trip/add-custom-detail`, {
-        date: input.date,
-        startTime: startSeconds,
-        endTime: endSeconds,
-        name: input.name,
-        address: input.address,
-        tripId: this.state.trip.tripId,
-      })
+      .post(`/trip/add-custom-detail`, data)
       .then((response) => {
         var newDetail = response.data;
         this.addEventToView(newDetail);
@@ -669,14 +683,17 @@ class Timetable extends Component {
     var startSeconds = +start[0] * 60 * 60 + +start[1] * 60;
     var end = input.end_time.split(":");
     var endSeconds = +end[0] * 60 * 60 + +end[1] * 60;
+    const data = {
+      date: input.date,
+      startTime: startSeconds,
+      endTime: endSeconds,
+      activityId: input.activity_id,
+      tripId: this.state.trip.tripId,
+      note: input.note ? input.note : "",
+    };
+    console.log("data: ", data);
     axios
-      .post(`/trip/add-detail`, {
-        date: input.date,
-        startTime: startSeconds,
-        endTime: endSeconds,
-        activityId: input.activity_id,
-        tripId: this.state.trip.tripId,
-      })
+      .post(`/trip/add-detail`, data)
       .then((response) => {
         var newDetail = response.data;
         this.addEventToView(newDetail);
@@ -738,10 +755,11 @@ class Timetable extends Component {
     detail.startTime = +start[0] * 60 * 60 + +start[1] * 60;
     var end = detail.endTime.split(":");
     detail.endTime = +end[0] * 60 * 60 + +end[1] * 60;
+    console.log("edit custom detail: ", detail);
     axios({
       method: "put",
       url:
-        "/trip/put-custom-detail?id=" +
+        "/trip/put-custom-detail?detailId=" +
         detail.tripDetailsId +
         "&tripId=" +
         this.state.trip.tripId,

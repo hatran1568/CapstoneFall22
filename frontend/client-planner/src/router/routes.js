@@ -26,6 +26,7 @@ import ResetPasswordConfirm from "../views/Login/ResetPasswordConfirm";
 import BlogAddUpdate from "../views/Admin/BlogAddUpdate";
 import CollectionDetail from "../views/CollectionDetail/CollectionDetail";
 import AdminSidebar from "../components/Admin/SideBar";
+import PublicTrips from "../views/PublicTrips/PublicTrips"
 import BlogList from "../views/Admin/BlogList";
 import POIList from "../views/Admin/POIList";
 import POIAddUpdate from "../views/Admin/POIAddUpdate";
@@ -71,6 +72,7 @@ export default function RootRoutes() {
           <Route path="/poi/request" element={<POIRequest />} />
           <Route path="/test" element={<Test></Test>}></Route>
           <Route path="/map/:id" element={<Map></Map>}></Route>
+          <Route path="/recent-plans" element={<PublicTrips></PublicTrips>}></Route>
           <Route path="/hotel/:tripId" element={<Hotel></Hotel>}></Route>
         </Route>
         <Route element={<RequireAuth allowedRoles={["Admin"]} />}>

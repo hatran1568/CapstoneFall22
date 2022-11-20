@@ -8,7 +8,6 @@ import { useState } from "react";
 function EditItemModal(props) {
   const { onSubmit, onHide, item, ...rest } = props;
   var clone = JSON.parse(JSON.stringify(item));
-  const [checked, setChecked] = useState(clone.checked == true);
   const [title, setTitle] = useState(clone.title);
   const [note, setNote] = useState(clone.note);
   const [showWarningTitle, setShowWarningTitle] = useState(false);
@@ -17,14 +16,14 @@ function EditItemModal(props) {
       setShowWarningTitle(true);
       return;
     }
-    if (title == item.title && note == item.note && checked == item.checked) {
+    if (title == item.title && note == item.note) {
       onHide();
     } else {
       let data = {
         itemId: item.itemId,
         title: title,
         note: note,
-        checked: checked,
+        checked: clone.checked,
       };
       onSubmit(event, data);
     }
@@ -33,7 +32,7 @@ function EditItemModal(props) {
     <>
       <Modal
         {...rest}
-        size="lg"
+        size="md"
         aria-labelledby="contained-modal-title-vcenter"
         centered
       >
@@ -46,27 +45,6 @@ function EditItemModal(props) {
             <div className={style.modalTitle}>
               {item.title ? item.title : ""}
             </div>
-            {checked ? (
-              <Button
-                variant="outline-dark"
-                onClick={(event) => {
-                  setChecked(!checked);
-                }}
-                className={style.submitBtn}
-              >
-                Đã xong <FontAwesomeIcon icon={faCheck} />
-              </Button>
-            ) : (
-              <Button
-                variant="outline-dark"
-                onClick={(event) => {
-                  setChecked(!checked);
-                }}
-                className={style.uncheckedBtn}
-              >
-                Chưa xong
-              </Button>
-            )}
             <div>
               <div>
                 <input
