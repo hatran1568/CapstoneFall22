@@ -1,0 +1,111 @@
+.mainContainer{
+    margin-top: 5%;
+}
+.tripsList{
+    margin-top: 1em;
+}
+.card {
+    height: 300px;
+    overflow: hidden;
+    border: none;
+    cursor: pointer;
+    border-radius: 0;
+  }
+  .img {
+    height: 300px;
+    width: 100%;
+    transition: 0.5s;
+    filter: brightness(60%);
+  }
+  .cardTitle {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: white;
+    text-align: center;
+    width: 100%;
+    text-shadow: 0 0 1px #000;
+    transition: 0.5s;
+    font-weight: 700;
+    font-family: Klarna Display,Helvetica Neue,Arial,Helvetica,sans-serif;
+  }
+  .tripName{
+
+  }
+  .numberOfDays{
+    text-transform: uppercase;
+    font-weight: normal;
+  }
+  .description {
+    width: 100%;
+    height: auto;
+    bottom: 0;
+    background-color: rgba(255,255,255,.92);
+    box-sizing: border-box;
+    position: absolute;
+    padding: 0.7em 1em;
+    font-size: 0.9em;
+    line-height: 1.5em;
+    max-height: 4em;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    transition: 0.5s;
+  }
+  .card:hover .description{
+    max-height: 100%;
+  }
+  .card:hover .img {
+    transform: scale(1.1);
+  }
+  .searchBox{
+    margin-bottom: 1em;
+  }
+  @media only screen and (min-device-width: 768px){
+.tripName {
+    font-size: 30px;}
+}
+.searchBtn{
+    cursor: pointer;
+}
+.filterBox{
+    padding: 0;
+    padding-right: 2em;
+}
+.filterTitle{
+    font-size: x-large;
+    font-weight: 700;
+    color: #0e0e0f;
+    font-family: Klarna Display,Helvetica Neue,Arial,Helvetica,sans-serif;
+}
+.daysRangeBox{
+    margin: 1em;
+    max-width: 100%;
+}
+label{
+    font-size: large;
+    font-weight: 500;
+    color: #0e0e0f;
+    margin-top: 2em;
+}
+.applyBtn{
+    border: solid 1px #34a9d9 !important;
+    background-color: #34a9d9 !important;
+    color: #fff !important;
+    margin-left: 1em;
+}
+.applyBtn:hover{
+    color: #fff !important;
+    background-color: #267A9C !important;
+    border-color: #267A9C !important;
+}
+.btnGroup{
+    margin: 0;
+    margin-top: 1em;
+}
+.paginate{
+    margin-top: 2em;
+}
+input[type=search]::-webkit-search-cancel-button {
+    -webkit-appearance: searchfield-cancel-button;
+}

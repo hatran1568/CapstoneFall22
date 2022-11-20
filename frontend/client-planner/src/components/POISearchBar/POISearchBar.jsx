@@ -58,7 +58,7 @@ const POISearchBar = (props) => {
       <MDBInputGroup>
         <OutlinedInput
           type="text"
-          placeholder="Find a place of interest"
+          placeholder="Tìm một địa điểm"
           onChange={(e) => {
             setSearchInput(e.target.value);
           }}

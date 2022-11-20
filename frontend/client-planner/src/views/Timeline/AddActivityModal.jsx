@@ -58,6 +58,7 @@ function AddActivityModal(props) {
     if (validated) {
       var sendFields = { ...inputField };
       resetInputField();
+      console.log(sendFields);
       activityAdded(event, sendFields);
     }
   };

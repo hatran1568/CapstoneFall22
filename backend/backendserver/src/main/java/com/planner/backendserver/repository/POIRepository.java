@@ -76,4 +76,9 @@ public interface POIRepository extends JpaRepository<POI, Integer> {
     @Query("SELECT p FROM POI p left join MasterActivity m on p.activityId = m.activityId where p.activityId = :masterActivityId")
     Optional<POI> getPOIByMasterActivity(int masterActivityId);
 
+    @Query(value = "select distinct ma.name from trip_details td " +
+            "left join poi on td.master_activity_id = poi.activity_id " +
+            "left join master_activity ma on poi.activity_id = ma.activity_id " +
+            "where td.trip_id = :tripId limit :limit", nativeQuery = true)
+    ArrayList<String> getPOIsByTripId(int tripId, int limit);
 }

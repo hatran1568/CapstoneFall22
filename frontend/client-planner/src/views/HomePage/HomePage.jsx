@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import DestinationSearchBar from "../../components/DestinationSearchBar/DestinationSearchBar";
+import RecentTrips from "./RecentTrips";
 import {
   MDBBtn,
   MDBBtnGroup,
@@ -212,9 +213,12 @@ function HomePage() {
     ) {
       document.getElementById("errorEmptyPlan1").innerHTML =
         "Please enter all fields.";
-    } 
-    else if (document.getElementById("startDateInput").value > document.getElementById("endDateInput").value)
-      document.getElementById("errorEmptyPlan1").innerHTML = "Please enter valid dates.";
+    } else if (
+      document.getElementById("startDateInput").value >
+      document.getElementById("endDateInput").value
+    )
+      document.getElementById("errorEmptyPlan1").innerHTML =
+        "Please enter valid dates.";
     else
       axios({
         method: "post",
@@ -615,8 +619,8 @@ function HomePage() {
             </MDBModalHeader>
             <MDBModalBody>
               <div className={style.emptyTripInfo}>
-                Tạo ra một chuyến đi trống. Sao khi khởi tạo, bạn sẽ được chuyển tới 
-                chuyến đi và có thể tự tùy chỉnh theo ý muốn.
+                Tạo ra một chuyến đi trống. Sao khi khởi tạo, bạn sẽ được chuyển
+                tới chuyến đi và có thể tự tùy chỉnh theo ý muốn.
               </div>
               <br />
               <MDBRow className={style.modalInput}>
@@ -660,7 +664,10 @@ function HomePage() {
                     className={style.datepicker}
                   />
                 </MDBCol>
-                <div id="errorEmptyPlan1" className={style.errorEmptyPlan}></div>
+                <div
+                  id="errorEmptyPlan1"
+                  className={style.errorEmptyPlan}
+                ></div>
               </MDBRow>
               <br />
             </MDBModalBody>
@@ -704,7 +711,12 @@ function HomePage() {
           </div>
         </MDBContainer>
       ) : null}
-
+      <MDBContainer
+        className="mt-5 d-flex justify-content-center"
+        style={{ width: "70%" }}
+      >
+        <RecentTrips />
+      </MDBContainer>
       <MDBContainer>
         <h2 className="text-center mt-5 mb-3">Goodies from our services</h2>
         <MDBRow className="gx-0">

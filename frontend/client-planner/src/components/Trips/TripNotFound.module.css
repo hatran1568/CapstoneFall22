@@ -1,0 +1,61 @@
+.mainDiv{
+    font-family: Klarna Text,Helvetica Neue,Arial,Helvetica,sans-serif;
+}
+.mainDiv img{
+    width: 100%;
+    max-height: 80vh;
+    object-fit: cover;
+    filter: brightness(50%) opacity(80%);
+}
+.notiBox{
+    margin: 0;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 550px;
+    background-color: #fff;
+    border-radius: 5px;
+}
+.notiHeader{
+    background-color: #0e0e0f;
+    color: white;
+    font-weight: 500;
+    font-size: large;
+    text-align: center;
+    padding: 1em;
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+}
+.notiBody{
+    text-align: center;
+    padding: 2em;   
+     color: #5F6163;
+     line-height: 1.8em;
+}
+.centerBtnGroup{
+    margin-top: 2em;
+    text-align: center;
+}
+.centerBtnGroup button{
+    margin: 0 1em;
+}
+.createBtn {
+    text-decoration: none;
+    background: #0e0e0f;
+    text-align: center;
+    justify-content: center;
+    align-items: center;
+    font-size: large;
+    color: white;
+    font-weight: 500;
+    z-index: 10;
+    cursor: pointer;
+    padding: 0.5em 0.5em;
+    border-radius: 5px;
+    margin-top: 1.5em;
+  }
+  .createBtn:hover{
+    background-color: #0e0e0fb2;
+    color: white;
+  }
