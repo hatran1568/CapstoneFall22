@@ -11,6 +11,7 @@ import {
   faBook,
   faPenToSquare,
   faUsers,
+  faChartLine,
 } from "@fortawesome/free-solid-svg-icons";
 import {
   MDBRow,
@@ -63,6 +64,12 @@ function AdminSidebar({props}) {
               <span className="fs-5 text-muted">Itinerary planner</span>
             </p>
           </MDBNavbarBrand>
+          <MenuItem>
+            <a href="/admin/dashboard" className={style.sidebarItem}>
+            <MDBRow><MDBCol md={2} className={style.sidebarIcon}><FontAwesomeIcon icon={faChartLine}/></MDBCol> 
+            <MDBCol md={2} className={style.sidebarText}>Bảng điều khiển</MDBCol></MDBRow>
+            </a>
+          </MenuItem>
           <MenuItem>
             <a href="/poi/adminlist" className={style.sidebarItem}>
             <MDBRow><MDBCol md={2} className={style.sidebarIcon}><FontAwesomeIcon icon={faPlaceOfWorship}/></MDBCol> 
