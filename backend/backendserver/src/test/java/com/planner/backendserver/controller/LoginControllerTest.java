@@ -1,6 +1,7 @@
 package com.planner.backendserver.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.planner.backendserver.DTO.UserDTO;
 import com.planner.backendserver.config.JwtTokenProvider;
 import com.planner.backendserver.repository.UserRepository;
 import org.junit.jupiter.api.BeforeEach;
@@ -13,22 +14,21 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.test.web.servlet.MockMvc;
 
+import java.util.List;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 @WebMvcTest(controllers = LoginController.class)
 class LoginControllerTest {
+    List<UserDTO> userList;
     @MockBean
     private UserRepository userRepository;
-
     @MockBean
     private AuthenticationManager authenticationManager;
-
     @MockBean
     private JwtTokenProvider tokenProvider;
-
     @Autowired
     private MockMvc mockMvc;
-
     @Autowired
     private ObjectMapper mapper;
 
@@ -38,6 +38,5 @@ class LoginControllerTest {
 
     @Test
     void authenticateUserTest() {
-        Mockito.when(authenticationManager.authenticate(Mockito.any(UsernamePasswordAuthenticationToken.class)));
     }
 }
