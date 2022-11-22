@@ -1,6 +1,7 @@
 package com.planner.backendserver.controller;
 
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import com.planner.backendserver.DTO.response.ChecklistDTO;
 import com.planner.backendserver.DTO.response.ChecklistItemDTO;
 import com.planner.backendserver.service.interfaces.ChecklistService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,9 +18,11 @@ public class ChecklistController {
     private ChecklistService checklistService;
 
     @GetMapping("/get-by-trip")
-    public ResponseEntity<List<ChecklistItemDTO>> getChecklistItemsByTripId(@RequestParam int tripId){
+    public ResponseEntity<ChecklistDTO> getChecklistItemsByTripId(@RequestParam int tripId, @RequestParam int userId){
         try{
-            return new ResponseEntity<>(checklistService.getChecklistItemsByTripId(tripId), HttpStatus.OK);
+            ChecklistDTO checklistDTO = checklistService.getChecklistItemsByTripId(tripId, userId);
+            if(checklistDTO == null) return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(checklistDTO, HttpStatus.OK);
         } catch (Exception e){
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }

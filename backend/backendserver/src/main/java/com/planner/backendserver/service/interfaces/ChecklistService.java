@@ -1,5 +1,6 @@
 package com.planner.backendserver.service.interfaces;
 
+import com.planner.backendserver.DTO.response.ChecklistDTO;
 import com.planner.backendserver.DTO.response.ChecklistItemDTO;
 import org.springframework.stereotype.Service;
 
@@ -7,7 +8,7 @@ import java.util.List;
 
 @Service
 public interface ChecklistService {
-    List<ChecklistItemDTO> getChecklistItemsByTripId(int tripId);
+    ChecklistDTO getChecklistItemsByTripId(int tripId, int userId);
     boolean itemExists(int itemId);
 
     void updateCheckedState(int itemId, Boolean checked);
