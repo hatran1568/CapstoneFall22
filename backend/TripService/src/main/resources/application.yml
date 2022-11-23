@@ -1,0 +1,33 @@
+spring:
+  application:
+    name: trip-service
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    password: 123456
+    url: jdbc:mysql://localhost:3306/TripPlanner
+    username: root
+  jpa:
+    hibernate:
+      ddl-auto: none
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQL57InnoDBDialect
+        format_sql: true
+    show-sql: true
+  mail:
+    host: smtp.gmail.com
+    username: oanhha2001@gmail.com
+    password: oydlwnsgjxitbqca
+    port: 587
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+server:
+  port: 8084
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:8083/eureka

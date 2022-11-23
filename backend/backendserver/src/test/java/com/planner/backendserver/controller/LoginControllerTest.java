@@ -1,6 +1,7 @@
 package com.planner.backendserver.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.planner.backendserver.DTO.request.HotelsRequestDTO;
 import com.planner.backendserver.config.JwtTokenProvider;
 import com.planner.backendserver.repository.UserRepository;
 import org.junit.jupiter.api.BeforeEach;
@@ -13,9 +14,7 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.test.web.servlet.MockMvc;
 
-import static org.junit.jupiter.api.Assertions.*;
-
-@WebMvcTest(controllers = LoginController.class)
+@WebMvcTest(controllers = HotelsRequestDTO.LoginController.class)
 class LoginControllerTest {
     @MockBean
     private UserRepository userRepository;

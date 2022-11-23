@@ -1,16 +1,27 @@
 package com.example.Optimizer.service;
 
-import com.example.Optimizer.DTO.Data;
-import com.example.Optimizer.DTO.GenerateTripUserInput;
+import com.example.Optimizer.DTO.*;
+import com.example.Optimizer.DTO.Response.DesDetailsDTO;
 import com.example.Optimizer.DTO.Response.RequestStatus;
 import com.example.Optimizer.DTO.Response.SimpleResponse;
-import com.example.Optimizer.DTO.Solution;
+import com.example.Optimizer.DTO.request.ExpenseDTO;
+import com.example.Optimizer.DTO.request.TripDetailsGenerateDTO;
+import com.example.Optimizer.DTO.request.TripGenerateDTO;
 import com.example.Optimizer.algorithms.GeneticAlgorithmImplementer;
+import com.example.Optimizer.config.RestTemplateClient;
 import com.example.Optimizer.entity.*;
 import com.example.Optimizer.repository.*;
 import com.example.Optimizer.service.interfaces.GenerateTrip;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cloud.client.ServiceInstance;
+import org.springframework.cloud.client.discovery.DiscoveryClient;
 import org.springframework.core.env.Environment;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
@@ -18,6 +29,7 @@ import org.springframework.stereotype.Service;
 import java.sql.Date;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
@@ -25,21 +37,14 @@ import java.util.function.BiConsumer;
 
 import lombok.extern.slf4j.Slf4j;
 
+import javax.transaction.Transactional;
+
 @Slf4j
 @Service
 public class GenerateTripIml implements GenerateTrip {
+
     @Autowired
-    SimpMessagingTemplate template;
-    @Autowired
-    DistanceRepository distanceRepository;
-    @Autowired
-    POIRepository poiRepository;
-    @Autowired
-    TripRepository tripRepository;
-    @Autowired
-    TripDetailRepository tripDetailRepository;
-    @Autowired
-    DestinationRepository destinationRepository;
+    RestTemplateClient restTemplateClient;
 
     @Autowired
     AsyncJobsManager asyncJobsManager;
@@ -48,11 +53,14 @@ public class GenerateTripIml implements GenerateTrip {
     private Environment environment;
 
     @Autowired
-    private  TripExpenseRepository tripExpenseRepository;
+    private DiscoveryClient discoveryClient;
+
+    @Autowired
+    RequestRepository repository;
 
     @Override
     @Async("asyncTaskExecutor")
-    public CompletableFuture<SimpleResponse> generateTrip(GenerateTripUserInput input) throws ExecutionException, InterruptedException {
+    public CompletableFuture<SimpleResponse> generateTrip(GenerateTripUserInput input, String baseUrl) throws ExecutionException, InterruptedException {
         CompletableFuture<SimpleResponse> task = new CompletableFuture<>();
         CompletableFuture<Trip> realTask = new CompletableFuture<>();
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
@@ -60,8 +68,12 @@ public class GenerateTripIml implements GenerateTrip {
         Date sDate = input.getStartDate();
         //parsed = format.parse(tripGenerateDTO.getEndDate());
         Date eDate = input.getEndDate();
+        List<ServiceInstance> instances = discoveryClient.getInstances("Location_Service");
 
-        ArrayList<POI> listPoi = (ArrayList<POI>) poiRepository.getPOIsByDestinationId(input.getDestinationId());
+        ServiceInstance instance = instances.get(0);
+
+        ArrayList<POI> listPoi = (ArrayList<POI>) restTemplateClient.restTemplate().getForObject(instance.getUri() + "/api/pois/poisByDestination/" + input.getDestinationId(), List.class);
+
         int numberOfPOI = listPoi.size();
         POI[] POIs = new POI[numberOfPOI];
         for (int i = 0; i < listPoi.size(); i++) {
@@ -74,147 +86,91 @@ public class GenerateTripIml implements GenerateTrip {
                 if (i == j)
                     distanceOfPOI[i][j] = 0;
                 else {
-                    distanceOfPOI[i][j] = distanceRepository.getDistanceBySrcAndDest(POIs[i].getActivityId(), POIs[j].getActivityId());
+                    distanceOfPOI[i][j] = restTemplateClient.restTemplate().getForObject(instance.getUri() + "/api/pois/distance/" + POIs[i].getActivityId() + "/" + POIs[j].getActivityId(), Double.class);
+
                 }
             }
         }
         String serverPort = environment.getProperty("local.server.port");
         Data data = new Data(sDate, eDate, distanceOfPOI, POIs, numberOfPOI, input.getUserPreference(), input.getBudget(), input.getStartTime(), input.getEndTime(), input.getUserId());
-        GeneticAlgorithmImplementer ga = new GeneticAlgorithmImplementer(data, template);
+        GeneticAlgorithmImplementer ga = new GeneticAlgorithmImplementer(data);
         Solution s = ga.implementGA(data);
-        realTask.complete(s.toTrip(data));
 
 
-        task.complete(new SimpleResponse(input.getId(),s.toTrip(data),RequestStatus.COMPLETE,input.getUserId(),serverPort));
+        task.complete(new SimpleResponse(input.getId(), RequestStatus.COMPLETE, input.getUserId(), baseUrl));
+        repository.insert(RequestStatus.IN_PROGRESS.name(), baseUrl, input.getUserId());
         task.whenComplete(new BiConsumer<SimpleResponse, Throwable>() {
             @Override
+
             public void accept(SimpleResponse simpleResponse, Throwable throwable) {
-                try {
 
-                    if(fetchJobElseThrowException(simpleResponse.getId()).isCancelled()){
-                        log.info("Cancelled");
-                        log.info("----------------------------------------- ");
-                        asyncJobsManager.removeJob(simpleResponse.getId());
-                        return;
+                    List<ServiceInstance> instances = discoveryClient.getInstances("Trip_Service");
+
+                    ServiceInstance instance = instances.get(0);
+                    HttpHeaders headers = new HttpHeaders();
+
+                    headers.setContentType(MediaType.APPLICATION_JSON);
+                    ObjectMapper mapper = new ObjectMapper();
+                    Gson gson = new GsonBuilder()
+                            .setDateFormat("yyyy-MM-dd").create();
+
+                    TripGenerateDTO trip = new TripGenerateDTO();
+                    log.info("Insert to DB ");
+                    log.info("----------------------------------------- ");
+                    List<ServiceInstance> locationInstances = discoveryClient.getInstances("Location_Service");
+                    ServiceInstance locationInstance = instances.get(0);
+                    DesDetailsDTO destination = restTemplateClient.restTemplate().getForObject(locationInstance.getUri()+"/api/destination/"+input.getDestinationId(), DesDetailsDTO.class);
+                    trip.setName(data.getDayOfTrip() + " days in " +destination.getName());
+                    trip.setBudget(input.getBudget());
+                    trip.setStartDate(input.getStartDate());
+                    trip.setEndDate(input.getEndDate());
+                    trip.setUserId(input.getUserId());
+                    String personJsonObject = gson.toJson(input);
+                    HttpEntity<String> request =
+                            new HttpEntity<String>(personJsonObject, headers);
+                    System.out.println(request);
+
+                    int id= restTemplateClient.restTemplate().postForObject(instance.getUri()+"/trip/insert", request, Integer.class);
+
+                    Trip tour = s.toTrip(data);
+
+
+
+                    for (TripDetails poi : tour.getListTripDetails()
+                    ) {
+                        TripExpense ex = new TripExpense();
+                        TripDetailsGenerateDTO detailsGenerateDTO = new TripDetailsGenerateDTO();
+                        detailsGenerateDTO.setDate(String.valueOf(poi.getDayNumber()));
+                        detailsGenerateDTO.setStartTime(String.valueOf(poi.getStartTime()));
+                        detailsGenerateDTO.setEndTime(String.valueOf(poi.getEndTime()));
+                        detailsGenerateDTO.setTripId(String.valueOf(id));
+                        detailsGenerateDTO.setNote("");
+                        String nodeObject = gson.toJson(detailsGenerateDTO);
+                        HttpEntity<String> request1 =
+                                new HttpEntity<String>(nodeObject, headers);
+                        int poiId= restTemplateClient.restTemplate().postForObject(instance.getUri()+"/trip/add-detail-generated", request1, Integer.class);
+
+                        ExpenseDTO expenseDTO = new ExpenseDTO();
+                        POI p = (POI) poi.getMasterActivity();
+                        expenseDTO.setAmmount((int) p.getTypicalPrice());
+                        expenseDTO.setDescription(poi.getMasterActivity().getName());
+                        expenseDTO.setTripId(id);
+                        expenseDTO.setDetails(poiId);
+                        String nodeObject2 = gson.toJson(expenseDTO);
+                        HttpEntity<String> request2 =
+                                new HttpEntity<String>(personJsonObject, headers);
+                        restTemplateClient.restTemplate().postForObject(instance.getUri()+"/trip/insertGenerate", request2, String.class);
+
+
                     }
-                } catch (Throwable e) {
-                    throw new RuntimeException(e);
-                }
-                asyncJobsManager.removeJob(simpleResponse.getId());
-                asyncJobsManager.removeUser(input.getUserId());
-                log.info("Insert to DB ");
-                log.info("----------------------------------------- ");
-                Trip tour = s.toTrip(data);
-                Trip add = new Trip();
-                add.setBudget(input.getBudget());
-                add.setName(data.getDayOfTrip() + " days in " + destinationRepository.findByDestinationId(input.getDestinationId()).getName());
-                add.setStartDate(sDate);
-                add.setEndDate(eDate);
-                add.setStatus(TripStatus.PRIVATE);
-                User u = new User();
-                u.setUserID(input.getUserId());
-                add.setUser(u);
-                int tourId = tripRepository.save(add).getTripId();
-                tour.setTripId(tourId);
-                for (TripDetails poi : tour.getListTripDetails()
-                ) {
-                    TripExpense ex = new TripExpense();
-                    ex.setTrip(tour);
-                    POI p = (POI) poi.getMasterActivity();
-                    ex.setAmount((int) p.getTypicalPrice());
-                    ExpenseCategory category = new ExpenseCategory();
-                    category.setExpenseCategoryId(8);
-                    ex.setExpenseCategory(category);
-                    poi.setTrip(tour);
-                    ex.setDescription(poi.getMasterActivity().getName());
-                    ex.setTripDetails(poi);
-                    tripDetailRepository.save(poi);
-                    tripExpenseRepository.save(ex);
-                }
-                simpleResponse.setTrip(tour);
 
-            }
-        });
+
+                }
+            });
         return task;
 
 
-    }
-
-    @Override
-    public SimpleResponse getJobStatus(String jobId) throws Throwable {
-        CompletableFuture<SimpleResponse> completableFuture = fetchJobElseThrowException(jobId);
-        String serverPort = environment.getProperty("local.server.port");
-        if (completableFuture.isCancelled()) {
-            return new SimpleResponse(jobId, new Trip(), RequestStatus.DELETED,0 ,serverPort);
-        }
-        if (!completableFuture.isDone()) {
-            return new SimpleResponse(jobId, new Trip(), RequestStatus.IN_PROGRESS, 0,serverPort);
         }
 
 
-        Throwable[] errors = new Throwable[1];
-        SimpleResponse[] simpleResponses = new SimpleResponse[1];
-        completableFuture.whenComplete((response, ex) -> {
-
-            if (ex != null) {
-                errors[0] = ex.getCause();
-            } else {
-                try {
-                    response.setTrip(completableFuture.get().getTrip());
-                } catch (InterruptedException e) {
-                    throw new RuntimeException(e);
-                } catch (ExecutionException e) {
-                    throw new RuntimeException(e);
-                }
-                simpleResponses[0] = response;
-            }
-        });
-
-        if (errors[0] != null) {
-            throw errors[0];
-        }
-
-        return simpleResponses[0];
     }
-
-    @Override
-    public boolean cancelJob(String jobId,int uid) {
-        CompletableFuture<SimpleResponse> job = fetchJob(jobId);
-        asyncJobsManager.removeUser(uid);
-        if (job != null) {
-            job.cancel(true);
-
-            return true;
-        }
-        return false;
-    }
-
-    @Override
-    public CompletableFuture<SimpleResponse> fetchJob(String jobId) {
-        @SuppressWarnings("unchecked")
-        CompletableFuture<SimpleResponse> completableFuture = (CompletableFuture<SimpleResponse>) asyncJobsManager.getJob(jobId);
-        int a = 10;
-        return completableFuture;
-    }
-
-    @Override
-    public CompletableFuture<SimpleResponse> fetchJobElseThrowException(String jobId) throws Exception {
-        CompletableFuture<SimpleResponse> job = fetchJob(jobId);
-
-        if (null == job) {
-
-        }
-        return job;
-    }
-
-    @Override
-    public Trip getOutput(String jobId) throws Exception {
-        CompletableFuture<SimpleResponse> completableFuture = fetchJob(jobId);
-
-        if (!completableFuture.isDone()) {
-            throw new Exception("Job is still in progress...");
-        }
-
-        return completableFuture.get().getTrip();
-    }
-}

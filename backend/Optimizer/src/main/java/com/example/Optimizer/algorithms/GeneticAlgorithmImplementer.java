@@ -11,11 +11,11 @@ import java.util.*;
 @Slf4j
 public class GeneticAlgorithmImplementer {
 
-    private SimpMessagingTemplate template;
+
     public Data data;
 
-    public GeneticAlgorithmImplementer(Data data,SimpMessagingTemplate template) {
-        this.template = template;
+    public GeneticAlgorithmImplementer(Data data) {
+
         this.data = data;
     }
     static int getNum(ArrayList<Integer> v) {
@@ -241,11 +241,6 @@ public class GeneticAlgorithmImplementer {
 
         for (int j = 1; j <= 300; j++) {
 
-            if(Thread.currentThread().isInterrupted())
-                return  null;
-            if(j%3==0){
-               template.convertAndSendToUser(String.valueOf(data.getUserId()),"/chatroom",String.valueOf(j/3));
-        }
 
             //Selection
 

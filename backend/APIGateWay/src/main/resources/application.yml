@@ -1,0 +1,35 @@
+server:
+  port: 8080
+
+eureka:
+  client:
+    fetch-registry: true
+    serviceUrl:
+      defaultZone: http://localhost:8083/eureka
+
+spring:
+  application:
+    name: gateway-service
+  cloud:
+    gateway:
+      routes:
+        - id: locationModule
+          uri: lb://LOCATION-SERVICE
+          predicates:
+            - Path=/location/**
+        - id: userModule
+          uri: lb://USER-SERVICE
+          predicates:
+            - Path=/user/**
+        - id: tripModule
+          uri: lb://TRIP-SERVICE
+          predicates:
+            - Path=/trip/**
+        - id: uploadModule
+          uri: lb://UPLOAD-SERVICE
+          predicates:
+            - Path=/upload/**
+        - id: optimizerModule
+          uri: lb://OPTIMIZER
+          predicates:
+            - Path=/optimizer/**

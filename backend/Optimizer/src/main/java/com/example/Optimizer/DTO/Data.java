@@ -1,7 +1,5 @@
 package com.example.Optimizer.DTO;
 
-import com.example.Optimizer.entity.POI;
-
 import java.sql.Date;
 import java.util.Arrays;
 import java.util.concurrent.TimeUnit;

@@ -3,7 +3,6 @@ package com.planner.backendserver.service;
 import com.planner.backendserver.DTO.UserDTO;
 import com.planner.backendserver.entity.User;
 import com.planner.backendserver.repository.UserRepository;
-import com.planner.backendserver.service.interfaces.UserDTOService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;

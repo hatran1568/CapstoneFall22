@@ -1,10 +1,5 @@
 package com.example.Optimizer.DTO;
 
-import com.example.Optimizer.entity.MasterActivity;
-import com.example.Optimizer.entity.POI;
-import com.example.Optimizer.entity.Trip;
-import com.example.Optimizer.entity.TripDetails;
-
 import java.sql.Date;
 import java.util.ArrayList;
 
