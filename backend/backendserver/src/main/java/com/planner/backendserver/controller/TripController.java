@@ -48,9 +48,9 @@ public class TripController {
     private AsyncManager asyncManager;
 
     @GetMapping("/{id}")
-    public ResponseEntity<DetailedTripDTO> getTripById(@PathVariable int id){
+    public ResponseEntity<DetailedTripDTO> getTripById(@PathVariable int id, @RequestParam int userId){
         try{
-            DetailedTripDTO trip = tripService.getDetailedTripById(id);
+            DetailedTripDTO trip = tripService.getDetailedTripById(id, userId);
             if (trip == null){
                 return new ResponseEntity<>(HttpStatus.NOT_FOUND);
             }
@@ -162,7 +162,8 @@ public class TripController {
             int tripId = objectNode.get("tripId").asInt();
             String name = objectNode.get("name").asText();
             String address = objectNode.get("address").asText();
-            TripDetailDTO result = tripService.addCustomTripDetail(date, startTime, endTime, tripId, name, address);
+            String note = objectNode.get("note").asText();
+            TripDetailDTO result = tripService.addCustomTripDetail(date, startTime, endTime, tripId, name, address, note);
             return new ResponseEntity<>(result, HttpStatus.OK);
         } catch (Exception e){
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
@@ -382,5 +383,38 @@ public class TripController {
         response.setPort(asyncManager.getPortByUserId(id));
         response.setId(asyncManager.getJobByUserId(id));
         return  new ResponseEntity<>(response,HttpStatus.OK);
+    }
+
+    @GetMapping("/get-public-trips")
+    public ResponseEntity<?> getPublicTrips(@RequestParam(required = false) Integer page, @RequestParam(required = false) String search, @RequestParam(required = false) Integer minDays, @RequestParam(required = false) Integer maxDays){
+        try{
+            if(page == null) page = 0;
+            if(search == null) search = "";
+            if(minDays == null) minDays = 1;
+            if(maxDays == null) maxDays = 0;
+            int pageSize = 12;
+        Calendar cal = Calendar.getInstance();
+        cal.add(Calendar.MONTH, -1);
+        Date earliest = new Date(cal.getTime().getTime());
+            return new ResponseEntity<>(tripService.getPublicTrips(page,pageSize, search, minDays,maxDays, earliest), HttpStatus.OK);
+        } catch(Exception e){
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+    @GetMapping("/get-public-trips/count")
+    public ResponseEntity<?> getPublicTripsCount(@RequestParam(required = false) String search, @RequestParam(required = false) Integer minDays, @RequestParam(required = false) Integer maxDays) {
+        try {
+        if(search == null) search = "";
+        if(minDays == null) minDays = 1;
+        if(maxDays == null) maxDays = 0;
+
+        Calendar cal = Calendar.getInstance();
+        cal.add(Calendar.MONTH, -1);
+        Date earliest = new Date(cal.getTime().getTime());
+            int count = tripService.countPublicTrips(search, minDays, maxDays, earliest);
+            return new ResponseEntity<>(count, HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 }

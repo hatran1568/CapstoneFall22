@@ -13,6 +13,7 @@ import ConfirmDelete from "../Timetable/ConfirmDelete";
 import EditActivityModal from "./EditActivityModal";
 import TripGeneralInfo from "../GeneralInfo/TripGeneralInfo";
 import CloneTripModal from "../../components/Trips/CloneTripModal";
+import TripNotFound from "../../components/Trips/TripNotFound";
 class Timeline extends Component {
   state = {};
   //set state of component
@@ -37,26 +38,44 @@ class Timeline extends Component {
   //get request to get trip info
   componentDidMount() {
     const { id } = this.props.params;
-    axios.get(`/trip/` + id).then((res) => {
-      const tripData = res.data;
-      var own = false;
-      if (tripData.userID && tripData.userID == localStorage.getItem("id")) {
-        own = true;
-      }
-      this.setState({
-        trip: tripData,
-        showAddModal: false,
-        showEditModal: false,
-        dataLoaded: true,
-        own: own,
+    const userId = localStorage.getItem("id") ? localStorage.getItem("id") : -1;
+    axios
+      .get(`/trip/` + id + "?userId=" + userId)
+      .then((res) => {
+        const tripData = res.data;
+        var own = false;
+        if (tripData.userID && tripData.userID == userId) {
+          own = true;
+        }
+        this.setState({
+          trip: tripData,
+          showAddModal: false,
+          showEditModal: false,
+          dataLoaded: true,
+          own: own,
+        });
+      })
+      .catch((error) => {
+        if (error.response) {
+          // The request was made and the server responded with a status code
+          // that falls out of the range of 2xx
+          console.log(error.response.data);
+          console.log(error.response.status);
+          console.log(error.response.headers);
+          if (error.response.status == 404) {
+            this.setState({
+              dataLoaded: true,
+              trip: null,
+            });
+          }
+        }
       });
-    });
   }
   //get all months of a trip
   getAllMonths = (dateArr) => {
     var monthArr = [];
     dateArr.forEach((date) => {
-      var month = date.toLocaleString("default", { month: "long" });
+      var month = date.toLocaleString("vi", { month: "long" });
       if (!monthArr.includes(month)) monthArr.push(month);
     });
     return monthArr;
@@ -76,7 +95,7 @@ class Timeline extends Component {
   getAllDatesOfMonth = (dateArr, month) => {
     var arr = [];
     dateArr.forEach((dt) => {
-      if (dt.toLocaleString("default", { month: "long" }) == month) {
+      if (dt.toLocaleString("vi", { month: "long" }) == month) {
         arr.push(new Date(dt));
       }
     });
@@ -410,6 +429,9 @@ class Timeline extends Component {
           <div></div>
         </LoadingScreen>
       );
+    if (this.state.dataLoaded && this.state.trip == null) {
+      return <TripNotFound />;
+    }
     document.title = this.state.trip.name + " | Tripplanner";
     var allDates = this.getAllDates(
       this.state.trip.startDate,
@@ -421,20 +443,6 @@ class Timeline extends Component {
       year: "numeric",
       month: "numeric",
       day: "numeric",
-    };
-    const vietMonths = {
-      January: "Tháng Một",
-      February: "Tháng Hai",
-      March: "Tháng Ba",
-      April: "Tháng Tư",
-      May: "Tháng Năm",
-      June: "Tháng Sáu",
-      July: "Tháng Bảy",
-      August: "Tháng Tám",
-      September: "Tháng Chín",
-      October: "Tháng Mười",
-      November: "Tháng Mười Một",
-      December: "Tháng Mười Hai",
     };
     return (
       <div>
@@ -454,6 +462,8 @@ class Timeline extends Component {
             show={this.state.showCloneModal}
             onHide={this.closeCloneModal}
             tripId={this.state.trip.tripId}
+            tripStartDate={this.state.trip.startDate}
+            tripEndDate={this.state.trip.endDate}
           />
         ) : (
           <ConfirmDelete
@@ -545,12 +555,16 @@ class Timeline extends Component {
             <FontAwesomeIcon icon={faPlus} className={style.addIcon} />
           </a>
         </div>
-        <AddActivityModal
-          show={this.state.showAddModal}
-          onHide={this.toggleAddModal}
-          allDates={allDates}
-          activityAdded={(event, input) => this.insertTripDetail(event, input)}
-        />
+        {this.state.showAddModal ? (
+          <AddActivityModal
+            show={this.state.showAddModal}
+            onHide={this.toggleAddModal}
+            allDates={allDates}
+            activityAdded={(event, input) =>
+              this.insertTripDetail(event, input)
+            }
+          />
+        ) : null}
       </div>
     );
   }

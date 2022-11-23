@@ -39,16 +39,18 @@ class TripGeneralInfo extends Component {
     });
   }
   handleOnBlur = () => {
-    var newName = this.contentEditable.current.textContent.substring(0, 200);
-    if (newName.trim().length == 0) {
-      newName = this.state.tripName;
-      this.setState({ tripName: newName });
+    if (this.state.own) {
+      var newName = this.contentEditable.current.textContent.substring(0, 200);
+      if (newName.trim().length == 0) {
+        newName = this.state.tripName;
+        this.setState({ tripName: newName });
+      }
+      const data = {
+        tripId: this.state.trip.tripId,
+        name: newName,
+      };
+      axios.post("/trip/edit-name", data);
     }
-    const data = {
-      tripId: this.state.trip.tripId,
-      name: newName,
-    };
-    axios.post("/trip/edit-name", data);
   };
   toLongDate = (date) => {
     var options = {
@@ -82,14 +84,16 @@ class TripGeneralInfo extends Component {
     } else this.openCloneModal();
   };
   editDates = (data) => {
-    axios.post("/trip/edit-dates", data, {
-      headers: {
-        Authorization: `Bearer ${localStorage.getItem("token")}`,
-      },
-      withCredentials: true,
-    });
-    this.closeEditDates();
-    window.location.reload();
+    if (this.state.own) {
+      axios.post("/trip/edit-dates", data, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+        withCredentials: true,
+      });
+      this.closeEditDates();
+      window.location.reload();
+    }
   };
   closeCloneModal = () => {
     this.setState({ showCloneModal: false });
@@ -126,6 +130,8 @@ class TripGeneralInfo extends Component {
             show={this.state.showCloneModal}
             onHide={this.closeCloneModal}
             tripId={this.state.trip.tripId}
+            tripStartDate={this.state.trip.startDate}
+            tripEndDate={this.state.trip.endDate}
           />
         )}
         <div className={style.tripImageDiv}>
