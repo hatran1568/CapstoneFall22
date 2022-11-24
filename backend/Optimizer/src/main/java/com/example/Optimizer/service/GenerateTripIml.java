@@ -68,7 +68,7 @@ public class GenerateTripIml implements GenerateTrip {
         Date sDate = input.getStartDate();
         //parsed = format.parse(tripGenerateDTO.getEndDate());
         Date eDate = input.getEndDate();
-        List<ServiceInstance> instances = discoveryClient.getInstances("Location_Service");
+        List<ServiceInstance> instances = discoveryClient.getInstances("location-serive");
 
         ServiceInstance instance = instances.get(0);
 
@@ -104,7 +104,7 @@ public class GenerateTripIml implements GenerateTrip {
 
             public void accept(SimpleResponse simpleResponse, Throwable throwable) {
 
-                    List<ServiceInstance> instances = discoveryClient.getInstances("Trip_Service");
+                    List<ServiceInstance> instances = discoveryClient.getInstances("trip-serive");
 
                     ServiceInstance instance = instances.get(0);
                     HttpHeaders headers = new HttpHeaders();
@@ -117,7 +117,7 @@ public class GenerateTripIml implements GenerateTrip {
                     TripGenerateDTO trip = new TripGenerateDTO();
                     log.info("Insert to DB ");
                     log.info("----------------------------------------- ");
-                    List<ServiceInstance> locationInstances = discoveryClient.getInstances("Location_Service");
+                    List<ServiceInstance> locationInstances = discoveryClient.getInstances("location-serive");
                     ServiceInstance locationInstance = instances.get(0);
                     DesDetailsDTO destination = restTemplateClient.restTemplate().getForObject(locationInstance.getUri()+"/api/destination/"+input.getDestinationId(), DesDetailsDTO.class);
                     trip.setName(data.getDayOfTrip() + " days in " +destination.getName());

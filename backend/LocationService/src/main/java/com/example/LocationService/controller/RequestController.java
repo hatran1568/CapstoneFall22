@@ -16,7 +16,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 
 @RestController
-@RequestMapping("/poi/api/request")
+@RequestMapping("/location/api/request")
 public class RequestController {
     @Autowired
     private RequestRepository requestRepo;

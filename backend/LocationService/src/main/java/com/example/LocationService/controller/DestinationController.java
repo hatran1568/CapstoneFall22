@@ -19,7 +19,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 
 @RestController
-@RequestMapping("/poi/api")
+@RequestMapping("/location/api")
 public class DestinationController {
 
     @Autowired

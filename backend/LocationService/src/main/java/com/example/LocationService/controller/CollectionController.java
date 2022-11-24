@@ -17,7 +17,7 @@ import java.util.ArrayList;
 import java.util.Date;
 
 @RestController
-@RequestMapping("/poi/api/collection")
+@RequestMapping("/location/api/collection")
 public class CollectionController {
     @Autowired
     private CollectionRepository collectionRepository;

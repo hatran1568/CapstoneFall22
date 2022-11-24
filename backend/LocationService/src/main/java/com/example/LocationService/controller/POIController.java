@@ -35,7 +35,7 @@ import java.util.Date;
 
 @Slf4j
 @RestController
-@RequestMapping("/poi/api/pois")
+@RequestMapping("/location/api/pois")
 public class POIController {
     private final String distanceToken = "dfSi1azlI6gjmUz4R8yMccBW2JGvb";
 

@@ -31,10 +31,13 @@ const CollectionDetail = () => {
 
   useEffect(() => {
     const getCurCol = async () => {
-      const response = await axios.get("/api/collection/get/" + colId, {
-        headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
-        withCredentials: true,
-      });
+      const response = await axios.get(
+        "/location/api/collection/get/" + colId,
+        {
+          headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+          withCredentials: true,
+        }
+      );
 
       setCurCol(response.data);
     };
@@ -57,7 +60,7 @@ const CollectionDetail = () => {
     if (poi.length === 0) {
       axios
         .post(
-          "/api/collection/addPoi",
+          "/location/api/collection/addPoi",
           {
             colId: curCol.collectionId,
             poiId: id,
@@ -67,7 +70,7 @@ const CollectionDetail = () => {
               Authorization: `Bearer ${localStorage.getItem("token")}`,
             },
             withCredentials: true,
-          },
+          }
         )
         .then((res) => {
           setCurCol(res.data);
@@ -97,7 +100,7 @@ const CollectionDetail = () => {
       centered: true,
       onOk() {
         axios
-          .delete("/api/collection/deletePoi", {
+          .delete("/location/api/collection/deletePoi", {
             headers: {
               Authorization: `Bearer ${localStorage.getItem("token")}`,
             },
@@ -118,12 +121,18 @@ const CollectionDetail = () => {
     var header;
     if (curCol.imgUrl !== null) {
       header = (
-        <div overlay='true' style={{ backgroundImage: `url(${curCol.imgUrl})`, backgroundSize: "cover" }}>
+        <div
+          overlay="true"
+          style={{
+            backgroundImage: `url(${curCol.imgUrl})`,
+            backgroundSize: "cover",
+          }}
+        >
           <div className={style.header}>
-            <div className='row mt-3'>
+            <div className="row mt-3">
               <h3 className={style.text}>{curCol.title}</h3>
             </div>
-            <div className='row mb-5 pb-3'>
+            <div className="row mb-5 pb-3">
               {curCol.description === "" ? (
                 <p className={style.text}>Bộ sưu tập này chưa có miêu tả.</p>
               ) : (
@@ -136,10 +145,10 @@ const CollectionDetail = () => {
     } else {
       header = (
         <div className={style.header}>
-          <div className='row mt-3'>
+          <div className="row mt-3">
             <h3 className={style.text}>{curCol.title}</h3>
           </div>
-          <div className='row mb-5 pb-3'>
+          <div className="row mb-5 pb-3">
             {curCol.description === "" ? (
               <p className={style.text}>Bộ sưu tập này chưa có miêu tả.</p>
             ) : (
@@ -152,40 +161,54 @@ const CollectionDetail = () => {
     return (
       <>
         {header}
-        <MDBContainer className='mt-5'>
-          <MDBRow className='mb-3'>
+        <MDBContainer className="mt-5">
+          <MDBRow className="mb-3">
             <h4>Những địa điểm đã lưu</h4>
           </MDBRow>
-          <MDBRow className='row-cols-1 row-cols-md-3 g-4'>
+          <MDBRow className="row-cols-1 row-cols-md-3 g-4">
             {curCol.poiList.length > 0 ? (
               curCol.poiList.map((poi) => (
                 <MDBCol key={poi.activityId}>
-                  <a href={"/poi?id=" + poi.activityId} style={{ textDecoration: "none" }}>
-                    <div overlay='true' className={style.img} style={{ backgroundImage: `url(${poi.imgUrl})` }}>
-                      <MDBCard className={style.card} style={{ border: "none" }}>
-                        <div className='d-flex justify-content-end pe-2 pt-2'>
+                  <a
+                    href={"/poi?id=" + poi.activityId}
+                    style={{ textDecoration: "none" }}
+                  >
+                    <div
+                      overlay="true"
+                      className={style.img}
+                      style={{ backgroundImage: `url(${poi.imgUrl})` }}
+                    >
+                      <MDBCard
+                        className={style.card}
+                        style={{ border: "none" }}
+                      >
+                        <div className="d-flex justify-content-end pe-2 pt-2">
                           <MDBBtn
-                            tag='a'
-                            color='none'
+                            tag="a"
+                            color="none"
                             className={style.delBtn}
                             onClick={(e) => handleDelete(e, poi.activityId)}
                           >
-                            <MDBIcon far icon='trash-alt' size='lg' />
+                            <MDBIcon far icon="trash-alt" size="lg" />
                           </MDBBtn>
                         </div>
-                        <MDBCardBody className='mt-5 pt-5'>
-                          <MDBCardTitle className='fs-4 text-center text-white'>{poi.name}</MDBCardTitle>
+                        <MDBCardBody className="mt-5 pt-5">
+                          <MDBCardTitle className="fs-4 text-center text-white">
+                            {poi.name}
+                          </MDBCardTitle>
                         </MDBCardBody>
-                        <MDBCardFooter border='0'>
-                          <div className='text-center'>
+                        <MDBCardFooter border="0">
+                          <div className="text-center">
                             <StarRatings
                               rating={poi.googleRate}
-                              starDimension='1em'
-                              starSpacing='0.1em'
-                              starRatedColor='orange'
+                              starDimension="1em"
+                              starSpacing="0.1em"
+                              starRatedColor="orange"
                             />
                           </div>
-                          <MDBCardText className='text-white text-center'>{poi.category}</MDBCardText>
+                          <MDBCardText className="text-white text-center">
+                            {poi.category}
+                          </MDBCardText>
                         </MDBCardFooter>
                       </MDBCard>
                     </div>
@@ -197,13 +220,23 @@ const CollectionDetail = () => {
             )}
             <MDBCol>
               <div
-                className='h-100 w-100 d-flex align-items-center justify-content-center'
+                className="h-100 w-100 d-flex align-items-center justify-content-center"
                 style={{ minHeight: "250px" }}
               >
-                <MDBBtn tag='a' color='none' className={`${style.btn}`} onClick={handleAdd}>
-                  <MDBIcon fas icon='plus-circle' style={{ fontSize: "5em" }} />
+                <MDBBtn
+                  tag="a"
+                  color="none"
+                  className={`${style.btn}`}
+                  onClick={handleAdd}
+                >
+                  <MDBIcon fas icon="plus-circle" style={{ fontSize: "5em" }} />
                 </MDBBtn>
-                <Modal title='Tìm một điểm đến' open={open} onOk={handleOk} onCancel={handleCancel}>
+                <Modal
+                  title="Tìm một điểm đến"
+                  open={open}
+                  onOk={handleOk}
+                  onCancel={handleCancel}
+                >
                   <POISearchBar POISelected={setSelectedPOI} />
                 </Modal>
               </div>

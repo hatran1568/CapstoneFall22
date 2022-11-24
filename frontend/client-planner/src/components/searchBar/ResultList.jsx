@@ -20,7 +20,7 @@ function ResultList(props) {
   const [select, setSelect] = useState(0);
   const getResult = () => {
     axios
-      .get("http://localhost:8080/search/all/" + props.text, {
+      .get("http://localhost:8080/location/search/all/" + props.text, {
         headers: { "Content-Type": "application/json" },
       })
       .then((response) => response.data)

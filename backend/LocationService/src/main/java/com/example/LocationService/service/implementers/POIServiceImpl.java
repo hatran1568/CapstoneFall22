@@ -60,7 +60,7 @@ public class POIServiceImpl implements POIService {
         ArrayList<RatingDTO> list = new ArrayList<>();
         ArrayList<RatingDBDTO> objects = poiRepository.getRatingsByPOIId(poiId);
         for (RatingDBDTO rating : objects) {
-            UserDetailResponseDTO user= restTemplate.restTemplate().getForObject(String.valueOf(instance.getUri())+"/api/user/findById/"+rating.getUserId(), UserDetailResponseDTO.class);
+            UserDetailResponseDTO user= restTemplate.restTemplate().getForObject(String.valueOf(instance.getUri())+"/user/api/user/findById/"+rating.getUserId(), UserDetailResponseDTO.class);
             RatingDTO ratingDTO = new RatingDTO(rating.getRateId(), rating.getRate(), rating.getComment(), rating.getDeleted(), rating.getCreated(), rating.getModified(), rating.getUserId(), user.getName(), rating.getPoiId());
             if (!ratingDTO.isDeleted()) {
                 list.add(ratingDTO);

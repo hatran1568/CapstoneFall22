@@ -41,7 +41,7 @@ const AddCollectionModal = (prop) => {
 
         axios
           .post(
-            "/api/collection/create",
+            "/user/api/collection/create",
             {
               uid: localStorage.getItem("id"),
               title: title,
@@ -52,7 +52,7 @@ const AddCollectionModal = (prop) => {
                 Authorization: `Bearer ${localStorage.getItem("token")}`,
               },
               withCredentials: true,
-            },
+            }
           )
           .then((response) => {
             prop.refresh(response.data);
@@ -68,23 +68,34 @@ const AddCollectionModal = (prop) => {
 
   return (
     <>
-      <MDBBtn tag='a' color='none' className='m-2' onClick={handleCreate} style={{ textDecoration: "none" }}>
-        <MDBIcon fas icon='plus-circle' /> Tạo mới
+      <MDBBtn
+        tag="a"
+        color="none"
+        className="m-2"
+        onClick={handleCreate}
+        style={{ textDecoration: "none" }}
+      >
+        <MDBIcon fas icon="plus-circle" /> Tạo mới
       </MDBBtn>
-      <Modal title='Bộ sưu tập mới' open={open} onOk={handleOk} onCancel={handleCancel}>
-        <MDBInputGroup className='px-2 mb-3'>
-          <p className='fs-5 fw-bold'>Tiêu đề</p>
+      <Modal
+        title="Bộ sưu tập mới"
+        open={open}
+        onOk={handleOk}
+        onCancel={handleCancel}
+      >
+        <MDBInputGroup className="px-2 mb-3">
+          <p className="fs-5 fw-bold">Tiêu đề</p>
           <Input
             showCount
             maxLength={30}
             onChange={(e) => {
               setTitleInput(e.target.value);
             }}
-            size='large'
+            size="large"
           />
         </MDBInputGroup>
-        <MDBInputGroup className='px-2'>
-          <p className='fs-5 fw-bold'>Mô tả</p>
+        <MDBInputGroup className="px-2">
+          <p className="fs-5 fw-bold">Mô tả</p>
           <TextArea
             showCount
             rows={3}

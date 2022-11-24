@@ -18,12 +18,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 @RestController
-@RequestMapping("/search")
+@RequestMapping("/location/search")
 public class SearchController {
     @Autowired
     SearchService searchService;
 
-    @GetMapping("/poi/all/{keyword}")
+    @GetMapping("/all/{keyword}")
     public ResponseEntity<List<SearchPOIAndDestinationDTO>> searchPOIAndDestinationByKeyword(@PathVariable String keyword) {
         try {
             List<SearchPOIAndDestinationDTO> results = searchService.suggestSearchPOIAndDestinationByKeyword(keyword);

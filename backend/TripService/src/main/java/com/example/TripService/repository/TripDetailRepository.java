@@ -1,6 +1,7 @@
 package com.example.TripService.repository;
 
 
+import com.example.TripService.dto.response.TripDetailsQueryDTO;
 import com.example.TripService.entity.TripDetails;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
@@ -8,6 +9,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 public interface TripDetailRepository extends JpaRepository<TripDetails, Integer> {
@@ -35,4 +37,6 @@ public interface TripDetailRepository extends JpaRepository<TripDetails, Integer
             value = "select MAX(trip_details_id) from trip_details",
             nativeQuery = true)
     int getLastestTripDetails();
+    @Query(value = "SELECT td.trip_details_id as detailsId, td.day_number as dayNumber, td.start_time as startTime, td.note as note, td.end_time as endTime, td.master_activity_id as masterActivity, td.trip_id as tripId FROM trip_details td join trip t on t.trip_id = td.trip_id where t.trip_id=?1",nativeQuery = true)
+    public ArrayList<TripDetailsQueryDTO> getTripDetailsByTrip(int id);
 }

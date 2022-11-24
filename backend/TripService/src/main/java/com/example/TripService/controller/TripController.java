@@ -276,11 +276,12 @@ public class TripController {
 
     @GetMapping("/get-trip-3/{userId}")
     public ResponseEntity<?> getTripsForHomepage(@PathVariable int userId){
-        try{
+//        try{
+
             return new ResponseEntity<>(tripService.getLast3TripsByUser(userId), HttpStatus.OK);
-        } catch(Exception e){
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-        }
+//        } catch(Exception e){
+//            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+//        }
     }
 
     @GetMapping("/get-total-trip/{userId}")
