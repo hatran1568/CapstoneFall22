@@ -52,7 +52,16 @@ function ConfirmEditModal(props) {
                         {detail.masterActivity.images[0] ? (
                           <img
                             className={style.warningImage}
-                            src={`../${detail.masterActivity.images[0].url}`}
+                            src={
+                              detail.masterActivity.images[0]
+                                ? detail.masterActivity.images[0].url.includes(
+                                    "img/",
+                                    0
+                                  )
+                                  ? `../${detail.masterActivity.images[0].url}`
+                                  : detail.masterActivity.images[0].url
+                                : "../img/default/detail-img.jpg"
+                            }
                           />
                         ) : (
                           <></>

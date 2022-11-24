@@ -57,8 +57,9 @@ public class TripController {
     @Autowired
     private DiscoveryClient discoveryClient;
     @GetMapping("/{id}")
-    public ResponseEntity<DetailedTripDTO> getTripById(@PathVariable int id, @RequestParam int userId){
+    public ResponseEntity<DetailedTripDTO> getTripById(@PathVariable int id, @RequestParam(required = false) Integer userId){
         try{
+            if(userId == null) userId = -1;
             DetailedTripDTO trip = tripService.getDetailedTripById(id, userId);
             if (trip == null){
                 return new ResponseEntity<>(HttpStatus.NOT_FOUND);
@@ -227,13 +228,13 @@ public class TripController {
     }
     @DeleteMapping("/delete-detail")
     public ResponseEntity<TripDetails> deleteTripDetail(@RequestBody ObjectNode objectNode){
-        try{
+//        try{
             int id = objectNode.get("id").asInt();
             tripService.deleteDetailById(id);
             return new ResponseEntity<>(HttpStatus.OK);
-        } catch (Exception e){
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-        }
+//        } catch (Exception e){
+//            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+//        }
     }
     @PreAuthorize("hasAuthority('Admin')")
     @RequestMapping(value="/test/{id}", method = RequestMethod.GET)
