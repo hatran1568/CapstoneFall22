@@ -35,6 +35,16 @@ function EditActivityModal(props) {
     setInputField({});
     onHide();
   };
+  const image = tripDetail.masterActivity
+    ? tripDetail.masterActivity.images
+      ? tripDetail.masterActivity.images[0]
+      : null
+    : null;
+  const imageUrl = image
+    ? image.url.includes("img/", 0)
+      ? `../${image.url}`
+      : image.url
+    : "../img/default/detail-img.jpg";
   return (
     <div>
       {tripDetail !== {} && (
@@ -52,17 +62,7 @@ function EditActivityModal(props) {
             {!tripDetail.masterActivity.custom ? (
               <div className={style.activityInfo}>
                 <div className={style.poiDiv}>
-                  <img
-                    src={
-                      tripDetail.masterActivity.images
-                        ? tripDetail.masterActivity.images[0]
-                          ? `../${tripDetail.masterActivity.images[0].url}`
-                          : "https://picsum.photos/seed/picsum/300/200"
-                        : "https://picsum.photos/seed/picsum/300/200"
-                    }
-                    alt=""
-                    className={style.poiImage}
-                  />
+                  <img src={imageUrl} alt="" className={style.poiImage} />
                 </div>
                 <div>
                   <div style={{ fontWeight: "700", fontSize: "20px" }}>
