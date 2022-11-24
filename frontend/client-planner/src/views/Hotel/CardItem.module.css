@@ -30,3 +30,33 @@
 .link:hover {
     color: black;
 }
+
+.hotelBtnGroup{
+    margin: 0;
+    float: right;
+  }
+  .hotelBtn{
+    width: auto;
+    min-width: 5em;
+    margin-bottom: 0.5em;
+    right: 1em;
+    background-color: #fff;
+    border: #0e0e0f solid 1px;
+    border-radius: 2px;
+    padding: auto;
+    margin-left: 0.5em;
+  }
+  .hotelChangeBtn:hover{
+    background-color: #0e0e0f;
+    color: white;
+  }
+  .hotelBookBtn{
+    color: #fff;
+    border-color: #267A9C;
+    background-color: #267A9C;
+  }
+  .hotelBookBtn:hover{
+    color: #fff;
+    border-color: #34a9d9;
+    background-color: #34a9d9;
+  }

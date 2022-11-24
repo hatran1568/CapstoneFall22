@@ -11,7 +11,7 @@ import "react-toastify/dist/ReactToastify.css";
 import { Popup } from "react-leaflet";
 import L from "leaflet";
 import style from "./Hotel.module.css";
-import { faHotel } from "@fortawesome/free-solid-svg-icons";
+import { faHotel, faBackward } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import CardItem from "./CardItem";
 import { MDBListGroupItem, MDBListGroup } from "mdb-react-ui-kit";
@@ -21,6 +21,7 @@ import { styled } from "@mui/material/styles";
 import Typography from "@mui/material/Typography";
 import DatePicker from "react-multi-date-picker";
 import DatePanel from "react-multi-date-picker/plugins/date_panel";
+import TripNotFound from "../../components/Trips/TripNotFound";
 import {
   MDBCard,
   MDBCardBody,
@@ -44,7 +45,7 @@ import POISearchBar from "../../components/POISearchBar/POISearchBar";
 import StarRatings from "react-star-ratings";
 import styledEngine from "@mui/styled-engine";
 function Hotel() {
-  const [trip, setTrip] = useState();
+  const [trip, setTrip] = useState({});
 
   const PrettoSlider = memo(
     styled(Slider)({
@@ -132,9 +133,9 @@ function Hotel() {
     input = input.value.split(",");
     input.forEach(async (item, index, array) => {
       const data = {
-        date: item.replace(/\//g, "-"),
-        startTime: "25200",
-        endTime: "28800",
+        date: item.replace(/\//g, "-").trim(),
+        startTime: "14400",
+        endTime: "18000",
         activityId: hotelSelected,
         tripId: tripId,
         note: "",
@@ -188,10 +189,24 @@ function Hotel() {
       setPois(res.data.list);
       setMaxPage(res.data.totalPage);
     });
-
-    axios.get(`http://localhost:8080/trip/` + tripId).then((res) => {
-      setTrip(res.data);
-    });
+    const userId = localStorage.getItem("id") ? localStorage.getItem("id") : -1;
+    axios
+      .get(`http://localhost:8080/trip/` + tripId + "?userId=" + userId)
+      .then((res) => {
+        setTrip(res.data);
+      })
+      .catch((error) => {
+        if (error.response) {
+          if (error.response.status == 404) {
+            setTrip(null);
+            console.log("trip not found");
+          }
+          if (error.response.status >= 500) {
+            setTrip(null);
+            console.log("internal server error", error);
+          }
+        }
+      });
   }, []);
   const appendMore = () => {
     let poiSelectedId = -1;
@@ -267,6 +282,7 @@ function Hotel() {
       },
     })
       .then(function (res) {
+        console.log(res.data.list);
         setPois(res.data.list);
         setMaxPage(res.data.totalPage);
       })
@@ -280,9 +296,22 @@ function Hotel() {
   useEffect(() => {
     if (markerRef.current != null) markerRef.current.fire("mouseover");
   }, [selectedMark]);
+  if (trip == null) return <TripNotFound />;
   return (
     <>
       <div className={"container " + style.content}>
+        <div>
+          <button
+            type="button"
+            className={`${style.hotelBtn} ${style.hotelBookBtn}`}
+            onClick={() => {
+              window.location.href = "../timeline/" + tripId;
+            }}
+          >
+            <FontAwesomeIcon icon={faBackward}></FontAwesomeIcon>
+            Quay lại kế hoạch chi tiết
+          </button>
+        </div>
         <div className={"row " + style.filter}>
           <div className="col-3">
             <Typography gutterBottom>
@@ -327,21 +356,29 @@ function Hotel() {
               <MDBListGroup>
                 {pois.map((item) => (
                   <MDBListGroupItem
+                    // onClick={() => {
+                    //   toggleShow();
+                    //   setHotelSelected(item.id);
+                    // }}
                     onClick={() => {
-                      toggleShow();
-                      setHotelSelected(item.id);
-                    }}
-                    onMouseOver={() => {
                       setSelectedMark(item.id);
                       markerRef.current.fire("mouseout");
                     }}
-                    onMouseLeave={() => {
-                      setSelectedMark(-1);
-                      markerRef.current.fire("mouseout");
-                    }}
+                    // onMouseLeave={() => {
+                    //   setSelectedMark(-1);
+                    //   markerRef.current.fire("mouseout");
+                    // }}
                     className={style.item}
                   >
-                    <CardItem item={item} className={style.item}></CardItem>
+                    <CardItem
+                      item={item}
+                      addHotel={(event) => {
+                        event.stopPropagation();
+                        toggleShow();
+                        setHotelSelected(item.id);
+                      }}
+                      className={style.item}
+                    ></CardItem>
                   </MDBListGroupItem>
                 ))}
                 <MDBListGroupItem className={style.item}>
@@ -437,7 +474,9 @@ function Hotel() {
         <MDBModalDialog>
           <MDBModalContent>
             <MDBModalHeader>
-              <MDBModalTitle>Modal title</MDBModalTitle>
+              <MDBModalTitle>
+                Thêm khách sạn cho chuyến đi của bạn
+              </MDBModalTitle>
               <MDBBtn
                 className="btn-close"
                 color="none"
@@ -465,9 +504,9 @@ function Hotel() {
 
             <MDBModalFooter>
               <MDBBtn color="secondary" onClick={toggleShow}>
-                Close
+                Hủy
               </MDBBtn>
-              <MDBBtn onClick={insertTripDetail}>Save changes</MDBBtn>
+              <MDBBtn onClick={insertTripDetail}>Thêm</MDBBtn>
             </MDBModalFooter>
           </MDBModalContent>
         </MDBModalDialog>
@@ -483,6 +522,9 @@ function Hotel() {
         draggable
         pauseOnHover
         theme="light"
+        onClick={() => {
+          window.location.href = "../timeline/" + tripId;
+        }}
       />
       ;
     </>

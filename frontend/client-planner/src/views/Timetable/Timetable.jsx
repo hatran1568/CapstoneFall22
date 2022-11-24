@@ -16,6 +16,8 @@ import TripGeneralInfo from "../GeneralInfo/TripGeneralInfo";
 import CloneTripModal from "../../components/Trips/CloneTripModal";
 import DetailActivityModal from "./DetailActivityModal";
 import TripNotFound from "../../components/Trips/TripNotFound";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import {
   faPlus,
   faCaretRight,
@@ -123,16 +125,14 @@ class Timetable extends Component {
       })
       .catch((error) => {
         if (error.response) {
-          // The request was made and the server responded with a status code
-          // that falls out of the range of 2xx
-          console.log(error.response.data);
-          console.log(error.response.status);
-          console.log(error.response.headers);
           if (error.response.status == 404) {
             this.setState({
               dataLoaded: true,
               trip: null,
             });
+          }
+          if (error.response.status >= 500) {
+            this.showToastError("Có lỗi xảy ra. Vui lòng thử lại sau.");
           }
         }
       });
@@ -394,7 +394,18 @@ class Timetable extends Component {
             activityEdited={(event, input) => this.editTripDetail(event, input)}
           ></EditActivityModal>
         ) : null}
-
+        <ToastContainer
+          position="top-center"
+          autoClose={5000}
+          hideProgressBar
+          newestOnTop={false}
+          closeOnClick
+          rtl={false}
+          pauseOnFocusLoss
+          draggable
+          pauseOnHover
+          theme="light"
+        />
         <div className="container">
           <div className={`row ${style.mainContainer}`}>
             <div className="col-1">
@@ -593,9 +604,12 @@ class Timetable extends Component {
       },
       data: detail,
     })
-      .then((response) => {})
+      .then((response) => {
+        this.showToastSuccess();
+      })
       .catch(function (error) {
         console.log(error);
+        this.showToastError();
       });
   };
   //delete from timetable
@@ -623,7 +637,12 @@ class Timetable extends Component {
             trip: newTrip,
             currentEvents: newTrip.listTripDetails,
           });
+          this.showToastSuccess();
         }
+      })
+      .catch(function (error) {
+        console.log(error);
+        this.showToastError();
       });
   };
   //get event from add modal
@@ -668,9 +687,12 @@ class Timetable extends Component {
         this.setState({
           showAddModal: false,
         });
+        this.showToastSuccess();
       })
       .catch(function (error) {
         console.log(error);
+        this.setState({ showAddModal: false });
+        this.showToastError;
       });
   };
   //insert an activity into the trip
@@ -700,9 +722,14 @@ class Timetable extends Component {
         this.setState({
           showAddModal: false,
         });
+        this.showToastSuccess();
       })
       .catch(function (error) {
         console.log(error);
+        this.setState({
+          showAddModal: false,
+        });
+        this.showToastSuccess();
       });
   };
   //update an event in timetable
@@ -744,9 +771,11 @@ class Timetable extends Component {
     })
       .then((response) => {
         this.editEventInView(response.data);
+        this.showToastSuccess();
       })
       .catch(function (error) {
         console.log(error);
+        this.showToastError();
       });
   };
   //put request to edit a custom detail
@@ -770,9 +799,11 @@ class Timetable extends Component {
     })
       .then((response) => {
         this.editCustomEventInView(response.data);
+        this.showToastSuccess();
       })
       .catch(function (error) {
         console.log(error);
+        this.showToastError();
       });
   };
   getDuration = (from, to) => {
@@ -819,6 +850,33 @@ class Timetable extends Component {
   handleEvents = (events) => {
     this.setState({
       currentEvents: events,
+    });
+  };
+  showToastSuccess = (message) => {
+    if (message === undefined) message = "Lưu thay đổi thành công!";
+    toast.success(message, {
+      position: "top-center",
+      autoClose: 1000,
+      hideProgressBar: true,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "light",
+    });
+  };
+  showToastError = (message) => {
+    if (message === undefined)
+      message = "Đã có lỗi xảy ra, vui lòng thử lại sau.";
+    toast.error(message, {
+      position: "top-center",
+      autoClose: 5000,
+      hideProgressBar: true,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "light",
     });
   };
 }

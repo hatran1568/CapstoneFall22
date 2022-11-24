@@ -54,33 +54,33 @@ const NavBar = () => {
   if (windowDimenion.winWidth > 575) {
     searchBar.push(
       <>
-        <MDBNavbarBrand href='/' className='me-0'>
-          <p className='mb-0 d-flex align-items-center'>
-            <span className='fs-3 me-2'>TPS</span>
-            <span className='fs-5 text-muted'>Itinerary planner</span>
+        <MDBNavbarBrand href="/" className="me-0">
+          <p className="mb-0 d-flex align-items-center">
+            <span className="fs-3 me-2">TPS</span>
+            <span className="fs-5 text-muted">Itinerary planner</span>
           </p>
         </MDBNavbarBrand>
 
-        <MDBNavbarNav className='justify-content-center'>
+        <MDBNavbarNav className="justify-content-center">
           <MDBNavbarItem>
-            <SearchBar />
+            <SearchBar key={"search"} />
           </MDBNavbarItem>
         </MDBNavbarNav>
-      </>,
+      </>
     );
   } else {
     searchBar.push(
-      <MDBNavbarNav className='justify-content-center' fullWidth={false}>
+      <MDBNavbarNav className="justify-content-center" fullWidth={false}>
         <MDBNavbarItem>
           <SearchBar />
         </MDBNavbarItem>
-      </MDBNavbarNav>,
+      </MDBNavbarNav>
     );
   }
 
   if (window)
     return (
-      <MDBNavbar expand='sm' light className={`${style.navBar}`}>
+      <MDBNavbar expand="sm" light className={`${style.navBar}`}>
         <MDBContainer fluid>
           {searchBar}
 
@@ -88,17 +88,17 @@ const NavBar = () => {
             {isLogged ? (
               <MDBNavbarItem>
                 <MDBDropdown>
-                  <MDBDropdownToggle tag='a' className='nav-link link-dark'>
+                  <MDBDropdownToggle tag="a" className="nav-link link-dark">
                     <PersonIcon />
                   </MDBDropdownToggle>
                   <MDBDropdownMenu>
-                    <MDBDropdownItem link href='/profile'>
+                    <MDBDropdownItem link href="/profile">
                       Hồ sơ cá nhân
                     </MDBDropdownItem>
-                    <MDBDropdownItem link href='/change-password'>
+                    <MDBDropdownItem link href="/change-password">
                       Đổi mật khẩu
                     </MDBDropdownItem>
-                    <MDBDropdownItem link href='/' onClick={handleLogout}>
+                    <MDBDropdownItem link href="/" onClick={handleLogout}>
                       Đăng xuất
                     </MDBDropdownItem>
                   </MDBDropdownMenu>
@@ -106,7 +106,7 @@ const NavBar = () => {
               </MDBNavbarItem>
             ) : (
               <MDBNavbarItem>
-                <MDBBtn style={{ width: 150 }} href='/login' color='info'>
+                <MDBBtn style={{ width: 150 }} href="/login" color="info">
                   Đăng nhập
                 </MDBBtn>
               </MDBNavbarItem>

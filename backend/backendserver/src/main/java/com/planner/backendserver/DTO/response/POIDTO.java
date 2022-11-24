@@ -15,5 +15,6 @@ public class POIDTO extends MasterActivityDTO{
     private int duration;
     private int closeTime;
     private double typicalPrice;
+    private String website;
     private ArrayList<POIImage> images;
 }

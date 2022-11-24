@@ -41,6 +41,7 @@ function ResultList(props) {
                 ? "#"
                 : "http://localhost:3000/poi?id=" + item.id
             }
+            key={item.id}
           >
             {" "}
             <MDBListGroupItem
@@ -79,7 +80,7 @@ function ResultList(props) {
               className={style.icon}
               icon={faSearch}
             ></FontAwesomeIcon>{" "}
-            &nbsp; &nbsp; See more result for "{props.text}"
+            &nbsp; &nbsp; Xem thêm kết quả cho "{props.text}"
           </MDBListGroupItem>
         </a>
       )}
