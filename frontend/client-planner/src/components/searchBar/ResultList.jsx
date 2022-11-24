@@ -41,6 +41,7 @@ function ResultList(props) {
                 ? "#"
                 : "http://localhost:3000/poi?id=" + item.id
             }
+            key={item.id}
           >
             {" "}
             <MDBListGroupItem

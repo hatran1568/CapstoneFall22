@@ -14,6 +14,9 @@ import EditActivityModal from "./EditActivityModal";
 import TripGeneralInfo from "../GeneralInfo/TripGeneralInfo";
 import CloneTripModal from "../../components/Trips/CloneTripModal";
 import TripNotFound from "../../components/Trips/TripNotFound";
+import HotelDetails from "./HotelDetails";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 class Timeline extends Component {
   state = {};
   //set state of component
@@ -141,6 +144,7 @@ class Timeline extends Component {
   };
   //delete an activity
   deleteTripDetail = (event, detailId) => {
+    console.log("detailId: ", detailId);
     axios
       .delete(
         `/trip/delete-detail`,
@@ -155,25 +159,35 @@ class Timeline extends Component {
         }
       )
       .then((response) => {
-        if (response.status == 200) {
-          var newTrip = this.state.trip;
-          newTrip.listTripDetails = newTrip.listTripDetails.filter(function (
-            detail
-          ) {
-            return detail.tripDetailsId !== detailId;
-          });
-          this.setState({
-            trip: newTrip,
-            showAddModal: false,
-            showEditModal: false,
-            dataLoaded: true,
-            delete: {
-              detailId: "",
-              name: "",
-              show: false,
-            },
-          });
-        }
+        var newTrip = this.state.trip;
+        newTrip.listTripDetails = newTrip.listTripDetails.filter(function (
+          detail
+        ) {
+          return detail.tripDetailsId !== detailId;
+        });
+        this.setState({
+          trip: newTrip,
+          showAddModal: false,
+          showEditModal: false,
+          dataLoaded: true,
+          delete: {
+            detailId: "",
+            name: "",
+            show: false,
+          },
+        });
+        this.showToastSuccess();
+      })
+      .catch(function (error) {
+        console.log(error);
+        this.setState({
+          delete: {
+            detailId: "",
+            name: "",
+            show: false,
+          },
+        });
+        this.showToastError();
       });
   };
   //get a tripDetail inside trip in state
@@ -206,9 +220,12 @@ class Timeline extends Component {
       .then((response) => {
         this.updateDetail(detail.tripDetailsId, response.data);
         this.closeEditModal();
+        this.showToastSuccess();
       })
       .catch(function (error) {
         console.log(error);
+        this.closeEditModal();
+        this.showToastError();
       });
   };
   //put request to edit a detail
@@ -235,9 +252,12 @@ class Timeline extends Component {
       .then((response) => {
         this.updateDetail(detail.tripDetailsId, response.data);
         this.closeEditModal();
+        this.showToastSuccess();
       })
       .catch(function (error) {
         console.log(error);
+        this.closeEditModal();
+        this.showToastError();
       });
   };
   //update an activity in the state
@@ -277,21 +297,20 @@ class Timeline extends Component {
         }
       )
       .then((response) => {
-        console.log("custom response: ", response);
         var newDetail = response.data;
         var newTrip = this.state.trip;
         newTrip.listTripDetails.push(newDetail);
-        this.setState(
-          {
-            trip: newTrip,
-            showAddModal: false,
-            dataLoaded: true,
-          },
-          this.render
-        );
+        this.setState({
+          trip: newTrip,
+          showAddModal: false,
+          dataLoaded: true,
+        });
+        this.showToastSuccess("Thêm vào chuyến đi thành công!");
       })
       .catch(function (error) {
         console.log(error);
+        this.setState({ showAddModal: false });
+        this.showToastError();
       });
   };
   //insert an activity into the trip
@@ -325,22 +344,57 @@ class Timeline extends Component {
         var newTrip = this.state.trip;
         newTrip.listTripDetails.push(newDetail);
         this.setState({
-          strip: newTrip,
+          trip: newTrip,
           showAddModal: false,
           dataLoaded: true,
         });
+        this.showToastSuccess("Thêm vào chuyến đi thành công!");
       })
       .catch(function (error) {
+        this.setState({ showAddModal: false });
+        this.showToastError();
         console.log(error);
       });
+  };
+  showToastSuccess = (message) => {
+    if (message === undefined) message = "Lưu thay đổi thành công!";
+    toast.success(message, {
+      position: "top-center",
+      autoClose: 5000,
+      hideProgressBar: true,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "light",
+    });
+  };
+  showToastError = (message) => {
+    if (message === undefined)
+      message = "Đã có lỗi xảy ra, vui lòng thử lại sau.";
+    toast.error(message, {
+      position: "top-center",
+      autoClose: 5000,
+      hideProgressBar: true,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "light",
+    });
   };
   //gets the id of the next trip detail in the list, to get the distance between the 2 later
   getNextTripDetail = (list, detail) => {
     var index = list.indexOf(detail);
     var nextItem;
     if (index >= 0 && index < list.length - 1) nextItem = list[index + 1];
-    if (nextItem) return nextItem.masterActivity.activityId;
-    return -1;
+    if (nextItem) {
+      let item = {};
+      item.activityId = nextItem.masterActivity.activityId;
+      item.address = nextItem.masterActivity.address;
+      return item;
+    }
+    return null;
   };
   //gets the id of the next trip detail in the list, to get the distance between the 2 later
   isConflicting = (list, detail) => {
@@ -474,6 +528,18 @@ class Timeline extends Component {
             name={this.state.delete.name}
           />
         )}
+        <ToastContainer
+          position="top-center"
+          autoClose={5000}
+          hideProgressBar
+          newestOnTop={false}
+          closeOnClick
+          rtl={false}
+          pauseOnFocusLoss
+          draggable
+          pauseOnHover
+          theme="light"
+        />
         <div className="container ">
           <div className="timeline-container row ">
             <div className="col-2">
@@ -507,28 +573,66 @@ class Timeline extends Component {
                     </div>
                     <ul className={style.timeline}>
                       {this.getTripDetailsByDate(date).length > 0 ? (
-                        this.getTripDetailsByDate(date).map((tripDetail) => (
-                          <TripDetail
-                            key={tripDetail.tripDetailsId}
-                            tripDetail={tripDetail}
-                            deleteEvent={(event, detailId, name) =>
-                              this.openConfirmDelete(event, detailId, name)
-                            }
-                            editEvent={(event, detail) => {
-                              console.log("opening edit");
-                              this.openEditModal(event, detail);
-                            }}
-                            nextActivityId={this.getNextTripDetail(
-                              this.getTripDetailsByDate(date),
-                              tripDetail
-                            )}
-                            allDates={allDates}
-                            isConflicting={this.isConflicting(
-                              this.getTripDetailsByDate(date),
-                              tripDetail
-                            )}
-                          ></TripDetail>
-                        ))
+                        <>
+                          {this.getTripDetailsByDate(date).map((tripDetail) =>
+                            tripDetail.masterActivity.category.categoryName !=
+                            "Hotels" ? (
+                              <TripDetail
+                                key={tripDetail.tripDetailsId}
+                                tripDetail={tripDetail}
+                                deleteEvent={(event, detailId, name) =>
+                                  this.openConfirmDelete(event, detailId, name)
+                                }
+                                editEvent={(event, detail) => {
+                                  console.log("opening edit");
+                                  this.openEditModal(event, detail);
+                                }}
+                                nextActivity={this.getNextTripDetail(
+                                  this.getTripDetailsByDate(date),
+                                  tripDetail
+                                )}
+                                allDates={allDates}
+                                isConflicting={this.isConflicting(
+                                  this.getTripDetailsByDate(date),
+                                  tripDetail
+                                )}
+                              ></TripDetail>
+                            ) : (
+                              <HotelDetails
+                                key={tripDetail.tripDetailsId}
+                                tripDetail={tripDetail}
+                                deleteEvent={(event, detailId, name) =>
+                                  this.openConfirmDelete(event, detailId, name)
+                                }
+                                editEvent={(event, detail) => {
+                                  console.log("opening edit");
+                                  this.openEditModal(event, detail);
+                                }}
+                                nextActivity={this.getNextTripDetail(
+                                  this.getTripDetailsByDate(date),
+                                  tripDetail
+                                )}
+                                allDates={allDates}
+                                isConflicting={this.isConflicting(
+                                  this.getTripDetailsByDate(date),
+                                  tripDetail
+                                )}
+                                tripId={this.state.trip.tripId}
+                              />
+                            )
+                          )}
+                          <div className={style.emptyDay}>
+                            <a
+                              onClick={() => {
+                                window.location.href =
+                                  "../hotel/" + this.state.trip.tripId;
+                              }}
+                              className={style.addHotel}
+                            >
+                              Thêm khách sạn
+                            </a>
+                          </div>
+                        </>
                       ) : (
                         <div className={style.emptyDay}>
                           <span>Thời gian trống.</span>
@@ -541,6 +645,16 @@ class Timeline extends Component {
                             className={style.addActivity}
                           >
                             Thêm hoạt động
+                          </a>
+                          <span>&nbsp;&nbsp;hoặc&nbsp;&nbsp;</span>
+                          <a
+                            onClick={() => {
+                              window.location.href =
+                                "../hotel/" + this.state.trip.tripId;
+                            }}
+                            className={style.addHotel}
+                          >
+                            Thêm khách sạn
                           </a>
                         </div>
                       )}
