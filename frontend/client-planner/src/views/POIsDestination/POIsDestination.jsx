@@ -1,11 +1,11 @@
 import React from "react";
-import ReactDOM from "react-dom"
-import {useState} from 'react';
-import {useEffect} from 'react';
-import {Navigate, useParams } from 'react-router-dom';
-import POIBoxLarge from '../../components/POIs/POIBoxLarge.jsx';
+import ReactDOM from "react-dom";
+import { useState } from "react";
+import { useEffect } from "react";
+import { Navigate, useParams } from "react-router-dom";
+import POIBoxLarge from "../../components/POIs/POIBoxLarge.jsx";
 import axios from "../../api/axios";
-import ReactPaginate from 'react-paginate';
+import ReactPaginate from "react-paginate";
 import cateData from "./category.json";
 import { useNavigate } from "react-router-dom";
 import FilterRatings from "react-star-ratings";
@@ -30,7 +30,7 @@ function POIsDestination() {
   useEffect(() => {
     const listResp = async () => {
       await axios
-        .get("http://localhost:8080/api/destination/" + desId)
+        .get("http://localhost:8080/location/api/destination/" + desId)
         .then((response) => setDestination(response.data));
     };
     listResp();
@@ -41,7 +41,7 @@ function POIsDestination() {
     const listResp = async () => {
       await axios
         .get(
-          "http://localhost:8080/api/pois/" +
+          "http://localhost:8080/location/api/pois/" +
             desId +
             "/" +
             0 +
@@ -59,7 +59,7 @@ function POIsDestination() {
     const listResp = async () => {
       await axios
         .get(
-          "http://localhost:8080/api/pois/" +
+          "http://localhost:8080/location/api/pois/" +
             desId +
             "/" +
             catId +
@@ -184,7 +184,7 @@ function POIsDestination() {
     window.scrollTo(0, 0);
     axios
       .get(
-        "http://localhost:8080/api/pois/" +
+        "http://localhost:8080/location/api/pois/" +
           desId +
           "/" +
           event.selected +

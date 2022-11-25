@@ -51,7 +51,7 @@ class Checklist extends Component {
     const { id } = this.props.params;
     const userId = localStorage.getItem("id") ? localStorage.getItem("id") : -1;
     axios
-      .get(`/api/checklist/get-by-trip?tripId=` + id + "&userId=" + userId)
+      .get(`/trip/api/checklist/get-by-trip?tripId=` + id + "&userId=" + userId)
       .then((res) => {
         var own = false;
         console.log("true", userId);
@@ -90,7 +90,7 @@ class Checklist extends Component {
     var newList = this.state.checklistItems;
     curItem.checked = !curItem.checked;
     axios
-      .post("/api/checklist/toggle-checked", {
+      .post("/trip/api/checklist/toggle-checked", {
         itemId: id,
         checked: curItem.checked,
       })
@@ -101,7 +101,7 @@ class Checklist extends Component {
   };
   deleteItem = (event, id) => {
     axios
-      .delete(`/api/checklist/delete-item`, {
+      .delete(`/trip/api/checklist/delete-item`, {
         data: { itemId: id },
       })
       .then((response) => {
@@ -118,7 +118,7 @@ class Checklist extends Component {
     console.log("editing");
     axios({
       method: "put",
-      url: "/api/checklist/put-item?id=" + item.itemId,
+      url: "/trip/api/checklist/put-item?id=" + item.itemId,
       headers: {
         "Content-Type": "application/json",
       },
@@ -142,7 +142,7 @@ class Checklist extends Component {
   };
   insertItem = (event, item) => {
     item.tripId = this.state.tripId;
-    axios.post(`/api/checklist/add-item`, item).then((response) => {
+    axios.post(`/trip/api/checklist/add-item`, item).then((response) => {
       var newList = this.state.checklistItems;
       newList.push(response.data);
       this.setState({ checklistItems: newList, showAddModal: false });
@@ -214,7 +214,7 @@ class Checklist extends Component {
       this.setState({ showWarningTitle: true });
     } else {
       axios
-        .post(`/api/checklist/add-item`, {
+        .post(`/trip/api/checklist/add-item`, {
           tripId: this.state.tripId,
           checked: this.addNewCheckRef.current.checked,
           title: newName,

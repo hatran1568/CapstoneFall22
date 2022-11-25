@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.Optional;
 @Service
 public interface TripService {
-    public DetailedTripDTO getDetailedTripById(int id);
+    public DetailedTripDTO getDetailedTripById(int id,int userId);
     public TripGeneralDTO getTripGeneralById(int id);
     public TripDetailDTO addTripDetail(Date date, int startTime, int endTime, int activityId, int tripId, String note);
     public TripDetailDTO addCustomTripDetail(Date date, int startTime, int endTime, int tripId, String name, String address);

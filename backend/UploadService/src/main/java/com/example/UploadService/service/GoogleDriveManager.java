@@ -116,8 +116,8 @@ public class GoogleDriveManager {
         return parentId;
     }
 
-    public String uploadFile(MultipartFile file, String filePath){
-        try {
+    public String uploadFile(MultipartFile file, String filePath) throws Exception {
+//        try {
             String folderId = getFolderId(filePath);
             if (null != file) {
                 File fileMetadata = new File();
@@ -132,8 +132,8 @@ public class GoogleDriveManager {
                         .setFields("id, webContentLink, webViewLink").execute();
                 return "https://drive.google.com/uc?export=view&id=" + uploadFile.getId();
             }
-        } catch (Exception e) {
-        }
+//        } catch (Exception e) {
+//        }
         return null;
     }
     public void deleteFile(String fileId) throws Exception {

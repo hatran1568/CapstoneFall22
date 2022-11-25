@@ -11,13 +11,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.ArrayList;
 
 @RestController
-@RequestMapping("user//api/user")
+@RequestMapping("/user/api/user")
 public class UserController {
     @Autowired
     private UserRepository userRepo;
@@ -33,16 +34,16 @@ public class UserController {
 
     @PostMapping("/edit-avatar/{userId}")
     public ResponseEntity<?> updateAvatar(@PathVariable int userId, @RequestPart("File") MultipartFile file){
-        try{
+//        try{
             if (userService.getUserProfileById(userId) == null) {
 
                 return new ResponseEntity<>(HttpStatus.NOT_FOUND);
             }
             String oldAvatar = userService.editAvatar(userId, file);
             return new ResponseEntity<>(HttpStatus.OK);
-        } catch (Exception e){
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-        }
+//        } catch (Exception e){
+//            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+//        }
     }
 
     @PostMapping("/edit-username")
@@ -117,7 +118,7 @@ public class UserController {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
-//    @PreAuthorize("hasAuthority('Admin')")
+    @PreAuthorize("hasAuthority('Admin')")
     @GetMapping("/list/count/{nameKey}")
     public ResponseEntity<Integer> getPOIListAdminCount(@PathVariable("nameKey") String nameKey) {
         try {

@@ -20,12 +20,11 @@ function ProfileCard(props) {
     const id = localStorage.getItem("id");
     formData.append("File", e.target.files[0]);
 
-    axios.post("/api/user/edit-avatar/" + id, formData, {
+    axios.post("/user/api/user/edit-avatar/" + id, formData, {
       headers: {
         Authorization: `Bearer ${localStorage.getItem("token")}`,
         "Content-Type": "multipart/form-data",
       },
-      withCredentials: true,
     });
   };
 
@@ -47,7 +46,6 @@ function ProfileCard(props) {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
-        withCredentials: true,
       });
     }
   };

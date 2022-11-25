@@ -19,7 +19,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.client.ServiceInstance;
 import org.springframework.cloud.client.discovery.DiscoveryClient;
-import org.springframework.data.relational.core.sql.In;
+
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
@@ -52,12 +52,13 @@ public class TripServiceImpl implements TripService {
     @Autowired
     private DiscoveryClient discoveryClient;
     @Override
-    public DetailedTripDTO getDetailedTripById(int tripId) {
+    public DetailedTripDTO getDetailedTripById(int tripId,int userId) {
         Trip trip = tripRepository.findById(tripId);
         List<ServiceInstance> instances = discoveryClient.getInstances("location-service");
 
         ServiceInstance instance = instances.get(0);
         if(trip == null) return null;
+        if(trip.getStatus() == TripStatus.PRIVATE && trip.getUser()!=userId) return null;
         List<TripDetailsQueryDTO> tripDetailedDTO = tripDetailRepository.getTripDetailsByTrip(tripId);
         List<TripDetailDTO> tripDetailDTOS = new ArrayList<>();
 

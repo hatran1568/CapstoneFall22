@@ -9,20 +9,20 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 @RestController
-@RequestMapping("upload/api/upload")
+@RequestMapping("/upload/api/upload")
 public class UploadController {
     @Autowired
     GoogleDriveManager driveManager;
 
     @PostMapping("/add")
-    public ResponseEntity<String> addItem(@RequestPart("File") MultipartFile file,@RequestPart("Path" )String path){
+    public ResponseEntity<String> addItem(@RequestPart("File") MultipartFile file,@RequestPart("Path" )String path) throws Exception {
         String result;
-        try{
+//        try{
             result= driveManager.uploadFile(file,path);
             return new ResponseEntity<>(result,HttpStatus.OK);
-        } catch (Exception e){
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-        }
+//        } catch (Exception e){
+//            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+//        }
     }
 
     @PostMapping("/delete")

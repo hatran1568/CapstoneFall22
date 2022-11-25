@@ -18,9 +18,11 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.client.ServiceInstance;
 import org.springframework.cloud.client.discovery.DiscoveryClient;
+import org.springframework.core.io.ByteArrayResource;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -28,6 +30,7 @@ import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.List;
 
 import static java.util.Arrays.asList;
@@ -119,7 +122,7 @@ public class UserServiceImpl implements UserService {
     public String editAvatar(int userId, MultipartFile file) {
         User user = userRepository.findByUserID(userId);
         String webViewLink = null;
-        try {
+//        try {
             restTemplateClient.restTemplate();
 
             List<ServiceInstance> instances = discoveryClient.getInstances("upload-service");
@@ -128,15 +131,20 @@ public class UserServiceImpl implements UserService {
 
             log.info(String.valueOf(instance.getUri()));
             HttpHeaders headers = new HttpHeaders();
-            headers.setAccept(asList(MediaType.APPLICATION_JSON));
+
             headers.setContentType(MediaType.MULTIPART_FORM_DATA);
             MultiValueMap<String, Object> requestMap = new LinkedMultiValueMap<>();
-            requestMap.add("File",file);
-            requestMap.add("Path","tripplanner/img");
+        try {
+            requestMap.add("File",new ByteArrayResource(file.getBytes()));
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        requestMap.add("Path","tripplanner/img");
 
             HttpEntity<MultiValueMap<String, Object>> request =
                     new HttpEntity<>(requestMap,headers);
-            webViewLink =restTemplateClient.restTemplate().postForObject(instance.getUri()+"/api/upload/add", request, String.class);
+            log.info(instance.getUri()+"/upload/api/upload/add");
+        ResponseEntity<String> a =restTemplateClient.restTemplate().postForEntity(instance.getUri()+"/upload/api/upload/add", request, String.class);
 
             String oldAvatar = user.getAvatar();
             if (oldAvatar != null){
@@ -148,14 +156,14 @@ public class UserServiceImpl implements UserService {
                 HttpEntity<MultiValueMap<String, Object>> deleteRequest =
                         new HttpEntity<>(requestMapDelete,header);
 
-                restTemplateClient.restTemplate().postForObject(instance.getUri()+"/api/upload/delete",header, String.class);
+                restTemplateClient.restTemplate().postForObject(instance.getUri()+"/upload/api/upload/delete",header, String.class);
             }
-        } catch (Exception e) {
-            throw new RuntimeException("Could not store the file. Error: " + e.getMessage());
-        } finally {
-            userRepository.updateAvatar(userId, webViewLink);
-
-        }
+//        } catch (Exception e) {
+//            throw new RuntimeException("Could not store the file. Error: " + e.getMessage());
+//        } finally {
+//            userRepository.updateAvatar(userId, webViewLink);
+//
+//        }
 
         return user.getAvatar();
     }

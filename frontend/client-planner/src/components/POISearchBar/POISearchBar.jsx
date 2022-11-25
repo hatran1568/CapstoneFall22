@@ -29,7 +29,7 @@ const POISearchBar = (props) => {
   const getResults = () => {
     if (searchInput.trim().length > 0) {
       axios
-        .get("http://localhost:8080/search/poi/" + searchInput, {
+        .get("http://localhost:8080/location/search/poi/" + searchInput, {
           headers: { "Content-Type": "application/json" },
         })
         .then((response) => response.data)

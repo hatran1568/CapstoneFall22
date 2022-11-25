@@ -8,10 +8,40 @@ eureka:
       defaultZone: http://localhost:8083/eureka
 
 spring:
+  security:
+    oauth2:
+      client:
+        registration:
+          facebook:
+            clientId: 2420754624738461
+            clientSecret: 941207a07d94fca45caee8f0aee29d58
+            scope:
+              - email
+              - public_profile
+          google:
+            clientId: 146372595454-6hdtcdi6krh7bvcmc3v4n8mc85qd2rmk.apps.googleusercontent.com
+            clientSecret: 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
+            scope:
+              - email
+              - profile
+  main:
+    allow-bean-definition-overriding: true
+    web-application-type: reactive
+    allow-circular-references: true
   application:
     name: gateway-service
   cloud:
     gateway:
+      default-filters:
+        - DedupeResponseHeader=Access-Control-Allow-Credentials Access-Control-Allow-Origin
+        - AddResponseHeader=Access-Control-Allow-Origin, *
+      globalcors:
+        cors-configurations:
+          '[/**]':
+            allowedOrigins: "*"
+            allowedMethods: "*"
+            allowedHeaders: "*"
+
       routes:
         - id: locationModule
           uri: http://localhost:8081/
@@ -33,3 +63,13 @@ spring:
           uri: http://localhost:8086/
           predicates:
             - Path=/optimizer/**
+        - id: blogModule
+          uri: http://localhost:8087/
+          predicates:
+            - Path=/optimizer/**
+        - id: AuthModule
+          uri: http://localhost:8088/
+          predicates:
+            - Path=/auth/**
+            - Path=/oauth2/**
+

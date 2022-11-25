@@ -19,9 +19,10 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.client.ServiceInstance;
 import org.springframework.cloud.client.discovery.DiscoveryClient;
-import org.springframework.data.relational.core.sql.In;
+
 import org.springframework.http.*;
 
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 
@@ -43,9 +44,10 @@ public class TripController {
     @Autowired
     private DiscoveryClient discoveryClient;
     @GetMapping("/{id}")
-    public ResponseEntity<DetailedTripDTO> getTripById(@PathVariable int id){
+    public ResponseEntity<DetailedTripDTO> getTripById(@PathVariable int id,@RequestParam(required = false) Integer userId){
         try{
-            DetailedTripDTO trip = tripService.getDetailedTripById(id);
+            if(userId == null) userId = -1;
+            DetailedTripDTO trip = tripService.getDetailedTripById(id,userId);
             if (trip == null){
                 return new ResponseEntity<>(HttpStatus.NOT_FOUND);
             }

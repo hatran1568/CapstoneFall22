@@ -22,7 +22,7 @@ import org.springframework.core.env.Environment;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
-import org.springframework.messaging.simp.SimpMessagingTemplate;
+
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
@@ -68,7 +68,7 @@ public class GenerateTripIml implements GenerateTrip {
         Date sDate = input.getStartDate();
         //parsed = format.parse(tripGenerateDTO.getEndDate());
         Date eDate = input.getEndDate();
-        List<ServiceInstance> instances = discoveryClient.getInstances("location-serive");
+        List<ServiceInstance> instances = discoveryClient.getInstances("location-service");
 
         ServiceInstance instance = instances.get(0);
 
@@ -104,7 +104,7 @@ public class GenerateTripIml implements GenerateTrip {
 
             public void accept(SimpleResponse simpleResponse, Throwable throwable) {
 
-                    List<ServiceInstance> instances = discoveryClient.getInstances("trip-serive");
+                    List<ServiceInstance> instances = discoveryClient.getInstances("trip-service");
 
                     ServiceInstance instance = instances.get(0);
                     HttpHeaders headers = new HttpHeaders();
@@ -117,7 +117,7 @@ public class GenerateTripIml implements GenerateTrip {
                     TripGenerateDTO trip = new TripGenerateDTO();
                     log.info("Insert to DB ");
                     log.info("----------------------------------------- ");
-                    List<ServiceInstance> locationInstances = discoveryClient.getInstances("location-serive");
+                    List<ServiceInstance> locationInstances = discoveryClient.getInstances("location-service");
                     ServiceInstance locationInstance = instances.get(0);
                     DesDetailsDTO destination = restTemplateClient.restTemplate().getForObject(locationInstance.getUri()+"/api/destination/"+input.getDestinationId(), DesDetailsDTO.class);
                     trip.setName(data.getDayOfTrip() + " days in " +destination.getName());
