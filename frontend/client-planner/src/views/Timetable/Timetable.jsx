@@ -692,7 +692,7 @@ class Timetable extends Component {
       .catch(function (error) {
         console.log(error);
         this.setState({ showAddModal: false });
-        this.showToastError;
+        this.showToastError();
       });
   };
   //insert an activity into the trip
