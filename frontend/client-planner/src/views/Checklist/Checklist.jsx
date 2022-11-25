@@ -41,6 +41,7 @@ class Checklist extends Component {
       addingNote: "",
       own: false,
       showCloneModal: false,
+      apiError: false,
     };
     this.addNewTitleRef = React.createRef();
     this.addNewNoteRef = React.createRef();
@@ -54,7 +55,12 @@ class Checklist extends Component {
       .get(`/api/checklist/get-by-trip?tripId=` + id + "&userId=" + userId)
       .then((res) => {
         var own = false;
-        console.log("true", userId);
+        if (!res.data.trip) {
+          this.setState({
+            dataLoaded: true,
+            apiError: true,
+          });
+        }
         if (res.data.trip.userID && res.data.trip.userID == userId) {
           console.log("true");
           own = true;
@@ -267,6 +273,16 @@ class Checklist extends Component {
     var checkedItems = this.state.checklistItems.filter((item) => {
       return item.checked == true;
     }).length;
+    if (this.state.dataLoaded && this.state.apiError)
+      return (
+        <div>
+          <TripGeneralInfo />
+          <Tabs />
+          <div className={style.notOwned}>
+            Đã có lỗi xảy ra, vui lòng thử lại sau.
+          </div>
+        </div>
+      );
     return (
       <div>
         <TripGeneralInfo />

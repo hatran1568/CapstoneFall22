@@ -49,13 +49,31 @@ function ListTypes(props) {
     setSelect("ALL");
   };
   const callBack = (e) => {
-    props.onTypeChange(e.target.innerText.split(" ").join("_"));
-    setSelect(e.target.innerText.split(" ").join("_"));
+    props.onTypeChange(
+      e.target.getAttribute("original-name").split(" ").join("_")
+    );
+    setSelect(e.target.getAttribute("original-name").split(" ").join("_"));
     console.log(select);
+  };
+  const vietCategories = {
+    DESTINATION: "Điểm đến",
+    BLOG: "Blog",
+    ART_AND_CULTURE: "Văn hóa, nghệ thuật",
+    OUTDOORS: "Hoạt động ngoài trời",
+    RELIGION: "Tôn giáo",
+    HISTORIC_SIGHTS: "Lịch sử",
+    MUSEUMS: "Bảo tàng",
+    SPAS_AND_WELLNESS: "Spa & Sức khỏe",
+    SHOPPING: "Mua sắm",
+    BEACHES: "Bãi biển",
+    NIGHTLIFE: "Hoạt động đêm",
+    HOTELS: "Khách sạn",
+    RESTAURANTS: "Nhà hàng",
+    ENTERTAINMENTS: "Giải trí",
   };
   useEffect(getType, [result != false]);
   return (
-    <MDBListGroup style={{ cursor: "pointer" }} flush className="mx-3 mt-4">
+    <MDBListGroup style={{ cursor: "pointer" }} flush className="mx-3 mt-0">
       <MDBRipple rippleTag="span">
         <MDBListGroupItem
           onClick={callBackAll}
@@ -65,7 +83,7 @@ function ListTypes(props) {
             (select.localeCompare("ALL") == 0 && style.active)
           }
         >
-          ALL
+          Tất cả
         </MDBListGroupItem>
       </MDBRipple>
       {result &&
@@ -80,8 +98,9 @@ function ListTypes(props) {
                     "border-0 border-bottom rounded rounded " +
                     (select.localeCompare(item) == 0 && style.active)
                   }
+                  original-name={item.split("_").join(" ")}
                 >
-                  {item.split("_").join(" ")}
+                  {vietCategories[item]}
                 </MDBListGroupItem>
               </MDBRipple>
             )
@@ -91,31 +110,30 @@ function ListTypes(props) {
           onClick={toggleShow}
           className={"border-0 border-bottom rounded rounded "}
         >
-          POI
+          Địa điểm
         </MDBListGroupItem>
       </MDBRipple>
 
       {result &&
-        result.map(
-          (item) =>
-            item != "BLOG" &&
-            item != "DESTINATION" && (
-              <MDBRipple rippleTag="span">
-                <MDBListGroupItem
-                  onClick={callBack}
-                  action
-                  className={
-                    (showShow == true ? style.show : style.hide) +
-                    " border-0 border-bottom rounded rounded " +
-                    style.poi +
-                    " " +
-                    (select.localeCompare(item) == 0 && style.active)
-                  }
-                >
-                  {item.split("_").join(" ")}
-                </MDBListGroupItem>
-              </MDBRipple>
-            )
+        result.map((item) =>
+          item != "BLOG" && item != "DESTINATION" ? (
+            <MDBRipple rippleTag="span">
+              <MDBListGroupItem
+                onClick={callBack}
+                action
+                className={
+                  (showShow == true ? style.show : style.hide) +
+                  " border-0 border-bottom rounded rounded " +
+                  style.poi +
+                  " " +
+                  (select.localeCompare(item) == 0 && style.active)
+                }
+                original-name={item.split("_").join(" ")}
+              >
+                {vietCategories[item]}
+              </MDBListGroupItem>
+            </MDBRipple>
+          ) : null
         )}
     </MDBListGroup>
   );

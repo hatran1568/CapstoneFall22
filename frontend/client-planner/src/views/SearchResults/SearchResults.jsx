@@ -60,45 +60,51 @@ function SearchResults(props) {
         headers: { "Content-Type": "application/json" },
       })
       .then((response) => response.data)
-      .catch(() => setResult(false))
       .then((data) => {
         setResult(data.list);
         setTotalPage(data.totalPage);
-      });
+      })
+      .catch(() => setResult(false));
   };
-
   useEffect(getResult, [result != false, type, page]);
   return (
     <MDBContainer>
       <MDBRow>
-        <MDBCol size='4'>
+        <MDBCol size={4}></MDBCol>
+        <MDBCol size={8}></MDBCol>
+      </MDBRow>
+      <div className={style.pageTitle}>
+        Kết quả tìm kiếm cho từ khóa "{keyword}"
+      </div>
+      <MDBRow>
+        <MDBCol size="4">
           <ListTypes onTypeChange={handleUpdateType} />
         </MDBCol>
-        <MDBCol size='8'>
-          {result && <ListItems list={result}></ListItems>}
-          {result && (
+        <MDBCol size="8">
+          {result ? <ListItems list={result}></ListItems> : null}
+          {result ? (
             <ReactPaginate
               className={style.pagination + " pagination"}
-              nextLabel='>'
+              nextLabel=">"
               onPageChange={handlePageClick}
               pageRangeDisplayed={3}
               marginPagesDisplayed={2}
               pageCount={totalPage}
-              previousLabel='<'
+              previousLabel="<"
               pageClassName={style.page + " page-item"}
               pageLinkClassName={"page-link " + style.page}
               previousClassName={style.next + " page-item"}
               previousLinkClassName={"page-link " + style.next}
               nextClassName={"page-item " + style.next}
               nextLinkClassName={"page-link " + style.next}
-              breakLabel='...'
+              breakLabel="..."
               breakClassName={"page-item " + style.page}
               breakLinkClassName={"page-link " + style.page}
-              containerClassName='pagination'
-              activeClassName='active'
+              containerClassName="pagination"
+              activeClassName="active"
               renderOnZeroPageCount={null}
             />
-          )}
+          ) : null}
         </MDBCol>
       </MDBRow>
     </MDBContainer>
