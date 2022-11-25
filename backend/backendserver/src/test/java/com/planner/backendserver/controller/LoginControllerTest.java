@@ -41,14 +41,19 @@ class LoginControllerTest {
                     "}";
 
             mockMvc
-                    .perform(MockMvcRequestBuilders
-                            .post("/api/login")
-                            .accept(MediaType.APPLICATION_JSON)
-                            .contentType(MediaType.APPLICATION_JSON)
-                            .content(json))
-                    .andExpectAll(content().contentType(MediaType.APPLICATION_JSON),
+                    .perform(
+                            MockMvcRequestBuilders
+                                    .post("/api/login")
+                                    .accept(MediaType.APPLICATION_JSON)
+                                    .contentType(MediaType.APPLICATION_JSON)
+                                    .content(json)
+                    )
+                    .andExpectAll(
+                            content().contentType(MediaType.APPLICATION_JSON),
                             jsonPath("$.role").value("User"),
-                            jsonPath("$.id").value("1"));
+                            jsonPath("$.id").value("1"),
+                            status().isOk()
+                    );
         }
 
         @Test
@@ -61,11 +66,13 @@ class LoginControllerTest {
                     "}";
 
             mockMvc
-                    .perform(MockMvcRequestBuilders
-                            .post("/api/login")
-                            .accept(MediaType.APPLICATION_JSON)
-                            .contentType(MediaType.APPLICATION_JSON)
-                            .content(json))
+                    .perform(
+                            MockMvcRequestBuilders
+                                    .post("/api/login")
+                                    .accept(MediaType.APPLICATION_JSON)
+                                    .contentType(MediaType.APPLICATION_JSON)
+                                    .content(json)
+                    )
                     .andExpectAll(status().is3xxRedirection());
         }
     }

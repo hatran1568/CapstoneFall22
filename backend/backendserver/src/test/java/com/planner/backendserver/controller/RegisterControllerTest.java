@@ -34,12 +34,14 @@ class RegisterControllerTest {
                 "}";
 
         mockMvc
-                .perform(MockMvcRequestBuilders
-                        .post("/api/register")
-                        .accept(MediaType.APPLICATION_JSON)
-                        .content(json)
-                        .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk());
+                .perform(
+                        MockMvcRequestBuilders
+                                .post("/api/register")
+                                .accept(MediaType.APPLICATION_JSON)
+                                .content(json)
+                                .contentType(MediaType.APPLICATION_JSON)
+                )
+                .andExpectAll(status().isOk());
     }
 
     @Test
@@ -53,11 +55,13 @@ class RegisterControllerTest {
                 "}";
 
         mockMvc
-                .perform(MockMvcRequestBuilders
-                        .post("/api/register")
-                        .accept(MediaType.APPLICATION_JSON)
-                        .content(json)
-                        .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isBadRequest());
+                .perform(
+                        MockMvcRequestBuilders
+                                .post("/api/register")
+                                .accept(MediaType.APPLICATION_JSON)
+                                .content(json)
+                                .contentType(MediaType.APPLICATION_JSON)
+                )
+                .andExpectAll(status().isBadRequest());
     }
 }
