@@ -1,5 +1,0 @@
-package com.example.LocationService.entity;
-
-public enum RequestStatus {
-    PENDING, ACCEPTED, REJECTED
-}
