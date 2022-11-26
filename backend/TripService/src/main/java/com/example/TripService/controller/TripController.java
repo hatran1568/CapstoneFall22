@@ -23,6 +23,7 @@ import org.springframework.cloud.client.discovery.DiscoveryClient;
 import org.springframework.http.*;
 
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 
@@ -56,6 +57,7 @@ public class TripController {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+    @Transactional(rollbackFor = {Exception.class, Throwable.class})
     @GetMapping("/general/{id}")
     public ResponseEntity<TripGeneralDTO> getTripGeneralById(@PathVariable int id){
         try{
@@ -68,6 +70,7 @@ public class TripController {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+    @Transactional(rollbackFor = {Exception.class, Throwable.class})
     @PostMapping("/clone-trip")
     public ResponseEntity<TripGeneralDTO> cloneTrip(@RequestBody ObjectNode objectNode){
         try{
@@ -80,6 +83,7 @@ public class TripController {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+    @Transactional(rollbackFor = {Exception.class, Throwable.class})
     @PostMapping("/edit-name")
     public ResponseEntity<?> updateTripName(@RequestBody ObjectNode request){
         try{
@@ -95,6 +99,7 @@ public class TripController {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+    @Transactional(rollbackFor = {Exception.class, Throwable.class})
     @PostMapping("/edit-dates")
     public ResponseEntity<?> updateStartAndEndDates(@RequestBody ObjectNode requestBody){
         try{
@@ -111,6 +116,8 @@ public class TripController {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+    @Transactional(rollbackFor = {Exception.class, Throwable.class})
+
     @GetMapping("/get-distance")
     public ResponseEntity<Double> getDistanceBetweenTwoPOIs(@RequestParam int from, @RequestParam int to){
         try{
@@ -133,6 +140,7 @@ public class TripController {
 //            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
 //        }
 //    }
+@Transactional(rollbackFor = {Exception.class, Throwable.class})
     @PostMapping("/add-detail")
     public ResponseEntity<TripDetailDTO> addTripDetail(@RequestBody ObjectNode objectNode){
 //        try{
@@ -150,7 +158,7 @@ public class TripController {
 //            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
 //        }
     }
-
+    @Transactional(rollbackFor = {Exception.class, Throwable.class})
     @PostMapping("/add-detail-generated")
     public ResponseEntity<Integer> addTripDetailGenerated(@RequestBody ObjectNode objectNode){
 //        try{
@@ -168,6 +176,8 @@ public class TripController {
 //            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
 //        }
     }
+    @Transactional(rollbackFor = {Exception.class, Throwable.class})
+
     @PostMapping("/add-custom-detail")
     public ResponseEntity<TripDetailDTO> addCustomTripDetail(@RequestBody ObjectNode objectNode){
         try{
@@ -183,6 +193,7 @@ public class TripController {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+    @Transactional(rollbackFor = {Exception.class, Throwable.class})
     @GetMapping("/get-detail")
     public ResponseEntity<TripDetailDTO> getTripDetail(@RequestParam int id){
         try{
@@ -195,6 +206,7 @@ public class TripController {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+    @Transactional(rollbackFor = {Exception.class, Throwable.class})
     @PostMapping("/get-details-to-delete")
     public ResponseEntity<List<TripDetailDTO>> getDetailsToDelete(@RequestBody ObjectNode objectNode){
         try{
@@ -206,6 +218,7 @@ public class TripController {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+    @Transactional(rollbackFor = {Exception.class, Throwable.class})
     @PutMapping("/put-detail")
     public ResponseEntity<TripDetailDTO> editTripDetail(@RequestBody TripDetailDTO newDetail, @RequestParam int id){
         try{
@@ -218,6 +231,7 @@ public class TripController {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+    @Transactional(rollbackFor = {Exception.class, Throwable.class})
     @PutMapping("/put-custom-detail")
     public ResponseEntity<TripDetailDTO> editCustomTripDetail(@RequestBody TripDetailDTO newDetail, @RequestParam int detailId, @RequestParam int tripId){
         try{
@@ -230,6 +244,7 @@ public class TripController {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+    @Transactional(rollbackFor = {Exception.class, Throwable.class})
     @DeleteMapping("/delete-detail")
     public ResponseEntity<TripDetails> deleteTripDetail(@RequestBody ObjectNode objectNode){
         try{
@@ -241,7 +256,7 @@ public class TripController {
         }
     }
 
-
+    @Transactional(rollbackFor = {Exception.class, Throwable.class})
     @GetMapping("/getTripsByUser/{userId}")
     public ResponseEntity<?> getTripsByUser(@PathVariable int userId) {
         try {
@@ -252,6 +267,7 @@ public class TripController {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+    @Transactional(rollbackFor = {Exception.class, Throwable.class})
     @RequestMapping(value = "/createTrip", consumes = "application/json", produces = { "*/*" }, method = RequestMethod.POST)
     public ResponseEntity<?> createEmptyTrip(@RequestBody TripDTO tripDTO) {
         try{
@@ -264,7 +280,7 @@ public class TripController {
         }
 
     }
-
+    @Transactional(rollbackFor = {Exception.class, Throwable.class})
     @DeleteMapping("/delete-trip")
     public ResponseEntity<?> deleteTrip(@RequestBody ObjectNode objectNode){
         try{
@@ -275,7 +291,7 @@ public class TripController {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
-
+    @Transactional(rollbackFor = {Exception.class, Throwable.class})
     @GetMapping("/get-trip-3/{userId}")
     public ResponseEntity<?> getTripsForHomepage(@PathVariable int userId){
 //        try{
@@ -285,7 +301,7 @@ public class TripController {
 //            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
 //        }
     }
-
+    @Transactional(rollbackFor = {Exception.class, Throwable.class})
     @GetMapping("/get-total-trip/{userId}")
     public ResponseEntity<?> getTotalTrips(@PathVariable int userId){
         try{
@@ -294,7 +310,7 @@ public class TripController {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
-
+    @Transactional(rollbackFor = {Exception.class, Throwable.class})
     @PostMapping("/insert")
     public ResponseEntity<Integer> insertTrip(@RequestBody TripGenerateDTO input){
 

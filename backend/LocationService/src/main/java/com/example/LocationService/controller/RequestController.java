@@ -5,11 +5,13 @@ import com.example.LocationService.dto.response.RequestDetailsDTO;
 import com.example.LocationService.dto.response.RequestListDTO;
 import com.example.LocationService.repository.RequestRepository;
 
+import com.example.LocationService.utils.GoogleDriveManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -21,10 +23,10 @@ import java.util.Calendar;
 public class RequestController {
     @Autowired
     private RequestRepository requestRepo;
-//    @Autowired
-//    GoogleDriveManager driveManager;
-
-//    @PreAuthorize("hasAuthority('Admin')")
+    @Autowired
+    GoogleDriveManager driveManager;
+    @Transactional(rollbackFor = {Exception.class, Throwable.class})
+    @PreAuthorize("hasAuthority('Admin')")
     @GetMapping("/list/{filter}/{nameKey}/{page}")
     public ResponseEntity<ArrayList<RequestListDTO>> getPOIListAdmin(@PathVariable("filter") String filter, @PathVariable("page") int page, @PathVariable("nameKey") String nameKey) {
         try {
@@ -37,6 +39,7 @@ public class RequestController {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+    @Transactional(rollbackFor = {Exception.class, Throwable.class})
     @PreAuthorize("hasAuthority('Admin')")
     @GetMapping("/images/{reqId}")
     public ResponseEntity<ArrayList<String>> getImages(@PathVariable("reqId") int reqId) {
@@ -47,6 +50,7 @@ public class RequestController {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+    @Transactional(rollbackFor = {Exception.class, Throwable.class})
     @PreAuthorize("hasAuthority('Admin')")
     @GetMapping("/list/count/{nameKey}")
     public ResponseEntity<Integer> getPOIListAdminCount(@PathVariable("nameKey") String nameKey) {
@@ -60,7 +64,8 @@ public class RequestController {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
-//    @PreAuthorize("hasAuthority('Admin')")
+    @Transactional(rollbackFor = {Exception.class, Throwable.class})
+   @PreAuthorize("hasAuthority('Admin')")
     @GetMapping("/details/{reqId}")
     public ResponseEntity<RequestDetailsDTO> getPOIListAdmin(@PathVariable("reqId") int reqId) {
         try {
@@ -72,6 +77,8 @@ public class RequestController {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+
+    @Transactional(rollbackFor = {Exception.class, Throwable.class})
     @RequestMapping(value = "/accept/{reqId}", produces = { "*/*" }, method = RequestMethod.POST)
     public ResponseEntity<?> acceptRequest(@PathVariable int reqId) {
         try{
@@ -82,6 +89,7 @@ public class RequestController {
             return  new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+    @Transactional(rollbackFor = {Exception.class, Throwable.class})
     @RequestMapping(value = "/reject/{reqId}", produces = { "*/*" }, method = RequestMethod.POST)
     public ResponseEntity<?> rejectRequest(@PathVariable int reqId) {
         try{
@@ -92,6 +100,7 @@ public class RequestController {
             return  new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+    @Transactional(rollbackFor = {Exception.class, Throwable.class})
     @RequestMapping(value = "/new", consumes = "application/json", produces = { "*/*" }, method = RequestMethod.POST)
     public ResponseEntity<?> newRequest(@RequestBody NewRequestDTO req) {
         try{
@@ -105,15 +114,16 @@ public class RequestController {
             return  new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
-//    @PostMapping("/reqImg/{reqId}")
-//    @ResponseBody
-//    public ResponseEntity<?> addRequestImage(@PathVariable int reqId, @RequestPart("File") MultipartFile file) throws Exception{
-////        try{
-//        String webViewLink = driveManager.uploadFile(file, "tripplanner/img/poi");
-//        requestRepo.addRequestImage(reqId, webViewLink);
-//        return new ResponseEntity<>(HttpStatus.OK);
-////        } catch (Exception e){
-////            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-////        }
-//    }
+    @Transactional(rollbackFor = {Exception.class, Throwable.class})
+    @PostMapping("/reqImg/{reqId}")
+    @ResponseBody
+    public ResponseEntity<?> addRequestImage(@PathVariable int reqId, @RequestPart("File") MultipartFile file) throws Exception{
+//        try{
+        String webViewLink = driveManager.uploadFile(file, "tripplanner/img/poi");
+        requestRepo.addRequestImage(reqId, webViewLink);
+        return new ResponseEntity<>(HttpStatus.OK);
+//        } catch (Exception e){
+//            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+//        }
+    }
 }

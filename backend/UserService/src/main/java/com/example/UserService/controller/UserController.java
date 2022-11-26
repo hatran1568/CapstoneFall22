@@ -143,7 +143,7 @@ public class UserController {
         }
     }
 //    @PreAuthorize("hasAuthority('Admin')")
-    @RequestMapping(value = "/deactivate/{userId}", produces = { "*/*" }, method = RequestMethod.POST)
+    @RequestMapping(value = "/deactivate/{userId}", produces = { "*/*" },consumes = "multipart/form-data", method = RequestMethod.POST)
     public ResponseEntity<?> deactivateUser(@PathVariable int userId) {
         try{
             userRepo.deactivateUser(userId);

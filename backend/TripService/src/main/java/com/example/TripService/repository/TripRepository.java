@@ -32,7 +32,7 @@ public interface TripRepository extends JpaRepository<Trip, Integer> {
     int getNumberOfTripsByUser(int id);
     @Modifying
     @Query(
-            value = "INSERT INTO trip (date_created, date_modified, status, budget, `name`, user_id, start_date, end_date) VALUES (?1, ?2, ?3, ?4, ?5, ?6, ?7, ?8)",
+            value = "INSERT INTO trip (date_created, date_modified, status, budget, name, user_id, start_date, end_date) VALUES (?1, ?2, ?3, ?4, ?5, ?6, ?7, ?8)",
             nativeQuery = true)
     void createEmptyTrip(Date dateCreated, Date dateModified, String status, double budget, String name, int userId, Date startDate, Date endDate);
 
@@ -54,7 +54,19 @@ public interface TripRepository extends JpaRepository<Trip, Integer> {
     @Query("UPDATE Trip t SET t.startDate=:startDate, t.endDate=:endDate WHERE t.tripId=:tripId")
     public void updateStartAndEndDates(int tripId, Date startDate, Date endDate);
 
+
+    @Modifying
+    @Transactional
     @Query(value = "insert into trip_details (day_number,end_time,note,start_time,master_activity_id,trip_id) value(?1,?2,?3,?4,?5,?6)",nativeQuery = true)
     public void insertTripDetails(int day, int end, String note, int start, int poi, int trip);
+
+    @Query(value = "SELECT u.optimizer_request_id FROM user u where u.user_id=?1",nativeQuery = true)
+    Integer getStatusGenerating(int userId);
+
+    @Query(value="Update `user`  set optimizer_request_id= ?1 where user_id=?2",nativeQuery = true)
+    void changeInProgress(int id,int userId);
+
+    @Query(value = "Insert into optimize_request ('status','instance_uri','trip_id','user_id') value(?1,?2,null,?3)",nativeQuery = true)
+    void insertRequest(String status,String uri,int userId);
 
 }

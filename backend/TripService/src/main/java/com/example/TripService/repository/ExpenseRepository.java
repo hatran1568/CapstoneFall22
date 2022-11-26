@@ -70,7 +70,9 @@ public interface ExpenseRepository extends JpaRepository<ExpenseCategory,Double>
             nativeQuery = true)
     void updateExpense(double amount, String description, int expenseCategoryId, int expenseId);
 
-    @Query(value = "insert into trip_expense (amount,description,expense_category,trip_id,trip_details_id) VALUE(?1,?2,?3,8,?4,?5)",nativeQuery = true)
+    @Modifying
+    @Transactional
+    @Query(value = "insert into trip_expense (amount,description,expense_category_id,trip_id,trip_details_id) VALUE(?1,?2,8,?3,?4)",nativeQuery = true)
     void insertExpense(double amount,String description, int trip_id,int details);
 
 }

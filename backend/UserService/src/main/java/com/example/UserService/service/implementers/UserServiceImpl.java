@@ -12,6 +12,7 @@ import com.example.UserService.entity.UserStatus;
 import com.example.UserService.repository.UserRepository;
 import com.example.UserService.service.interfaces.UserService;
 
+import com.example.UserService.utils.GoogleDriveManager;
 import com.example.UserService.utils.MailSenderManager;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
@@ -44,7 +45,8 @@ public class UserServiceImpl implements UserService {
     RestTemplateClient restTemplateClient;
     @Autowired
     ModelMapper mapper;
-
+    @Autowired
+    GoogleDriveManager driveManager;
     @Autowired
     private DiscoveryClient discoveryClient;
 
@@ -118,52 +120,23 @@ public class UserServiceImpl implements UserService {
 
 
     //return old avatar
+
     @Override
     public String editAvatar(int userId, MultipartFile file) {
         User user = userRepository.findByUserID(userId);
         String webViewLink = null;
-//        try {
-            restTemplateClient.restTemplate();
-
-            List<ServiceInstance> instances = discoveryClient.getInstances("upload-service");
-
-            ServiceInstance instance =  instances.get(0);
-
-            log.info(String.valueOf(instance.getUri()));
-            HttpHeaders headers = new HttpHeaders();
-
-            headers.setContentType(MediaType.MULTIPART_FORM_DATA);
-            MultiValueMap<String, Object> requestMap = new LinkedMultiValueMap<>();
         try {
-            requestMap.add("File",new ByteArrayResource(file.getBytes()));
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-        requestMap.add("Path","tripplanner/img");
-
-            HttpEntity<MultiValueMap<String, Object>> request =
-                    new HttpEntity<>(requestMap,headers);
-            log.info(instance.getUri()+"/upload/api/upload/add");
-        ResponseEntity<String> a =restTemplateClient.restTemplate().postForEntity(instance.getUri()+"/upload/api/upload/add", request, String.class);
-
+            webViewLink = driveManager.uploadFile(file, "tripplanner/img");
             String oldAvatar = user.getAvatar();
             if (oldAvatar != null){
-                HttpHeaders header = new HttpHeaders();
-                headers.setAccept(asList(MediaType.APPLICATION_JSON));
-                headers.setContentType(MediaType.MULTIPART_FORM_DATA);
-                MultiValueMap<String, Object> requestMapDelete = new LinkedMultiValueMap<>();
-                requestMapDelete.add("Path","tripplanner/img");
-                HttpEntity<MultiValueMap<String, Object>> deleteRequest =
-                        new HttpEntity<>(requestMapDelete,header);
-
-                restTemplateClient.restTemplate().postForObject(instance.getUri()+"/upload/api/upload/delete",header, String.class);
+                driveManager.deleteFile(oldAvatar.split("id=")[1]);
             }
-//        } catch (Exception e) {
-//            throw new RuntimeException("Could not store the file. Error: " + e.getMessage());
-//        } finally {
-//            userRepository.updateAvatar(userId, webViewLink);
-//
-//        }
+        } catch (Exception e) {
+            throw new RuntimeException("Could not store the file. Error: " + e.getMessage());
+        } finally {
+            userRepository.updateAvatar(userId, webViewLink);
+
+        }
 
         return user.getAvatar();
     }

@@ -19,6 +19,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
@@ -34,7 +35,7 @@ public class LoginController {
     UserRepository userRepository;
     @Autowired
     AuthenticationManager authenticationManager;
-
+    @Transactional(rollbackFor = {Exception.class, Throwable.class})
     @RequestMapping(value = "/login", produces = { "*/*" }, method = RequestMethod.POST)
     public String authenticateUser(@RequestBody LoginRequestDTO loginRequest) {
 
@@ -57,6 +58,7 @@ public class LoginController {
         }
 
     }
+    @Transactional(rollbackFor = {Exception.class, Throwable.class})
     @RequestMapping(value = "/api/loginByOAuth", produces = { "*/*" }, method = RequestMethod.POST)
     public String authenticateUserOAuth(String jwt) {
         return jwt;
@@ -69,7 +71,7 @@ public class LoginController {
     public ResponseEntity returnWrongUser(){
         return new ResponseEntity( HttpStatus.FORBIDDEN);
     }
-
+    @Transactional(rollbackFor = {Exception.class, Throwable.class})
     @GetMapping(value = "", produces = {MediaType.APPLICATION_JSON_VALUE})
     public ResponseEntity<ConnValidationResponse> validateGet(HttpServletRequest request) {
         String username = (String) request.getAttribute("username");
@@ -78,12 +80,12 @@ public class LoginController {
                 .username(username).authorities(grantedAuthorities)
                 .isAuthenticated(true).build());
     }
-
+    @Transactional(rollbackFor = {Exception.class, Throwable.class})
     @GetMapping(value = "checkValid/{jwt}")
     public ResponseEntity<Boolean> checkJwt(@PathVariable String jwt){
         return  new ResponseEntity<Boolean>(tokenProvider.checkValid(jwt),HttpStatus.OK);
     }
-
+    @Transactional(rollbackFor = {Exception.class, Throwable.class})
     @GetMapping(value = "getAuthentication/{jwt}")
     public ResponseEntity<String> getAuthen(@PathVariable String jwt){
         return new ResponseEntity<String>(tokenProvider.getAuthen(jwt),HttpStatus.OK);

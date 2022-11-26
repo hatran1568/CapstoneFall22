@@ -178,9 +178,19 @@ public class TripServiceImpl implements TripService {
 
     @Override
     public Integer addTripDetailGenerated(int day, int startTime, int endTime, int activityId, int tripId, String note) {
-        tripRepository.insertTripDetails(day,endTime,note,startTime,activityId,tripId);
+        TripDetails td = new TripDetails();
+        Trip t = new Trip();
+        t.setTripId(tripId);
+        td.setTrip(t);
+        td.setNote(note);
+        td.setDayNumber(day);
+        td.setStartTime(startTime);
+        td.setEndTime(endTime);
+        td.setMasterActivity(activityId);
+        TripDetails saved = tripDetailRepository.save(td);
+        //tripRepository.insertTripDetails(day,endTime,note,startTime,activityId,tripId);
 
-        return tripDetailRepository.getLastestTripDetails();
+        return saved.getTripDetailsId();
     }
 
     //add an expense to trip with typical price of POI

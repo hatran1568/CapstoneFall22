@@ -2,6 +2,7 @@ package com.example.Optimizer.controller;
 
 
 import com.example.Optimizer.DTO.GenerateTripUserInput;
+import com.example.Optimizer.DTO.Response.ComplexResponse;
 import com.example.Optimizer.DTO.Response.RequestStatus;
 import com.example.Optimizer.DTO.Response.SimpleResponse;
 import com.example.Optimizer.service.AsyncJobsManager;
@@ -11,6 +12,7 @@ import org.springframework.core.env.Environment;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
@@ -33,6 +35,7 @@ public class TripController {
 
     @Autowired
     private Environment environment;
+    @Transactional(rollbackFor = {Exception.class, Throwable.class})
     @CrossOrigin(origins = "*", allowedHeaders = "*")
     @PostMapping("/generate")
     public ResponseEntity generateTrip(HttpServletRequest request, @RequestBody GenerateTripUserInput input) throws ExecutionException, InterruptedException {
@@ -47,15 +50,23 @@ public class TripController {
                 .replacePath(null)
                 .build()
                 .toUriString();
-        CompletableFuture<SimpleResponse> trip = generateTrip.generateTrip(input,baseUrl);
 
+        generateTrip.generateTrip(input,baseUrl).thenComposeAsync(response -> {
+            try {
+               return generateTrip.insertToDB(response);
+            } catch (ExecutionException e) {
+                throw new RuntimeException(e);
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
+        });
         String serverPort = environment.getProperty("local.server.port");
 
 
 
 
 
-        return new ResponseEntity<SimpleResponse>(trip.get(),HttpStatus.OK) ;
+        return new ResponseEntity<SimpleResponse>(new SimpleResponse("1",RequestStatus.IN_PROGRESS, input.getUserId(), "8088"),HttpStatus.OK);
 
 
     }

@@ -1,6 +1,7 @@
 package com.example.LocationService.controller;
 
 
+import com.example.LocationService.dto.ListPoi;
 import com.example.LocationService.dto.request.HotelsRequestDTO;
 import com.example.LocationService.dto.request.POIListDTO;
 import com.example.LocationService.dto.request.POIofDestinationDTO;
@@ -12,6 +13,7 @@ import com.example.LocationService.repository.CustomActivityRepository;
 import com.example.LocationService.repository.DistanceRepository;
 import com.example.LocationService.repository.POIRepository;
 import com.example.LocationService.service.interfaces.POIService;
+import com.example.LocationService.utils.GoogleDriveManager;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.google.gson.Gson;
@@ -24,6 +26,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
@@ -48,8 +51,8 @@ public class POIController {
     private POIService poiService;
     @Autowired
     private CustomActivityRepository customActivityRepository;
-//    @Autowired
-//    GoogleDriveManager driveManager;
+    @Autowired
+    GoogleDriveManager driveManager;
 
     @GetMapping("/{desid}/{page}/{catid}/{rating}")
     public ResponseEntity<ArrayList<POIofDestinationDTO>> getPOIsOfDestinationFilter(@PathVariable("desid") int desid, @PathVariable("page") int page, @PathVariable("catid") int catid, @PathVariable("rating") int rating) {
@@ -314,14 +317,18 @@ public class POIController {
     }
 
     @GetMapping("/poisByDestination/{id}")
-    public ResponseEntity<ArrayList<POI>> getListResponseEntity(@PathVariable int id){
+    public ResponseEntity<ListPoi> getListResponseEntity(@PathVariable int id){
         try {
             ArrayList<POI> list = new ArrayList<>();
+            ListPoi listPoi = new ListPoi();
+
             list = poiRepo.getPOIsByDestinationId(id);
             if(list.isEmpty()){
                 return  new ResponseEntity<>(HttpStatus.NOT_FOUND);
             }
-            return new ResponseEntity<>(list,HttpStatus.OK);
+            listPoi.setList(list);
+            listPoi.setAdditional("success");
+            return new ResponseEntity<>(listPoi,HttpStatus.OK);
         }
         catch (Exception e){
             return  new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
@@ -405,34 +412,34 @@ public class POIController {
         return  new ResponseEntity<>(poiService.cloneCustomActivity(id),HttpStatus.OK);
     }
 
-//    @PreAuthorize("hasAuthority('Admin')")
-//    @PostMapping("/addImg/{poiId}/{description}")
-//    @ResponseBody
-//    public ResponseEntity<?> addImage(@PathVariable int poiId, @PathVariable String description, @RequestPart("File") MultipartFile file) throws Exception {
-////        try{
-//        String webViewLink = driveManager.uploadFile(file, "tripplanner/img/poi");
-//        if (description.equals("*"))
-//            poiRepo.addImage(poiId, null, webViewLink);
-//        else
-//            poiRepo.addImage(poiId, description, webViewLink);
-//        return new ResponseEntity<>(HttpStatus.OK);
-////        } catch (Exception e){
-////            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-////        }
-//    }
-
-//    @RequestMapping(value = "/deleteImg/{imgId}", produces = {"*/*"}, method = RequestMethod.POST)
-//    public ResponseEntity<?> deleteImg(@PathVariable int imgId) {
-//        try {
-//            String oldAvatar = poiRepo.getUrlPOIImage(imgId);
-//            if (oldAvatar != null) {
-//                driveManager.deleteFile(oldAvatar.split("id=")[1]);
-//            }
-//            poiRepo.deleteImage(imgId);
-//            return new ResponseEntity<>(HttpStatus.OK);
-//        } catch (Exception e) {
+    @PreAuthorize("hasAuthority('Admin')")
+    @PostMapping("/addImg/{poiId}/{description}")
+    @ResponseBody
+    public ResponseEntity<?> addImage(@PathVariable int poiId, @PathVariable String description, @RequestPart("File") MultipartFile file) throws Exception {
+//        try{
+        String webViewLink = driveManager.uploadFile(file, "tripplanner/img/poi");
+        if (description.equals("*"))
+            poiRepo.addImage(poiId, null, webViewLink);
+        else
+            poiRepo.addImage(poiId, description, webViewLink);
+        return new ResponseEntity<>(HttpStatus.OK);
+//        } catch (Exception e){
 //            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
 //        }
-//
-//    }
+    }
+
+    @RequestMapping(value = "/deleteImg/{imgId}", produces = {"*/*"}, method = RequestMethod.POST)
+    public ResponseEntity<?> deleteImg(@PathVariable int imgId) {
+        try {
+            String oldAvatar = poiRepo.getUrlPOIImage(imgId);
+            if (oldAvatar != null) {
+                driveManager.deleteFile(oldAvatar.split("id=")[1]);
+            }
+            poiRepo.deleteImage(imgId);
+            return new ResponseEntity<>(HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+
+    }
 }

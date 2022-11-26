@@ -289,7 +289,7 @@ function HomePage() {
     axios({
       method: "get",
       url:
-        "http://localhost:8080/trip/checkGenerating/" +
+        "http://localhost:8080/trip/optimize/checkGenerating/" +
         localStorage.getItem("id"),
 
       headers: {
@@ -338,7 +338,7 @@ function HomePage() {
       }
       axios({
         method: "post",
-        url: "http://localhost:8080/trip/generate",
+        url: "http://localhost:8080/trip/optimize/generate",
         data: {
           userId: localStorage.getItem("id"),
           budget: document.getElementById("budgetGenerateInput").value,

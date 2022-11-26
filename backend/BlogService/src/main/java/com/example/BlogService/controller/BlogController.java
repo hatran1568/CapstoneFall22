@@ -5,6 +5,7 @@ import com.example.BlogService.dto.request.BlogAddUpdateDTO;
 import com.example.BlogService.dto.request.BlogDetailsDTO;
 import com.example.BlogService.dto.request.BlogListDTO;
 import com.example.BlogService.dto.request.BlogNearbyDTO;
+import com.example.BlogService.dto.response.ListBlogDTO;
 import com.example.BlogService.entity.Blog;
 import com.example.BlogService.repository.BlogRepository;
 
@@ -19,6 +20,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.*;
@@ -44,7 +46,7 @@ public class BlogController {
     private BlogRepository blogRepo;
     @Autowired
     BlogService blogService;
-
+    @Transactional(rollbackFor = {Exception.class, Throwable.class})
     @GetMapping("/blog/{blogId}")
     public ResponseEntity<BlogDetailsDTO> getBlogDetailsById(@PathVariable int blogId){
         try{
@@ -57,6 +59,23 @@ public class BlogController {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+    @Transactional(rollbackFor = {Exception.class, Throwable.class})
+    @GetMapping("/blog/keyword/{keyword}")
+    public ResponseEntity<ListBlogDTO> getBlogDByKeyword(@PathVariable String keyword){
+        try{
+            List<Blog> blog = blogService.getBlogByKeyWord(keyword);
+            ListBlogDTO blogDTO = new ListBlogDTO();
+            blogDTO.setTest("aa");
+            blogDTO.setList(blog);
+            if (blog == null){
+                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            }
+            return new ResponseEntity<>(blogDTO, HttpStatus.OK);
+        } catch (Exception e){
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+    @Transactional(rollbackFor = {Exception.class, Throwable.class})
     @PreAuthorize("hasAuthority('Admin')")
     @GetMapping("/blog/admin/{filter}/{page}")
     public ResponseEntity<ArrayList<BlogListDTO>> searchBlogsAdmin(@PathVariable String filter, @PathVariable int page){
@@ -84,7 +103,7 @@ public class BlogController {
         } catch (Exception e){
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
-    }
+    } @Transactional(rollbackFor = {Exception.class, Throwable.class})
     @GetMapping("/blog/nearby/{blogId}")
     public ResponseEntity<ArrayList<BlogNearbyDTO>> getNearbyBlogs(@PathVariable int blogId){
         try{
@@ -102,19 +121,19 @@ public class BlogController {
         } catch (Exception e){
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
-    }
+    } @Transactional(rollbackFor = {Exception.class, Throwable.class})
     @PreAuthorize("hasAuthority('Admin')")
     @RequestMapping(value = "/blog/new/{userId}", produces = { MediaType.APPLICATION_JSON_VALUE }, method = RequestMethod.POST)
     public ResponseEntity<?> addBlog(@PathVariable int userId) {
-//        try{
+        try{
             java.sql.Timestamp date = new java.sql.Timestamp(Calendar.getInstance().getTime().getTime());
             blogRepo.addBlog(date, date, userId);
             return new ResponseEntity<>(blogRepo.getLastestBlog(), HttpStatus.OK);
-//        }
-//        catch (Exception e){
-//            return  new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-//        }
-    }
+        }
+        catch (Exception e){
+            return  new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    } @Transactional(rollbackFor = {Exception.class, Throwable.class})
     @RequestMapping(value = "/blog/hide/{blogId}", produces = { "*/*" }, method = RequestMethod.POST)
     public ResponseEntity<?> hideBlog(@PathVariable int blogId) {
         try{
@@ -142,7 +161,7 @@ public class BlogController {
         catch (Exception e){
             return  new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
-    }
+    } @Transactional(rollbackFor = {Exception.class, Throwable.class})
     @RequestMapping(value = "/blog/delete/{blogId}", produces = { "*/*" }, method = RequestMethod.POST)
     public ResponseEntity<?> deleteBlog(@PathVariable int blogId) {
         try{
@@ -178,7 +197,7 @@ public class BlogController {
         catch (Exception e){
             return  new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
-    }
+    } @Transactional(rollbackFor = {Exception.class, Throwable.class})
     @PreAuthorize("hasAuthority('Admin')")
     @PostMapping("/blog/uploadImg")
     @ResponseBody

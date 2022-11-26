@@ -11,6 +11,7 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -29,6 +30,7 @@ public class CollectionController {
     private POIService poiService;
 
     // getting collections here
+    @Transactional(rollbackFor = {Exception.class, Throwable.class})
     @GetMapping("/newest")
     public ResponseEntity<Collection> getNewCollection() {
         try {
@@ -41,7 +43,7 @@ public class CollectionController {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
-
+    @Transactional(rollbackFor = {Exception.class, Throwable.class})
     @GetMapping("/list/{uid}")
     public ResponseEntity<ArrayList<CollectionDTO>> getCollections(@PathVariable int uid) {
             ArrayList<CollectionDTO> collections = collectionService.getCollectionListByUid(uid);
@@ -51,7 +53,7 @@ public class CollectionController {
             return new ResponseEntity<>(collections, HttpStatus.OK);
 
     }
-
+    @Transactional(rollbackFor = {Exception.class, Throwable.class})
     @GetMapping("/get/{colId}")
     public ResponseEntity<CollectionDTO> getCollection(@PathVariable int colId) {
         try {
@@ -66,6 +68,7 @@ public class CollectionController {
     }
 
     // getting POI list here
+    @Transactional(rollbackFor = {Exception.class, Throwable.class})
     @GetMapping("/poiList/{colId}")
     public ResponseEntity<ArrayList<POIOfCollectionDTO>> getPOIList(@PathVariable int colId) {
         try {
@@ -80,6 +83,7 @@ public class CollectionController {
     }
 
     // modifying collection list here
+    @Transactional(rollbackFor = {Exception.class, Throwable.class})
     @PostMapping("/create")
     public ResponseEntity<ArrayList<CollectionDTO>> createNewCollection(@RequestBody ObjectNode objectNode) {
         try {
@@ -96,6 +100,7 @@ public class CollectionController {
         }
     }
 
+    @Transactional(rollbackFor = {Exception.class, Throwable.class})
     @PutMapping("/delete")
     public ResponseEntity<?> deleteCollection(@RequestBody ObjectNode objectNode) {
         try {
@@ -106,7 +111,7 @@ public class CollectionController {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
-
+    @Transactional(rollbackFor = {Exception.class, Throwable.class})
     @PutMapping("/edit")
     public ResponseEntity<CollectionDTO> updateCollection(@RequestBody ObjectNode objectNode) {
         try {
@@ -121,7 +126,7 @@ public class CollectionController {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
-
+    @Transactional(rollbackFor = {Exception.class, Throwable.class})
     // modifying POI list here
     @PostMapping("/addPoi")
     public ResponseEntity<CollectionDTO> addPOI(@RequestBody ObjectNode objectNode) {
@@ -135,6 +140,7 @@ public class CollectionController {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+    @Transactional(rollbackFor = {Exception.class, Throwable.class})
 
     @DeleteMapping("/deletePoi")
     public ResponseEntity<CollectionDTO> deletePOI(@RequestBody DeletePOIFromCollectionDTO dto) {
@@ -148,7 +154,7 @@ public class CollectionController {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
-
+    @Transactional(rollbackFor = {Exception.class, Throwable.class})
     @PostMapping("/addPoi2")
     public ResponseEntity<ArrayList<CollectionDTO>> addPOI2(@RequestBody ObjectNode objectNode) {
         try {
@@ -162,7 +168,7 @@ public class CollectionController {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
-
+    @Transactional(rollbackFor = {Exception.class, Throwable.class})
     @DeleteMapping("/deletePoi2")
     public ResponseEntity<ArrayList<CollectionDTO>> deletePOI2(@RequestBody DeletePOIFromCollectionDTO dto) {
         try {

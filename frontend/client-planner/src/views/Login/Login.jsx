@@ -12,7 +12,7 @@ import {
 import style from "./Login.module.css";
 import useAuth from "../../hooks/useAuth";
 import axios from "../../api/axios";
-const LOGIN_URL = "/api/login";
+const LOGIN_URL = "/auth/api/login";
 
 function Login() {
   const { setAuth } = useAuth();
@@ -29,7 +29,6 @@ function Login() {
     try {
       const response = await axios.post(LOGIN_URL, user, {
         headers: { "Content-Type": "application/json" },
-        withCredentials: true,
       });
       const accessToken = response?.data?.accessToken;
       const role = response?.data?.role;
@@ -57,11 +56,11 @@ function Login() {
   }, []);
 
   const handleLoginGoogle = (e) => {
-    window.location.href = "http://localhost:8080/oauth2/authorization/google";
+    window.location.href = "http://localhost:8088/oauth2/authorization/google";
   };
   const handleLoginFacebook = (e) => {
     window.location.href =
-      "http://localhost:8080/oauth2/authorization/facebook";
+      "http://localhost:8088/oauth2/authorization/facebook";
   };
   return (
     <MDBContainer className="my-5 ">

@@ -108,7 +108,6 @@ const POIDetails = () => {
             headers: {
               Authorization: `Bearer ${localStorage.getItem("token")}`,
             },
-            withCredentials: true,
           }
         )
         .then((res) => {
@@ -139,7 +138,6 @@ const POIDetails = () => {
             headers: {
               Authorization: `Bearer ${localStorage.getItem("token")}`,
             },
-            withCredentials: true,
           }
         )
         .then((res) => {

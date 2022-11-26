@@ -35,7 +35,6 @@ const CollectionDetail = () => {
         "/location/api/collection/get/" + colId,
         {
           headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
-          withCredentials: true,
         }
       );
 
@@ -69,7 +68,6 @@ const CollectionDetail = () => {
             headers: {
               Authorization: `Bearer ${localStorage.getItem("token")}`,
             },
-            withCredentials: true,
           }
         )
         .then((res) => {
@@ -104,7 +102,7 @@ const CollectionDetail = () => {
             headers: {
               Authorization: `Bearer ${localStorage.getItem("token")}`,
             },
-            withCredentials: true,
+
             data: {
               colId: curCol.collectionId,
               poiId: item,

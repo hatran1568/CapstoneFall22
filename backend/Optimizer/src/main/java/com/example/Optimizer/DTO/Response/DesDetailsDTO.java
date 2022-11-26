@@ -1,8 +1,11 @@
 package com.example.Optimizer.DTO.Response;
 
-public interface DesDetailsDTO {
-    int getDesId();
-    String getDescription();
-    boolean getDeleted();
-    String getName();
+import lombok.Data;
+
+@Data
+public class DesDetailsDTO {
+    int desId;
+    String description;
+    boolean deleted;
+    String name;
 }

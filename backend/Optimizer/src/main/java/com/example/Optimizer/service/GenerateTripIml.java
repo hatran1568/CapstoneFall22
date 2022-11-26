@@ -1,9 +1,8 @@
 package com.example.Optimizer.service;
 
 import com.example.Optimizer.DTO.*;
+import com.example.Optimizer.DTO.Response.ComplexResponse;
 import com.example.Optimizer.DTO.Response.DesDetailsDTO;
-import com.example.Optimizer.DTO.Response.RequestStatus;
-import com.example.Optimizer.DTO.Response.SimpleResponse;
 import com.example.Optimizer.DTO.request.ExpenseDTO;
 import com.example.Optimizer.DTO.request.TripDetailsGenerateDTO;
 import com.example.Optimizer.DTO.request.TripGenerateDTO;
@@ -12,7 +11,6 @@ import com.example.Optimizer.config.RestTemplateClient;
 import com.example.Optimizer.entity.*;
 import com.example.Optimizer.repository.*;
 import com.example.Optimizer.service.interfaces.GenerateTrip;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,16 +26,12 @@ import org.springframework.stereotype.Service;
 
 import java.sql.Date;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 import java.util.function.BiConsumer;
 
 import lombok.extern.slf4j.Slf4j;
-
-import javax.transaction.Transactional;
 
 @Slf4j
 @Service
@@ -60,9 +54,15 @@ public class GenerateTripIml implements GenerateTrip {
 
     @Override
     @Async("asyncTaskExecutor")
-    public CompletableFuture<SimpleResponse> generateTrip(GenerateTripUserInput input, String baseUrl) throws ExecutionException, InterruptedException {
-        CompletableFuture<SimpleResponse> task = new CompletableFuture<>();
-        CompletableFuture<Trip> realTask = new CompletableFuture<>();
+    public CompletableFuture<ComplexResponse> generateTrip(GenerateTripUserInput input, String baseUrl) throws ExecutionException, InterruptedException {
+        CompletableFuture<ComplexResponse> task = new CompletableFuture<>();
+        OptimizerRequest r = new OptimizerRequest();
+        r.setTrip(null);
+        r.setUser(input.getUserId());
+        r.setUri(baseUrl);
+        r.setStatus(com.example.Optimizer.entity.RequestStatus.IN_PROGRESS);
+        OptimizerRequest saved= repository.save(r);
+        repository.changeInProgress(saved.getRequestId(), input.getUserId());
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
         //java.util.Date parsed = format.parse(input.getStartDate());
         Date sDate = input.getStartDate();
@@ -72,12 +72,12 @@ public class GenerateTripIml implements GenerateTrip {
 
         ServiceInstance instance = instances.get(0);
 
-        ArrayList<POI> listPoi = (ArrayList<POI>) restTemplateClient.restTemplate().getForObject(instance.getUri() + "/api/pois/poisByDestination/" + input.getDestinationId(), List.class);
+        ListPoi listPoi = restTemplateClient.restTemplate().getForObject(instance.getUri() + "/location/api/pois/poisByDestination/" + input.getDestinationId(), ListPoi.class);
 
-        int numberOfPOI = listPoi.size();
+        int numberOfPOI = listPoi.getList().size();
         POI[] POIs = new POI[numberOfPOI];
-        for (int i = 0; i < listPoi.size(); i++) {
-            POIs[i] = listPoi.get(i);
+        for (int i = 0; i < listPoi.getList().size(); i++) {
+            POIs[i] = listPoi.getList().get(i);
         }
 
         double[][] distanceOfPOI = new double[numberOfPOI][numberOfPOI];
@@ -86,91 +86,106 @@ public class GenerateTripIml implements GenerateTrip {
                 if (i == j)
                     distanceOfPOI[i][j] = 0;
                 else {
-                    distanceOfPOI[i][j] = restTemplateClient.restTemplate().getForObject(instance.getUri() + "/api/pois/distance/" + POIs[i].getActivityId() + "/" + POIs[j].getActivityId(), Double.class);
+                    distanceOfPOI[i][j] = restTemplateClient.restTemplate().getForObject(instance.getUri() + "/location/api/pois/distance/" + POIs[i].getActivityId() + "/" + POIs[j].getActivityId(), Double.class);
 
                 }
             }
         }
         String serverPort = environment.getProperty("local.server.port");
+
         Data data = new Data(sDate, eDate, distanceOfPOI, POIs, numberOfPOI, input.getUserPreference(), input.getBudget(), input.getStartTime(), input.getEndTime(), input.getUserId());
         GeneticAlgorithmImplementer ga = new GeneticAlgorithmImplementer(data);
         Solution s = ga.implementGA(data);
 
 
-        task.complete(new SimpleResponse(input.getId(), RequestStatus.COMPLETE, input.getUserId(), baseUrl));
-        repository.insert(RequestStatus.IN_PROGRESS.name(), baseUrl, input.getUserId());
-        task.whenComplete(new BiConsumer<SimpleResponse, Throwable>() {
-            @Override
+        task.complete(new ComplexResponse(s,data,input));
 
-            public void accept(SimpleResponse simpleResponse, Throwable throwable) {
+//        repository.insert(RequestStatus.IN_PROGRESS.name(), baseUrl, input.getUserId());
 
-                    List<ServiceInstance> instances = discoveryClient.getInstances("trip-service");
-
-                    ServiceInstance instance = instances.get(0);
-                    HttpHeaders headers = new HttpHeaders();
-
-                    headers.setContentType(MediaType.APPLICATION_JSON);
-                    ObjectMapper mapper = new ObjectMapper();
-                    Gson gson = new GsonBuilder()
-                            .setDateFormat("yyyy-MM-dd").create();
-
-                    TripGenerateDTO trip = new TripGenerateDTO();
-                    log.info("Insert to DB ");
-                    log.info("----------------------------------------- ");
-                    List<ServiceInstance> locationInstances = discoveryClient.getInstances("location-service");
-                    ServiceInstance locationInstance = instances.get(0);
-                    DesDetailsDTO destination = restTemplateClient.restTemplate().getForObject(locationInstance.getUri()+"/api/destination/"+input.getDestinationId(), DesDetailsDTO.class);
-                    trip.setName(data.getDayOfTrip() + " days in " +destination.getName());
-                    trip.setBudget(input.getBudget());
-                    trip.setStartDate(input.getStartDate());
-                    trip.setEndDate(input.getEndDate());
-                    trip.setUserId(input.getUserId());
-                    String personJsonObject = gson.toJson(input);
-                    HttpEntity<String> request =
-                            new HttpEntity<String>(personJsonObject, headers);
-                    System.out.println(request);
-
-                    int id= restTemplateClient.restTemplate().postForObject(instance.getUri()+"/trip/insert", request, Integer.class);
-
-                    Trip tour = s.toTrip(data);
-
-
-
-                    for (TripDetails poi : tour.getListTripDetails()
-                    ) {
-                        TripExpense ex = new TripExpense();
-                        TripDetailsGenerateDTO detailsGenerateDTO = new TripDetailsGenerateDTO();
-                        detailsGenerateDTO.setDate(String.valueOf(poi.getDayNumber()));
-                        detailsGenerateDTO.setStartTime(String.valueOf(poi.getStartTime()));
-                        detailsGenerateDTO.setEndTime(String.valueOf(poi.getEndTime()));
-                        detailsGenerateDTO.setTripId(String.valueOf(id));
-                        detailsGenerateDTO.setNote("");
-                        String nodeObject = gson.toJson(detailsGenerateDTO);
-                        HttpEntity<String> request1 =
-                                new HttpEntity<String>(nodeObject, headers);
-                        int poiId= restTemplateClient.restTemplate().postForObject(instance.getUri()+"/trip/add-detail-generated", request1, Integer.class);
-
-                        ExpenseDTO expenseDTO = new ExpenseDTO();
-                        POI p = (POI) poi.getMasterActivity();
-                        expenseDTO.setAmmount((int) p.getTypicalPrice());
-                        expenseDTO.setDescription(poi.getMasterActivity().getName());
-                        expenseDTO.setTripId(id);
-                        expenseDTO.setDetails(poiId);
-                        String nodeObject2 = gson.toJson(expenseDTO);
-                        HttpEntity<String> request2 =
-                                new HttpEntity<String>(personJsonObject, headers);
-                        restTemplateClient.restTemplate().postForObject(instance.getUri()+"/trip/insertGenerate", request2, String.class);
-
-
-                    }
-
-
-                }
-            });
         return task;
 
 
         }
+@Override
+    public CompletableFuture<ComplexResponse> insertToDB(ComplexResponse response) throws ExecutionException, InterruptedException {
+
+        Solution s =response.getS();
+        Data data = response.getData();
+        GenerateTripUserInput input =response.getInput();
+        repository.changeSuccess(input.getUserId());
 
 
+
+        log.info("Insert to DB ");
+        log.info("----------------------------------------- ");
+        TripGenerateDTO trip = new TripGenerateDTO();
+        CompletableFuture<ComplexResponse> task = new CompletableFuture<>();
+        List<ServiceInstance> locationInstances = discoveryClient.getInstances("location-service");
+        HttpHeaders headers = new HttpHeaders();
+        List<ServiceInstance> instances = discoveryClient.getInstances("trip-service");
+
+        ServiceInstance     instance = instances.get(0);
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        Gson gson = new GsonBuilder()
+                .setDateFormat("yyyy-MM-dd").create();
+        ServiceInstance locationInstance = locationInstances.get(0);
+        DesDetailsDTO destination = restTemplateClient.restTemplate().getForObject(locationInstance.getUri()+"/location/api/destination/"+input.getDestinationId(), DesDetailsDTO.class);
+        trip.setName(data.getDayOfTrip() + " days in " +destination.getName());
+        trip.setBudget(input.getBudget());
+        trip.setStartDate(input.getStartDate());
+        trip.setEndDate(input.getEndDate());
+        trip.setUserId(input.getUserId());
+        String personJsonObject = gson.toJson(trip);
+        HttpEntity<String> request =
+                new HttpEntity<String>(personJsonObject, headers);
+        System.out.println(request);
+
+        int id= restTemplateClient.restTemplate().postForObject(instance.getUri()+"/trip/insert", request, Integer.class);
+
+        Trip tour = s.toTrip(data);
+        repository.changeSuccess(input.getUserId());
+
+
+        for (TripDetails poi : tour.getListTripDetails()
+        ) {
+            headers = new HttpHeaders();
+            headers.setContentType(MediaType.APPLICATION_JSON);
+
+            TripExpense ex = new TripExpense();
+            TripDetailsGenerateDTO detailsGenerateDTO = new TripDetailsGenerateDTO();
+            detailsGenerateDTO.setDate(String.valueOf(poi.getDayNumber()));
+            detailsGenerateDTO.setStartTime(String.valueOf(poi.getStartTime()));
+            detailsGenerateDTO.setEndTime(String.valueOf(poi.getEndTime()));
+            detailsGenerateDTO.setTripId(String.valueOf(id));
+            detailsGenerateDTO.setActivityId(String.valueOf(poi.getMasterActivity().getActivityId()));
+            detailsGenerateDTO.setNote("");
+            String nodeObject = gson.toJson(detailsGenerateDTO);
+            HttpEntity<String> request1 =
+                    new HttpEntity<String>(nodeObject, headers);
+            int poiId= restTemplateClient.restTemplate().postForObject(instance.getUri()+"/trip/add-detail-generated", request1, Integer.class);
+            headers = new HttpHeaders();
+            headers.setContentType(MediaType.APPLICATION_JSON);
+            ExpenseDTO expenseDTO = new ExpenseDTO();
+            POI p = (POI) poi.getMasterActivity();
+            expenseDTO.setAmount((int) p.getTypicalPrice());
+            expenseDTO.setDescription(poi.getMasterActivity().getName());
+            expenseDTO.setTripId(id);
+            expenseDTO.setDetails(poiId);
+            String nodeObject2 = gson.toJson(expenseDTO);
+            HttpEntity<String> request2 =
+                    new HttpEntity<String>(nodeObject2, headers);
+            restTemplateClient.restTemplate().postForObject(instance.getUri()+"/trip/api/insertGenerated", request2, String.class);
+
+
+        }
+        task.complete(response);
+        task.whenComplete(new BiConsumer<ComplexResponse, Throwable>() {
+            @Override
+            public void accept(ComplexResponse response, Throwable throwable) {
+                log.info("success");
+            }
+        });
+        return  task;
+
+    }
     }

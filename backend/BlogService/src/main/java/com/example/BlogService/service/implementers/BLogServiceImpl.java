@@ -40,4 +40,11 @@ public class BLogServiceImpl implements BlogService {
         blogDetailsDTO.setUsername(user.getName());
         return  blogDetailsDTO;
     }
+
+    @Override
+    public List<Blog> getBlogByKeyWord(String keyword) {
+
+            return  blogRepository.getBlogsByKeyword(keyword);
+
+    }
 }

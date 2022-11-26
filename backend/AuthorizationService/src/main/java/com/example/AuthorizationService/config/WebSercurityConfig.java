@@ -147,8 +147,7 @@ public class WebSercurityConfig extends WebSecurityConfigurerAdapter {
                                     .queryParam("role", user.getRole().getRoleName())
                                     .queryParam("id", user.getUserID())
                                     .build().toUriString();
-                            response.getWriter().write(new ObjectMapper().writeValueAsString(new LoginResponseDTO(jwt,user.getRole().getRoleName(),user.getUserID())));
-                            response.setStatus(200);
+                            response.sendRedirect(uri);
                         }
                         if (oauth2ClientName.equalsIgnoreCase("facebook")) {
                             userService.processOAuthPostLoginFacebook(oauthUser.getEmail());
@@ -160,8 +159,7 @@ public class WebSercurityConfig extends WebSecurityConfigurerAdapter {
                                     .queryParam("role", user.getRole().getRoleName())
                                     .queryParam("id", user.getUserID())
                                     .build().toUriString();
-                            response.getWriter().write(new ObjectMapper().writeValueAsString(new LoginResponseDTO(jwt,user.getRole().getRoleName(),user.getUserID())));
-                            response.setStatus(200);
+                            response.sendRedirect(uri);
                         }
 
 

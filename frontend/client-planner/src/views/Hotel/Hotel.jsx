@@ -146,7 +146,6 @@ function Hotel() {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("token")}`,
           },
-          withCredentials: true,
         })
         .then((response) => {
           count++;

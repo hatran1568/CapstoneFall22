@@ -1,9 +1,9 @@
 import React from "react";
 import ReactDOM from "react-dom";
-import { useState, useRef, useMemo  } from "react";
+import { useState, useRef, useMemo } from "react";
 import { Modal } from "antd";
-import { Component } from 'react';
-import ReactPaginate from 'react-paginate';
+import { Component } from "react";
+import ReactPaginate from "react-paginate";
 import axios from "../../api/axios";
 import {
   MDBBtn,
@@ -35,83 +35,96 @@ class BlogList extends Component {
     this.state = {
       blogs: [],
       dataLoaded: false,
-      currentKeyword: '*',
+      currentKeyword: "*",
       currentPage: 0,
       pageCount: 0,
     };
   }
   componentDidMount() {
-    axios.get("http://localhost:8080/api/blog/admin/" + this.state.currentKeyword + "/" + this.state.currentPage, {
-      headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
-      withCredentials: true,
-    }).then((res) => {
-      const data = res.data;
-      this.setState({
-        blogs: data,
-        dataLoaded: true,
+    axios
+      .get(
+        "http://localhost:8080/blog/api/blog/admin/" +
+          this.state.currentKeyword +
+          "/" +
+          this.state.currentPage,
+        {
+          headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+        }
+      )
+      .then((res) => {
+        const data = res.data;
+        this.setState({
+          blogs: data,
+          dataLoaded: true,
+        });
+      })
+      .catch(function (error) {
+        console.log(error);
+        return Promise.reject(error);
       });
-    }).catch(
-      function (error) {
-        console.log(error)
-        return Promise.reject(error)
-      }
-    );
-    axios.get("http://localhost:8080/api/blog/admin/" + this.state.currentKeyword + "/" + this.state.currentPage + "/count", {
-      headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
-      withCredentials: true,
-    }).then((res) => {
-      const data = res.data;
-      this.setState({
-        pageCount: data / 10,
+    axios
+      .get(
+        "http://localhost:8080/blog/api/blog/admin/" +
+          this.state.currentKeyword +
+          "/" +
+          this.state.currentPage +
+          "/count",
+        {
+          headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+        }
+      )
+      .then((res) => {
+        const data = res.data;
+        this.setState({
+          pageCount: data / 10,
+        });
+      })
+      .catch(function (error) {
+        console.log(error);
+        return Promise.reject(error);
       });
-    }).catch(
-      function (error) {
-        console.log(error)
-        return Promise.reject(error)
-      }
-    );
   }
-  
+
   handlePageClick = (event) => {
     console.log(`User requested page number ${event.selected}`);
     axios
       .get(
-        "http://localhost:8080/api/blog/admin/" +
+        "http://localhost:8080/blog/api/blog/admin/" +
           this.state.currentKeyword +
           "/" +
-          event.selected, {
-            headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
-            withCredentials: true,
-          }
+          event.selected,
+        {
+          headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+        }
       )
-      .then((response) => this.setState({blogs: response.data}));
+      .then((response) => this.setState({ blogs: response.data }));
   };
 
   createBlog = (event) => {
     axios({
       method: "post",
-      url: "http://localhost:8080/api/blog/new/" + localStorage.getItem("id"),
+      url:
+        "http://localhost:8080/blog/api/blog/new/" + localStorage.getItem("id"),
       headers: {
         "Content-Type": "application/json",
         Authorization: `Bearer ${localStorage.getItem("token")}`,
       },
-      withCredentials: true,
     }).then(function (response) {
       //window.location.reload();
       window.location.replace("./update?id=" + response.data);
-  });
+    });
   };
 
   searchBlogs = () => {
     const searchBar = document.getElementById("searchBar");
     if (searchBar.value == null || searchBar.value == "")
       this.setState({
-        currentKeyword: "*"
-      })
+        currentKeyword: "*",
+      });
     else
       this.setState({
-        currentKeyword: searchBar.value
-      })
+        currentKeyword: searchBar.value,
+      });
     console.log(this.state.currentKeyword);
     this.componentDidMount();
   };
@@ -125,16 +138,20 @@ class BlogList extends Component {
       okType: "danger",
       cancelText: "Không",
       onOk: async () => {
-        await axios.post(`http://localhost:8080/api/blog/delete/` + blogId, {
-          headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
-          withCredentials: true,
-        });
+        await axios.post(
+          `http://localhost:8080/blog/api/blog/delete/` + blogId,
+          {
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("token")}`,
+            },
+          }
+        );
         //window.location.reload();
         this.componentDidMount();
       },
       onCancel() {},
     });
-  }
+  };
 
   hideBlog = async (event) => {
     const blogId = event.currentTarget.id;
@@ -145,16 +162,15 @@ class BlogList extends Component {
       okType: "danger",
       cancelText: "Không",
       onOk: async () => {
-        await axios.post(`http://localhost:8080/api/blog/hide/` + blogId, {
+        await axios.post(`http://localhost:8080/blog/api/blog/hide/` + blogId, {
           headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
-          withCredentials: true,
         });
         //window.location.reload();
         this.componentDidMount();
       },
       onCancel() {},
     });
-  }
+  };
 
   unhideBlog = async (event) => {
     const blogId = event.currentTarget.id;
@@ -165,16 +181,20 @@ class BlogList extends Component {
       okType: "danger",
       cancelText: "Không",
       onOk: async () => {
-        await axios.post(`http://localhost:8080/api/blog/unhide/` + blogId, {
-          headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
-          withCredentials: true,
-        });
+        await axios.post(
+          `http://localhost:8080/blog/api/blog/unhide/` + blogId,
+          {
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("token")}`,
+            },
+          }
+        );
         //window.location.reload();
         this.componentDidMount();
       },
       onCancel() {},
     });
-  }
+  };
 
   render() {
     const blogTableData = [];
@@ -192,86 +212,181 @@ class BlogList extends Component {
       dateCreated = dateCreated.toLocaleDateString("vi", options);
       var thumbnail = entry.thumbnail;
       if (thumbnail == " ")
-        thumbnail = "https://twimg0-a.akamaihd.net/a/1350072692/t1/img/front_page/jp-mountain@2x.jpg";
+        thumbnail =
+          "https://twimg0-a.akamaihd.net/a/1350072692/t1/img/front_page/jp-mountain@2x.jpg";
       var title = entry.title;
-      if (title == " ")
-        title = "Chưa đặt tên";
+      if (title == " ") title = "Chưa đặt tên";
       const hideBtn = [];
       if (entry.status == "PUBLISHED")
-        hideBtn.push( 
-        <a className={style.tableIcons} id={entry.blogId} onClick={this.hideBlog}><FontAwesomeIcon icon={faEyeSlash}/></a>
+        hideBtn.push(
+          <a
+            className={style.tableIcons}
+            id={entry.blogId}
+            onClick={this.hideBlog}
+          >
+            <FontAwesomeIcon icon={faEyeSlash} />
+          </a>
         );
       if (entry.status == "HIDDEN")
-        hideBtn.push( 
-        <a className={style.tableIcons} id={entry.blogId} onClick={this.unhideBlog}><FontAwesomeIcon icon={faEye}/></a>
+        hideBtn.push(
+          <a
+            className={style.tableIcons}
+            id={entry.blogId}
+            onClick={this.unhideBlog}
+          >
+            <FontAwesomeIcon icon={faEye} />
+          </a>
         );
       if (index % 2 == 0)
         blogTableData.push(
           <tr className={style.tableDataGrey}>
-            <th scope='col'>{entry.blogId}</th>
-            <th scope='col'><img className={style.thumbnail} src={thumbnail}/></th>
-            <th scope='col'><a className={style.tableTitleData} href={"../blog?id=" + entry.blogId}>{title}</a></th>
-            <th scope='col' className={style.tableDate}>{dateCreated}</th>
-            <th scope='col' className={style.tableDate}>{dateModified}</th>
-            <th scope='col' className={style.tableStatus}>{entry.status}</th>
-            <th scope='col' className={style.tableAuthor}><img className={style.avatar} src={entry.avatar}/>{entry.username}</th>
-            <th scope='col' className={style.tableActions}>
-              <a className={style.tableIcons} href={"./update?id=" + entry.blogId}><FontAwesomeIcon icon={faPenToSquare}/></a>
+            <th scope="col">{entry.blogId}</th>
+            <th scope="col">
+              <img className={style.thumbnail} src={thumbnail} />
+            </th>
+            <th scope="col">
+              <a
+                className={style.tableTitleData}
+                href={"../blog?id=" + entry.blogId}
+              >
+                {title}
+              </a>
+            </th>
+            <th scope="col" className={style.tableDate}>
+              {dateCreated}
+            </th>
+            <th scope="col" className={style.tableDate}>
+              {dateModified}
+            </th>
+            <th scope="col" className={style.tableStatus}>
+              {entry.status}
+            </th>
+            <th scope="col" className={style.tableAuthor}>
+              <img className={style.avatar} src={entry.avatar} />
+              {entry.username}
+            </th>
+            <th scope="col" className={style.tableActions}>
+              <a
+                className={style.tableIcons}
+                href={"./update?id=" + entry.blogId}
+              >
+                <FontAwesomeIcon icon={faPenToSquare} />
+              </a>
               {hideBtn}
-              <a className={style.tableIcons} id={entry.blogId} onClick={this.deleteBlog}><FontAwesomeIcon icon={faTrash}/></a>
+              <a
+                className={style.tableIcons}
+                id={entry.blogId}
+                onClick={this.deleteBlog}
+              >
+                <FontAwesomeIcon icon={faTrash} />
+              </a>
             </th>
           </tr>
         );
       else
         blogTableData.push(
           <tr className={style.tableData}>
-            <th scope='col'>{entry.blogId}</th>
-            <th scope='col'><img className={style.thumbnail} src={thumbnail}/></th>
-            <th scope='col'><a className={style.tableTitleData} href={"../blog?id=" + entry.blogId}>{title}</a></th>
-            <th scope='col' className={style.tableDate}>{dateCreated}</th>
-            <th scope='col' className={style.tableDate}>{dateModified}</th>
-            <th scope='col' className={style.tableStatus}>{entry.status}</th>
-            <th scope='col' className={style.tableAuthor}><img className={style.avatar} src={entry.avatar}/>{entry.username}</th>
-            <th scope='col' className={style.tableActions}>
-              <a className={style.tableIcons} href={"./update?id=" + entry.blogId}><FontAwesomeIcon icon={faPenToSquare}/></a>
+            <th scope="col">{entry.blogId}</th>
+            <th scope="col">
+              <img className={style.thumbnail} src={thumbnail} />
+            </th>
+            <th scope="col">
+              <a
+                className={style.tableTitleData}
+                href={"../blog?id=" + entry.blogId}
+              >
+                {title}
+              </a>
+            </th>
+            <th scope="col" className={style.tableDate}>
+              {dateCreated}
+            </th>
+            <th scope="col" className={style.tableDate}>
+              {dateModified}
+            </th>
+            <th scope="col" className={style.tableStatus}>
+              {entry.status}
+            </th>
+            <th scope="col" className={style.tableAuthor}>
+              <img className={style.avatar} src={entry.avatar} />
+              {entry.username}
+            </th>
+            <th scope="col" className={style.tableActions}>
+              <a
+                className={style.tableIcons}
+                href={"./update?id=" + entry.blogId}
+              >
+                <FontAwesomeIcon icon={faPenToSquare} />
+              </a>
               {hideBtn}
-              <a className={style.tableIcons} id={entry.blogId} onClick={this.deleteBlog}><FontAwesomeIcon icon={faTrash}/></a>
+              <a
+                className={style.tableIcons}
+                id={entry.blogId}
+                onClick={this.deleteBlog}
+              >
+                <FontAwesomeIcon icon={faTrash} />
+              </a>
             </th>
           </tr>
         );
-    })
+    });
     return (
       <MDBContainer className={style.bodyContainer}>
         <h2>Quản lí Blog</h2>
         <MDBRow>
-          <MDBCol md={1} style={{width:130}}>
-            <MDBBtn onClick={this.createBlog} className={style.createBtn} color="info">Tạo Blog</MDBBtn>
+          <MDBCol md={1} style={{ width: 130 }}>
+            <MDBBtn
+              onClick={this.createBlog}
+              className={style.createBtn}
+              color="info"
+            >
+              Tạo Blog
+            </MDBBtn>
           </MDBCol>
           <MDBCol md={6} className={style.searchBar}>
             <MDBInputGroup>
-              <MDBInput label='Tìm kiếm' id="searchBar" maxLength={300} onChange={this.searchBlogs} onKeyUp={this.searchBlogs} className={style.searchInput}/>
-              <MDBBtn color="info" onClick={this.searchBlogs} rippleColor='dark'>
-                <MDBIcon icon='search' />
+              <MDBInput
+                label="Tìm kiếm"
+                id="searchBar"
+                maxLength={300}
+                onChange={this.searchBlogs}
+                onKeyUp={this.searchBlogs}
+                className={style.searchInput}
+              />
+              <MDBBtn
+                color="info"
+                onClick={this.searchBlogs}
+                rippleColor="dark"
+              >
+                <MDBIcon icon="search" />
               </MDBBtn>
             </MDBInputGroup>
           </MDBCol>
         </MDBRow>
         <MDBTable>
           <MDBTableHead className={style.tableHead}>
-          <tr>
-            <th scope='col'>ID</th>
-            <th scope='col'>ẢNH BÌA</th>
-            <th scope='col' className={style.tableTitle}>TIÊU ĐỀ</th>
-            <th scope='col' className={style.tableDate}>NGÀY TẠO</th>
-            <th scope='col' className={style.tableDate}>NGÀY SỬA</th>
-            <th scope='col' className={style.tableStatus}>TRẠNG THÁI</th>
-            <th scope='col' className={style.tableAuthor}>TÁC GIẢ</th>
-            <th scope='col'>HÀNH ĐỘNG</th>
-          </tr>
+            <tr>
+              <th scope="col">ID</th>
+              <th scope="col">ẢNH BÌA</th>
+              <th scope="col" className={style.tableTitle}>
+                TIÊU ĐỀ
+              </th>
+              <th scope="col" className={style.tableDate}>
+                NGÀY TẠO
+              </th>
+              <th scope="col" className={style.tableDate}>
+                NGÀY SỬA
+              </th>
+              <th scope="col" className={style.tableStatus}>
+                TRẠNG THÁI
+              </th>
+              <th scope="col" className={style.tableAuthor}>
+                TÁC GIẢ
+              </th>
+              <th scope="col">HÀNH ĐỘNG</th>
+            </tr>
           </MDBTableHead>
-          <MDBTableBody>
-            {blogTableData}
-          </MDBTableBody>
+          <MDBTableBody>{blogTableData}</MDBTableBody>
         </MDBTable>
         <ReactPaginate
           nextLabel=" >"
@@ -294,7 +409,7 @@ class BlogList extends Component {
           renderOnZeroPageCount={null}
         />
       </MDBContainer>
-    )
+    );
   }
 }
 export default BlogList;

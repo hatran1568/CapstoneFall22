@@ -8,11 +8,13 @@ import com.example.LocationService.dto.response.*;
 import com.example.LocationService.entity.Destination;
 import com.example.LocationService.repository.DestinationRepository;
 
+import com.example.LocationService.utils.GoogleDriveManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -25,9 +27,9 @@ public class DestinationController {
 
     @Autowired
     private DestinationRepository destinationRepo;
-//    @Autowired
-//    GoogleDriveManager driveManager;
-
+    @Autowired
+    GoogleDriveManager driveManager;
+    @Transactional(rollbackFor = {Exception.class, Throwable.class})
     @GetMapping("/destination/{id}")
     public ResponseEntity<DesDetailsDTO> getDestinationById(@PathVariable int id){
         try{
@@ -40,6 +42,7 @@ public class DestinationController {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+    @Transactional(rollbackFor = {Exception.class, Throwable.class})
     @GetMapping("/destination/all")
     public ResponseEntity<ArrayList<Destination>> getAllDes(){
         try{
@@ -52,6 +55,7 @@ public class DestinationController {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+    @Transactional(rollbackFor = {Exception.class, Throwable.class})
     @GetMapping("/destination/first3POIs/{id}")
     public ResponseEntity<ArrayList<POIBoxDTO>> get3POIinDestination(@PathVariable int id){
         try{
@@ -76,7 +80,8 @@ public class DestinationController {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
-//    @PreAuthorize("hasAuthority('Admin')")
+    @Transactional(rollbackFor = {Exception.class, Throwable.class})
+   @PreAuthorize("hasAuthority('Admin')")
     @GetMapping("/destination/admin/list/{filter}/{nameKey}/{page}")
     public ResponseEntity<ArrayList<DesListDTO>> getDesListAdmin(@PathVariable("filter") String filter, @PathVariable("page") int page, @PathVariable("nameKey") String nameKey) {
         try {
@@ -89,7 +94,8 @@ public class DestinationController {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
-//    @PreAuthorize("hasAuthority('Admin')")
+  @PreAuthorize("hasAuthority('Admin')")
+  @Transactional(rollbackFor = {Exception.class, Throwable.class})
     @GetMapping("/destination/admin/list/{nameKey}/count")
     public ResponseEntity<Integer> getDesListAdminCount(@PathVariable("nameKey") String nameKey) {
         try {
@@ -102,6 +108,7 @@ public class DestinationController {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+    @Transactional(rollbackFor = {Exception.class, Throwable.class})
     @PreAuthorize("hasAuthority('Admin')")
     @GetMapping("/destination/select/all")
     public ResponseEntity<ArrayList<DesSelectDTO>> getAllDesSelect() {
@@ -113,6 +120,7 @@ public class DestinationController {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+    @Transactional(rollbackFor = {Exception.class, Throwable.class})
     @PreAuthorize("hasAuthority('Admin')")
     @GetMapping("/destination/select/{poiId}")
     public ResponseEntity<ArrayList<DesSelectDTO>> getDesSelectOfPOI(@PathVariable("poiId") int poiId) {
@@ -124,6 +132,7 @@ public class DestinationController {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+    @Transactional(rollbackFor = {Exception.class, Throwable.class})
     @PreAuthorize("hasAuthority('Admin')")
     @RequestMapping(value = "/destination/poi/update/{poiId}", consumes = "application/json", produces = { "*/*" }, method = RequestMethod.POST)
     public ResponseEntity<?> updateExpense(@RequestBody ArrayList<POIDesRequestDTO> poides, @PathVariable("poiId") int poiId) {
@@ -141,6 +150,7 @@ public class DestinationController {
             return  new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+    @Transactional(rollbackFor = {Exception.class, Throwable.class})
     @RequestMapping(value = "/destination/delete/{desId}", consumes = "application/json", method = RequestMethod.POST)
     public ResponseEntity<?> deletePOI(@PathVariable int desId) {
         try{
@@ -154,7 +164,8 @@ public class DestinationController {
             return  new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
-//    @PreAuthorize("hasAuthority('Admin')")
+    @Transactional(rollbackFor = {Exception.class, Throwable.class})
+   @PreAuthorize("hasAuthority('Admin')")
     @GetMapping("/destination/admin/list/update/{desId}")
     public ResponseEntity<DesAddUpdateDTO> getDesListAdmin(@PathVariable("desId") int desId) {
         try {
@@ -167,7 +178,8 @@ public class DestinationController {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
-//    @PreAuthorize("hasAuthority('Admin')")
+    @Transactional(rollbackFor = {Exception.class, Throwable.class})
+    @PreAuthorize("hasAuthority('Admin')")
     @GetMapping("/destination/admin/list/update/images/{desId}")
     public ResponseEntity<ArrayList<POIImageUpdateDTO>> getPOIImageUpdate(@PathVariable("desId") int desId) {
         try {
@@ -192,6 +204,7 @@ public class DestinationController {
             return  new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+    @Transactional(rollbackFor = {Exception.class, Throwable.class})
     @PreAuthorize("hasAuthority('Admin')")
     @RequestMapping(value = "/destination/add", consumes = "application/json", produces = { "*/*" }, method = RequestMethod.POST)
     public ResponseEntity<?> addPOI(@RequestBody UpdateDesDTO destination) {
@@ -205,33 +218,35 @@ public class DestinationController {
             return  new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
-//    @PreAuthorize("hasAuthority('Admin')")
-//    @PostMapping("/destination/addImg/{desId}/{description}")
-//    @ResponseBody
-//    public ResponseEntity<?> addImage(@PathVariable int desId, @PathVariable String description, @RequestPart("File") MultipartFile file) throws Exception{
-////        try{
-//        String webViewLink = driveManager.uploadFile(file, "tripplanner/img/destination");
-//        if (description.equals("*"))
-//            destinationRepo.addImage(desId, null, webViewLink);
-//        else
-//            destinationRepo.addImage(desId, description, webViewLink);
-//        return new ResponseEntity<>(HttpStatus.OK);
-////        } catch (Exception e){
-////            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-////        }
-//    }
-//    @RequestMapping(value = "/destination/deleteImg/{imgId}", produces = { "*/*" }, method = RequestMethod.POST)
-//    public ResponseEntity<?> deleteImg(@PathVariable int imgId){
+    @Transactional(rollbackFor = {Exception.class, Throwable.class})
+    @PreAuthorize("hasAuthority('Admin')")
+    @PostMapping("/destination/addImg/{desId}/{description}")
+    @ResponseBody
+    public ResponseEntity<?> addImage(@PathVariable int desId, @PathVariable String description, @RequestPart("File") MultipartFile file) throws Exception{
 //        try{
-//            String oldAvatar = destinationRepo.getUrlDesImage(imgId);
-//            if (oldAvatar != null){
-//                driveManager.deleteFile(oldAvatar.split("id=")[1]);
-//            }
-//            destinationRepo.deleteImage(imgId);
-//            return new ResponseEntity<>(HttpStatus.OK);
+        String webViewLink = driveManager.uploadFile(file, "tripplanner/img/destination");
+        if (description.equals("*"))
+            destinationRepo.addImage(desId, null, webViewLink);
+        else
+            destinationRepo.addImage(desId, description, webViewLink);
+        return new ResponseEntity<>(HttpStatus.OK);
+//        } catch (Exception e){
+//            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
 //        }
-//        catch (Exception e){
-//            return  new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-//        }
-//    }
+    }
+    @Transactional(rollbackFor = {Exception.class, Throwable.class})
+    @RequestMapping(value = "/destination/deleteImg/{imgId}", produces = { "*/*" }, method = RequestMethod.POST)
+    public ResponseEntity<?> deleteImg(@PathVariable int imgId){
+        try{
+            String oldAvatar = destinationRepo.getUrlDesImage(imgId);
+            if (oldAvatar != null){
+                driveManager.deleteFile(oldAvatar.split("id=")[1]);
+            }
+            destinationRepo.deleteImage(imgId);
+            return new ResponseEntity<>(HttpStatus.OK);
+        }
+        catch (Exception e){
+            return  new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
 }

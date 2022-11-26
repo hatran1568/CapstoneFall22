@@ -13,6 +13,7 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import java.sql.Date;
@@ -29,7 +30,7 @@ public class ExpenseController {
 
     @Autowired
     private TripService tripService;
-
+    @Transactional(rollbackFor = {Exception.class, Throwable.class})
     @GetMapping("/expense/{tripId}/{orderBy}")
     public ResponseEntity<ArrayList<TripExpenseDTO>> getDestinationById(@PathVariable int tripId, @PathVariable int orderBy){
         try{
@@ -58,6 +59,7 @@ public class ExpenseController {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+    @Transactional(rollbackFor = {Exception.class, Throwable.class})
     @GetMapping("/expense/categories")
     public ResponseEntity<ArrayList<ExpenseCategorySelectDTO>> getExpenseCategories(){
         try{
@@ -70,6 +72,7 @@ public class ExpenseController {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+    @Transactional(rollbackFor = {Exception.class, Throwable.class})
     @GetMapping("/expense/total/{tripId}")
     public ResponseEntity<Double> getTotalExpense(@PathVariable int tripId){
         try{
@@ -79,6 +82,7 @@ public class ExpenseController {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+    @Transactional(rollbackFor = {Exception.class, Throwable.class})
     @GetMapping("/expense/user/{tripId}")
     public ResponseEntity<Integer> getTripUserId(@PathVariable int tripId){
         try{
@@ -88,6 +92,7 @@ public class ExpenseController {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+    @Transactional(rollbackFor = {Exception.class, Throwable.class})
     @GetMapping("/expense/graph/{tripId}")
     public ResponseEntity<ArrayList<ExpenseGraphDTO>> getDestinationImages(@PathVariable int tripId){
         try{
@@ -100,7 +105,7 @@ public class ExpenseController {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
-
+    @Transactional(rollbackFor = {Exception.class, Throwable.class})
     @DeleteMapping(value = "/expense/{id}")
     public ResponseEntity<Integer> deleteExpense(@PathVariable Integer id) {
         var isRemoved = expenseRepo.deleteExpense(id);
@@ -109,6 +114,7 @@ public class ExpenseController {
         }
         return new ResponseEntity<>(id, HttpStatus.OK);
     }
+    @Transactional(rollbackFor = {Exception.class, Throwable.class})
     @RequestMapping(value = "/expense/new", consumes = "application/json", produces = { "*/*" }, method = RequestMethod.POST)
     public ResponseEntity<?> addExpense(@RequestBody TripExpenseAddDTO expense) {
         try{
@@ -119,6 +125,7 @@ public class ExpenseController {
             return  new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+    @Transactional(rollbackFor = {Exception.class, Throwable.class})
     @RequestMapping(value = "/expense/update", consumes = "application/json", produces = { "*/*" }, method = RequestMethod.POST)
     public ResponseEntity<?> updateExpense(@RequestBody TripExpenseAddDTO expense) {
         try{
@@ -129,10 +136,10 @@ public class ExpenseController {
             return  new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
-
+    @Transactional(rollbackFor = {Exception.class, Throwable.class})
     @PostMapping("/insertGenerated")
     public ResponseEntity<?> addCustomTripDetail(@RequestBody ObjectNode objectNode){
-        try{
+//        try{
             Double amount = objectNode.get("amount").asDouble();
             String description = objectNode.get("description").asText();
             int trip = objectNode.get("tripId").asInt();
@@ -140,8 +147,8 @@ public class ExpenseController {
 
             tripService.insertExpense(amount,description,trip,details);
             return new ResponseEntity<>( HttpStatus.OK);
-        } catch (Exception e){
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-        }
+//        } catch (Exception e){
+//            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+//        }
     }
 }

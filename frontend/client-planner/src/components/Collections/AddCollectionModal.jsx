@@ -41,7 +41,7 @@ const AddCollectionModal = (prop) => {
 
         axios
           .post(
-            "/user/api/collection/create",
+            "/location/api/collection/create",
             {
               uid: localStorage.getItem("id"),
               title: title,
@@ -51,7 +51,6 @@ const AddCollectionModal = (prop) => {
               headers: {
                 Authorization: `Bearer ${localStorage.getItem("token")}`,
               },
-              withCredentials: true,
             }
           )
           .then((response) => {

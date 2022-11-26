@@ -8,16 +8,17 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
-@RequestMapping("trip/api/checklist")
+@RequestMapping("/trip/api/checklist")
 public class ChecklistController {
     @Autowired
     private ChecklistService checklistService;
-
+    @Transactional(rollbackFor = {Exception.class, Throwable.class})
     @GetMapping("/get-by-trip")
     public ResponseEntity<List<ChecklistItemDTO>> getChecklistItemsByTripId(@RequestParam int tripId){
         try{
@@ -26,6 +27,7 @@ public class ChecklistController {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+    @Transactional(rollbackFor = {Exception.class, Throwable.class})
     @PostMapping("/toggle-checked")
     public ResponseEntity<?> updateCheckedState(@RequestBody ObjectNode request){
         try{
@@ -41,6 +43,7 @@ public class ChecklistController {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+    @Transactional(rollbackFor = {Exception.class, Throwable.class})
     @DeleteMapping("/delete-item")
     public ResponseEntity<?> deleteItem(@RequestBody ObjectNode objectNode){
         try{
@@ -51,6 +54,7 @@ public class ChecklistController {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+    @Transactional(rollbackFor = {Exception.class, Throwable.class})
     @PutMapping("/put-item")
     public ResponseEntity<ChecklistItemDTO> editTripDetail(@RequestBody ChecklistItemDTO newItem, @RequestParam int id){
         try{
@@ -63,6 +67,7 @@ public class ChecklistController {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+    @Transactional(rollbackFor = {Exception.class, Throwable.class})
     @PostMapping("/add-item")
     public ResponseEntity<ChecklistItemDTO> addItem(@RequestBody ChecklistItemDTO checklistItemDTO){
         try{

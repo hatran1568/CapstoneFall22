@@ -20,7 +20,7 @@ public class OptimizerRequest {
     @Column(name = "user_id", nullable = false)
     private Integer user;
 
-    @Column(name = "stauts")
+    @Column(name = "status")
     @Enumerated(EnumType.STRING)
     private RequestStatus status;
 

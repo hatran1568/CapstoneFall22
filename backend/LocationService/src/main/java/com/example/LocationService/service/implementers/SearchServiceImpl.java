@@ -1,5 +1,8 @@
 package com.example.LocationService.service.implementers;
 
+import com.example.LocationService.config.RestTemplateClient;
+import com.example.LocationService.dto.response.Blog;
+import com.example.LocationService.dto.response.ListBlogDTO;
 import com.example.LocationService.dto.response.SearchPOIAndDestinationDTO;
 import com.example.LocationService.dto.response.SearchType;
 import com.example.LocationService.entity.Destination;
@@ -9,6 +12,9 @@ import com.example.LocationService.repository.POIRepository;
 import com.example.LocationService.service.interfaces.SearchService;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cloud.client.ServiceInstance;
+import org.springframework.cloud.client.discovery.DiscoveryClient;
+import org.springframework.core.env.Environment;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
@@ -27,12 +33,23 @@ public class SearchServiceImpl implements SearchService {
     @Autowired
     DestinationRepository destinationRepository;
 
+    @Autowired
+    RestTemplateClient restTemplateClient;
+
+
+
+    @Autowired
+    private DiscoveryClient discoveryClient;
 
     @Override
     public ArrayList<SearchPOIAndDestinationDTO> searchPOIAndDestinationByKeyword(String keyword) {
         ArrayList<SearchPOIAndDestinationDTO> list = new ArrayList<>();
         ArrayList<Destination> destinations = destinationRepository.getDestinationsByKeyword(keyword);
         ArrayList<POI> pois = poiRepository.findPOISByKeyword(keyword);
+        List<ServiceInstance> instances = discoveryClient.getInstances("blog-service");
+
+        ServiceInstance instance = instances.get(0);
+        ListBlogDTO blogs = restTemplateClient.restTemplate().getForObject(instance.getUri()+"/blog/api/blog/keyword/"+keyword,ListBlogDTO.class);
 //        ArrayList<Blog> blogs = blogRepository.getBlogsByKeyword(keyword);
         for (Destination destination : destinations) {
             SearchPOIAndDestinationDTO destinationDTO = new SearchPOIAndDestinationDTO(destination.getDestinationId(), destination.getName(), SearchType.DESTINATION, 0, 0, destination.getDescription(), destinationRepository.getThumbnailById(destination.getDestinationId()).isPresent()?destinationRepository.getThumbnailById(destination.getDestinationId()).get():null, false);
@@ -46,10 +63,10 @@ public class SearchServiceImpl implements SearchService {
             list.add(PoiDTO);
         }
 
-//        for (Blog blog : blogs) {
-//            SearchPOIAndDestinationDTO blogDTO = new SearchPOIAndDestinationDTO(blog.getBlogId(), blog.getTitle(), SearchType.BLOG, 0, 0, blog.getContent(), blog.getThumbnail(), false);
-//            list.add(blogDTO);
-//        }
+        for (Blog blog : blogs.getList()) {
+            SearchPOIAndDestinationDTO blogDTO = new SearchPOIAndDestinationDTO(blog.getBlogId(), blog.getTitle(), SearchType.BLOG, 0, 0, blog.getContent(), blog.getThumbnail(), false);
+            list.add(blogDTO);
+        }
         return list;
 
     }
@@ -68,6 +85,10 @@ public class SearchServiceImpl implements SearchService {
         ArrayList<SearchPOIAndDestinationDTO> list = new ArrayList<>();
         ArrayList<Destination> destinations = destinationRepository.getDestinationsByKeyword(keyword);
         ArrayList<POI> pois = poiRepository.findPOISByKeyword(keyword);
+        List<ServiceInstance> instances = discoveryClient.getInstances("blog-service");
+
+        ServiceInstance instance = instances.get(0);
+        ListBlogDTO blogs = restTemplateClient.restTemplate().getForObject(instance.getUri()+"/blog/api/blog/keyword/"+keyword,ListBlogDTO.class);
 //        ArrayList<Blog> blogs = blogRepository.getBlogsByKeyword(keyword);
         for (Destination destination : destinations) {
             SearchPOIAndDestinationDTO destinationDTO = new SearchPOIAndDestinationDTO(destination.getDestinationId(), destination.getName(), SearchType.DESTINATION, 0, 0, destination.getDescription(), destinationRepository.getThumbnailById(destination.getDestinationId()).isPresent()?destinationRepository.getThumbnailById(destination.getDestinationId()).get():null, false);
@@ -81,10 +102,10 @@ public class SearchServiceImpl implements SearchService {
             list.add(PoiDTO);
         }
 
-//        for (Blog blog : blogs) {
-//            SearchPOIAndDestinationDTO blogDTO = new SearchPOIAndDestinationDTO(blog.getBlogId(), blog.getTitle(), SearchType.BLOG, 0, 0, blog.getContent(), blog.getThumbnail(), false);
-//            list.add(blogDTO);
-//        }
+        for (Blog blog : blogs.getList()) {
+            SearchPOIAndDestinationDTO blogDTO = new SearchPOIAndDestinationDTO(blog.getBlogId(), blog.getTitle(), SearchType.BLOG, 0, 0, blog.getContent(), blog.getThumbnail(), false);
+            list.add(blogDTO);
+        }
 
 
         if (list.size() > 9) {

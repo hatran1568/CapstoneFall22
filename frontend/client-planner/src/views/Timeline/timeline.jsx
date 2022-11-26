@@ -155,7 +155,6 @@ class Timeline extends Component {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("token")}`,
           },
-          withCredentials: true,
         }
       )
       .then((response) => {
@@ -215,7 +214,6 @@ class Timeline extends Component {
       headers: {
         Authorization: `Bearer ${localStorage.getItem("token")}`,
       },
-      withCredentials: true,
     })
       .then((response) => {
         this.updateDetail(detail.tripDetailsId, response.data);
@@ -245,7 +243,6 @@ class Timeline extends Component {
       headers: {
         Authorization: `Bearer ${localStorage.getItem("token")}`,
       },
-      withCredentials: true,
 
       data: detail,
     })
@@ -293,7 +290,6 @@ class Timeline extends Component {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("token")}`,
           },
-          withCredentials: true,
         }
       )
       .then((response) => {
@@ -337,7 +333,6 @@ class Timeline extends Component {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
-        withCredentials: true,
       })
       .then((response) => {
         var newDetail = response.data;

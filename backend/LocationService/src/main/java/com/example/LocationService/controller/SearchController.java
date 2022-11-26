@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -22,19 +23,20 @@ import java.util.List;
 public class SearchController {
     @Autowired
     SearchService searchService;
-
+    @Transactional(rollbackFor = {Exception.class, Throwable.class})
     @GetMapping("/all/{keyword}")
     public ResponseEntity<List<SearchPOIAndDestinationDTO>> searchPOIAndDestinationByKeyword(@PathVariable String keyword) {
-        try {
+//        try {
             List<SearchPOIAndDestinationDTO> results = searchService.suggestSearchPOIAndDestinationByKeyword(keyword);
             if (results.isEmpty()) {
                 return new ResponseEntity<>(HttpStatus.NOT_FOUND);
             }
             return new ResponseEntity<List<SearchPOIAndDestinationDTO>>(results, HttpStatus.OK);
-        } catch (Exception e) {
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-        }
+//        } catch (Exception e) {
+//            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+//        }
     }
+    @Transactional(rollbackFor = {Exception.class, Throwable.class})
     @GetMapping("/Destination/{keyword}")
     public ResponseEntity<List<SearchPOIAndDestinationDTO>> searchDestinationByKeyword(@PathVariable String keyword) {
 //        try {
@@ -53,6 +55,7 @@ public class SearchController {
 //            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
 //        }
     }
+    @Transactional(rollbackFor = {Exception.class, Throwable.class})
     @GetMapping("/{keyword}/{page}")
     public ResponseEntity<SearchRespondeDTO> searchByKeyword(@PathVariable String keyword, @PathVariable int page) {
         List<SearchPOIAndDestinationDTO> results = searchService.searchPOIAndDestinationByKeyword(keyword);
@@ -71,7 +74,7 @@ public class SearchController {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
-
+    @Transactional(rollbackFor = {Exception.class, Throwable.class})
     @GetMapping("/filter/{keyword}/{page}/{type}")
     public ResponseEntity<SearchRespondeDTO> filterByKeywordAndType(@PathVariable String keyword, @PathVariable int page, @PathVariable String type) {
         try {
@@ -90,7 +93,7 @@ public class SearchController {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
-
+    @Transactional(rollbackFor = {Exception.class, Throwable.class})
     @GetMapping("/type")
     public ResponseEntity<List<Enum>> getAllType() {
         try {
@@ -103,7 +106,7 @@ public class SearchController {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
-
+    @Transactional(rollbackFor = {Exception.class, Throwable.class})
     @GetMapping("/poi/{keyword}")
     public ResponseEntity<ArrayList<SearchPOIAndDestinationDTO>> searchPOIByKeyword(@PathVariable String keyword) {
         ArrayList<SearchPOIAndDestinationDTO> results = searchService.searchPOIByKeyword(keyword);
