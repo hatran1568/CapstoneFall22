@@ -2,7 +2,7 @@ package com.tripplanner.TripService.service.implementers;
 
 import com.tripplanner.TripService.config.RestTemplateClient;
 import com.tripplanner.TripService.dto.request.CustomActivityDTO;
-import com.example.TripService.dto.response.*;
+import com.tripplanner.TripService.dto.response.*;
 import com.tripplanner.TripService.entity.Trip;
 import com.tripplanner.TripService.entity.TripDetails;
 import com.tripplanner.TripService.entity.TripStatus;

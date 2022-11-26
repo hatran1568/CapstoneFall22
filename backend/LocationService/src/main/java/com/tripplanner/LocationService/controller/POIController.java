@@ -6,7 +6,7 @@ import com.tripplanner.LocationService.dto.request.HotelsRequestDTO;
 import com.tripplanner.LocationService.dto.request.POIListDTO;
 import com.tripplanner.LocationService.dto.request.POIofDestinationDTO;
 import com.tripplanner.LocationService.dto.request.UpdatePOIDTO;
-import com.example.LocationService.dto.response.*;
+import com.tripplanner.LocationService.dto.response.*;
 import com.tripplanner.LocationService.entity.MasterActivity;
 import com.tripplanner.LocationService.entity.POI;
 import com.tripplanner.LocationService.repository.CustomActivityRepository;
