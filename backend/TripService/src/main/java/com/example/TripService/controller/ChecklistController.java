@@ -1,5 +1,6 @@
 package com.example.TripService.controller;
 
+import com.example.TripService.dto.response.ChecklistDTO;
 import com.example.TripService.dto.response.ChecklistItemDTO;
 import com.example.TripService.service.interfaces.ChecklistService;
 import com.fasterxml.jackson.databind.node.ObjectNode;
@@ -19,9 +20,12 @@ public class ChecklistController {
     private ChecklistService checklistService;
 
     @GetMapping("/get-by-trip")
-    public ResponseEntity<List<ChecklistItemDTO>> getChecklistItemsByTripId(@RequestParam int tripId){
+    public ResponseEntity<ChecklistDTO> getChecklistItemsByTripId(@RequestParam int tripId, @RequestParam(required = false) Integer userId){
         try{
-            return new ResponseEntity<>(checklistService.getChecklistItemsByTripId(tripId), HttpStatus.OK);
+            if(userId == null) userId = -1;
+            ChecklistDTO result = checklistService.getChecklistItemsByTripId(tripId, userId);
+            if(result == null) return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(result, HttpStatus.OK);
         } catch (Exception e){
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }

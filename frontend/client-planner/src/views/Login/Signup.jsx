@@ -103,7 +103,7 @@ function Signup() {
   };
 
   useEffect(() => {
-    document.title = "Register | Tripplanner";
+    document.title = "Đăng ký | Tripplanner";
   }, []);
 
   return (
@@ -118,81 +118,90 @@ function Signup() {
 
           <MDBCol md="6">
             <MDBCardBody className="d-flex flex-column">
-              <h3 className="fw-normal my-3 pb-3 text-center">Register</h3>
-              <MDBInput
-                wrapperClass="mt-4 mx-5"
-                label="Username"
-                id="formUsername"
-                type="text"
-                size="lg"
-                onChange={(e) => setUser({ ...user, username: e.target.value })}
-              />
-              <span
-                style={{ color: "red", display: "none" }}
-                className="mx-5"
-                id="errUsername"
-              >
-                Username must not be empty
-              </span>
-
-              <MDBInput
-                wrapperClass="mt-4 mx-5"
-                label="Email address"
-                id="formEmail"
-                type="email"
-                size="lg"
-                onChange={(e) => setUser({ ...user, email: e.target.value })}
-              />
-              <span
-                style={{ color: "red", display: "none" }}
-                className="mx-5"
-                id="errEmail"
-              >
-                Please check your email
-              </span>
-
-              <MDBInput
-                wrapperClass="mt-4 mx-5"
-                label="Password"
-                id="formPwd"
-                type="password"
-                size="lg"
-                onChange={(e) => setUser({ ...user, password: e.target.value })}
-              />
-              <span
-                style={{ color: "red", display: "none" }}
-                className="mx-5"
-                id="errPwd"
-              >
-                Password cannot be empty
-              </span>
-
-              <MDBInput
-                wrapperClass="mt-4 mx-5"
-                label="Confirm password"
-                id="formPwdCf"
-                type="password"
-                size="lg"
-                onChange={(e) =>
-                  setUser({ ...user, confirmPassword: e.target.value })
-                }
-              />
-              <span
-                style={{ color: "red", display: "none" }}
-                className="mx-5"
-                id="errCfPwd"
-              >
-                Confirm password doesn't match password
-              </span>
-              <span
-                style={{ color: "red", display: "none" }}
-                className="mx-5"
-                id="invalidWarning"
-              >
-                Email already in use!
-              </span>
+              <div className={style.pageTitle}>Đăng ký</div>
+              <div className={style.registerInputDiv}>
+                <MDBInput
+                  wrapperClass="mt-4 mx-5"
+                  label="Username"
+                  id="formUsername"
+                  type="text"
+                  size="lg"
+                  onChange={(e) =>
+                    setUser({ ...user, username: e.target.value })
+                  }
+                />
+                <span
+                  style={{ color: "red", display: "none" }}
+                  className="mx-5"
+                  id="errUsername"
+                >
+                  Username must not be empty
+                </span>
+              </div>
+              <div className={style.registerInputDiv}>
+                <MDBInput
+                  wrapperClass="mt-4 mx-5"
+                  label="Email address"
+                  id="formEmail"
+                  type="email"
+                  size="lg"
+                  onChange={(e) => setUser({ ...user, email: e.target.value })}
+                />
+                <span
+                  style={{ color: "red", display: "none" }}
+                  className="mx-5"
+                  id="errEmail"
+                >
+                  Please check your email
+                </span>
+              </div>
+              <div className={style.registerInputDiv}>
+                <MDBInput
+                  wrapperClass="mt-4 mx-5"
+                  label="Password"
+                  id="formPwd"
+                  type="password"
+                  size="lg"
+                  onChange={(e) =>
+                    setUser({ ...user, password: e.target.value })
+                  }
+                />
+                <span
+                  style={{ color: "red", display: "none" }}
+                  className="mx-5"
+                  id="errPwd"
+                >
+                  Password cannot be empty
+                </span>
+              </div>
+              <div className={style.registerInputDiv}>
+                <MDBInput
+                  wrapperClass="mt-4 mx-5"
+                  label="Confirm password"
+                  id="formPwdCf"
+                  type="password"
+                  size="lg"
+                  onChange={(e) =>
+                    setUser({ ...user, confirmPassword: e.target.value })
+                  }
+                />
+                <span
+                  style={{ color: "red", display: "none" }}
+                  className="mx-5"
+                  id="errCfPwd"
+                >
+                  Confirm password doesn't match password
+                </span>
+                <span
+                  style={{ color: "red", display: "none" }}
+                  className="mx-5"
+                  id="invalidWarning"
+                >
+                  Email already in use!
+                </span>
+              </div>
               <MDBBtn
-                className="my-4 px-5 col-6 mx-auto mb-2"
+                className={style.registerButton}
                 color="dark"
                 size="lg"
                 type="button"
@@ -200,7 +209,6 @@ function Signup() {
               >
                 Register
               </MDBBtn>
-
               <p
                 className="mt-5 mb-0 pb-lg-2 text-center"
                 style={{ color: "#393f81" }}

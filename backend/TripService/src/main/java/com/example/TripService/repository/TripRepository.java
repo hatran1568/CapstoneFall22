@@ -57,4 +57,6 @@ public interface TripRepository extends JpaRepository<Trip, Integer> {
     @Query(value = "insert into trip_details (day_number,end_time,note,start_time,master_activity_id,trip_id) value(?1,?2,?3,?4,?5,?6)",nativeQuery = true)
     public void insertTripDetails(int day, int end, String note, int start, int poi, int trip);
 
+    @Query(value = "select * from trip where trip_id = :id and ((status = 'PUBLIC') or (user_id = :userId and t.status = 'PRIVATE'))", nativeQuery = true)
+    Trip findDetailedTripById(int id, int userId);
 }
