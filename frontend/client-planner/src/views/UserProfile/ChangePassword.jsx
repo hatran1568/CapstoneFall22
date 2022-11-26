@@ -35,7 +35,6 @@ function ChangePassword() {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("token")}`,
           },
-          withCredentials: true,
         })
         .catch((err) => {
           if (err.response.status == 400) {
@@ -55,7 +54,6 @@ function ChangePassword() {
     async function getUserProfile() {
       const response = await axios.get("/user/api/user/findById/" + user.id, {
         headers: { "Content-Type": "application/json" },
-        withCredentials: true,
       });
 
       setCurUser(response.data);

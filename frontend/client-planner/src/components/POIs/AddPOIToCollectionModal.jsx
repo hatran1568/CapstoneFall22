@@ -56,7 +56,6 @@ const AddPOIToCollectionModal = (prop) => {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("token")}`,
           },
-          withCredentials: true,
         }
       )
       .then((res) => {
@@ -70,7 +69,7 @@ const AddPOIToCollectionModal = (prop) => {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
-        withCredentials: true,
+
         data: {
           colId: colId,
           poiId: prop.poiId,

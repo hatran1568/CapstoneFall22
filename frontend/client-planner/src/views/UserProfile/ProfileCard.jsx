@@ -42,7 +42,7 @@ function ProfileCard(props) {
         id: localStorage.getItem("id"),
         username: curUsername,
       };
-      axios.post("/api/user/edit-username", newUser, {
+      axios.post("/user/api/user/edit-username", newUser, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("token")}`,
         },

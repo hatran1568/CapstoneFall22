@@ -24,7 +24,7 @@ function ResetPasswordConfirm() {
     } else {
       axios
         .post(
-          "/api/user/password-reset",
+          "/user/api/user/password-reset",
           {
             email: email,
             resetToken: token,

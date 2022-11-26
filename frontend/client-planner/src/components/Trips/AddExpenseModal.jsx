@@ -43,18 +43,22 @@ function AddExpenseModal(props) {
   //Add Expense
   const addExpense = (event) => {
     const id = window.location.href.split("/")[4];
-    if (document.getElementById("modalDesc").value == null || document.getElementById("modalDesc").value == "")
+    if (
+      document.getElementById("modalDesc").value == null ||
+      document.getElementById("modalDesc").value == ""
+    )
       document.getElementById("modalDesc").value = " ";
-    if (document.getElementById("modalAmount").value == "" || document.getElementById("modalAmount").value == null) {
-      document.getElementById("errorMessage").innerHTML =
-        "Hãy nhập giá tiền.";
+    if (
+      document.getElementById("modalAmount").value == "" ||
+      document.getElementById("modalAmount").value == null
+    ) {
+      document.getElementById("errorMessage").innerHTML = "Hãy nhập giá tiền.";
     } else if (currentCat == 0)
-      document.getElementById("errorMessage").innerHTML =
-        "Hãy chọn danh mục.";
+      document.getElementById("errorMessage").innerHTML = "Hãy chọn danh mục.";
     else
       axios({
         method: "post",
-        url: "http://localhost:8080/api/expense/new",
+        url: "http://localhost:8080/trip/api/expense/new",
         data: {
           amount: document.getElementById("modalAmount").value,
           description: document.getElementById("modalDesc").value,
@@ -69,7 +73,7 @@ function AddExpenseModal(props) {
         //window.location.reload();
         refreshHandler();
         toggleShow();
-    });
+      });
   };
   //Add Expense Modal
   const [basicModal, setBasicModal] = useState(false);
@@ -185,7 +189,7 @@ function AddExpenseModal(props) {
                   >
                     <FontAwesomeIcon icon={faBus} />
                     <br />
-                    <span style={{fontSize:8.5}}>Phương tiện công cộng</span>
+                    <span style={{ fontSize: 8.5 }}>Phương tiện công cộng</span>
                   </MDBBtn>
                 </MDBCol>
               </MDBRow>

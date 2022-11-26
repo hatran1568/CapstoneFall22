@@ -29,7 +29,7 @@ function BlogDetails() {
   useEffect(() => {
     const listResp = async () => {
       await axios
-        .get("http://localhost:8080/api/blog/nearby/" + id)
+        .get("http://localhost:8080/blog/api/blog/nearby/" + id)
         .then((response) => {
           setNearbyBlogs(response.data);
           setLoading(false);
@@ -41,7 +41,7 @@ function BlogDetails() {
   useEffect(() => {
     const listResp = async () => {
       await axios
-        .get("http://localhost:8080/api/blog/" + id)
+        .get("http://localhost:8080/blog/api/blog/" + id)
         .then((response) => setBlog(response.data));
     };
     listResp();
@@ -69,9 +69,10 @@ function BlogDetails() {
     var username = blog.username;
     var avatar = blog.avatar;
     if (avatar == null || avatar == "")
-      avatar = "https://t4.ftcdn.net/jpg/03/59/58/91/360_F_359589186_JDLl8dIWoBNf1iqEkHxhUeeOulx0wOC5.jpg";
+      avatar =
+        "https://t4.ftcdn.net/jpg/03/59/58/91/360_F_359589186_JDLl8dIWoBNf1iqEkHxhUeeOulx0wOC5.jpg";
     if (blog.userStatus == "DELETED") {
-      username = "Người dùng này đã bị xóa"
+      username = "Người dùng này đã bị xóa";
       avatar = "https://static.thenounproject.com/png/418543-200.png";
     }
     date = date.toLocaleDateString("vi", options);

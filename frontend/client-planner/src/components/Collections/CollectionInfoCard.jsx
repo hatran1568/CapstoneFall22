@@ -40,7 +40,6 @@ const CollectionInfoCard = (prop) => {
               headers: {
                 Authorization: `Bearer ${localStorage.getItem("token")}`,
               },
-              withCredentials: true,
             }
           )
           .then(setIsDeleted(true));

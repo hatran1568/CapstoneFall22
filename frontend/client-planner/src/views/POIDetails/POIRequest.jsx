@@ -70,7 +70,6 @@ class POIRequest extends Component {
             headers: {
               Authorization: `Bearer ${localStorage.getItem("token")}`,
             },
-            withCredentials: true,
           }
         )
         .then((res) => {
@@ -147,7 +146,6 @@ class POIRequest extends Component {
           Authorization: `Bearer ${localStorage.getItem("token")}`,
           "Content-Type": "application/json",
         },
-        withCredentials: true,
       }).then(function (response) {
         id = response.data;
         images.forEach((entry, index) => {
@@ -162,7 +160,6 @@ class POIRequest extends Component {
                   Authorization: `Bearer ${localStorage.getItem("token")}`,
                   "Content-Type": "multipart/form-data",
                 },
-                withCredentials: true,
               }
             )
             .then(function (response) {});
