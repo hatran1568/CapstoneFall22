@@ -44,31 +44,31 @@ spring:
 
       routes:
         - id: locationModule
-          uri: http://localhost:8081/
+          uri: lb://location-service
           predicates:
             - Path=/location/**
         - id: userModule
-          uri: http://localhost:8082/
+          uri: lb://user-service
           predicates:
             - Path=/user/**
         - id: tripModule
-          uri: http://localhost:8084/
+          uri: lb://trip-service
           predicates:
             - Path=/trip/**
         - id: uploadModule
-          uri: http://localhost:8085/
+          uri: lb://upload-service
           predicates:
             - Path=/upload/**
         - id: optimizerModule
-          uri: http://localhost:8086/
+          uri: lb://optimizer
           predicates:
             - Path=/optimizer/**
         - id: blogModule
-          uri: http://localhost:8087/
+          uri: lb://blog-service
           predicates:
             - Path=/blog/**
         - id: AuthModule
-          uri: http://localhost:8088/
+          uri: lb://authorization-service
           predicates:
             - Path=/auth/**
             - Path=/oauth2/**
