@@ -215,7 +215,7 @@ public class TripServiceImpl implements TripService {
     @Override
     public TripDetailDTO addCustomTripDetail(Date date, int startTime, int endTime, int tripId, String name, String address) {
         Trip trip = tripRepository.findById(tripId);
-        List<ServiceInstance> instances = discoveryClient.getInstances("trip-service");
+        List<ServiceInstance> instances = discoveryClient.getInstances("location-service");
 
         ServiceInstance instance = instances.get(0);
         HttpHeaders headers = new HttpHeaders();
