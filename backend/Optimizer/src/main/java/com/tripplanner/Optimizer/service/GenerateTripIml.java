@@ -1,5 +1,6 @@
 package com.tripplanner.Optimizer.service;
 
+
 import com.tripplanner.Optimizer.DTO.*;
 import com.tripplanner.Optimizer.DTO.Response.ComplexResponse;
 import com.tripplanner.Optimizer.DTO.Response.DesDetailsDTO;
@@ -8,8 +9,8 @@ import com.tripplanner.Optimizer.DTO.request.TripDetailsGenerateDTO;
 import com.tripplanner.Optimizer.DTO.request.TripGenerateDTO;
 import com.tripplanner.Optimizer.algorithms.GeneticAlgorithmImplementer;
 import com.tripplanner.Optimizer.config.RestTemplateClient;
-import com.tripplanner.Optimizer.entity.*;
-import com.tripplanner.Optimizer.repository.*;
+
+
 import com.tripplanner.Optimizer.entity.OptimizerRequest;
 import com.tripplanner.Optimizer.entity.RequestStatus;
 import com.tripplanner.Optimizer.service.interfaces.GenerateTrip;
