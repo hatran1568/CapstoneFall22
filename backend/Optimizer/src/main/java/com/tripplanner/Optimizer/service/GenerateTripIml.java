@@ -10,6 +10,7 @@ import com.tripplanner.Optimizer.DTO.request.TripGenerateDTO;
 import com.tripplanner.Optimizer.algorithms.GeneticAlgorithmImplementer;
 import com.tripplanner.Optimizer.config.RestTemplateClient;
 
+
 import com.tripplanner.Optimizer.entity.OptimizerRequest;
 import com.tripplanner.Optimizer.entity.RequestStatus;
 import com.tripplanner.Optimizer.service.interfaces.GenerateTrip;

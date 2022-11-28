@@ -3,7 +3,7 @@ package com.tripplanner.LocationService.repository;
 
 import com.tripplanner.LocationService.dto.request.GalleryImages;
 import com.tripplanner.LocationService.dto.request.POIBoxDTO;
-import com.example.LocationService.dto.response.*;
+import com.tripplanner.LocationService.dto.response.*;
 import com.tripplanner.LocationService.entity.Destination;
 import com.tripplanner.LocationService.dto.response.*;
 import org.springframework.data.jpa.repository.JpaRepository;
