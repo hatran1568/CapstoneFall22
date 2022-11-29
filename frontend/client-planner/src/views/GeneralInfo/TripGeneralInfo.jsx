@@ -89,7 +89,6 @@ class TripGeneralInfo extends Component {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
-        withCredentials: true,
       });
       this.closeEditDates();
       window.location.reload();

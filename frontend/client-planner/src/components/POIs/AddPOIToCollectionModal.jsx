@@ -30,7 +30,9 @@ const AddPOIToCollectionModal = (prop) => {
   useEffect(() => {
     const getColList = async () => {
       if (localStorage.getItem("token") != undefined) {
-        await axios.get("/api/collection/list/" + localStorage.getItem("id")).then((res) => setColList(res.data));
+        await axios
+          .get("/location/api/collection/list/" + localStorage.getItem("id"))
+          .then((res) => setColList(res.data));
       }
     };
 
@@ -44,7 +46,7 @@ const AddPOIToCollectionModal = (prop) => {
   const handleAdd = (colId) => {
     axios
       .post(
-        "/api/collection/addPoi2",
+        "/location/api/collection/addPoi2",
         {
           colId: colId,
           poiId: prop.poiId,
@@ -54,8 +56,7 @@ const AddPOIToCollectionModal = (prop) => {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("token")}`,
           },
-          withCredentials: true,
-        },
+        }
       )
       .then((res) => {
         setColList(res.data);
@@ -64,11 +65,11 @@ const AddPOIToCollectionModal = (prop) => {
 
   const handleDelete = (colId) => {
     axios
-      .delete("/api/collection/deletePoi2", {
+      .delete("/location/api/collection/deletePoi2", {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
-        withCredentials: true,
+
         data: {
           colId: colId,
           poiId: prop.poiId,
@@ -91,7 +92,7 @@ const AddPOIToCollectionModal = (prop) => {
         cols.push(
           <MDBCol>
             <div
-              overlay='true'
+              overlay="true"
               className={style.img}
               style={
                 col.imgUrl
@@ -104,22 +105,30 @@ const AddPOIToCollectionModal = (prop) => {
               }
             >
               <MDBCard className={style.card} style={{ border: "none" }}>
-                <Tooltip title='Xóa địa điểm khỏi bộ sưu tập này'>
-                  <Checkbox checked={true} onClick={() => handleDelete(col.collectionId)} className='ms-1' />
+                <Tooltip title="Xóa địa điểm khỏi bộ sưu tập này">
+                  <Checkbox
+                    checked={true}
+                    onClick={() => handleDelete(col.collectionId)}
+                    className="ms-1"
+                  />
                 </Tooltip>
-                <MDBCardBody className='mt-4 pt-5'>
-                  <MDBCardTitle className='fs-4 text-center text-white'>{col.title}</MDBCardTitle>
-                  <MDBCardText className='text-center text-white'>{col.description}</MDBCardText>
+                <MDBCardBody className="mt-4 pt-5">
+                  <MDBCardTitle className="fs-4 text-center text-white">
+                    {col.title}
+                  </MDBCardTitle>
+                  <MDBCardText className="text-center text-white">
+                    {col.description}
+                  </MDBCardText>
                 </MDBCardBody>
               </MDBCard>
             </div>
-          </MDBCol>,
+          </MDBCol>
         );
       } else {
         cols.push(
           <MDBCol>
             <div
-              overlay='true'
+              overlay="true"
               className={style.img}
               style={
                 col.imgUrl
@@ -132,16 +141,24 @@ const AddPOIToCollectionModal = (prop) => {
               }
             >
               <MDBCard className={style.card} style={{ border: "none" }}>
-                <Tooltip title='Thêm địa điểm vào bộ sưu tập này'>
-                  <Checkbox checked={false} onClick={() => handleAdd(col.collectionId)} className='ms-1' />
+                <Tooltip title="Thêm địa điểm vào bộ sưu tập này">
+                  <Checkbox
+                    checked={false}
+                    onClick={() => handleAdd(col.collectionId)}
+                    className="ms-1"
+                  />
                 </Tooltip>
-                <MDBCardBody className='mt-4 pt-5'>
-                  <MDBCardTitle className='fs-4 text-center text-white'>{col.title}</MDBCardTitle>
-                  <MDBCardText className='text-center text-white'>{col.description}</MDBCardText>
+                <MDBCardBody className="mt-4 pt-5">
+                  <MDBCardTitle className="fs-4 text-center text-white">
+                    {col.title}
+                  </MDBCardTitle>
+                  <MDBCardText className="text-center text-white">
+                    {col.description}
+                  </MDBCardText>
                 </MDBCardBody>
               </MDBCard>
             </div>
-          </MDBCol>,
+          </MDBCol>
         );
       }
     });
@@ -149,20 +166,25 @@ const AddPOIToCollectionModal = (prop) => {
 
   return (
     <>
-      <MDBBtn tag='a' color='none' className={style.addCol} onClick={handleOpen}>
-        <Tooltip title='Thêm địa điểm vào bộ sưu tập của bạn'>
-          <MDBIcon fas icon='heart' />
+      <MDBBtn
+        tag="a"
+        color="none"
+        className={style.addCol}
+        onClick={handleOpen}
+      >
+        <Tooltip title="Thêm địa điểm vào bộ sưu tập của bạn">
+          <MDBIcon fas icon="heart" />
         </Tooltip>
       </MDBBtn>
       <Modal
         open={open}
-        title='Các bộ sưu tập của bạn'
+        title="Các bộ sưu tập của bạn"
         onCancel={handleCancel}
         footer={null}
         bodyStyle={{ paddingTop: "0" }}
       >
         <AddCollectionModal refresh={setColList} />
-        <MDBRow className='row-cols-1 row-cols-md-2 g-4'>{cols}</MDBRow>
+        <MDBRow className="row-cols-1 row-cols-md-2 g-4">{cols}</MDBRow>
       </Modal>
     </>
   );

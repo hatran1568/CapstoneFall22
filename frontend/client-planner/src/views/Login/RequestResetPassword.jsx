@@ -18,7 +18,7 @@ function RequestResetPassword() {
     setIsFetching(true);
 
     axios
-      .post("/api/user/password-reset-request", email, {
+      .post("/user/api/user/password-reset-request", email, {
         headers: {
           "Content-Type": "text/plain",
         },

@@ -13,8 +13,8 @@ import axios from "../../api/axios";
 import { useState } from "react";
 import style from "./Login.module.css";
 
-const REGISTER_URL = "/api/register";
-const LOGIN_URL = "/api/login";
+const REGISTER_URL = "/user/api/register";
+const LOGIN_URL = "/user/api/login";
 
 function Signup() {
   const pattern = /^[A-Za-z0-9_!#$%&'*+\/=?`{|}~^.-]+@[A-Za-z0-9.-]+$/;
@@ -70,7 +70,6 @@ function Signup() {
           },
           {
             headers: { "Content-Type": "application/json" },
-            withCredentials: true,
           }
         );
         const response = await axios.post(
@@ -81,7 +80,6 @@ function Signup() {
           },
           {
             headers: { "Content-Type": "application/json" },
-            withCredentials: true,
           }
         );
         const accessToken = response?.data?.accessToken;

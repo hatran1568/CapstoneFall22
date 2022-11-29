@@ -36,7 +36,7 @@ function ListTypes(props) {
 
   const getType = () => {
     axios
-      .get("http://localhost:8080/search/type", {
+      .get("http://localhost:8080/location/search/type", {
         headers: { "Content-Type": "application/json" },
       })
       .then((response) => response.data)

@@ -2,7 +2,6 @@ package com.planner.backendserver.service.implementers;
 
 import com.planner.backendserver.DTO.response.ChecklistDTO;
 import com.planner.backendserver.DTO.response.ChecklistItemDTO;
-import com.planner.backendserver.DTO.response.TripDetailDTO;
 import com.planner.backendserver.entity.ChecklistItem;
 import com.planner.backendserver.entity.Trip;
 import com.planner.backendserver.repository.ChecklistItemRepository;

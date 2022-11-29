@@ -35,18 +35,20 @@ const POIDetails = () => {
 
   useEffect(() => {
     const getPOI = async () => {
-      await axios.get("/api/pois/" + poiId).then((res) => setCurPOI(res.data));
+      await axios
+        .get("/location/api/pois/" + poiId)
+        .then((res) => setCurPOI(res.data));
     };
 
     const getRatings = async () => {
       await axios
-        .get("/api/pois/" + poiId + "/ratings")
+        .get("/location/api/pois/" + poiId + "/ratings")
         .then((res) => setRatings(res.data));
     };
 
     const getImages = async () => {
       await axios
-        .get("/api/pois/" + poiId + "/images")
+        .get("/location/api/pois/" + poiId + "/images")
         .then((res) => setImages(res.data));
     };
 
@@ -95,7 +97,7 @@ const POIDetails = () => {
     if (rate > 0) {
       axios
         .put(
-          "/api/pois/editRating",
+          "/location/api/pois/editRating",
           {
             rate: rate,
             comment: comment,
@@ -106,7 +108,6 @@ const POIDetails = () => {
             headers: {
               Authorization: `Bearer ${localStorage.getItem("token")}`,
             },
-            withCredentials: true,
           }
         )
         .then((res) => {
@@ -126,7 +127,7 @@ const POIDetails = () => {
     if (rate > 0) {
       axios
         .post(
-          "/api/pois/createRating",
+          "/location/api/pois/createRating",
           {
             rate: rate,
             comment: comment,
@@ -137,7 +138,6 @@ const POIDetails = () => {
             headers: {
               Authorization: `Bearer ${localStorage.getItem("token")}`,
             },
-            withCredentials: true,
           }
         )
         .then((res) => {

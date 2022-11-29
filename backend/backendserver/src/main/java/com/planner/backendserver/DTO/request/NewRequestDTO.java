@@ -1,5 +1,6 @@
 package com.planner.backendserver.DTO.request;
 
+
 public class NewRequestDTO {
     String name;
     String address;

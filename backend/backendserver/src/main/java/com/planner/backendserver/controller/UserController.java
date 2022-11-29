@@ -1,12 +1,9 @@
 package com.planner.backendserver.controller;
 
 import com.fasterxml.jackson.databind.node.ObjectNode;
-import com.planner.backendserver.DTO.request.BlogDetailsDTO;
-import com.planner.backendserver.DTO.request.POIListDTO;
 import com.planner.backendserver.DTO.response.UserListDTO;
 import com.planner.backendserver.dto.request.ChangePwdRequestDTO;
 import com.planner.backendserver.dto.request.PasswordResetRequestDTO;
-import com.planner.backendserver.repository.POIRepository;
 import com.planner.backendserver.repository.UserRepository;
 import com.planner.backendserver.service.interfaces.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,7 +13,6 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.security.Principal;
 import java.util.ArrayList;
 
 @RestController

@@ -31,11 +31,10 @@ function ChangePassword() {
       setErrMsg("New password and confirm password doesn't match");
     } else {
       axios
-        .post("/api/user/edit-password", user, {
+        .post("/user/api/user/edit-password", user, {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("token")}`,
           },
-          withCredentials: true,
         })
         .catch((err) => {
           if (err.response.status == 400) {
@@ -53,9 +52,8 @@ function ChangePassword() {
 
   useEffect(() => {
     async function getUserProfile() {
-      const response = await axios.get("/api/user/findById/" + user.id, {
+      const response = await axios.get("/user/api/user/findById/" + user.id, {
         headers: { "Content-Type": "application/json" },
-        withCredentials: true,
       });
 
       setCurUser(response.data);

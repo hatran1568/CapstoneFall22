@@ -146,7 +146,6 @@ function Hotel() {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("token")}`,
           },
-          withCredentials: true,
         })
         .then((response) => {
           count++;
@@ -180,7 +179,7 @@ function Hotel() {
     console.log(body);
     axios({
       method: "post",
-      url: "http://localhost:8080/api/pois/hotel/query",
+      url: "http://localhost:8080/location/api/pois/hotel/query",
       data: body,
       headers: {
         "Content-Type": "application/json",
@@ -218,7 +217,7 @@ function Hotel() {
     let nextPage = page + 1;
     axios({
       method: "post",
-      url: "http://localhost:8080/api/pois/hotel/query",
+      url: "http://localhost:8080/location/api/pois/hotel/query",
       data: {
         poiId: poiSelectedId,
         page: nextPage,
@@ -269,7 +268,7 @@ function Hotel() {
     }
     axios({
       method: "post",
-      url: "http://localhost:8080/api/pois/hotel/query",
+      url: "http://localhost:8080/location/api/pois/hotel/query",
       data: {
         poiId: poiSelectedId,
         page: "0",

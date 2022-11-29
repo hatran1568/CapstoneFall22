@@ -1,7 +1,10 @@
 package com.planner.backendserver.controller;
 
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Nested;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.planner.backendserver.DTO.request.HotelsRequestDTO;
+import com.planner.backendserver.config.JwtTokenProvider;
+import com.planner.backendserver.repository.UserRepository;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -11,10 +14,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
-
-@SpringBootTest
-@AutoConfigureMockMvc
+@WebMvcTest(controllers = HotelsRequestDTO.LoginController.class)
 class LoginControllerTest {
     @Autowired
     private MockMvc mockMvc;
