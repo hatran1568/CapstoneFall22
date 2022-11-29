@@ -114,15 +114,15 @@ public class TripController {
 
     @GetMapping("/get-distance")
     public ResponseEntity<Double> getDistanceBetweenTwoPOIs(@RequestParam int from, @RequestParam int to){
-        try{
+//        try{
             Optional<Double> distance = tripService.getDistanceBetweenTwoPOIs(from, to);
             if (distance.isEmpty()){
                 return new ResponseEntity<>(-1.0, HttpStatus.OK);
             }
             return new ResponseEntity<>(distance.get(), HttpStatus.OK);
-    } catch (Exception e){
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-        }
+//    } catch (Exception e){
+//            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+//        }
     }
 //    @GetMapping("/master-activity/{id}")
 //    public ResponseEntity<MasterActivity> getMasterActivityById(@PathVariable int id){
@@ -174,18 +174,19 @@ public class TripController {
 
     @PostMapping("/add-custom-detail")
     public ResponseEntity<TripDetailDTO> addCustomTripDetail(@RequestBody ObjectNode objectNode){
-        try{
+//        try{
             Date date = Date.valueOf(objectNode.get("date").asText());
             int startTime = objectNode.get("startTime").asInt();
             int endTime = objectNode.get("endTime").asInt();
             int tripId = objectNode.get("tripId").asInt();
             String name = objectNode.get("name").asText();
             String address = objectNode.get("address").asText();
-            TripDetailDTO result = tripService.addCustomTripDetail(date, startTime, endTime, tripId, name, address);
+            String note = objectNode.get("note").asText();
+            TripDetailDTO result = tripService.addCustomTripDetail(date, startTime, endTime, tripId, name, address, note);
             return new ResponseEntity<>(result, HttpStatus.OK);
-        } catch (Exception e){
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-        }
+//        } catch (Exception e){
+//            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+//        }
     }
     @Transactional(rollbackFor = {Exception.class, Throwable.class})
     @GetMapping("/get-detail")
@@ -203,14 +204,14 @@ public class TripController {
     @Transactional(rollbackFor = {Exception.class, Throwable.class})
     @PostMapping("/get-details-to-delete")
     public ResponseEntity<List<TripDetailDTO>> getDetailsToDelete(@RequestBody ObjectNode objectNode){
-        try{
+//        try{
             int tripId = objectNode.get("tripId").asInt();
             int numberOfDays = objectNode.get("numberOfDays").asInt();
             List<TripDetailDTO> tripDetailDTOS= tripService.getTripDetailsToBeDeleted(tripId, numberOfDays);
             return new ResponseEntity<>(tripDetailDTOS, HttpStatus.OK);
-        } catch (Exception e){
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-        }
+//        } catch (Exception e){
+//            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+//        }
     }
     @Transactional(rollbackFor = {Exception.class, Throwable.class})
     @PutMapping("/put-detail")
@@ -228,15 +229,15 @@ public class TripController {
     @Transactional(rollbackFor = {Exception.class, Throwable.class})
     @PutMapping("/put-custom-detail")
     public ResponseEntity<TripDetailDTO> editCustomTripDetail(@RequestBody TripDetailDTO newDetail, @RequestParam int detailId, @RequestParam int tripId){
-        try{
+//        try{
             TripDetailDTO detail = tripService.editCustomTripDetailById(newDetail,detailId,tripId);
             if (detail == null){
                 return new ResponseEntity<>(HttpStatus.NOT_FOUND);
             }
             return new ResponseEntity<>(detail, HttpStatus.OK);
-        } catch (Exception e){
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-        }
+//        } catch (Exception e){
+//            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+//        }
     }
     @Transactional(rollbackFor = {Exception.class, Throwable.class})
     @DeleteMapping("/delete-detail")
@@ -403,4 +404,55 @@ public class TripController {
 //        response.setId(asyncManager.getJobByUserId(id));
 //        return  new ResponseEntity<>(response,HttpStatus.OK);
 //    }
+
+    @GetMapping("/get-public-trips")
+    public ResponseEntity<?> getPublicTrips(@RequestParam(required = false) Integer page, @RequestParam(required = false) String search, @RequestParam(required = false) Integer minDays, @RequestParam(required = false) Integer maxDays){
+        try{
+            if(page == null) page = 0;
+            if(search == null) search = "";
+            if(minDays == null) minDays = 1;
+            if(maxDays == null) maxDays = 0;
+            int pageSize = 12;
+            Calendar cal = Calendar.getInstance();
+            cal.add(Calendar.MONTH, -1);
+            Date earliest = new Date(cal.getTime().getTime());
+            return new ResponseEntity<>(tripService.getPublicTrips(page,pageSize, search, minDays,maxDays, earliest), HttpStatus.OK);
+        } catch(Exception e){
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+    @GetMapping("/get-public-trips/count")
+    public ResponseEntity<?> getPublicTripsCount(@RequestParam(required = false) String search, @RequestParam(required = false) Integer minDays, @RequestParam(required = false) Integer maxDays) {
+        try {
+            if(search == null) search = "";
+            if(minDays == null) minDays = 1;
+            if(maxDays == null) maxDays = 0;
+
+            Calendar cal = Calendar.getInstance();
+            cal.add(Calendar.MONTH, -1);
+            Date earliest = new Date(cal.getTime().getTime());
+            int count = tripService.countPublicTrips(search, minDays, maxDays, earliest);
+            return new ResponseEntity<>(count, HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+    @Transactional(rollbackFor = {Exception.class, Throwable.class})
+    @PostMapping("/toggle-status")
+    public ResponseEntity<?> toggleTripStatus(@RequestBody ObjectNode request){
+        try{
+            int tripId = request.get("tripId").asInt();
+            String status = request.get("status").asText();
+            if(status.trim().toUpperCase() != "PUBLIC" && status.trim().toUpperCase() != "PRIVATE")
+                return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+            if (!tripService.tripExists(tripId)) {
+                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            }
+            tripService.toggleStatus(tripId, status);
+            return new ResponseEntity<>(HttpStatus.OK);
+
+        } catch (Exception e){
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
 }

@@ -59,7 +59,7 @@ public interface TripRepository extends JpaRepository<Trip, Integer> {
     @Query(value = "insert into trip_details (day_number,end_time,note,start_time,master_activity_id,trip_id) value(?1,?2,?3,?4,?5,?6)",nativeQuery = true)
     public void insertTripDetails(int day, int end, String note, int start, int poi, int trip);
 
-    @Query(value = "select * from trip where trip_id = :id and ((status = 'PUBLIC') or (user_id = :userId and t.status = 'PRIVATE'))", nativeQuery = true)
+    @Query(value = "select * from trip where trip_id = :id and ((status = 'PUBLIC') or (user_id = :userId and status = 'PRIVATE'))", nativeQuery = true)
     Trip findDetailedTripById(int id, int userId);
     @Query(value = "SELECT u.optimizer_request_id FROM user u where u.user_id=?1",nativeQuery = true)
     Integer getStatusGenerating(int userId);
@@ -69,5 +69,16 @@ public interface TripRepository extends JpaRepository<Trip, Integer> {
 
     @Query(value = "Insert into optimize_request ('status','instance_uri','trip_id','user_id') value(?1,?2,null,?3)",nativeQuery = true)
     void insertRequest(String status,String uri,int userId);
-
+    @Query(value = "select count(distinct t.trip_id) as count" +
+            " from trip t left join trip_details td on t.trip_id = td.trip_id left join poi p on td.master_activity_id = p.activity_id left join poi_destination pd on p.activity_id = pd.poi_id left join destination d on pd.destination_id = d.destination_id " +
+            "where t.status = 'PUBLIC' " +
+            "and cast(t.date_created as date) >= :earliest " +
+            "and (t.name like CONCAT('%',:name,'%') or d.name like CONCAT('%',:name,'%')) " +
+            "and datediff(t.end_date,t.start_date)+1 >= :minDays " +
+            "and datediff(t.end_date,t.start_date)+1 <= (case when :maxDays < :minDays  then 100 else :maxDays end)", nativeQuery = true)
+    public int getPublicTripsCount(String name, int minDays, int maxDays, Date earliest);
+    @Modifying
+    @Transactional
+    @Query(value = "update trip set status = :status where trip_id = :tripId", nativeQuery = true)
+    void toggleStatus(int tripId, String status);
 }

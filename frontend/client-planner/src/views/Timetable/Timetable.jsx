@@ -105,7 +105,7 @@ class Timetable extends Component {
           snext = true;
         }
         var own = false;
-        if (tripData.userID && tripData.userID == localStorage.getItem("id")) {
+        if (tripData.user && tripData.user == localStorage.getItem("id")) {
           own = true;
         }
         this.setState(
@@ -341,7 +341,11 @@ class Timetable extends Component {
     return (
       <>
         <TripGeneralInfo />
-        <TripDetailTabs />
+        <TripDetailTabs
+          own={this.state.own}
+          status={this.state.trip.status}
+          tripId={this.state.trip.tripId}
+        />
         <a className={` ${style.btnAdd}`} onClick={this.toggleAddModal}>
           <FontAwesomeIcon icon={faPlus} className={style.addIcon} />
         </a>

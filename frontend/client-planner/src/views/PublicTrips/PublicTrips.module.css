@@ -82,7 +82,7 @@
     margin: 1em;
     max-width: 100%;
 }
-label{
+.label{
     font-size: large;
     font-weight: 500;
     color: #0e0e0f;

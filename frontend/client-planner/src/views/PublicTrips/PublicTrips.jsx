@@ -183,7 +183,7 @@ class PublicTrips extends Component {
           <div className="row">
             <div className={`col-3 ${style.filterBox}`}>
               <div className={style.filterTitle}>Bộ lọc</div>
-              <label>Số ngày trong chuyến đi:</label>
+              <label className={style.label}>Số ngày trong chuyến đi:</label>
               <div className={style.daysRangeBox}>
                 <Slider
                   getAriaLabel={() => "Temperature range"}

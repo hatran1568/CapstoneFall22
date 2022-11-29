@@ -27,7 +27,7 @@ class TripGeneralInfo extends Component {
     axios.get(`/trip/general/` + id).then((res) => {
       const tripData = res.data;
       var own = false;
-      if (tripData.userID == localStorage.getItem("id")) {
+      if (tripData.user && tripData.user == localStorage.getItem("id")) {
         own = true;
       }
       this.setState({
@@ -85,11 +85,7 @@ class TripGeneralInfo extends Component {
   };
   editDates = (data) => {
     if (this.state.own) {
-      axios.post("/trip/edit-dates", data, {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
-        },
-      });
+      axios.post("/trip/edit-dates", data);
       this.closeEditDates();
       window.location.reload();
     }
@@ -115,6 +111,7 @@ class TripGeneralInfo extends Component {
         </LoadingScreen>
       );
     var imgUrl = this.state.trip.image;
+
     return (
       <div>
         {this.state.own ? (
