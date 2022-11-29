@@ -60,23 +60,25 @@ function SearchResults(props) {
         headers: { "Content-Type": "application/json" },
       })
       .then((response) => response.data)
-      .catch(() => setResult(false))
       .then((data) => {
         setResult(data.list);
         setTotalPage(data.totalPage);
-      });
+      })
+      .catch(() => setResult(false));
   };
-
   useEffect(getResult, [result != false, type, page]);
   return (
     <MDBContainer>
+      <div className={style.pageTitle}>
+        Kết quả tìm kiếm cho từ khóa "{keyword}"
+      </div>
       <MDBRow>
         <MDBCol size="4">
           <ListTypes onTypeChange={handleUpdateType} />
         </MDBCol>
         <MDBCol size="8">
-          {result && <ListItems list={result}></ListItems>}
-          {result && (
+          {result ? <ListItems list={result}></ListItems> : null}
+          {result ? (
             <ReactPaginate
               className={style.pagination + " pagination"}
               nextLabel=">"
@@ -98,7 +100,7 @@ function SearchResults(props) {
               activeClassName="active"
               renderOnZeroPageCount={null}
             />
-          )}
+          ) : null}
         </MDBCol>
       </MDBRow>
     </MDBContainer>

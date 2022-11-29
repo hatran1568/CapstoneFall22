@@ -91,4 +91,6 @@ public interface UserRepository extends JpaRepository<User,Integer> {
                     "WHERE user_id = ?1",
             nativeQuery = true)
     void deleteUser(int userId);
+    @Query(value = "SELECT u.user_id FROM user u left join role r on u.role_id = r.role_id WHERE r.role_name = 'guest' limit 1", nativeQuery = true)
+    Integer findGuestUser();
 }

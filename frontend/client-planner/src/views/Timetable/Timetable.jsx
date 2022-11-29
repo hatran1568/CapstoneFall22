@@ -18,7 +18,12 @@ import DetailActivityModal from "./DetailActivityModal";
 import TripNotFound from "../../components/Trips/TripNotFound";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { faPlus, faCaretRight, faCaretLeft, faXmark } from "@fortawesome/free-solid-svg-icons";
+import {
+  faPlus,
+  faCaretRight,
+  faCaretLeft,
+  faXmark,
+} from "@fortawesome/free-solid-svg-icons";
 import AddActivityModal from "../Timeline/AddActivityModal";
 import EditActivityModal from "./EditActivityModal";
 
@@ -93,11 +98,14 @@ class Timetable extends Component {
           display: "background",
         });
         var snext = false;
-        if (this.addDays(tripData.endDate, 0) > this.addDays(tripData.startDate, 3)) {
+        if (
+          this.addDays(tripData.endDate, 0) >
+          this.addDays(tripData.startDate, 3)
+        ) {
           snext = true;
         }
         var own = false;
-        if (tripData.userID && tripData.userID == localStorage.getItem("id")) {
+        if (tripData.user && tripData.user == localStorage.getItem("id")) {
           own = true;
         }
         this.setState(
@@ -112,7 +120,7 @@ class Timetable extends Component {
           },
           () => {
             window.scrollTo(0, 600);
-          },
+          }
         );
       })
       .catch((error) => {
@@ -131,7 +139,11 @@ class Timetable extends Component {
   }
   //get all dates in the trip
   getAllDates = (start, end) => {
-    for (var arr = [], dt = new Date(start); dt <= new Date(end); dt.setDate(dt.getDate() + 1)) {
+    for (
+      var arr = [], dt = new Date(start);
+      dt <= new Date(end);
+      dt.setDate(dt.getDate() + 1)
+    ) {
       arr.push(new Date(dt));
     }
     return arr;
@@ -241,7 +253,9 @@ class Timetable extends Component {
   showPrevBtn = (currDate) => {
     // let currDate = this.state.currentDate;
     let startDate = this.state.trip.startDate;
-    return this.addDays(startDate, 0) < this.addDays(currDate, 0) ? true : false;
+    return this.addDays(startDate, 0) < this.addDays(currDate, 0)
+      ? true
+      : false;
   };
   //increment date
   incrementDate = () => {
@@ -306,11 +320,11 @@ class Timetable extends Component {
       return (
         <LoadingScreen
           loading={true}
-          bgColor='#f1f1f1'
-          spinnerColor='#9ee5f8'
-          textColor='#676767'
+          bgColor="#f1f1f1"
+          spinnerColor="#9ee5f8"
+          textColor="#676767"
           // logoSrc="/logo.png"
-          text='Please wait a bit while we get your plan...'
+          text="Please wait a bit while we get your plan..."
         >
           <div></div>
         </LoadingScreen>
@@ -318,13 +332,20 @@ class Timetable extends Component {
     if (this.state.dataLoaded && this.state.trip == null) {
       return <TripNotFound />;
     }
-    var allDates = this.getAllDates(this.state.trip.startDate, this.state.trip.endDate);
+    var allDates = this.getAllDates(
+      this.state.trip.startDate,
+      this.state.trip.endDate
+    );
     var allMonths = this.getAllMonths(allDates);
     document.title = this.state.trip.name + " | Tripplanner";
     return (
       <>
         <TripGeneralInfo />
-        <TripDetailTabs />
+        <TripDetailTabs
+          own={this.state.own}
+          status={this.state.trip.status}
+          tripId={this.state.trip.tripId}
+        />
         <a className={` ${style.btnAdd}`} onClick={this.toggleAddModal}>
           <FontAwesomeIcon icon={faPlus} className={style.addIcon} />
         </a>
@@ -356,11 +377,13 @@ class Timetable extends Component {
               show={this.state.showAddModal}
               onHide={this.toggleAddModal}
               allDates={allDates}
-              activityAdded={(event, input) => this.insertTripDetail(event, input)}
+              activityAdded={(event, input) =>
+                this.insertTripDetail(event, input)
+              }
             />
             <NotificationModal
               show={this.state.showNotiModal}
-              message='Hoạt động không thể kéo dài trên 1 ngày.'
+              message="Hoạt động không thể kéo dài trên 1 ngày."
               onHide={this.toggleNotification}
             />
           </>
@@ -376,8 +399,8 @@ class Timetable extends Component {
           ></EditActivityModal>
         ) : null}
         <ToastContainer
-          position='top-center'
-          autoClose={5000}
+          position="top-center"
+          autoClose={1000}
           hideProgressBar
           newestOnTop={false}
           closeOnClick
@@ -385,19 +408,21 @@ class Timetable extends Component {
           pauseOnFocusLoss
           draggable
           pauseOnHover
-          theme='light'
+          theme="light"
         />
-        <div className='container'>
+        <div className="container">
           <div className={`row ${style.mainContainer}`}>
-            <div className='col-1'>
+            <div className="col-1">
               <div className={style.daysBox}>
                 {allMonths.map((month) => (
                   <div key={month}>
                     <div className={style.month}>{month}</div>
                     {this.getAllDatesOfMonth(allDates, month).map((date) => (
                       <a
-                        href=''
-                        onClick={(event) => this.setDate(event, date.toISOString().split("T")[0])}
+                        href=""
+                        onClick={(event) =>
+                          this.setDate(event, date.toISOString().split("T")[0])
+                        }
                         key={date}
                         //className={style.date}
                         className={
@@ -415,13 +440,25 @@ class Timetable extends Component {
             </div>
             <div className={`col-10 ${style.calendarDiv}`}>
               {this.state.showNext && (
-                <a className={` ${style.nextBtn} ${style.navBtn}`} onClick={this.incrementDate}>
-                  <FontAwesomeIcon icon={faCaretRight} className={` ${style.navIcon}`} />
+                <a
+                  className={` ${style.nextBtn} ${style.navBtn}`}
+                  onClick={this.incrementDate}
+                >
+                  <FontAwesomeIcon
+                    icon={faCaretRight}
+                    className={` ${style.navIcon}`}
+                  />
                 </a>
               )}
               {this.state.showPrev && (
-                <a className={` ${style.prevBtn} ${style.navBtn}`} onClick={this.decrementDate}>
-                  <FontAwesomeIcon icon={faCaretLeft} className={` ${style.navIcon}`} />
+                <a
+                  className={` ${style.prevBtn} ${style.navBtn}`}
+                  onClick={this.decrementDate}
+                >
+                  <FontAwesomeIcon
+                    icon={faCaretLeft}
+                    className={` ${style.navIcon}`}
+                  />
                 </a>
               )}
 
@@ -434,7 +471,7 @@ class Timetable extends Component {
                   center: "",
                 }}
                 // locale={viLocale}
-                initialView='timeGridFourDay'
+                initialView="timeGridFourDay"
                 views={{
                   timeGridFourDay: {
                     type: "timeGrid",
@@ -455,14 +492,14 @@ class Timetable extends Component {
                   omitZeroMinute: false,
                   hour12: false,
                 }}
-                locale='vi'
-                height='auto'
+                locale="vi"
+                height="auto"
                 allDaySlot={false}
-                slotDuration='00:15:00'
-                slotLabelInterval='01:00:00'
-                eventBorderColor='white'
-                eventBackgroundColor='white'
-                eventTextColor='black'
+                slotDuration="00:15:00"
+                slotLabelInterval="01:00:00"
+                eventBorderColor="white"
+                eventBackgroundColor="white"
+                eventTextColor="black"
                 initialDate={this.state.trip.startDate}
                 editable={this.state.own}
                 selectable={false}
@@ -479,7 +516,7 @@ class Timetable extends Component {
                 eventDrop={this.handleEventChange}
                 eventResize={this.handleEventChange}
                 eventRemove={this.deleteEventApi}
-                nextDayThreshold='00:00:00'
+                nextDayThreshold="00:00:00"
               />
             </div>
           </div>
@@ -494,7 +531,9 @@ class Timetable extends Component {
     }
     var newProps = { ...eventInfo.event.extendedProps.detail };
     var tzoffset = new Date().getTimezoneOffset() * 60000;
-    newProps.date = new Date(eventInfo.event.start - tzoffset).toISOString().substring(0, 10);
+    newProps.date = new Date(eventInfo.event.start - tzoffset)
+      .toISOString()
+      .substring(0, 10);
 
     var startStr = getTimeString(eventInfo.event.start).split(":");
     var start = +startStr[0] * 60 * 60 + +startStr[1] * 60;
@@ -512,7 +551,9 @@ class Timetable extends Component {
       >
         <div className={style.eventTitle}>{eventInfo.event.title}</div>
         <div>
-          <span className={style.duration}>{this.getDuration(eventInfo.event.start, eventInfo.event.end)}</span>
+          <span className={style.duration}>
+            {this.getDuration(eventInfo.event.start, eventInfo.event.end)}
+          </span>
           <span className={style.startEndTime}>
             {" ("}
             {getTimeString(eventInfo.event.start)}
@@ -524,11 +565,17 @@ class Timetable extends Component {
         {this.state.own ? (
           <div className={style.dropdown}>
             <button
-              type='button'
+              type="button"
               className={style.moreBtn}
-              onClick={(event) => this.openConfirmDelete(event, eventInfo.event.id, eventInfo.event.title)}
+              onClick={(event) =>
+                this.openConfirmDelete(
+                  event,
+                  eventInfo.event.id,
+                  eventInfo.event.title
+                )
+              }
             >
-              <FontAwesomeIcon icon={faXmark} size='lg' />
+              <FontAwesomeIcon icon={faXmark} size="lg" />
             </button>
           </div>
         ) : null}
@@ -550,7 +597,9 @@ class Timetable extends Component {
 
     detail.tripDetailsId = eventInfo.event.id;
     var tzoffset = new Date().getTimezoneOffset() * 60000;
-    detail.date = new Date(eventInfo.event.start - tzoffset).toISOString().substring(0, 10);
+    detail.date = new Date(eventInfo.event.start - tzoffset)
+      .toISOString()
+      .substring(0, 10);
     axios({
       method: "put",
       url: "/trip/put-detail?id=" + detail.tripDetailsId,
@@ -583,7 +632,9 @@ class Timetable extends Component {
       .then((response) => {
         if (response.status == 200) {
           var newTrip = this.state.trip;
-          newTrip.listTripDetails = newTrip.listTripDetails.filter(function (detail) {
+          newTrip.listTripDetails = newTrip.listTripDetails.filter(function (
+            detail
+          ) {
             return detail.tripDetailsId !== detailId;
           });
           this.setState({
@@ -740,7 +791,11 @@ class Timetable extends Component {
     console.log("edit custom detail: ", detail);
     axios({
       method: "put",
-      url: "/trip/put-custom-detail?detailId=" + detail.tripDetailsId + "&tripId=" + this.state.trip.tripId,
+      url:
+        "/trip/put-custom-detail?detailId=" +
+        detail.tripDetailsId +
+        "&tripId=" +
+        this.state.trip.tripId,
       headers: {
         "Content-Type": "application/json",
       },
@@ -787,7 +842,11 @@ class Timetable extends Component {
   };
 
   handleEventClick = (clickInfo) => {
-    if (window.confirm(`Are you sure you want to delete the event '${clickInfo.event.title}'`)) {
+    if (
+      window.confirm(
+        `Are you sure you want to delete the event '${clickInfo.event.title}'`
+      )
+    ) {
       clickInfo.event.remove();
     }
   };
@@ -811,10 +870,11 @@ class Timetable extends Component {
     });
   };
   showToastError = (message) => {
-    if (message === undefined) message = "Đã có lỗi xảy ra, vui lòng thử lại sau.";
+    if (message === undefined)
+      message = "Đã có lỗi xảy ra, vui lòng thử lại sau.";
     toast.error(message, {
       position: "top-center",
-      autoClose: 5000,
+      autoClose: 1000,
       hideProgressBar: true,
       closeOnClick: true,
       pauseOnHover: true,
@@ -826,7 +886,11 @@ class Timetable extends Component {
 }
 
 function getTimeString(time) {
-  return time.getHours().toString().padStart(2, "0") + ":" + time.getMinutes().toString().padStart(2, "0");
+  return (
+    time.getHours().toString().padStart(2, "0") +
+    ":" +
+    time.getMinutes().toString().padStart(2, "0")
+  );
 }
 function withParams(Component) {
   return (props) => {

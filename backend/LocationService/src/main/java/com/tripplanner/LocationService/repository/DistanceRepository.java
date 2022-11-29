@@ -10,7 +10,7 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface DistanceRepository extends JpaRepository<Distance,Integer> {
     @Query("SELECT p.distance from Distance p where p.startStation.activityId = :srcId and p.endStation.activityId=:destId")
-    public double getDistanceBySrcAndDest(int srcId,int destId);
+    public Double getDistanceBySrcAndDest(int srcId,int destId);
 
     @Modifying
     @Query(value = "insert into distance(distance,src_poi,dest_poi) values (?1,?2,?3)",nativeQuery = true)

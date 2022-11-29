@@ -9,6 +9,7 @@ import com.tripplanner.UserService.entity.Provider;
 import com.tripplanner.UserService.entity.Role;
 import com.tripplanner.UserService.entity.User;
 import com.tripplanner.UserService.entity.UserStatus;
+import com.tripplanner.UserService.repository.RoleRepository;
 import com.tripplanner.UserService.repository.UserRepository;
 import com.tripplanner.UserService.service.interfaces.UserService;
 
@@ -23,11 +24,16 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.sql.Date;
+import java.util.Calendar;
+
 @Slf4j
 @Service
 public class UserServiceImpl implements UserService {
     @Autowired
     UserRepository userRepository;
+    @Autowired
+    RoleRepository roleRepository;
     @Autowired
     RestTemplateClient restTemplateClient;
     @Autowired
@@ -178,6 +184,26 @@ public class UserServiceImpl implements UserService {
             return true;
         }
         return false;
+    }
+    @Override
+    public int getGuestId(){
+        Integer guestId = userRepository.findGuestUser();
+        if(guestId == null){
+            User user = new User();
+            Role role = roleRepository.getByName("Guest");
+            if(role == null) role = createRole("Guest");
+            user.setName("Guest");
+            user.setDateCreated(new Date(Calendar.getInstance().getTime().getTime()));
+            user.setRole(role);
+            User saved = userRepository.save(user);
+            guestId = saved.getUserID();
+        }
+        return guestId;
+    }
+    private Role createRole(String name){
+        Role role = new Role();
+        role.setRoleName(name);
+        return roleRepository.save(role);
     }
 
 }

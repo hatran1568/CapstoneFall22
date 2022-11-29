@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import axios from "../../api/axios";
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { json, useNavigate } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import DestinationSearchBar from "../../components/DestinationSearchBar/DestinationSearchBar";
@@ -61,6 +61,7 @@ function HomePage() {
       stompClient.connect({}, onConnected, onError);
     }
   };
+
   const onError = (err) => {};
   useEffect(() => {
     checkGenerating();
@@ -75,6 +76,24 @@ function HomePage() {
   };
 
   useEffect(() => {
+    async function getGuestId() {
+      if (!localStorage.getItem("id")) {
+        await axios
+          .get("http://localhost:8080/user/api/user/get-guest-id", {
+            headers: {
+              "Content-Type": "application/json",
+            },
+          })
+          .then((response) => {
+            localStorage.setItem("id", response?.data);
+            localStorage.setItem("role", "Guest");
+            localStorage.setItem("trips", []);
+          })
+          .catch((error) => {
+            console.log(error);
+          });
+      }
+    }
     async function getExistingTrips() {
       if (localStorage.getItem("token")) {
         await axios
@@ -103,9 +122,28 @@ function HomePage() {
           .then((response) => {
             setTrips(response.data);
           });
+      } else {
+        let trips = localStorage.getItem("trips");
+        if (trips) {
+          trips = JSON.parse(trips);
+          setTripCount(trips.length);
+          if (trips.length > 3) trips = trips.slice(0, 3);
+          await axios({
+            method: "post",
+            url: "http://localhost:8080/trip/get-trip-3-guest",
+            data: trips,
+            headers: {
+              "Content-Type": "application/json",
+            },
+          })
+            .then((response) => {
+              setTrips(response.data);
+            })
+            .catch((error) => console.log(error));
+        }
       }
     }
-
+    getGuestId();
     getExistingTrips();
   }, []);
 
@@ -208,8 +246,11 @@ function HomePage() {
       document.getElementById("errorEmptyPlan1").innerHTML =
         "Please enter valid dates.";
     else {
-      var userId = 2;
-      if (localStorage.getItem("id") != null)
+      var userId = -1;
+      if (
+        localStorage.getItem("id") != null &&
+        typeof localStorage.getItem("id") != undefined
+      )
         userId = localStorage.getItem("id");
       axios({
         method: "post",
@@ -225,6 +266,21 @@ function HomePage() {
           "Content-Type": "application/json",
         },
       }).then(function (response) {
+        if (!localStorage.getItem("id"))
+          localStorage.setItem("id", response.data.user);
+        if (!localStorage.getItem("role"))
+          localStorage.setItem("role", "Guest");
+        if (localStorage.getItem("role").toLowerCase() == "guest") {
+          var trips = localStorage.getItem("trips");
+          if (trips) {
+            trips = JSON.parse(trips);
+            trips.push(response.data.tripId);
+          } else {
+            trips = [];
+            trips.push(response.data.tripId);
+          }
+          localStorage.setItem("trips", JSON.stringify(trips));
+        }
         navigate("../Timeline/" + response.data);
         window.location.reload(false);
       });

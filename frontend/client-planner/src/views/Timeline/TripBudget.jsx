@@ -381,7 +381,11 @@ class TripBudget extends Component {
     return (
       <div>
         <TripGeneralInfo />
-        <TripDetailTabs></TripDetailTabs>
+        <TripDetailTabs
+          own={this.state.own}
+          status={this.state.trip.status}
+          tripId={this.state.trip.tripId}
+        />
         <MDBContainer className={style.mainContainer}>
           <h1>Ngân sách chuyến đi</h1>
           <br />

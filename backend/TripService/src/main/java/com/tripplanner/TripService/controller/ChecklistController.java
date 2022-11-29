@@ -1,5 +1,5 @@
 package com.tripplanner.TripService.controller;
-
+import com.tripplanner.TripService.dto.response.ChecklistDTO;
 import com.tripplanner.TripService.dto.response.ChecklistItemDTO;
 import com.tripplanner.TripService.service.interfaces.ChecklistService;
 import com.fasterxml.jackson.databind.node.ObjectNode;
@@ -20,12 +20,15 @@ public class ChecklistController {
     private ChecklistService checklistService;
     @Transactional(rollbackFor = {Exception.class, Throwable.class})
     @GetMapping("/get-by-trip")
-    public ResponseEntity<List<ChecklistItemDTO>> getChecklistItemsByTripId(@RequestParam int tripId){
-        try{
-            return new ResponseEntity<>(checklistService.getChecklistItemsByTripId(tripId), HttpStatus.OK);
-        } catch (Exception e){
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-        }
+    public ResponseEntity<ChecklistDTO> getChecklistItemsByTripId(@RequestParam int tripId, @RequestParam(required = false) Integer userId){
+//        try{
+            if(userId == null) userId = -1;
+            ChecklistDTO result = checklistService.getChecklistItemsByTripId(tripId, userId);
+            if(result == null) return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(result, HttpStatus.OK);
+//        } catch (Exception e){
+//            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+//        }
     }
     @Transactional(rollbackFor = {Exception.class, Throwable.class})
     @PostMapping("/toggle-checked")
