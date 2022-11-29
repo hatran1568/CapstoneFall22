@@ -62,9 +62,7 @@ class Timeline extends Component {
         if (error.response) {
           // The request was made and the server responded with a status code
           // that falls out of the range of 2xx
-          console.log(error.response.data);
-          console.log(error.response.status);
-          console.log(error.response.headers);
+          console.log(error);
           if (error.response.status == 404) {
             this.setState({
               dataLoaded: true,
@@ -145,7 +143,6 @@ class Timeline extends Component {
   };
   //delete an activity
   deleteTripDetail = (event, detailId) => {
-    console.log("detailId: ", detailId);
     axios
       .delete(
         `/trip/delete-detail`,
@@ -328,7 +325,6 @@ class Timeline extends Component {
       tripId: this.state.trip.tripId,
       note: input.note ? input.note : "",
     };
-    console.log("data: ", data);
     axios
       .post(`/trip/add-detail`, data, {
         headers: {
@@ -337,7 +333,6 @@ class Timeline extends Component {
       })
       .then((response) => {
         var newDetail = response.data;
-        console.log("newly added: ", newDetail);
         var newTrip = this.state.trip;
         newTrip.listTripDetails.push(newDetail);
         this.setState({
@@ -495,7 +490,6 @@ class Timeline extends Component {
       month: "numeric",
       day: "numeric",
     };
-    console.log("state: ", this.state);
     return (
       <div>
         <TripGeneralInfo />
@@ -587,7 +581,6 @@ class Timeline extends Component {
                                   this.openConfirmDelete(event, detailId, name)
                                 }
                                 editEvent={(event, detail) => {
-                                  console.log("opening edit");
                                   this.openEditModal(event, detail);
                                 }}
                                 nextActivity={this.getNextTripDetail(

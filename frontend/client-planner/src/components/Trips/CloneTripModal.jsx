@@ -21,16 +21,29 @@ function CloneTripModal(props) {
     var formattedDate = new Date(startDate - tzoffset)
       .toISOString()
       .substring(0, 10);
-    if (tripId && localStorage.getItem("id")) {
+    if (tripId) {
       const data = {
         tripId: tripId,
         startDate: formattedDate,
-        userId: localStorage.getItem("id"),
+        userId: localStorage.getItem("id") ? localStorage.getItem("id") : -1,
       };
-      console.log("data: ", data);
       axios.post(`/trip/clone-trip`, data).then((res) => {
-        console.log(res);
+        if (!localStorage.getItem("id"))
+          localStorage.setItem("id", response.data.user);
+        if (!localStorage.getItem("role"))
+          localStorage.setItem("role", "Guest");
         if (res.status == 200) {
+          if (localStorage.getItem("role").toLowerCase() == "guest") {
+            var trips = localStorage.getItem("trips");
+            if (trips) {
+              trips = JSON.parse(trips);
+              trips.push(res.data.tripId);
+            } else {
+              trips = [];
+              trips.push(res.data.tripId);
+            }
+            localStorage.setItem("trips", JSON.stringify(trips));
+          }
           window.location.href = "../timeline/" + res.data.tripId;
         }
       });

@@ -36,4 +36,8 @@ public interface TripService {
     int countPublicTrips(String search, int minDays, int maxDays, Date earliest);
     ArrayList<PublicTripDTO> getPublicTrips(int page, int pageSize, String search, int minDays, int maxDays, Date earliest);
     void toggleStatus(int tripId, String status);
+
+    TripGeneralDTO createEmptyTrip(Double budget, String name, int userId, Date startDate, Date endDate);
+
+    List<TripGeneralDTO> getLast3TripsByGuest(int [] array);
 }

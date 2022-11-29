@@ -22,6 +22,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import java.sql.Date;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 import java.util.Optional;
@@ -265,14 +266,13 @@ public class TripController {
     @Transactional(rollbackFor = {Exception.class, Throwable.class})
     @RequestMapping(value = "/createTrip", consumes = "application/json", produces = { "*/*" }, method = RequestMethod.POST)
     public ResponseEntity<?> createEmptyTrip(@RequestBody TripDTO tripDTO) {
-        try{
-            Date date = new Date(Calendar.getInstance().getTime().getTime());
-            tripRepo.createEmptyTrip(date, date, "PRIVATE", tripDTO.getBudget(), tripDTO.getName(), tripDTO.getUserId(), tripDTO.getStartDate(), tripDTO.getEndDate());
-            return new ResponseEntity<>(tripRepo.getNewestTripId(), HttpStatus.OK);
-        }
-        catch (Exception e){
-            return  new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-        }
+//        try{
+        TripGeneralDTO result = tripService.createEmptyTrip(tripDTO.getBudget(), tripDTO.getName(), tripDTO.getUserId(), tripDTO.getStartDate(), tripDTO.getEndDate());
+            return new ResponseEntity<>(result, HttpStatus.OK);
+//        }
+//        catch (Exception e){
+//            return  new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+//        }
 
     }
     @Transactional(rollbackFor = {Exception.class, Throwable.class})
@@ -452,6 +452,15 @@ public class TripController {
             return new ResponseEntity<>(HttpStatus.OK);
 
 //        } catch (Exception e){
+//            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+//        }
+    }
+    @Transactional(rollbackFor = {Exception.class, Throwable.class})
+    @PostMapping("/get-trip-3-guest")
+    public ResponseEntity<?> getTripsForHomepageGuest(@RequestBody int [] array){
+//        try{
+        return new ResponseEntity<>(tripService.getLast3TripsByGuest(array), HttpStatus.OK);
+//        } catch(Exception e){
 //            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
 //        }
     }

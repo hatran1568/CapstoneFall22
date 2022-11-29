@@ -57,6 +57,7 @@ public class TripServiceImpl implements TripService {
     private DiscoveryClient discoveryClient;
     @Override
     public DetailedTripDTO getDetailedTripById(int tripId, int userId) {
+        if(userId < 0) userId = getGuestId();
         Trip trip = tripRepository.findById(tripId);
         List<ServiceInstance> instances = discoveryClient.getInstances("location-service");
 
@@ -122,7 +123,7 @@ public class TripServiceImpl implements TripService {
     @Override
     public TripGeneralDTO cloneTrip(int userId, int tripId, Date startDate){
         Trip originalTrip = tripRepository.findById(tripId);
-
+        if(userId < 1) userId = getGuestId();
         int numberOfDays = getDayNumberByFromStartDate((Date) originalTrip.getStartDate(), (Date) originalTrip.getEndDate());
         Date endDate = getDateByStartDateAndDayNumber(startDate, numberOfDays);
 
@@ -442,5 +443,36 @@ public class TripServiceImpl implements TripService {
     @Override
     public void toggleStatus(int tripId, String status){
         tripRepository.toggleStatus(tripId, status.trim().toUpperCase());
+    }
+    @Override
+    public TripGeneralDTO createEmptyTrip(Double budget, String name, int userId, Date startDate, Date endDate){
+        if(userId < 1) userId = getGuestId();
+        Trip trip = new Trip();
+        trip.setStartDate(startDate);
+        trip.setEndDate(endDate);
+        trip.setUser(userId);
+        trip.setName(name);
+        trip.setBudget(budget);
+        Date now = new Date(Calendar.getInstance().getTime().getTime());
+        trip.setDateCreated(now);
+        trip.setDateModified(now);
+        trip.setStatus(TripStatus.PRIVATE);
+        TripGeneralDTO tripGeneralDTO = mapper.map(tripRepository.save(trip), TripGeneralDTO.class);
+        return tripGeneralDTO;
+    }
+    public int getGuestId() {
+        List<ServiceInstance> instances = discoveryClient.getInstances("user-service");
+        ServiceInstance instance = instances.get(0);
+        int userId =restTemplateClient.restTemplate().getForObject(instance.getUri() + "/user/api/user/get-guest-id", Integer.class);
+        return userId;
+    }
+    public List<TripGeneralDTO> getLast3TripsByGuest(int [] array){
+        List<TripGeneralDTO> tripGeneralDTOS = new ArrayList<>();
+        for(int i=0; i<array.length; i++ ) {
+            TripGeneralDTO dto = mapper.map(tripRepository.findById(array[i]), TripGeneralDTO.class);
+            dto.setImage(getFirstPOIImage(dto.getTripId()));
+            tripGeneralDTOS.add(dto);
+        }
+        return tripGeneralDTOS;
     }
 }

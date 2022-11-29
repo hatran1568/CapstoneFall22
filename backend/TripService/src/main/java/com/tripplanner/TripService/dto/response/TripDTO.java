@@ -3,8 +3,8 @@ package com.tripplanner.TripService.dto.response;
 import java.sql.Date;
 
 public class TripDTO {
-    int userId;
-    double budget;
+    Integer userId;
+    Double budget;
     String name;
     Date startDate;
     Date endDate;
@@ -12,7 +12,7 @@ public class TripDTO {
     public int getUserId(){
         return userId;
     };
-    public double getBudget(){
+    public Double getBudget(){
         return budget;
     };
     public String getName(){
