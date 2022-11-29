@@ -71,5 +71,4 @@ spring:
           uri: lb://authorization-service
           predicates:
             - Path=/auth/**
-            - Path=/oauth2/**
 
