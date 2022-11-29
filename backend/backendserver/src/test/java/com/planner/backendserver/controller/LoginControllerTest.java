@@ -23,8 +23,7 @@ class LoginControllerTest {
     @DisplayName("Test returnWrongUser()")
     void returnWrongUserTest() throws Exception {
         mockMvc
-                .perform(MockMvcRequestBuilders
-                        .get("/api/wrongUser"))
+                .perform(MockMvcRequestBuilders.get("/api/wrongUser"))
                 .andExpect(status().isForbidden());
     }
 
