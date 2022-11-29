@@ -67,15 +67,15 @@ public class TripController {
     @Transactional(rollbackFor = {Exception.class, Throwable.class})
     @PostMapping("/clone-trip")
     public ResponseEntity<TripGeneralDTO> cloneTrip(@RequestBody ObjectNode objectNode){
-        try{
+//        try{
             Date startDate = Date.valueOf(objectNode.get("startDate").asText());
             int tripId = objectNode.get("tripId").asInt();
             int userId = objectNode.get("userId").asInt();
             TripGeneralDTO result = tripService.cloneTrip(userId, tripId, startDate);
             return new ResponseEntity<>(result, HttpStatus.OK);
-        } catch (Exception e){
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-        }
+//        } catch (Exception e){
+//            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+//        }
     }
     @Transactional(rollbackFor = {Exception.class, Throwable.class})
     @PostMapping("/edit-name")
@@ -440,19 +440,19 @@ public class TripController {
     @Transactional(rollbackFor = {Exception.class, Throwable.class})
     @PostMapping("/toggle-status")
     public ResponseEntity<?> toggleTripStatus(@RequestBody ObjectNode request){
-        try{
+//        try{
             int tripId = request.get("tripId").asInt();
             String status = request.get("status").asText();
-            if(status.trim().toUpperCase() != "PUBLIC" && status.trim().toUpperCase() != "PRIVATE")
-                return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+//            if(status.trim().toUpperCase() != "PUBLIC" && status.trim().toUpperCase() != "PRIVATE")
+//                return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
             if (!tripService.tripExists(tripId)) {
                 return new ResponseEntity<>(HttpStatus.NOT_FOUND);
             }
             tripService.toggleStatus(tripId, status);
             return new ResponseEntity<>(HttpStatus.OK);
 
-        } catch (Exception e){
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-        }
+//        } catch (Exception e){
+//            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+//        }
     }
 }

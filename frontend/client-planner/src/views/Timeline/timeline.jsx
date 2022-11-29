@@ -357,7 +357,7 @@ class Timeline extends Component {
     if (message === undefined) message = "Lưu thay đổi thành công!";
     toast.success(message, {
       position: "top-center",
-      autoClose: 5000,
+      autoClose: 1000,
       hideProgressBar: true,
       closeOnClick: true,
       pauseOnHover: true,
@@ -371,7 +371,7 @@ class Timeline extends Component {
       message = "Đã có lỗi xảy ra, vui lòng thử lại sau.";
     toast.error(message, {
       position: "top-center",
-      autoClose: 5000,
+      autoClose: 1000,
       hideProgressBar: true,
       closeOnClick: true,
       pauseOnHover: true,
@@ -532,7 +532,7 @@ class Timeline extends Component {
         )}
         <ToastContainer
           position="top-center"
-          autoClose={5000}
+          autoClose={1000}
           hideProgressBar
           newestOnTop={false}
           closeOnClick

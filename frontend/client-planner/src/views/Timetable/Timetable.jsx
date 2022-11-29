@@ -400,7 +400,7 @@ class Timetable extends Component {
         ) : null}
         <ToastContainer
           position="top-center"
-          autoClose={5000}
+          autoClose={1000}
           hideProgressBar
           newestOnTop={false}
           closeOnClick
@@ -874,7 +874,7 @@ class Timetable extends Component {
       message = "Đã có lỗi xảy ra, vui lòng thử lại sau.";
     toast.error(message, {
       position: "top-center",
-      autoClose: 5000,
+      autoClose: 1000,
       hideProgressBar: true,
       closeOnClick: true,
       pauseOnHover: true,

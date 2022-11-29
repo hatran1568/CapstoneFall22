@@ -3,6 +3,9 @@ import style from "./TripGeneralInfo.module.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Modal from "react-bootstrap/Modal";
 import Button from "react-bootstrap/Button";
+import axios from "../../api/axios";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import {
   faMapPin,
   faCalendar,
@@ -20,18 +23,44 @@ export default function Tabs(props) {
   var params = useParams();
   const [status, setStatus] = useState(props.status ? props.status : "");
   const toggleStatus = () => {
-    axios
-      .post("/trip/toggle-status", {
-        tripId: 2,
-        status: 1,
-      })
-      .then(() => {});
+    var newStatus = status;
+    if (newStatus.toLowerCase() == "public") newStatus = "private";
+    else if (newStatus.toLowerCase() == "private") newStatus = "public";
+    if (newStatus.length > 0) {
+      const data = {
+        tripId: params.id,
+        status: newStatus,
+      };
+      console.log("data: ", data);
+      axios
+        .post("/trip/toggle-status", data)
+        .then(() => {
+          setStatus(newStatus);
+          toast.success("Lưu thay đổi thành công!", {
+            position: "top-center",
+            autoClose: 1000,
+            hideProgressBar: true,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "light",
+          });
+        })
+        .catch(() => {})
+        .finally(() => {
+          toggleShowConfirm();
+        });
+    }
   };
   const [confirmModal, setConfirmModal] = useState(false);
   const toggleShowConfirm = () => setConfirmModal(!confirmModal);
   return (
     <div className={`${style.stickyNavFirst}`}>
-      <ul className={`nav nav-tabs justify-content-center ${style.navTabs} `}>
+      <ul
+        className={`nav nav-tabsgit status
+       justify-content-center ${style.navTabs} `}
+      >
         <li className={`nav-item ${style.dropDown}`}>
           <a
             className={
@@ -111,7 +140,7 @@ export default function Tabs(props) {
         </li>
         {props.own == true ? (
           <li className="nav-item">
-            {props.status.toLowerCase() == "public" ? (
+            {status.toLowerCase() == "public" ? (
               <a
                 className={`nav-link ${style.navItem}`}
                 data-mdb-toggle="tooltip"
@@ -141,7 +170,8 @@ export default function Tabs(props) {
       >
         <Modal.Header className={style.modalHeader}>
           <div className={style.modalTitle}>
-            Đổi chuyến đi sang trạng thái công khai
+            Đổi chuyến đi sang trạng thái{" "}
+            {status.toLowerCase() == "public" ? "riêng tư" : "công khai"}
           </div>
           <button
             className={`btn-close ${style.closeBtn}`}
@@ -150,13 +180,14 @@ export default function Tabs(props) {
         </Modal.Header>
         <Modal.Body className={style.editModal}>
           <div className={style.statusModalBody}>
-            Tất cả mọi người sẽ được thấy chuyến đi của bạn khi ở chế độ "Công
-            khai"
+            {status.toLowerCase() == "private"
+              ? 'Tất cả mọi người sẽ được thấy chuyến đi của bạn khi ở chế độ "Công khai"'
+              : 'Chỉ mình bạn có thể xem chuyến đi của mình trong chế độ "Riêng tư"'}
           </div>
           <div className={style.btnGroup}>
             <Button
               variant="outline-dark"
-              onClick={toggleShowConfirm}
+              onClick={toggleStatus}
               className={style.submitBtn}
             >
               Lưu
@@ -167,6 +198,18 @@ export default function Tabs(props) {
           </div>
         </Modal.Body>
       </Modal>
+      <ToastContainer
+        position="top-center"
+        autoClose={5000}
+        hideProgressBar
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="light"
+      />
     </div>
   );
 }

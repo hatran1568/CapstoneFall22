@@ -22,18 +22,18 @@ function CloneTripModal(props) {
       .toISOString()
       .substring(0, 10);
     if (tripId && localStorage.getItem("id")) {
-      axios
-        .post(`/trip/clone-trip`, {
-          tripId: tripId,
-          startDate: formattedDate,
-          userId: localStorage.getItem("id"),
-        })
-        .then((res) => {
-          console.log(res);
-          if (res.status == 200) {
-            window.location.href = "../timeline/" + res.data.tripId;
-          }
-        });
+      const data = {
+        tripId: tripId,
+        startDate: formattedDate,
+        userId: localStorage.getItem("id"),
+      };
+      console.log("data: ", data);
+      axios.post(`/trip/clone-trip`, data).then((res) => {
+        console.log(res);
+        if (res.status == 200) {
+          window.location.href = "../timeline/" + res.data.tripId;
+        }
+      });
     } else close();
   };
   return (

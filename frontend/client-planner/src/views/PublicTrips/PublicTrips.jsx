@@ -151,7 +151,17 @@ class PublicTrips extends Component {
     document.title = "Chuyến đi gần đây | Tripplanner";
     return (
       <div>
-        <h1 className={style.pageTitle}>Những chuyến đi được tạo gần đây</h1>
+        <div className={style.bgImageDiv}>
+          <img
+            src={"../img/default/road-trip.jpg"}
+            className={style.bgImage}
+          ></img>
+          <div className={style.infoBox}>
+            <div className={style.pageTitle}>
+              Những chuyến đi được tạo gần đây
+            </div>
+          </div>
+        </div>
         <div className={`container ${style.mainContainer}`}>
           <div className="row">
             <div className="col-3"></div>
