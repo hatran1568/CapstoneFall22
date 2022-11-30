@@ -212,6 +212,13 @@
     margin-bottom: 0;
     font-size: 1.2em;
   }
+  .statusModalBody{
+    display: block;
+    margin: 1em;
+    margin-top: 0;
+    margin-bottom: 0;
+    font-size: 1.2em;
+  }
   .centerBtnGroup{
     margin: auto;
   display: flex;

@@ -23,4 +23,5 @@ public interface UserService {
     boolean checkIsGenerating(int id);
 
 
+    int getGuestId();
 }

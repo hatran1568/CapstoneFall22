@@ -74,27 +74,35 @@ function Login() {
 
           <MDBCol md="6">
             <MDBCardBody className="d-flex flex-column">
-              <h3 className="fw-normal my-4 pb-3 text-center">Login</h3>
-              <MDBInput
-                autocomplete="new-password"
-                wrapperClass="mb-4 mx-5"
-                label="Email address"
-                id="loginEmail"
-                type="email"
-                size="lg"
-                onChange={(e) => setUser({ ...user, username: e.target.value })}
-              />
-              <MDBInput
-                wrapperClass="mb-2 mx-5"
-                label="Password"
-                id="loginPwd"
-                type="password"
-                size="lg"
-                onChange={(e) => setUser({ ...user, password: e.target.value })}
-              />
+              <h3 className="fw-normal my-4 pb-3 text-center">Đăng Nhập</h3>
+              <div className={style.inputDiv}>
+                <MDBInput
+                  autocomplete="new-password"
+                  wrapperClass="mb-4 mx-5"
+                  label="Địa chỉ email"
+                  id="loginEmail"
+                  type="email"
+                  size="lg"
+                  onChange={(e) =>
+                    setUser({ ...user, username: e.target.value })
+                  }
+                />
+              </div>
+              <div className={style.inputDiv}>
+                <MDBInput
+                  wrapperClass="mb-2 mx-5"
+                  label="Mật khẩu"
+                  id="loginPwd"
+                  type="password"
+                  size="lg"
+                  onChange={(e) =>
+                    setUser({ ...user, password: e.target.value })
+                  }
+                />
+              </div>
               <div className="d-flex justify-content-end">
                 <a className="small text-muted mx-5" href="/forgot-password">
-                  Forgot password?
+                  Quên mật khẩu?
                 </a>
               </div>
 
@@ -103,7 +111,7 @@ function Login() {
                 className="text-danger my-1 mx-5"
                 style={{ display: "none" }}
               >
-                Wrong email or password!
+                Sai tên đăng nhập hoặc mật khẩu!
               </p>
 
               <MDBBtn
@@ -112,13 +120,13 @@ function Login() {
                 size="lg"
                 onClick={handleLogin}
               >
-                Login
+                Đăng nhập
               </MDBBtn>
 
               <div
                 className={`${style.divider}  d-flex align-items-center my-4`}
               >
-                <p className="text-center fw-bold mx-3 mb-0">OR</p>
+                <p className="text-center fw-bold mx-3 mb-0">HOẶC</p>
               </div>
 
               <MDBBtn
@@ -131,7 +139,7 @@ function Login() {
                 type="submit"
                 onClick={handleLoginGoogle}
               >
-                <i className="fab fa-google me-2"></i> Continue with google
+                <i className="fab fa-google me-2"></i> Tiếp tục với Google
               </MDBBtn>
               <MDBBtn
                 className="btn btn-lg col-6 mx-auto btn-primary mb-5"
@@ -143,13 +151,13 @@ function Login() {
                 type="submit"
                 onClick={handleLoginFacebook}
               >
-                <i className="fab fa-facebook me-2"></i> Continue with Facebook
+                <i className="fab fa-facebook me-2"></i> Tiếp tục với Facebook
               </MDBBtn>
               <p
                 className="mb-0 pb-lg-2 text-center"
                 style={{ color: "#393f81" }}
               >
-                Don't have an account? <Link to="/register">Sign up</Link>
+                Bạn chưa có tài khoản? <Link to="/register">Đăng ký</Link>
               </p>
             </MDBCardBody>
           </MDBCol>
