@@ -100,8 +100,7 @@ public class UserServiceImpl implements UserService {
         if (user == null){
             return null;
         }
-        UserDetailResponseDTO userDTO = mapper.map(user, UserDetailResponseDTO.class);
-        return userDTO;
+        return mapper.map(user, UserDetailResponseDTO.class);
     }
 
 

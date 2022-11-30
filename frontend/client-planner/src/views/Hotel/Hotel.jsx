@@ -40,7 +40,6 @@ import {
   MDBModalFooter,
 } from "mdb-react-ui-kit";
 import Select from "react-select";
-import InputRange from "react-input-range";
 import POISearchBar from "../../components/POISearchBar/POISearchBar";
 import StarRatings from "react-star-ratings";
 import styledEngine from "@mui/styled-engine";

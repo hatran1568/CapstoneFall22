@@ -31,9 +31,9 @@ public class UserServiceImplementer implements UserService {
     @Override
     public void processOAuthPostLoginGoogle(String email) {
         User user = userRepository.findByEmail(email);
-        if(user == null){
+        if (user == null) {
             User newUser = new User();
-            newUser.setRole(new Role(2,"User"));
+            newUser.setRole(new Role(2, "User"));
             newUser.setName(email);
             newUser.setEmail(email);
             newUser.setProvider(Provider.GOOGLE);
@@ -43,13 +43,13 @@ public class UserServiceImplementer implements UserService {
     }
 
     @Override
-    public void processOAuthPostLoginFacebook(String name) {
-        User user = userRepository.findByEmail(name);
-        if(user == null){
+    public void processOAuthPostLoginFacebook(String email) {
+        User user = userRepository.findByEmail(email);
+        if (user == null) {
             User newUser = new User();
-            newUser.setRole(new Role(2,"User"));
-            newUser.setName(name);
-            newUser.setEmail(name);
+            newUser.setRole(new Role(2, "User"));
+            newUser.setName(email);
+            newUser.setEmail(email);
             newUser.setProvider(Provider.FACEBOOK);
             newUser.setStatus(UserStatus.ACTIVE);
             userRepository.save(newUser);
@@ -57,7 +57,7 @@ public class UserServiceImplementer implements UserService {
     }
 
     @Override
-    public void updateProvider(int usernID, Provider authType) {
+    public void updateProvider(int userID, Provider authType) {
 
     }
 
