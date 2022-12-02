@@ -166,6 +166,7 @@ public class POIController {
         Integer result = poiService.insertCustomActivity(name,address);
         return new ResponseEntity<>(result, HttpStatus.OK);
         } catch (Exception e){
+            log.info(e.getMessage());
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
@@ -335,16 +336,16 @@ public class POIController {
     }
     @GetMapping("distance/{src}/{dest}")
     public ResponseEntity<Double> getDistance(@PathVariable int src,@PathVariable int dest){
-        try{
+//        try{
             Double distance = distanceRepository.getDistanceBySrcAndDest(src,dest);
             if(distance==null){
                 return  new ResponseEntity<>(HttpStatus.NOT_FOUND);
             }
             return new ResponseEntity<>(distance,HttpStatus.OK);
-        }
-        catch (Exception e){
-            return  new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-        }
+//        }
+//        catch (Exception e){
+//            return  new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+//        }
     }
 
 

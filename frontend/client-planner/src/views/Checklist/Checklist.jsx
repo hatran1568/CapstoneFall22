@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { useParams } from "react-router-dom";
 import axios from "../../api/axios";
 import TripGeneralInfo from "../GeneralInfo/TripGeneralInfo";
-import Tabs from "../GeneralInfo/TripDetailTabs";
+import TripDetailTabs from "../GeneralInfo/TripDetailTabs";
 import LoadingScreen from "react-loading-screen";
 import style from "./Checklist.module.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -41,6 +41,7 @@ class Checklist extends Component {
       addingNote: "",
       own: false,
       showCloneModal: false,
+      apiError: false,
     };
     this.addNewTitleRef = React.createRef();
     this.addNewNoteRef = React.createRef();
@@ -54,8 +55,13 @@ class Checklist extends Component {
       .get(`/trip/api/checklist/get-by-trip?tripId=` + id + "&userId=" + userId)
       .then((res) => {
         var own = false;
-        console.log("true", userId);
-        if (res.data.trip.userID && res.data.trip.userID == userId) {
+        if (!res.data.trip) {
+          this.setState({
+            dataLoaded: true,
+            apiError: true,
+          });
+        }
+        if (res.data.trip.user && res.data.trip.user == userId) {
           console.log("true");
           own = true;
         }
@@ -267,10 +273,24 @@ class Checklist extends Component {
     var checkedItems = this.state.checklistItems.filter((item) => {
       return item.checked == true;
     }).length;
+    if (this.state.dataLoaded && this.state.apiError)
+      return (
+        <div>
+          <TripGeneralInfo />
+          <TripDetailTabs />
+          <div className={style.notOwned}>
+            Đã có lỗi xảy ra, vui lòng thử lại sau.
+          </div>
+        </div>
+      );
     return (
       <div>
         <TripGeneralInfo />
-        <Tabs />
+        <TripDetailTabs
+          own={this.state.own}
+          status={this.state.trip.status}
+          tripId={this.state.trip.tripId}
+        />
         {!this.state.own ? (
           <div className={style.notOwned}>
             <CloneTripModal

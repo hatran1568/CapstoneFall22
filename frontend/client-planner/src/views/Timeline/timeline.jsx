@@ -47,7 +47,7 @@ class Timeline extends Component {
       .then((res) => {
         const tripData = res.data;
         var own = false;
-        if (tripData.userID && tripData.userID == userId) {
+        if (tripData.user && tripData.user == userId) {
           own = true;
         }
         this.setState({
@@ -62,9 +62,7 @@ class Timeline extends Component {
         if (error.response) {
           // The request was made and the server responded with a status code
           // that falls out of the range of 2xx
-          console.log(error.response.data);
-          console.log(error.response.status);
-          console.log(error.response.headers);
+          console.log(error);
           if (error.response.status == 404) {
             this.setState({
               dataLoaded: true,
@@ -72,7 +70,8 @@ class Timeline extends Component {
             });
           }
         }
-      });
+      })
+      .finally(() => {});
   }
   //get all months of a trip
   getAllMonths = (dateArr) => {
@@ -144,7 +143,6 @@ class Timeline extends Component {
   };
   //delete an activity
   deleteTripDetail = (event, detailId) => {
-    console.log("detailId: ", detailId);
     axios
       .delete(
         `/trip/delete-detail`,
@@ -217,13 +215,14 @@ class Timeline extends Component {
     })
       .then((response) => {
         this.updateDetail(detail.tripDetailsId, response.data);
-        this.closeEditModal();
         this.showToastSuccess();
       })
       .catch(function (error) {
         console.log(error);
-        this.closeEditModal();
         this.showToastError();
+      })
+      .finally(() => {
+        this.closeEditModal();
       });
   };
   //put request to edit a detail
@@ -248,14 +247,13 @@ class Timeline extends Component {
     })
       .then((response) => {
         this.updateDetail(detail.tripDetailsId, response.data);
-        this.closeEditModal();
         this.showToastSuccess();
       })
       .catch(function (error) {
         console.log(error);
-        this.closeEditModal();
         this.showToastError();
-      });
+      })
+      .finally(() => this.closeEditModal());
   };
   //update an activity in the state
   updateDetail = (oldDetailId, newDetail) => {
@@ -327,7 +325,6 @@ class Timeline extends Component {
       tripId: this.state.trip.tripId,
       note: input.note ? input.note : "",
     };
-    console.log("data: ", data);
     axios
       .post(`/trip/add-detail`, data, {
         headers: {
@@ -355,7 +352,7 @@ class Timeline extends Component {
     if (message === undefined) message = "Lưu thay đổi thành công!";
     toast.success(message, {
       position: "top-center",
-      autoClose: 5000,
+      autoClose: 1000,
       hideProgressBar: true,
       closeOnClick: true,
       pauseOnHover: true,
@@ -369,7 +366,7 @@ class Timeline extends Component {
       message = "Đã có lỗi xảy ra, vui lòng thử lại sau.";
     toast.error(message, {
       position: "top-center",
-      autoClose: 5000,
+      autoClose: 1000,
       hideProgressBar: true,
       closeOnClick: true,
       pauseOnHover: true,
@@ -496,7 +493,11 @@ class Timeline extends Component {
     return (
       <div>
         <TripGeneralInfo />
-        <TripDetailTabs />
+        <TripDetailTabs
+          own={this.state.own}
+          status={this.state.trip.status}
+          tripId={this.state.trip.tripId}
+        />
         {this.state.showEditModal ? (
           <EditActivityModal
             show={this.state.showEditModal}
@@ -525,7 +526,7 @@ class Timeline extends Component {
         )}
         <ToastContainer
           position="top-center"
-          autoClose={5000}
+          autoClose={1000}
           hideProgressBar
           newestOnTop={false}
           closeOnClick
@@ -570,29 +571,9 @@ class Timeline extends Component {
                       {this.getTripDetailsByDate(date).length > 0 ? (
                         <>
                           {this.getTripDetailsByDate(date).map((tripDetail) =>
-                            tripDetail.masterActivity.category.categoryName !=
-                            "Hotels" ? (
-                              <TripDetail
-                                key={tripDetail.tripDetailsId}
-                                tripDetail={tripDetail}
-                                deleteEvent={(event, detailId, name) =>
-                                  this.openConfirmDelete(event, detailId, name)
-                                }
-                                editEvent={(event, detail) => {
-                                  console.log("opening edit");
-                                  this.openEditModal(event, detail);
-                                }}
-                                nextActivity={this.getNextTripDetail(
-                                  this.getTripDetailsByDate(date),
-                                  tripDetail
-                                )}
-                                allDates={allDates}
-                                isConflicting={this.isConflicting(
-                                  this.getTripDetailsByDate(date),
-                                  tripDetail
-                                )}
-                              ></TripDetail>
-                            ) : (
+                            tripDetail.masterActivity.category &&
+                            tripDetail.masterActivity.category.categoryName ==
+                              "Hotels" ? (
                               <HotelDetails
                                 key={tripDetail.tripDetailsId}
                                 tripDetail={tripDetail}
@@ -600,7 +581,6 @@ class Timeline extends Component {
                                   this.openConfirmDelete(event, detailId, name)
                                 }
                                 editEvent={(event, detail) => {
-                                  console.log("opening edit");
                                   this.openEditModal(event, detail);
                                 }}
                                 nextActivity={this.getNextTripDetail(
@@ -614,6 +594,26 @@ class Timeline extends Component {
                                 )}
                                 tripId={this.state.trip.tripId}
                               />
+                            ) : (
+                              <TripDetail
+                                key={tripDetail.tripDetailsId}
+                                tripDetail={tripDetail}
+                                deleteEvent={(event, detailId, name) =>
+                                  this.openConfirmDelete(event, detailId, name)
+                                }
+                                editEvent={(event, detail) => {
+                                  this.openEditModal(event, detail);
+                                }}
+                                nextActivity={this.getNextTripDetail(
+                                  this.getTripDetailsByDate(date),
+                                  tripDetail
+                                )}
+                                allDates={allDates}
+                                isConflicting={this.isConflicting(
+                                  this.getTripDetailsByDate(date),
+                                  tripDetail
+                                )}
+                              ></TripDetail>
                             )
                           )}
                           <div className={style.emptyDay}>

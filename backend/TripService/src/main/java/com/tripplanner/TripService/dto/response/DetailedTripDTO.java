@@ -1,5 +1,6 @@
 package com.tripplanner.TripService.dto.response;
 
+import com.tripplanner.TripService.entity.TripStatus;
 import lombok.Data;
 
 import java.util.ArrayList;
@@ -14,5 +15,6 @@ public class DetailedTripDTO {
     private String name;
     private Date dateModified;
     private ArrayList<TripDetailDTO> listTripDetails;
-    private int userID;
+    private int user;
+    private TripStatus status;
 }

@@ -2,6 +2,7 @@ package com.tripplanner.UserService.controller;
 
 import com.tripplanner.UserService.dto.request.ChangePwdRequestDTO;
 import com.tripplanner.UserService.dto.request.PasswordResetRequestDTO;
+import com.tripplanner.UserService.dto.response.UserDetailResponseDTO;
 import com.tripplanner.UserService.dto.response.UserListDTO;
 import com.tripplanner.UserService.repository.UserRepository;
 import com.tripplanner.UserService.service.interfaces.UserService;
@@ -26,12 +27,16 @@ public class UserController {
     private UserService userService;
     @GetMapping("/findById/{id}")
     public ResponseEntity<?> getUserById(@PathVariable int id){
-        if (userService.getUserProfileById(id) == null) {
+        UserDetailResponseDTO result = userService.getUserProfileById(id);
+        if (result == null) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
-        return new ResponseEntity<>(userService.getUserProfileById(id), HttpStatus.OK);
+        return new ResponseEntity<>(result, HttpStatus.OK);
     }
-
+    @GetMapping("/get-guest-id")
+    public ResponseEntity<?> getGuestId(){
+        return new ResponseEntity<>(userService.getGuestId(), HttpStatus.OK);
+    }
     @PostMapping("/edit-avatar/{userId}")
     public ResponseEntity<?> updateAvatar(@PathVariable int userId, @RequestPart("File") MultipartFile file){
         try{

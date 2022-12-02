@@ -52,6 +52,12 @@ function POIAndDestinationSearchBar(Children) {
           onFocus={(e) => {
             setShowResults(true);
           }}
+          onKeyDown={(event) => {
+            if (event.key === "Enter" && event.target.value.trim().length > 0) {
+              window.location.href =
+                "/searchResults?search=" + event.target.value.trim();
+            }
+          }}
         />
       </MDBInputGroup>
       {showResults ? <ResultList text={text}></ResultList> : null}
