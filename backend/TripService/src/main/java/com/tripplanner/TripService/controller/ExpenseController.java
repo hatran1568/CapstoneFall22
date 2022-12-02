@@ -30,7 +30,7 @@ public class ExpenseController {
     private TripService tripService;
     @Transactional(rollbackFor = {Exception.class, Throwable.class})
     @GetMapping("/expense/{tripId}/{orderBy}")
-    public ResponseEntity<ArrayList<TripExpenseDTO>> getDestinationById(@PathVariable int tripId, @PathVariable int orderBy){
+    public ResponseEntity<ArrayList<TripExpenseDTO>> getExpenseByTrip(@PathVariable int tripId, @PathVariable int orderBy){
         try{
             String filter = "";
             ArrayList<TripExpenseDTO> expenses = expenseRepo.getExpensesOfTrip(tripId);;
@@ -92,7 +92,7 @@ public class ExpenseController {
     }
     @Transactional(rollbackFor = {Exception.class, Throwable.class})
     @GetMapping("/expense/graph/{tripId}")
-    public ResponseEntity<ArrayList<ExpenseGraphDTO>> getDestinationImages(@PathVariable int tripId){
+    public ResponseEntity<ArrayList<ExpenseGraphDTO>> getExpenseGraphData(@PathVariable int tripId){
         try{
             ArrayList<ExpenseGraphDTO> graphData = expenseRepo.getExpensesGraph(tripId);
             if (graphData.isEmpty()){

@@ -181,18 +181,28 @@ class DestinationAddUpdate extends Component {
     var validated = true;
     if (
       document.getElementById("nameInput").value == null ||
-      document.getElementById("nameInput").value == "" ||
-      document.getElementById("descInput").value == null ||
-      document.getElementById("descInput").value == ""
-    )
-      validated = false;
-    if (curDes == null && this.state.destinationChanged == true)
-      validated = false;
+      document.getElementById("nameInput").value == "") {
+        validated = false;
+        document.getElementById("errorMessage").innerHTML =
+          "Hãy nhập tên của điểm đến.";
+      }
     if (
-      this.state.currentDestinations == null &&
-      this.state.destination.belongId == 0
-    )
+      document.getElementById("descInput").value == null ||
+      document.getElementById("descInput").value == "") {
+        validated = false;
+        document.getElementById("errorMessage").innerHTML =
+          "Hãy nhập mô tả của điểm đến.";
+      }
+    if (id != 0 && curDes == null && this.state.destinationChanged == true) {
       validated = false;
+      document.getElementById("errorMessage").innerHTML =
+      "Hãy chọn thuộc điểm đến.";
+    }
+    if (id == 0 && curDes == null) {
+      validated = false;
+      document.getElementById("errorMessage").innerHTML =
+      "Hãy chọn thuộc điểm đến.";
+    }
     // console.log(document.getElementById("nameInput").value);
     // console.log(document.getElementById("addressInput").value);
     // console.log(document.getElementById("descInput").value);
@@ -255,9 +265,7 @@ class DestinationAddUpdate extends Component {
         });
         await this.delay(3000);
         window.location.href = "../destination/adminlist";
-      } else
-        document.getElementById("errorMessage").innerHTML =
-          "Hãy nhập hết dữ liệu cần thiết một cách chính xác.";
+      }
     } else {
       if (validated) {
         const loadingIcon = document.getElementById("loadingIcon");
@@ -318,9 +326,7 @@ class DestinationAddUpdate extends Component {
         });
         await this.delay(3000);
         window.location.href = "../destination/update?id=" + id;
-      } else
-        document.getElementById("errorMessage").innerHTML =
-          "Hãy nhập hết dữ liệu cần thiết một cách chính xác";
+      }
     }
   };
 
@@ -543,6 +549,9 @@ class DestinationAddUpdate extends Component {
         );
       });
     }
+    const requiredStar = [];
+    requiredStar.push(<b className={style.requiredStar}>*</b>)
+
     return (
       <MDBContainer className={style.mainContainer}>
         <div className={style.nav}>
@@ -556,7 +565,7 @@ class DestinationAddUpdate extends Component {
         {submitBtn}
         <div id="errorMessage" className={style.errorMessage}></div>
         <label>
-          <b>Tên</b>
+          <b>Tên</b>{requiredStar}
         </label>
         <MDBTextArea
           id="nameInput"
@@ -568,7 +577,7 @@ class DestinationAddUpdate extends Component {
           rows={1}
         />
         <label>
-          <b>Mô tả</b>
+          <b>Mô tả</b>{requiredStar}
         </label>
         <MDBTextArea
           id="descInput"
@@ -581,7 +590,7 @@ class DestinationAddUpdate extends Component {
         />
         <MDBRow>
           <label>
-            <b>Trực thuộc điểm đến</b>
+            <b>Trực thuộc điểm đến</b>{requiredStar}
           </label>
           {selectDestination}
         </MDBRow>

@@ -181,7 +181,7 @@ public class BlogController {
     }
     @PreAuthorize("hasAuthority('Admin')")
     @RequestMapping(value = "/blog/update", consumes = "application/json", produces = { "*/*" }, method = RequestMethod.POST)
-    public ResponseEntity<?> updateExpense(@RequestBody BlogAddUpdateDTO blog) {
+    public ResponseEntity<?> updateBlog(@RequestBody BlogAddUpdateDTO blog) {
         try{
             java.sql.Timestamp date = new java.sql.Timestamp(Calendar.getInstance().getTime().getTime());
             String thumbnail = " ";

@@ -41,7 +41,7 @@ import java.util.Date;
 @RestController
 @RequestMapping("/location/api/pois")
 public class POIController {
-    private final String distanceToken = "dfSi1azlI6gjmUz4R8yMccBW2JGvb";
+    private final String distanceToken = "tqkoPaQkFYlIvpSPWX17eWa4H6Brg";
 
     @Autowired
     private DistanceRepository distanceRepository;
@@ -95,7 +95,7 @@ public class POIController {
             MasterActivity poi;
             poi = poiRepo.getPOIByActivityId(poiId);
             if (poi == null) {
-                return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
             }
             return new ResponseEntity<>(poi, HttpStatus.OK);
         } catch (Exception e) {
@@ -159,28 +159,26 @@ public class POIController {
     }
     @PostMapping("/addCustom")
     public ResponseEntity<Integer> addTripDetailGenerated(@RequestBody ObjectNode objectNode){
-//        try{
+        try{
 
         String name = objectNode.get("name").asText();
         String address = objectNode.get("address").asText();
         Integer result = poiService.insertCustomActivity(name,address);
         return new ResponseEntity<>(result, HttpStatus.OK);
-//        } catch (Exception e){
-//            log.info(e.getMessage());
-//            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-//        }
+        } catch (Exception e){
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
     @PutMapping("/editCustom")
     public ResponseEntity<?> addTripDetailGenerated(@RequestBody TripDetailDTO input){
-//        try{
+        try{
 
         poiService.editCustom(input);
         return new ResponseEntity<>( HttpStatus.OK);
-//        } catch (Exception e){
-//            log.info(e.getMessage());
-//            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-//        }
+        } catch (Exception e){
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
     @PutMapping("/editRating")
     public ResponseEntity<ArrayList<RatingDTO>> updateRating(HttpServletRequest request,@RequestBody RatingDTO dto) {
@@ -354,7 +352,7 @@ public class POIController {
     @Transactional(rollbackFor = {Exception.class, Throwable.class})
     @RequestMapping(value = "/add", consumes = "application/json", produces = {"*/*"}, method = RequestMethod.POST)
     public ResponseEntity<?> addPOI(@RequestBody UpdatePOIDTO poi) throws Exception {
-        try {
+//        try {
             String uri = "https://api.distancematrix.ai/maps/api/distancematrix/json?origins=";
             String origin = poi.getLat() + "," + poi.getLon();
 
@@ -378,24 +376,24 @@ public class POIController {
             poiRepo.addMA(poi.getAddress(), poi.getName());
             poiRepo.addPOI(poi.getDescription(), poi.getAdditionalInfo(),
                     poi.getEmail(), poi.getClosingTime(), date, date, poi.getDuration(), poi.getOpeningTime(),
-                    poi.getPhoneNumber(), poi.getPrice(), poi.getWebsite(), poiRepo.getLastestPOI(), poi.getCategoryId(), poi.getRating(), false, poi.getLat(), poi.getLon());
+                    poi.getPhoneNumber(), poi.getPrice(), poi.getWebsite(), poiRepo.getLastestMA(), poi.getCategoryId(), poi.getRating(), false, poi.getLat(), poi.getLon());
             index = 0;
             for (Row row : target2.getRows()
             ) {
                 for (Element e : row.elements
                 ) {
 
-                    distanceRepository.insertDistance(e.distance.value / 1000.0, poiRepo.getLastestPOI(), pois.get(index).getActivityId());
-                    distanceRepository.insertDistance(e.distance.value / 1000.0, pois.get(index).getActivityId(), poiRepo.getLastestPOI());
+                    distanceRepository.insertDistance(e.distance.value / 1000.0, poiRepo.getLastestMA(), pois.get(index).getActivityId());
+                    distanceRepository.insertDistance(e.distance.value / 1000.0, pois.get(index).getActivityId(), poiRepo.getLastestMA());
 
                     index++;
                 }
             }
-            distanceRepository.insertDistance(0, poiRepo.getLastestPOI(), poiRepo.getLastestPOI());
-            return new ResponseEntity<>(poiRepo.getLastestPOI(), HttpStatus.OK);
-        } catch (Exception e) {
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-        }
+            distanceRepository.insertDistance(0, poiRepo.getLastestMA(), poiRepo.getLastestMA());
+            return new ResponseEntity<>(poiRepo.getLastestMA(), HttpStatus.OK);
+//        } catch (Exception e) {
+//            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+//        }
     }
 
     @GetMapping("isExistCustom/{id}")
@@ -417,16 +415,16 @@ public class POIController {
     @PostMapping("/addImg/{poiId}/{description}")
     @ResponseBody
     public ResponseEntity<?> addImage(@PathVariable int poiId, @PathVariable String description, @RequestPart("File") MultipartFile file) throws Exception {
-//        try{
+        try{
         String webViewLink = driveManager.uploadFile(file, "tripplanner/img/poi");
         if (description.equals("*"))
             poiRepo.addImage(poiId, null, webViewLink);
         else
             poiRepo.addImage(poiId, description, webViewLink);
         return new ResponseEntity<>(HttpStatus.OK);
-//        } catch (Exception e){
-//            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-//        }
+        } catch (Exception e){
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
     @RequestMapping(value = "/deleteImg/{imgId}", produces = {"*/*"}, method = RequestMethod.POST)

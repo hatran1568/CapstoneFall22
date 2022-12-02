@@ -194,19 +194,27 @@ function HomePage() {
   }, [isGenerating]);
   const submitTrip = (event) => {
     if (
-      document.getElementById("budgetInput").value == "" ||
-      document.getElementById("tripNameInput").value == "" ||
+      document.getElementById("budgetInput").value == "") {
+        document.getElementById("errorEmptyPlan1").innerHTML =
+          "Hãy nhập ngân sách.";
+    }
+    else if (
+      document.getElementById("tripNameInput").value == "") {
+        document.getElementById("errorEmptyPlan1").innerHTML =
+          "Hãy nhập tên chuyến đi.";
+    }
+    else if (
       !document.getElementById("startDateInput").value ||
       !document.getElementById("endDateInput").value
     ) {
       document.getElementById("errorEmptyPlan1").innerHTML =
-        "Please enter all fields.";
+        "Hãy nhập ngày đi và ngày về.";
     } else if (
       document.getElementById("startDateInput").value >
       document.getElementById("endDateInput").value
     )
       document.getElementById("errorEmptyPlan1").innerHTML =
-        "Please enter valid dates.";
+        "Ngày đi không thể ở sau ngày về.";
     else {
       var userId = 2;
       if (localStorage.getItem("id") != null)
@@ -236,7 +244,7 @@ function HomePage() {
       setIsGenerating(false);
       setProgress(0);
 
-      toast(" Your trip is ready!!", {
+      toast(" Chuyến đi của bạn đã sẵn sàng!!", {
         position: "top-center",
         autoClose: 5000,
         hideProgressBar: true,
@@ -316,17 +324,25 @@ function HomePage() {
       document.getElementById("endDateGenerateInput").value
     );
     if (
-      document.getElementById("budgetGenerateInput").value == "" ||
-      document.getElementById("destination").value == "-1" ||
+      document.getElementById("budgetGenerateInput").value == "") {
+        document.getElementById("errorEmptyPlan").innerHTML =
+          "Hãy nhập ngân sách.";
+    }
+    else if (
+      document.getElementById("destination").value == "-1") {
+        document.getElementById("errorEmptyPlan").innerHTML =
+          "Hãy nhập điểm đến.";
+    }
+    else if (
       !document.getElementById("startDateGenerateInput").value ||
       !document.getElementById("endDateGenerateInput").value
     ) {
       document.getElementById("errorEmptyPlan").innerHTML =
-        "Please enter all fields.";
+        "Hãy nhập ngày đi và ngày về";
     } else {
       if (endDate < startDate) {
         document.getElementById("errorEmptyPlan").innerHTML =
-          "Please enter valid date.";
+          "Ngày đi không thể sau ngày về.";
         return;
       }
       let preferences = [];
