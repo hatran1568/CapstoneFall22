@@ -152,9 +152,6 @@ function AdminSidebar({ props }) {
                   <img src={user.avatar} className={style.userAvatar} />
                   <span className={style.username}>{user.name}</span>
                 </MDBDropdownToggle>
-                Đã đăng nhập bằng tài khoản Admin
-                <br />
-                Nếu đây không phải bạn, đăng xuất ngay lập tức
                 <MDBDropdownMenu>
                   <MDBDropdownItem link href="/profile">
                     Hồ sơ cá nhân

@@ -168,9 +168,9 @@ public interface POIRepository extends JpaRepository<POI, Integer> {
             nativeQuery = true)
     void updateMA(int poiId, String address, String name);
     @Query(
-            value = "SELECT m.activity_id as activityId FROM master_activity m join poi p on p.activity_id=m.activity_id ORDER BY p.activity_id DESC LIMIT 1",
+            value = "SELECT m.activity_id as activityId FROM master_activity m ORDER BY m.activity_id DESC LIMIT 1",
             nativeQuery = true)
-    int getLastestPOI();
+    int getLastestMA();
 
     @Query(
             value = "SELECT url FROM poi_image WHERE image_id = ?1",

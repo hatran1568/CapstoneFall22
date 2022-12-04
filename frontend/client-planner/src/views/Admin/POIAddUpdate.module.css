@@ -89,3 +89,7 @@
   text-align: center;
   color: red;
 }
+.requiredStar{
+  color: red;
+  margin-left: 3px;
+}
