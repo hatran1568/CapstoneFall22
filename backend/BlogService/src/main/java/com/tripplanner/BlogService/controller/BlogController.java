@@ -10,6 +10,7 @@ import com.tripplanner.BlogService.entity.Blog;
 import com.tripplanner.BlogService.repository.BlogRepository;
 
 import com.tripplanner.BlogService.service.interfaces.BlogService;
+import com.tripplanner.BlogService.utils.GoogleDriveManager;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.client.ServiceInstance;
@@ -46,6 +47,9 @@ public class BlogController {
     private BlogRepository blogRepo;
     @Autowired
     BlogService blogService;
+
+    @Autowired
+    GoogleDriveManager driveManager;
     @Transactional(rollbackFor = {Exception.class, Throwable.class})
     @GetMapping("/blog/{blogId}")
     public ResponseEntity<BlogDetailsDTO> getBlogDetailsById(@PathVariable int blogId){
@@ -218,7 +222,7 @@ public class BlogController {
                 MultiValueMap<String, Object> requestMap = new LinkedMultiValueMap<>();
                 requestMap.add("File",file);
                 requestMap.add("Path","tripplanner/img/blog");
-//                webViewLink = driveManager.uploadFile(file, "tripplanner/img/blog");
+                webViewLink = driveManager.uploadFile(file, "tripplanner/img/blog");
             } catch (Exception e) {
                 throw new RuntimeException("Could not store the file. Error: " + e.getMessage());
             } finally {
