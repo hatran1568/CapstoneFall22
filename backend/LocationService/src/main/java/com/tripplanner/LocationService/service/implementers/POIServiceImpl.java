@@ -4,7 +4,6 @@ import com.tripplanner.LocationService.config.RestTemplateClient;
 import com.tripplanner.LocationService.dto.POIDTO;
 import com.tripplanner.LocationService.dto.request.HotelsRequestDTO;
 import com.tripplanner.LocationService.dto.response.*;
-import com.tripplanner.LocationService.entity.*;
 import com.tripplanner.LocationService.entity.CustomActivity;
 import com.tripplanner.LocationService.entity.MasterActivity;
 import com.tripplanner.LocationService.entity.POI;
@@ -14,7 +13,6 @@ import com.tripplanner.LocationService.repository.MasterActivityRepository;
 import com.tripplanner.LocationService.repository.POIImageRepository;
 import com.tripplanner.LocationService.repository.POIRepository;
 import com.tripplanner.LocationService.service.interfaces.POIService;
-
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,6 +39,11 @@ public class POIServiceImpl implements POIService {
 
     @Autowired
     RestTemplateClient restTemplate;
+    @Autowired
+    CustomActivityRepository customActivityRepository;
+
+    @Autowired
+    ModelMapper mapper;
 
     @Autowired
     private DiscoveryClient discoveryClient;
@@ -48,23 +51,19 @@ public class POIServiceImpl implements POIService {
     @Autowired
     private MasterActivityRepository masterActivityRepository;
 
-    @Autowired
-    CustomActivityRepository customActivityRepository;
-    @Autowired
-    ModelMapper mapper;
     @Override
     public ArrayList<RatingDTO> getRatingListByPOIId(int poiId, String token) {
 
         List<ServiceInstance> instances = discoveryClient.getInstances("user-service");
 
-        ServiceInstance instance =  instances.get(0);
+        ServiceInstance instance = instances.get(0);
 
-       log.info(String.valueOf(instance.getUri()));
+        log.info(String.valueOf(instance.getUri()));
 
         ArrayList<RatingDTO> list = new ArrayList<>();
         ArrayList<RatingDBDTO> objects = poiRepository.getRatingsByPOIId(poiId);
         for (RatingDBDTO rating : objects) {
-            UserDetailResponseDTO user= restTemplate.restTemplate().getForObject(String.valueOf(instance.getUri())+"/user/api/user/findById/"+rating.getUserId(), UserDetailResponseDTO.class);
+            UserDetailResponseDTO user = restTemplate.restTemplate().getForObject(instance.getUri() + "/user/api/user/findById/" + rating.getUserId(), UserDetailResponseDTO.class);
             RatingDTO ratingDTO = new RatingDTO(rating.getRateId(), rating.getRate(), rating.getComment(), rating.getDeleted(), rating.getCreated(), rating.getModified(), rating.getUserId(), user.getName(), rating.getPoiId());
             if (!ratingDTO.isDeleted()) {
                 list.add(ratingDTO);
@@ -131,12 +130,11 @@ public class POIServiceImpl implements POIService {
                 maxRate = 5;
                 break;
         }
-        ArrayList<POI> pois =new ArrayList<>();
-        if(input.getPoiId()==-1){
-             pois = poiRepository.getHotelByPriceAndRate(maxRate,minRate,maxPrice,minPrice).get();
-        }
-        else{
-            pois = poiRepository.getHotelByDestination(input.getDistance(),input.getPoiId() ,maxRate,minRate,maxPrice,minPrice).get();
+        ArrayList<POI> pois = new ArrayList<>();
+        if (input.getPoiId() == -1) {
+            pois = poiRepository.getHotelByPriceAndRate(maxRate, minRate, maxPrice, minPrice).get();
+        } else {
+            pois = poiRepository.getHotelByDestination(input.getDistance(), input.getPoiId(), maxRate, minRate, maxPrice, minPrice).get();
         }
         for (POI poi : pois) {
             int numberOfRate = 0;
@@ -153,7 +151,6 @@ public class POIServiceImpl implements POIService {
         Pageable paging = PageRequest.of(page, size);
         int start = Math.min((int) paging.getOffset(), list.size());
         int end = Math.min((start + paging.getPageSize()), list.size());
-
         return new PageImpl<SearchPOIAndDestinationDTO>(list.subList(start, end), PageRequest.of(page, size), list.size());
     }
 
@@ -168,8 +165,7 @@ public class POIServiceImpl implements POIService {
         customActivity.setActivityId(newId);
         customActivity.setName(masterActivity.getName());
         customActivity.setAddress(masterActivity.getAddress());
-        Integer newCustomId = customActivityRepository.save(customActivity).getActivityId();
-       return  newCustomId;
+        return customActivityRepository.save(customActivity).getActivityId();
     }
 
     @Override
@@ -178,26 +174,26 @@ public class POIServiceImpl implements POIService {
 
         return p.getTypicalPrice();
     }
-    @Override
-    public MasterActivityDTO getMasterActivity(int id){
 
+    @Override
+    public MasterActivityDTO getMasterActivity(int id) {
         MasterActivityDTO masterActivityDTO = mapper.map(masterActivityRepository.getById(id), MasterActivityDTO.class);
-        if(poiRepository.existsById(masterActivityDTO.getActivityId())){
+        if (poiRepository.existsById(masterActivityDTO.getActivityId())) {
             POIDTO poidto = mapper.map(poiRepository.getPOIByActivityId(masterActivityDTO.getActivityId()), POIDTO.class);
             ArrayList<POIImage> listImages = new ArrayList<>();
             POIImage poiImage = poiImageRepository.findFirstByPoiId(poidto.getActivityId());
-            if(poiImage != null) listImages.add(poiImage);
+            if (poiImage != null) listImages.add(poiImage);
             poidto.setImages(listImages);
             poidto.setCustom(false);
             return poidto;
-        }else{
+        } else {
             masterActivityDTO.setCustom(true);
             return masterActivityDTO;
         }
     }
 
     @Override
-    public Integer insertCustomActivity(String name,String address) {
+    public Integer insertCustomActivity(String name, String address) {
         MasterActivity masterActivity = new MasterActivity();
         masterActivity.setName(name);
         masterActivity.setAddress(address);
@@ -206,8 +202,7 @@ public class POIServiceImpl implements POIService {
         customActivity.setActivityId(newId);
         customActivity.setName(masterActivity.getName());
         customActivity.setAddress(masterActivity.getAddress());
-        Integer newCustomId = customActivityRepository.save(customActivity).getActivityId();
-        return  newCustomId;
+        return customActivityRepository.save(customActivity).getActivityId();
     }
 
     @Override
@@ -217,7 +212,6 @@ public class POIServiceImpl implements POIService {
                     activity.setName(input.getMasterActivity().getName());
                     activity.setAddress(input.getMasterActivity().getAddress());
                     return masterActivityRepository.save(activity);
-
                 }).orElseGet(() -> null);
     }
 

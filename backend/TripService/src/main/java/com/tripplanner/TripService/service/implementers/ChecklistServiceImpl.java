@@ -30,8 +30,7 @@ public class ChecklistServiceImpl implements ChecklistService {
         checklistDTO.setTrip(mapper.map(trip, TripGeneralDTO.class));
         ArrayList<ChecklistItemDTO> checklistItemDTOS = new ArrayList<>();
         ArrayList<ChecklistItem> checklistItems = checklistItemRepository.getByTripId(tripId);
-        for (ChecklistItem item : checklistItems
-        ) {
+        for (ChecklistItem item : checklistItems) {
             ChecklistItemDTO checklistItemDTO = mapper.map(item, ChecklistItemDTO.class);
             checklistItemDTOS.add(checklistItemDTO);
         }

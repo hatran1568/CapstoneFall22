@@ -14,23 +14,27 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.ArrayList;
 
 @Repository
-public interface ExpenseRepository extends JpaRepository<ExpenseCategory,Double> {
+public interface ExpenseRepository extends JpaRepository<ExpenseCategory, Double> {
     @Query(
             value = "SELECT te.trip_expense_id as expenseId, te.trip_id as tripId, te.expense_category_id as expenseCategoryId, te.amount, te.description, ec.name, ec.icon from trip_expense te LEFT JOIN expense_category ec on te.expense_category_id = ec.expense_category_id where te.trip_id = ?1\n",
             nativeQuery = true)
     ArrayList<TripExpenseDTO> getExpensesOfTrip(int tripId);
+
     @Query(
             value = "SELECT te.trip_expense_id as expenseId, te.trip_id as tripId, te.expense_category_id as expenseCategoryId, te.amount, te.description, ec.name, ec.icon from trip_expense te LEFT JOIN expense_category ec on te.expense_category_id = ec.expense_category_id where te.trip_id = ?1 ORDER BY te.amount DESC\n",
             nativeQuery = true)
     ArrayList<TripExpenseDTO> getExpensesOfTripAmountDesc(int tripId);
+
     @Query(
-            value = "SELECT te.trip_expense_id as expenseId, te.trip_id as tripId, te.expense_category_id as expenseCategoryId, te.amount, te.description, ec.name, ec.icon from trip_expense te LEFT JOIN expense_category ec on te.expense_category_id = ec.expense_category_id where te.trip_id = ?1 ORDER BY te.amount ASC\n",
+            value = "SELECT te.trip_expense_id as expenseId, te.trip_id as tripId, te.expense_category_id as expenseCategoryId, te.amount, te.description, ec.name, ec.icon from trip_expense te LEFT JOIN expense_category ec on te.expense_category_id = ec.expense_category_id where te.trip_id = ?1 ORDER BY te.amount\n",
             nativeQuery = true)
     ArrayList<TripExpenseDTO> getExpensesOfTripAmountAsc(int tripId);
+
     @Query(
             value = "SELECT te.trip_expense_id as expenseId, te.trip_id as tripId, te.expense_category_id as expenseCategoryId, te.amount, te.description, ec.name, ec.icon from trip_expense te LEFT JOIN expense_category ec on te.expense_category_id = ec.expense_category_id where te.trip_id = ?1 ORDER BY ec.name\n",
             nativeQuery = true)
     ArrayList<TripExpenseDTO> getExpensesOfTripName(int tripId);
+
     @Query(
             value = "SELECT ec.expense_category_id as value, ec.name as label FROM expense_category ec",
             nativeQuery = true)
@@ -55,12 +59,14 @@ public interface ExpenseRepository extends JpaRepository<ExpenseCategory,Double>
             value = "DELETE FROM trip_expense te WHERE te.trip_expense_id = ?1",
             nativeQuery = true)
     int deleteExpense(int expenseId);
+
     @Modifying
     @Transactional
     @Query(
             value = "INSERT INTO trip_expense (amount, description, expense_category_id, trip_id) VALUE (?1, ?2, ?3, ?4)",
             nativeQuery = true)
     void addExpense(double amount, String description, int expenseCategoryId, int tripId);
+
     @Modifying
     @Transactional
     @Query(
@@ -72,7 +78,7 @@ public interface ExpenseRepository extends JpaRepository<ExpenseCategory,Double>
 
     @Modifying
     @Transactional
-    @Query(value = "insert into trip_expense (amount,description,expense_category_id,trip_id,trip_details_id) VALUE(?1,?2,8,?3,?4)",nativeQuery = true)
-    void insertExpense(double amount,String description, int trip_id,int details);
+    @Query(value = "insert into trip_expense (amount,description,expense_category_id,trip_id,trip_details_id) VALUE(?1,?2,8,?3,?4)", nativeQuery = true)
+    void insertExpense(double amount, String description, int trip_id, int details);
 
 }

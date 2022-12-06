@@ -16,17 +16,18 @@ import java.util.List;
 @Service
 public class BLogServiceImpl implements BlogService {
     @Autowired
-    private DiscoveryClient discoveryClient;
-    @Autowired
     BlogRepository blogRepository;
     @Autowired
     RestTemplateClient restTemplateClient;
+    @Autowired
+    private DiscoveryClient discoveryClient;
+
     @Override
     public BlogDetailsDTO getBlogById(int id) {
         Blog blog = blogRepository.findById(id).get();
-        if(blog==null)
-         return null;
-        BlogDetailsDTO blogDetailsDTO = new BlogDetailsDTO() ;
+        if (blog == null)
+            return null;
+        BlogDetailsDTO blogDetailsDTO = new BlogDetailsDTO();
         blogDetailsDTO.setBlogId(id);
         blogDetailsDTO.setStatus(blog.getStatus());
         blogDetailsDTO.setUserId(blog.getUser());
@@ -35,16 +36,14 @@ public class BLogServiceImpl implements BlogService {
         blogDetailsDTO.setTitle(blog.getTitle());
         List<ServiceInstance> instances = discoveryClient.getInstances("user-service");
         ServiceInstance instance = instances.get(0);
-        UserDetailResponseDTO user = restTemplateClient.restTemplate().getForObject(instance.getUri()+"/user/api/user/findById/"+blog.getUser(), UserDetailResponseDTO.class);
+        UserDetailResponseDTO user = restTemplateClient.restTemplate().getForObject(instance.getUri() + "/user/api/user/findById/" + blog.getUser(), UserDetailResponseDTO.class);
         blogDetailsDTO.setAvatar(user.getAvatar());
         blogDetailsDTO.setUsername(user.getName());
-        return  blogDetailsDTO;
+        return blogDetailsDTO;
     }
 
     @Override
     public List<Blog> getBlogByKeyWord(String keyword) {
-
-            return  blogRepository.getBlogsByKeyword(keyword);
-
+        return blogRepository.getBlogsByKeyword(keyword);
     }
 }

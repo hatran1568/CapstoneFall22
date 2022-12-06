@@ -10,7 +10,6 @@ import com.tripplanner.LocationService.entity.POI;
 import com.tripplanner.LocationService.repository.DestinationRepository;
 import com.tripplanner.LocationService.repository.POIRepository;
 import com.tripplanner.LocationService.service.interfaces.SearchService;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.client.ServiceInstance;
 import org.springframework.cloud.client.discovery.DiscoveryClient;
@@ -29,13 +28,12 @@ import java.util.stream.Collectors;
 public class SearchServiceImpl implements SearchService {
     @Autowired
     POIRepository poiRepository;
+
     @Autowired
     DestinationRepository destinationRepository;
 
     @Autowired
     RestTemplateClient restTemplateClient;
-
-
 
     @Autowired
     private DiscoveryClient discoveryClient;
@@ -48,17 +46,17 @@ public class SearchServiceImpl implements SearchService {
         List<ServiceInstance> instances = discoveryClient.getInstances("blog-service");
 
         ServiceInstance instance = instances.get(0);
-        ListBlogDTO blogs = restTemplateClient.restTemplate().getForObject(instance.getUri()+"/blog/api/blog/keyword/"+keyword,ListBlogDTO.class);
+        ListBlogDTO blogs = restTemplateClient.restTemplate().getForObject(instance.getUri() + "/blog/api/blog/keyword/" + keyword, ListBlogDTO.class);
 //        ArrayList<Blog> blogs = blogRepository.getBlogsByKeyword(keyword);
         for (Destination destination : destinations) {
-            SearchPOIAndDestinationDTO destinationDTO = new SearchPOIAndDestinationDTO(destination.getDestinationId(), destination.getName(), SearchType.DESTINATION, 0, 0, destination.getDescription(), destinationRepository.getThumbnailById(destination.getDestinationId()).isPresent()?destinationRepository.getThumbnailById(destination.getDestinationId()).get():null, false);
+            SearchPOIAndDestinationDTO destinationDTO = new SearchPOIAndDestinationDTO(destination.getDestinationId(), destination.getName(), SearchType.DESTINATION, 0, 0, destination.getDescription(), destinationRepository.getThumbnailById(destination.getDestinationId()).isPresent() ? destinationRepository.getThumbnailById(destination.getDestinationId()).get() : null, false);
             list.add(destinationDTO);
         }
         for (POI poi : pois) {
             int numberOfRate = 0;
             if (poiRepository.getNumberOfRateByActivityId(poi.getActivityId()).isPresent())
                 numberOfRate = poiRepository.getNumberOfRateByActivityId(poi.getActivityId()).get();
-            SearchPOIAndDestinationDTO PoiDTO = new SearchPOIAndDestinationDTO(poi.getActivityId(), poi.getName(), POI.mapFromPOICategory(poi), poi.getGoogleRate(), numberOfRate, poi.getDescription(), poiRepository.getThumbnailById(poi.getActivityId()).isPresent()?poiRepository.getThumbnailById(poi.getActivityId()).get():null, true);
+            SearchPOIAndDestinationDTO PoiDTO = new SearchPOIAndDestinationDTO(poi.getActivityId(), poi.getName(), POI.mapFromPOICategory(poi), poi.getGoogleRate(), numberOfRate, poi.getDescription(), poiRepository.getThumbnailById(poi.getActivityId()).isPresent() ? poiRepository.getThumbnailById(poi.getActivityId()).get() : null, true);
             list.add(PoiDTO);
         }
 
@@ -75,7 +73,6 @@ public class SearchServiceImpl implements SearchService {
         Pageable paging = PageRequest.of(page, size);
         int start = Math.min((int) paging.getOffset(), list.size());
         int end = Math.min((start + paging.getPageSize()), list.size());
-
         return new PageImpl<SearchPOIAndDestinationDTO>(list.subList(start, end), PageRequest.of(page, size), list.size());
     }
 
@@ -87,17 +84,17 @@ public class SearchServiceImpl implements SearchService {
         List<ServiceInstance> instances = discoveryClient.getInstances("blog-service");
 
         ServiceInstance instance = instances.get(0);
-        ListBlogDTO blogs = restTemplateClient.restTemplate().getForObject(instance.getUri()+"/blog/api/blog/keyword/"+keyword,ListBlogDTO.class);
+        ListBlogDTO blogs = restTemplateClient.restTemplate().getForObject(instance.getUri() + "/blog/api/blog/keyword/" + keyword, ListBlogDTO.class);
 //        ArrayList<Blog> blogs = blogRepository.getBlogsByKeyword(keyword);
         for (Destination destination : destinations) {
-            SearchPOIAndDestinationDTO destinationDTO = new SearchPOIAndDestinationDTO(destination.getDestinationId(), destination.getName(), SearchType.DESTINATION, 0, 0, destination.getDescription(), destinationRepository.getThumbnailById(destination.getDestinationId()).isPresent()?destinationRepository.getThumbnailById(destination.getDestinationId()).get():null, false);
+            SearchPOIAndDestinationDTO destinationDTO = new SearchPOIAndDestinationDTO(destination.getDestinationId(), destination.getName(), SearchType.DESTINATION, 0, 0, destination.getDescription(), destinationRepository.getThumbnailById(destination.getDestinationId()).isPresent() ? destinationRepository.getThumbnailById(destination.getDestinationId()).get() : null, false);
             list.add(destinationDTO);
         }
         for (POI poi : pois) {
             int numberOfRate = 0;
             if (poiRepository.getNumberOfRateByActivityId(poi.getActivityId()).isPresent())
                 numberOfRate = poiRepository.getNumberOfRateByActivityId(poi.getActivityId()).get();
-            SearchPOIAndDestinationDTO PoiDTO = new SearchPOIAndDestinationDTO(poi.getActivityId(), poi.getName(), POI.mapFromPOICategory(poi), poi.getGoogleRate(), numberOfRate, poi.getDescription(), poiRepository.getThumbnailById(poi.getActivityId()).isPresent()?poiRepository.getThumbnailById(poi.getActivityId()).get():null, true);
+            SearchPOIAndDestinationDTO PoiDTO = new SearchPOIAndDestinationDTO(poi.getActivityId(), poi.getName(), POI.mapFromPOICategory(poi), poi.getGoogleRate(), numberOfRate, poi.getDescription(), poiRepository.getThumbnailById(poi.getActivityId()).isPresent() ? poiRepository.getThumbnailById(poi.getActivityId()).get() : null, true);
             list.add(PoiDTO);
         }
 
@@ -105,7 +102,6 @@ public class SearchServiceImpl implements SearchService {
             SearchPOIAndDestinationDTO blogDTO = new SearchPOIAndDestinationDTO(blog.getBlogId(), blog.getTitle(), SearchType.BLOG, 0, 0, blog.getContent(), blog.getThumbnail(), false);
             list.add(blogDTO);
         }
-
 
         if (list.size() > 9) {
             ArrayList<SearchPOIAndDestinationDTO> finalList = new ArrayList<>();
@@ -125,11 +121,8 @@ public class SearchServiceImpl implements SearchService {
 
     @Override
     public List<Enum> getAllType() {
-        List<Enum> enumValues = Arrays.asList(SearchType.values());
-        return enumValues;
+        return Arrays.asList(SearchType.values());
     }
-
-
 
     public ArrayList<SearchPOIAndDestinationDTO> searchPOIByKeyword(String keyword) {
         ArrayList<SearchPOIAndDestinationDTO> list = new ArrayList<>();
@@ -138,7 +131,7 @@ public class SearchServiceImpl implements SearchService {
             int numberOfRate = 0;
             if (poiRepository.getNumberOfRateByActivityId(poi.getActivityId()).isPresent())
                 numberOfRate = poiRepository.getNumberOfRateByActivityId(poi.getActivityId()).get();
-            SearchPOIAndDestinationDTO PoiDTO = new SearchPOIAndDestinationDTO(poi.getActivityId(), poi.getName(), POI.mapFromPOICategory(poi), poi.getGoogleRate(), numberOfRate, poi.getDescription(), poiRepository.getThumbnailById(poi.getActivityId()).isPresent()?poiRepository.getThumbnailById(poi.getActivityId()).get():null, true);
+            SearchPOIAndDestinationDTO PoiDTO = new SearchPOIAndDestinationDTO(poi.getActivityId(), poi.getName(), POI.mapFromPOICategory(poi), poi.getGoogleRate(), numberOfRate, poi.getDescription(), poiRepository.getThumbnailById(poi.getActivityId()).isPresent() ? poiRepository.getThumbnailById(poi.getActivityId()).get() : null, true);
             list.add(PoiDTO);
         }
 

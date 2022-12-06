@@ -10,7 +10,6 @@ import com.tripplanner.LocationService.repository.CollectionRepository;
 import com.tripplanner.LocationService.repository.POIImageRepository;
 import com.tripplanner.LocationService.repository.POIRepository;
 import com.tripplanner.LocationService.service.interfaces.CollectionService;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
