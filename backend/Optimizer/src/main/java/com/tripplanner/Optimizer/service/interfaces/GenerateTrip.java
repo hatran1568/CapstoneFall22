@@ -7,7 +7,7 @@ import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 
 public interface GenerateTrip {
-    public CompletableFuture<ComplexResponse> generateTrip(GenerateTripUserInput input, String baseUrl) throws ExecutionException, InterruptedException;
+    public CompletableFuture<ComplexResponse> generateTrip(GenerateTripUserInput input, String baseUrl,String token) throws ExecutionException, InterruptedException;
     public CompletableFuture<ComplexResponse> insertToDB(ComplexResponse response) throws ExecutionException, InterruptedException ;
 
 }
