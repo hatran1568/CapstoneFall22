@@ -39,16 +39,16 @@ public class UserController {
     }
     @PostMapping("/edit-avatar/{userId}")
     public ResponseEntity<?> updateAvatar(@PathVariable int userId, @RequestPart("File") MultipartFile file){
-//        try{
+        try{
             if (userService.getUserProfileById(userId) == null) {
 
                 return new ResponseEntity<>(HttpStatus.NOT_FOUND);
             }
             String oldAvatar = userService.editAvatar(userId, file);
             return new ResponseEntity<>(HttpStatus.OK);
-//        } catch (Exception e){
-//            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-//        }
+        } catch (Exception e){
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
     @PostMapping("/edit-username")
@@ -134,39 +134,6 @@ public class UserController {
             return new ResponseEntity<>(count, HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-    }
-//    @PreAuthorize("hasAuthority('Admin')")
-    @RequestMapping(value = "/activate/{userId}", produces = { "*/*" }, method = RequestMethod.POST)
-    public ResponseEntity<?> activateUser(@PathVariable int userId) {
-        try{
-            userRepo.activateUser(userId);
-            return new ResponseEntity<>(HttpStatus.OK);
-        }
-        catch (Exception e){
-            return  new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-    }
-//    @PreAuthorize("hasAuthority('Admin')")
-    @RequestMapping(value = "/deactivate/{userId}", produces = { "*/*" },consumes = "multipart/form-data", method = RequestMethod.POST)
-    public ResponseEntity<?> deactivateUser(@PathVariable int userId) {
-        try{
-            userRepo.deactivateUser(userId);
-            return new ResponseEntity<>(HttpStatus.OK);
-        }
-        catch (Exception e){
-            return  new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-    }
-//    @PreAuthorize("hasAuthority('Admin')")
-    @RequestMapping(value = "/delete/{userId}", produces = { "*/*" }, method = RequestMethod.POST)
-    public ResponseEntity<?> deleteUser(@PathVariable int userId) {
-        try{
-            userRepo.deleteUser(userId);
-            return new ResponseEntity<>(HttpStatus.OK);
-        }
-        catch (Exception e){
-            return  new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 }

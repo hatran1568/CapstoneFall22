@@ -206,7 +206,7 @@ public class GenerateTripIml implements GenerateTrip {
                 String emailContent = "dear "+user.getBody().getName()+",\n \n"
                         + "See your trip at http://localhost:3000/timeline/"+response.getRequest().getTrip() ;
                 mailSender.sendSimpleMessage(user.getBody().getEmail(), "Your trip is ready", emailContent);
-
+               
             }
         });
         return  task;

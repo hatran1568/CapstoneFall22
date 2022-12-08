@@ -17,7 +17,7 @@ spring:
   mail:
     host: smtp.gmail.com
     username: oanhha2001@gmail.com
-    password: oydlwnsgjxitbqca
+    password:  yzkoojtgxzaeawik
     port: 587
     properties:
       mail:
@@ -25,6 +25,9 @@ spring:
           auth: true
           starttls:
             enable: true
+          sll:
+            enable: true
+
 server:
   port: 8082
 eureka:
