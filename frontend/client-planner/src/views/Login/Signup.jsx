@@ -14,7 +14,7 @@ import { useState } from "react";
 import style from "./Login.module.css";
 
 const REGISTER_URL = "/user/api/register";
-const LOGIN_URL = "/user/api/login";
+const LOGIN_URL = "/auth/api/login";
 
 function Signup() {
   const pattern = /^[A-Za-z0-9_!#$%&'*+\/=?`{|}~^.-]+@[A-Za-z0-9.-]+$/;
