@@ -2,7 +2,6 @@ package com.tripplanner.LocationService.dto.response;
 
 public enum SearchType {
     DESTINATION,
-
     BLOG,
     ART_AND_CULTURE,
     OUTDOORS, RELIGION,

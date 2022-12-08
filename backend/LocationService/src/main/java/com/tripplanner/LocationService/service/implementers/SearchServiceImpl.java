@@ -49,19 +49,55 @@ public class SearchServiceImpl implements SearchService {
         ListBlogDTO blogs = restTemplateClient.restTemplate().getForObject(instance.getUri() + "/blog/api/blog/keyword/" + keyword, ListBlogDTO.class);
 //        ArrayList<Blog> blogs = blogRepository.getBlogsByKeyword(keyword);
         for (Destination destination : destinations) {
-            SearchPOIAndDestinationDTO destinationDTO = new SearchPOIAndDestinationDTO(destination.getDestinationId(), destination.getName(), SearchType.DESTINATION, 0, 0, destination.getDescription(), destinationRepository.getThumbnailById(destination.getDestinationId()).isPresent() ? destinationRepository.getThumbnailById(destination.getDestinationId()).get() : null, false);
+            SearchPOIAndDestinationDTO destinationDTO =
+                    new SearchPOIAndDestinationDTO(
+                            destination.getDestinationId(),
+                            destination.getName(),
+                            SearchType.DESTINATION,
+                            0,
+                            0,
+                            destination.getDescription(),
+                            destinationRepository
+                                    .getThumbnailById(destination.getDestinationId()).isPresent()
+                                    ? destinationRepository.getThumbnailById(destination.getDestinationId()).get()
+                                    : null,
+                            false
+                    );
             list.add(destinationDTO);
         }
+
         for (POI poi : pois) {
             int numberOfRate = 0;
             if (poiRepository.getNumberOfRateByActivityId(poi.getActivityId()).isPresent())
                 numberOfRate = poiRepository.getNumberOfRateByActivityId(poi.getActivityId()).get();
-            SearchPOIAndDestinationDTO PoiDTO = new SearchPOIAndDestinationDTO(poi.getActivityId(), poi.getName(), POI.mapFromPOICategory(poi), poi.getGoogleRate(), numberOfRate, poi.getDescription(), poiRepository.getThumbnailById(poi.getActivityId()).isPresent() ? poiRepository.getThumbnailById(poi.getActivityId()).get() : null, true);
+            SearchPOIAndDestinationDTO PoiDTO =
+                    new SearchPOIAndDestinationDTO(
+                            poi.getActivityId(),
+                            poi.getName(),
+                            POI.mapFromPOICategory(poi),
+                            poi.getGoogleRate(),
+                            numberOfRate,
+                            poi.getDescription(),
+                            poiRepository.getThumbnailById(poi.getActivityId()).isPresent()
+                                    ? poiRepository.getThumbnailById(poi.getActivityId()).get()
+                                    : null,
+                            true
+                    );
             list.add(PoiDTO);
         }
 
         for (Blog blog : blogs.getList()) {
-            SearchPOIAndDestinationDTO blogDTO = new SearchPOIAndDestinationDTO(blog.getBlogId(), blog.getTitle(), SearchType.BLOG, 0, 0, blog.getContent(), blog.getThumbnail(), false);
+            SearchPOIAndDestinationDTO blogDTO =
+                    new SearchPOIAndDestinationDTO(
+                            blog.getBlogId(),
+                            blog.getTitle(),
+                            SearchType.BLOG,
+                            0,
+                            0,
+                            blog.getContent(),
+                            blog.getThumbnail(),
+                            false
+                    );
             list.add(blogDTO);
         }
         return list;
@@ -73,7 +109,7 @@ public class SearchServiceImpl implements SearchService {
         Pageable paging = PageRequest.of(page, size);
         int start = Math.min((int) paging.getOffset(), list.size());
         int end = Math.min((start + paging.getPageSize()), list.size());
-        return new PageImpl<SearchPOIAndDestinationDTO>(list.subList(start, end), PageRequest.of(page, size), list.size());
+        return new PageImpl<>(list.subList(start, end), PageRequest.of(page, size), list.size());
     }
 
     @Override
@@ -87,19 +123,54 @@ public class SearchServiceImpl implements SearchService {
         ListBlogDTO blogs = restTemplateClient.restTemplate().getForObject(instance.getUri() + "/blog/api/blog/keyword/" + keyword, ListBlogDTO.class);
 //        ArrayList<Blog> blogs = blogRepository.getBlogsByKeyword(keyword);
         for (Destination destination : destinations) {
-            SearchPOIAndDestinationDTO destinationDTO = new SearchPOIAndDestinationDTO(destination.getDestinationId(), destination.getName(), SearchType.DESTINATION, 0, 0, destination.getDescription(), destinationRepository.getThumbnailById(destination.getDestinationId()).isPresent() ? destinationRepository.getThumbnailById(destination.getDestinationId()).get() : null, false);
+            SearchPOIAndDestinationDTO destinationDTO =
+                    new SearchPOIAndDestinationDTO(
+                            destination.getDestinationId(),
+                            destination.getName(),
+                            SearchType.DESTINATION,
+                            0,
+                            0,
+                            destination.getDescription(),
+                            destinationRepository.getThumbnailById(destination.getDestinationId()).isPresent()
+                                    ? destinationRepository.getThumbnailById(destination.getDestinationId()).get()
+                                    : null,
+                            false
+                    );
             list.add(destinationDTO);
         }
+
         for (POI poi : pois) {
             int numberOfRate = 0;
             if (poiRepository.getNumberOfRateByActivityId(poi.getActivityId()).isPresent())
                 numberOfRate = poiRepository.getNumberOfRateByActivityId(poi.getActivityId()).get();
-            SearchPOIAndDestinationDTO PoiDTO = new SearchPOIAndDestinationDTO(poi.getActivityId(), poi.getName(), POI.mapFromPOICategory(poi), poi.getGoogleRate(), numberOfRate, poi.getDescription(), poiRepository.getThumbnailById(poi.getActivityId()).isPresent() ? poiRepository.getThumbnailById(poi.getActivityId()).get() : null, true);
+            SearchPOIAndDestinationDTO PoiDTO =
+                    new SearchPOIAndDestinationDTO(
+                            poi.getActivityId(),
+                            poi.getName(),
+                            POI.mapFromPOICategory(poi),
+                            poi.getGoogleRate(),
+                            numberOfRate,
+                            poi.getDescription(),
+                            poiRepository.getThumbnailById(poi.getActivityId()).isPresent()
+                                    ? poiRepository.getThumbnailById(poi.getActivityId()).get()
+                                    : null,
+                            true
+                    );
             list.add(PoiDTO);
         }
 
         for (Blog blog : blogs.getList()) {
-            SearchPOIAndDestinationDTO blogDTO = new SearchPOIAndDestinationDTO(blog.getBlogId(), blog.getTitle(), SearchType.BLOG, 0, 0, blog.getContent(), blog.getThumbnail(), false);
+            SearchPOIAndDestinationDTO blogDTO =
+                    new SearchPOIAndDestinationDTO(
+                            blog.getBlogId(),
+                            blog.getTitle(),
+                            SearchType.BLOG,
+                            0,
+                            0,
+                            blog.getContent(),
+                            blog.getThumbnail(),
+                            false
+                    );
             list.add(blogDTO);
         }
 
@@ -131,7 +202,19 @@ public class SearchServiceImpl implements SearchService {
             int numberOfRate = 0;
             if (poiRepository.getNumberOfRateByActivityId(poi.getActivityId()).isPresent())
                 numberOfRate = poiRepository.getNumberOfRateByActivityId(poi.getActivityId()).get();
-            SearchPOIAndDestinationDTO PoiDTO = new SearchPOIAndDestinationDTO(poi.getActivityId(), poi.getName(), POI.mapFromPOICategory(poi), poi.getGoogleRate(), numberOfRate, poi.getDescription(), poiRepository.getThumbnailById(poi.getActivityId()).isPresent() ? poiRepository.getThumbnailById(poi.getActivityId()).get() : null, true);
+            SearchPOIAndDestinationDTO PoiDTO =
+                    new SearchPOIAndDestinationDTO(
+                            poi.getActivityId(),
+                            poi.getName(),
+                            POI.mapFromPOICategory(poi),
+                            poi.getGoogleRate(),
+                            numberOfRate,
+                            poi.getDescription(),
+                            poiRepository.getThumbnailById(poi.getActivityId()).isPresent()
+                                    ? poiRepository.getThumbnailById(poi.getActivityId()).get()
+                                    : null,
+                            true
+                    );
             list.add(PoiDTO);
         }
 

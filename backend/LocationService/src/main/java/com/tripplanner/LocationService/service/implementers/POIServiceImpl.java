@@ -63,8 +63,22 @@ public class POIServiceImpl implements POIService {
         ArrayList<RatingDTO> list = new ArrayList<>();
         ArrayList<RatingDBDTO> objects = poiRepository.getRatingsByPOIId(poiId);
         for (RatingDBDTO rating : objects) {
-            UserDetailResponseDTO user = restTemplate.restTemplate().getForObject(instance.getUri() + "/user/api/user/findById/" + rating.getUserId(), UserDetailResponseDTO.class);
-            RatingDTO ratingDTO = new RatingDTO(rating.getRateId(), rating.getRate(), rating.getComment(), rating.getDeleted(), rating.getCreated(), rating.getModified(), rating.getUserId(), user.getName(), rating.getPoiId());
+            UserDetailResponseDTO user =
+                    restTemplate
+                            .restTemplate()
+                            .getForObject(instance.getUri() + "/user/api/user/findById/" + rating.getUserId(), UserDetailResponseDTO.class);
+            RatingDTO ratingDTO =
+                    new RatingDTO(
+                            rating.getRateId(),
+                            rating.getRate(),
+                            rating.getComment(),
+                            rating.getDeleted(),
+                            rating.getCreated(),
+                            rating.getModified(),
+                            rating.getUserId(),
+                            user.getName(),
+                            rating.getPoiId()
+                    );
             if (!ratingDTO.isDeleted()) {
                 list.add(ratingDTO);
             }
@@ -130,7 +144,7 @@ public class POIServiceImpl implements POIService {
                 maxRate = 5;
                 break;
         }
-        ArrayList<POI> pois = new ArrayList<>();
+        ArrayList<POI> pois;
         if (input.getPoiId() == -1) {
             pois = poiRepository.getHotelByPriceAndRate(maxRate, minRate, maxPrice, minPrice).get();
         } else {
@@ -140,7 +154,23 @@ public class POIServiceImpl implements POIService {
             int numberOfRate = 0;
             if (poiRepository.getNumberOfRateByActivityId(poi.getActivityId()).isPresent())
                 numberOfRate = poiRepository.getNumberOfRateByActivityId(poi.getActivityId()).get();
-            SearchPOIAndDestinationDTO PoiDTO = new SearchPOIAndDestinationDTO(poi.getActivityId(), poi.getName(), POI.mapFromPOICategory(poi), poi.getGoogleRate(), numberOfRate, poi.getDescription(), poiRepository.getThumbnailById(poi.getActivityId()).isPresent() ? poiRepository.getThumbnailById(poi.getActivityId()).get() : null, true, poi.getLatitude(), poi.getLongitude(), poi.getWebsite(), poi.getTypicalPrice());
+            SearchPOIAndDestinationDTO PoiDTO =
+                    new SearchPOIAndDestinationDTO(
+                            poi.getActivityId(),
+                            poi.getName(),
+                            POI.mapFromPOICategory(poi),
+                            poi.getGoogleRate(),
+                            numberOfRate,
+                            poi.getDescription(),
+                            poiRepository.getThumbnailById(poi.getActivityId()).isPresent()
+                                    ? poiRepository.getThumbnailById(poi.getActivityId()).get()
+                                    : null,
+                            true,
+                            poi.getLatitude(),
+                            poi.getLongitude(),
+                            poi.getWebsite(),
+                            poi.getTypicalPrice()
+                    );
             list.add(PoiDTO);
         }
         return list;
@@ -151,7 +181,7 @@ public class POIServiceImpl implements POIService {
         Pageable paging = PageRequest.of(page, size);
         int start = Math.min((int) paging.getOffset(), list.size());
         int end = Math.min((start + paging.getPageSize()), list.size());
-        return new PageImpl<SearchPOIAndDestinationDTO>(list.subList(start, end), PageRequest.of(page, size), list.size());
+        return new PageImpl<>(list.subList(start, end), PageRequest.of(page, size), list.size());
     }
 
     @Override
@@ -171,7 +201,6 @@ public class POIServiceImpl implements POIService {
     @Override
     public double getTypicalPriceById(int id) {
         POI p = poiRepository.getById(id);
-
         return p.getTypicalPrice();
     }
 
@@ -207,7 +236,8 @@ public class POIServiceImpl implements POIService {
 
     @Override
     public void editCustom(TripDetailDTO input) {
-        masterActivityRepository.findById(input.getMasterActivity().getActivityId())
+        masterActivityRepository
+                .findById(input.getMasterActivity().getActivityId())
                 .map(activity -> {
                     activity.setName(input.getMasterActivity().getName());
                     activity.setAddress(input.getMasterActivity().getAddress());

@@ -1,6 +1,10 @@
 package com.tripplanner.LocationService.controller;
 
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ObjectNode;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.tripplanner.LocationService.dto.ListPoi;
 import com.tripplanner.LocationService.dto.request.HotelsRequestDTO;
 import com.tripplanner.LocationService.dto.request.POIListDTO;
@@ -14,25 +18,18 @@ import com.tripplanner.LocationService.repository.DistanceRepository;
 import com.tripplanner.LocationService.repository.POIRepository;
 import com.tripplanner.LocationService.service.interfaces.POIService;
 import com.tripplanner.LocationService.utils.GoogleDriveManager;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.node.ObjectNode;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import javax.servlet.http.HttpServletRequest;
-
-import com.tripplanner.LocationService.dto.response.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -42,21 +39,24 @@ import java.util.Date;
 @RequestMapping("/location/api/pois")
 public class POIController {
     private final String distanceToken = "tqkoPaQkFYlIvpSPWX17eWa4H6Brg";
-
+    @Autowired
+    GoogleDriveManager driveManager;
     @Autowired
     private DistanceRepository distanceRepository;
     @Autowired
     private POIRepository poiRepo;
-
     @Autowired
     private POIService poiService;
     @Autowired
     private CustomActivityRepository customActivityRepository;
-    @Autowired
-    GoogleDriveManager driveManager;
 
     @GetMapping("/{desid}/{page}/{catid}/{rating}")
-    public ResponseEntity<ArrayList<POIofDestinationDTO>> getPOIsOfDestinationFilter(@PathVariable("desid") int desid, @PathVariable("page") int page, @PathVariable("catid") int catid, @PathVariable("rating") int rating) {
+    public ResponseEntity<ArrayList<POIofDestinationDTO>> getPOIsOfDestinationFilter(
+            @PathVariable("desid") int desid,
+            @PathVariable("page") int page,
+            @PathVariable("catid") int catid,
+            @PathVariable("rating") int rating
+    ) {
         try {
             ArrayList<POIofDestinationDTO> pois;
             if (catid == 0)
@@ -75,9 +75,12 @@ public class POIController {
     }
 
     @GetMapping("/{desid}/{catid}/{rating}/count")
-    public ResponseEntity<Integer> getCountPOIsOfDestination(@PathVariable("desid") int desid, @PathVariable("catid") int catid, @PathVariable("rating") int rating) {
+    public ResponseEntity<Integer> getCountPOIsOfDestination(
+            @PathVariable("desid") int desid,
+            @PathVariable("catid") int catid,
+            @PathVariable("rating") int rating
+    ) {
         try {
-
             int count;
             if (catid == 0)
                 count = poiRepo.getCountPOIOfDestination(desid, rating);
@@ -106,11 +109,11 @@ public class POIController {
     @GetMapping("/getPoiById/{poiId}")
     public ResponseEntity<POIDTO> getPOIDTODetails(@PathVariable("poiId") int poiId) {
         try {
-           POI poi;
+            POI poi;
             poi = poiRepo.getById(poiId);
             if (poi == null) {
                 return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-            }else{
+            } else {
                 POIDTO poidto = new POIDTO();
                 poidto.setId(poi.getActivityId());
                 poidto.setTypicalPrice(poi.getTypicalPrice());
@@ -125,9 +128,12 @@ public class POIController {
 
     @GetMapping("/{poiId}/ratings")
 
-    public ResponseEntity<ArrayList<RatingDTO>> getPOIRatings(@RequestHeader(value = "Authorization",required = false) String token, @PathVariable("poiId") int poiId) {
+    public ResponseEntity<ArrayList<RatingDTO>> getPOIRatings(
+            @RequestHeader(value = "Authorization", required = false) String token,
+            @PathVariable("poiId") int poiId
+    ) {
         ArrayList<RatingDTO> rate;
-        rate = poiService.getRatingListByPOIId(poiId,token);
+        rate = poiService.getRatingListByPOIId(poiId, token);
         if (rate.isEmpty()) {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
@@ -149,40 +155,42 @@ public class POIController {
     }
 
     @GetMapping("/getMasterActivity/{id}")
-    public  ResponseEntity<MasterActivityDTO> getMasterActivityDTO(@PathVariable int id){
-        return  new ResponseEntity<>(poiService.getMasterActivity(id),HttpStatus.OK);
+    public ResponseEntity<MasterActivityDTO> getMasterActivityDTO(@PathVariable int id) {
+        return new ResponseEntity<>(poiService.getMasterActivity(id), HttpStatus.OK);
     }
 
     @GetMapping("/getFirstImg/{id}")
-    public  ResponseEntity<String> getFirstImgByPOI(@PathVariable int id){
-        return  new ResponseEntity<>(poiService.getFirstPOIImage(id),HttpStatus.OK);
+    public ResponseEntity<String> getFirstImgByPOI(@PathVariable int id) {
+        return new ResponseEntity<>(poiService.getFirstPOIImage(id), HttpStatus.OK);
     }
-    @PostMapping("/addCustom")
-    public ResponseEntity<Integer> addTripDetailGenerated(@RequestBody ObjectNode objectNode){
-        try{
 
-        String name = objectNode.get("name").asText();
-        String address = objectNode.get("address").asText();
-        Integer result = poiService.insertCustomActivity(name,address);
-        return new ResponseEntity<>(result, HttpStatus.OK);
-        } catch (Exception e){
+    @PostMapping("/addCustom")
+    public ResponseEntity<Integer> addTripDetailGenerated(@RequestBody ObjectNode objectNode) {
+        try {
+
+            String name = objectNode.get("name").asText();
+            String address = objectNode.get("address").asText();
+            Integer result = poiService.insertCustomActivity(name, address);
+            return new ResponseEntity<>(result, HttpStatus.OK);
+        } catch (Exception e) {
             log.info(e.getMessage());
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
     @PutMapping("/editCustom")
-    public ResponseEntity<?> addTripDetailGenerated(@RequestBody TripDetailDTO input){
-        try{
+    public ResponseEntity<?> addTripDetailGenerated(@RequestBody TripDetailDTO input) {
+        try {
 
-        poiService.editCustom(input);
-        return new ResponseEntity<>( HttpStatus.OK);
-        } catch (Exception e){
+            poiService.editCustom(input);
+            return new ResponseEntity<>(HttpStatus.OK);
+        } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+
     @PutMapping("/editRating")
-    public ResponseEntity<ArrayList<RatingDTO>> updateRating(HttpServletRequest request,@RequestBody RatingDTO dto) {
+    public ResponseEntity<ArrayList<RatingDTO>> updateRating(HttpServletRequest request, @RequestBody RatingDTO dto) {
         try {
             int rate = dto.getRate();
             String comment = dto.getComment();
@@ -190,7 +198,7 @@ public class POIController {
             int uid = dto.getUserId();
             int poiId = dto.getPoiId();
             poiService.updateRatingInPOI(rate, comment, modified, uid, poiId);
-            ArrayList<RatingDTO> list = poiService.getRatingListByPOIId(poiId,request.getHeader("Authorization"));
+            ArrayList<RatingDTO> list = poiService.getRatingListByPOIId(poiId, request.getHeader("Authorization"));
             return new ResponseEntity<>(list, HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
@@ -198,7 +206,7 @@ public class POIController {
     }
 
     @PostMapping("/createRating")
-    public ResponseEntity<ArrayList<RatingDTO>> createRating(HttpServletRequest request,@RequestBody RatingDTO dto) {
+    public ResponseEntity<ArrayList<RatingDTO>> createRating(HttpServletRequest request, @RequestBody RatingDTO dto) {
         try {
             int rate = dto.getRate();
             String comment = dto.getComment();
@@ -206,7 +214,7 @@ public class POIController {
             int uid = dto.getUserId();
             int poiId = dto.getPoiId();
             poiService.createRatingInPOI(comment, created, created, rate, poiId, uid);
-            ArrayList<RatingDTO> list = poiService.getRatingListByPOIId(poiId,request.getHeader("Authorization"));
+            ArrayList<RatingDTO> list = poiService.getRatingListByPOIId(poiId, request.getHeader("Authorization"));
             return new ResponseEntity<>(list, HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
@@ -222,19 +230,24 @@ public class POIController {
             if (paging.getContent().isEmpty()) {
                 return new ResponseEntity<>(HttpStatus.NOT_FOUND);
             }
-            SearchRespondeDTO respondeDTO = new SearchRespondeDTO();
-            respondeDTO.setList(paging.getContent());
-            respondeDTO.setTotalPage((int) Math.ceil(results.size() / 10.0));
-            respondeDTO.setCurrentPage(input.getPage());
-            return new ResponseEntity<SearchRespondeDTO>(respondeDTO, HttpStatus.OK);
+            SearchRespondeDTO respondDTO = new SearchRespondeDTO();
+            respondDTO.setList(paging.getContent());
+            respondDTO.setTotalPage((int) Math.ceil(results.size() / 10.0));
+            respondDTO.setCurrentPage(input.getPage());
+            return new ResponseEntity<SearchRespondeDTO>(respondDTO, HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
-//    @PreAuthorize("hasAuthority('Admin')")
+    //    @PreAuthorize("hasAuthority('Admin')")
     @GetMapping("/list/admin/{filter}/{catId}/{nameKey}/{page}")
-    public ResponseEntity<ArrayList<POIListDTO>> getPOIListAdmin(@PathVariable("filter") String filter, @PathVariable("page") int page, @PathVariable("catId") int catId, @PathVariable("nameKey") String nameKey) {
+    public ResponseEntity<ArrayList<POIListDTO>> getPOIListAdmin(
+            @PathVariable("filter") String filter,
+            @PathVariable("page") int page,
+            @PathVariable("catId") int catId,
+            @PathVariable("nameKey") String nameKey
+    ) {
         try {
             ArrayList<POIListDTO> pois;
             if (nameKey.equals("*"))
@@ -246,7 +259,7 @@ public class POIController {
         }
     }
 
-//    @PreAuthorize("hasAuthority('Admin')")
+    //    @PreAuthorize("hasAuthority('Admin')")
     @GetMapping("/list/admin/count/{catId}/{nameKey}")
     public ResponseEntity<Integer> getPOIListAdminCount(@PathVariable("catId") int catId, @PathVariable("nameKey") String nameKey) {
         try {
@@ -287,7 +300,7 @@ public class POIController {
         }
     }
 
-//    @PreAuthorize("hasAuthority('Admin')")
+    //    @PreAuthorize("hasAuthority('Admin')")
     @GetMapping("/list/admin/update/images/{poiId}")
     public ResponseEntity<ArrayList<POIImageUpdateDTO>> getPOIImageUpdate(@PathVariable("poiId") int poiId) {
         try {
@@ -301,15 +314,29 @@ public class POIController {
         }
     }
 
-//    @PreAuthorize("hasAuthority('Admin')")
+    //    @PreAuthorize("hasAuthority('Admin')")
     @RequestMapping(value = "/update", consumes = "application/json", produces = {"*/*"}, method = RequestMethod.POST)
     public ResponseEntity<?> updatePOI(@RequestBody UpdatePOIDTO poi) {
         try {
             java.sql.Timestamp date = new java.sql.Timestamp(Calendar.getInstance().getTime().getTime());
             poiRepo.updateMA(poi.getActivityId(), poi.getAddress(), poi.getName());
-            poiRepo.updatePOI(poi.getActivityId(), poi.getDescription(), poi.getAdditionalInfo(),
-                    poi.getEmail(), poi.getClosingTime(), date, poi.getDuration(), poi.getOpeningTime(),
-                    poi.getPhoneNumber(), poi.getPrice(), poi.getWebsite(), poi.getCategoryId(), poi.getRating(), poi.getLat(), poi.getLon());
+            poiRepo.updatePOI(
+                    poi.getActivityId(),
+                    poi.getDescription(),
+                    poi.getAdditionalInfo(),
+                    poi.getEmail(),
+                    poi.getClosingTime(),
+                    date,
+                    poi.getDuration(),
+                    poi.getOpeningTime(),
+                    poi.getPhoneNumber(),
+                    poi.getPrice(),
+                    poi.getWebsite(),
+                    poi.getCategoryId(),
+                    poi.getRating(),
+                    poi.getLat(),
+                    poi.getLon()
+            );
             return new ResponseEntity<>(HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
@@ -317,113 +344,127 @@ public class POIController {
     }
 
     @GetMapping("/poisByDestination/{id}")
-    public ResponseEntity<ListPoi> getListResponseEntity(@PathVariable int id){
+    public ResponseEntity<ListPoi> getListResponseEntity(@PathVariable int id) {
         try {
-            ArrayList<POI> list = new ArrayList<>();
+            ArrayList<POI> list;
             ListPoi listPoi = new ListPoi();
-
             list = poiRepo.getPOIsByDestinationId(id);
-            if(list.isEmpty()){
-                return  new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            if (list.isEmpty()) {
+                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
             }
             listPoi.setList(list);
             listPoi.setAdditional("success");
-            return new ResponseEntity<>(listPoi,HttpStatus.OK);
-        }
-        catch (Exception e){
-            return  new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<>(listPoi, HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+
     @GetMapping("distance/{src}/{dest}")
-    public ResponseEntity<Double> getDistance(@PathVariable int src,@PathVariable int dest){
+    public ResponseEntity<Double> getDistance(@PathVariable int src, @PathVariable int dest) {
 //        try{
-            Double distance = distanceRepository.getDistanceBySrcAndDest(src,dest);
-            if(distance==null){
-                return  new ResponseEntity<>(HttpStatus.NOT_FOUND);
-            }
-            return new ResponseEntity<>(distance,HttpStatus.OK);
+        Double distance = distanceRepository.getDistanceBySrcAndDest(src, dest);
+        if (distance == null) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        return new ResponseEntity<>(distance, HttpStatus.OK);
 //        }
 //        catch (Exception e){
 //            return  new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
 //        }
     }
 
-
-//    @PreAuthorize("hasAuthority('Admin')")
+    //    @PreAuthorize("hasAuthority('Admin')")
     @Transactional(rollbackFor = {Exception.class, Throwable.class})
     @RequestMapping(value = "/add", consumes = "application/json", produces = {"*/*"}, method = RequestMethod.POST)
     public ResponseEntity<?> addPOI(@RequestBody UpdatePOIDTO poi) throws Exception {
 //        try {
-            String uri = "https://api.distancematrix.ai/maps/api/distancematrix/json?origins=";
-            String origin = poi.getLat() + "," + poi.getLon();
+        String uri = "https://api.distancematrix.ai/maps/api/distancematrix/json?origins=";
+        String origin = poi.getLat() + "," + poi.getLon();
 
-            RestTemplate restTemplate = new RestTemplate();
-            ArrayList<POI> pois = poiRepo.getPOIsByDestinationId(1);
-            String dest = "";
-            int index = 0;
-            for (POI des : pois
+        RestTemplate restTemplate = new RestTemplate();
+        ArrayList<POI> pois = poiRepo.getPOIsByDestinationId(1);
+        String dest = "";
+        int index = 0;
+        for (POI des : pois
+        ) {
+            index++;
+            dest += des.getLatitude() + "," + des.getLongitude();
+            if (index != pois.size())
+                dest += "|";
+        }
+        uri = uri + origin + "&destinations=" + dest + "&key=" + distanceToken;
+        ObjectMapper mapper = new ObjectMapper();
+        Gson gson = new GsonBuilder().create();
+        String result = restTemplate.getForObject(uri, String.class);
+        DistanceMatrixDTO target2 = gson.fromJson(result, DistanceMatrixDTO.class);
+        java.sql.Timestamp date = new java.sql.Timestamp(Calendar.getInstance().getTime().getTime());
+        poiRepo.addMA(poi.getAddress(), poi.getName());
+        poiRepo.addPOI(
+                poi.getDescription(),
+                poi.getAdditionalInfo(),
+                poi.getEmail(),
+                poi.getClosingTime(),
+                date, date,
+                poi.getDuration(),
+                poi.getOpeningTime(),
+                poi.getPhoneNumber(),
+                poi.getPrice(),
+                poi.getWebsite(),
+                poiRepo.getLastestMA(),
+                poi.getCategoryId(),
+                poi.getRating(),
+                false,
+                poi.getLat(),
+                poi.getLon()
+        );
+        index = 0;
+        for (Row row : target2.getRows()
+        ) {
+            for (Element e : row.elements
             ) {
+                distanceRepository.insertDistance(e.distance.value / 1000.0, poiRepo.getLastestMA(), pois.get(index).getActivityId());
+                distanceRepository.insertDistance(e.distance.value / 1000.0, pois.get(index).getActivityId(), poiRepo.getLastestMA());
                 index++;
-                dest += des.getLatitude() + "," + des.getLongitude();
-                if (index != pois.size())
-                    dest += "|";
             }
-            uri = uri + origin + "&destinations=" + dest + "&key=" + distanceToken;
-            ObjectMapper mapper = new ObjectMapper();
-            Gson gson = new GsonBuilder().create();
-            String result = restTemplate.getForObject(uri, String.class);
-            DistanceMatrixDTO target2 = gson.fromJson(result, DistanceMatrixDTO.class);
-            java.sql.Timestamp date = new java.sql.Timestamp(Calendar.getInstance().getTime().getTime());
-            poiRepo.addMA(poi.getAddress(), poi.getName());
-            poiRepo.addPOI(poi.getDescription(), poi.getAdditionalInfo(),
-                    poi.getEmail(), poi.getClosingTime(), date, date, poi.getDuration(), poi.getOpeningTime(),
-                    poi.getPhoneNumber(), poi.getPrice(), poi.getWebsite(), poiRepo.getLastestMA(), poi.getCategoryId(), poi.getRating(), false, poi.getLat(), poi.getLon());
-            index = 0;
-            for (Row row : target2.getRows()
-            ) {
-                for (Element e : row.elements
-                ) {
-
-                    distanceRepository.insertDistance(e.distance.value / 1000.0, poiRepo.getLastestMA(), pois.get(index).getActivityId());
-                    distanceRepository.insertDistance(e.distance.value / 1000.0, pois.get(index).getActivityId(), poiRepo.getLastestMA());
-
-                    index++;
-                }
-            }
-            distanceRepository.insertDistance(0, poiRepo.getLastestMA(), poiRepo.getLastestMA());
-            return new ResponseEntity<>(poiRepo.getLastestMA(), HttpStatus.OK);
+        }
+        distanceRepository.insertDistance(0, poiRepo.getLastestMA(), poiRepo.getLastestMA());
+        return new ResponseEntity<>(poiRepo.getLastestMA(), HttpStatus.OK);
 //        } catch (Exception e) {
 //            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
 //        }
     }
 
     @GetMapping("isExistCustom/{id}")
-    public ResponseEntity<?> isExistCustom(@PathVariable int id){
-        if(customActivityRepository.existsById(id)){
-            return new  ResponseEntity(true,HttpStatus.OK);
-        }
-        else{
-            return new  ResponseEntity(false,HttpStatus.OK);
+    public ResponseEntity<?> isExistCustom(@PathVariable int id) {
+        if (customActivityRepository.existsById(id)) {
+            return new ResponseEntity<>(true, HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(false, HttpStatus.OK);
         }
     }
 
     @PostMapping("cloneCustom/{id}")
-    public  ResponseEntity<?> cloneCustom(@PathVariable int id){
-        return  new ResponseEntity<>(poiService.cloneCustomActivity(id),HttpStatus.OK);
+    public ResponseEntity<?> cloneCustom(@PathVariable int id) {
+        return new ResponseEntity<>(poiService.cloneCustomActivity(id), HttpStatus.OK);
     }
 
     @PreAuthorize("hasAuthority('Admin')")
     @PostMapping("/addImg/{poiId}/{description}")
     @ResponseBody
-    public ResponseEntity<?> addImage(@PathVariable int poiId, @PathVariable String description, @RequestPart("File") MultipartFile file) throws Exception {
-        try{
-        String webViewLink = driveManager.uploadFile(file, "tripplanner/img/poi");
-        if (description.equals("*"))
-            poiRepo.addImage(poiId, null, webViewLink);
-        else
-            poiRepo.addImage(poiId, description, webViewLink);
-        return new ResponseEntity<>(HttpStatus.OK);
-        } catch (Exception e){
+    public ResponseEntity<?> addImage(
+            @PathVariable int poiId,
+            @PathVariable String description,
+            @RequestPart("File") MultipartFile file
+    ) throws Exception {
+        try {
+            String webViewLink = driveManager.uploadFile(file, "tripplanner/img/poi");
+            if (description.equals("*"))
+                poiRepo.addImage(poiId, null, webViewLink);
+            else
+                poiRepo.addImage(poiId, description, webViewLink);
+            return new ResponseEntity<>(HttpStatus.OK);
+        } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
@@ -440,6 +481,5 @@ public class POIController {
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
-
     }
 }

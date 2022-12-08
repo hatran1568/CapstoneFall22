@@ -6,8 +6,5 @@ import lombok.Data;
 public class POIDTO {
     private int id;
     private  String name;
-
     private double typicalPrice;
-
-
 }

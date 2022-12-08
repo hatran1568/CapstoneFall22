@@ -42,7 +42,7 @@ public class UserServiceImpl implements UserService {
     @Autowired
     JwtTokenProvider tokenProvider;
 
-//    @Autowired
+    //    @Autowired
 //    GoogleDriveManager driveManager;
     @Autowired
     MailSenderManager mailSender;
@@ -103,7 +103,6 @@ public class UserServiceImpl implements UserService {
     }
 
     //return old avatar
-
     @Override
     public String editAvatar(int userId, MultipartFile file) {
         User user = userRepository.findByUserID(userId);
@@ -192,5 +191,4 @@ public class UserServiceImpl implements UserService {
         role.setRoleName(name);
         return roleRepository.save(role);
     }
-
 }
