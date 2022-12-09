@@ -153,7 +153,7 @@ public class DestinationController {
     }
     @Transactional(rollbackFor = {Exception.class, Throwable.class})
     @RequestMapping(value = "/destination/delete/{desId}", consumes = "application/json", method = RequestMethod.POST)
-    public ResponseEntity<?> deletePOI(@PathVariable int desId) {
+    public ResponseEntity<?> deleteDes(@PathVariable int desId) {
         try{
             if (destinationRepo.getDestinationById(desId) == null){
                 return new ResponseEntity<>(HttpStatus.NOT_FOUND);
