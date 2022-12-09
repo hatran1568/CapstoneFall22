@@ -47,8 +47,8 @@ public class TripController {
                 .replacePath(null)
                 .build()
                 .toUriString();
-
-        generateTrip.generateTrip(input,baseUrl).thenComposeAsync(response -> {
+        String bearerToken = request.getHeader("Authorization");
+        generateTrip.generateTrip(input,baseUrl,bearerToken).thenComposeAsync(response -> {
             try {
                return generateTrip.insertToDB(response);
             } catch (ExecutionException e) {

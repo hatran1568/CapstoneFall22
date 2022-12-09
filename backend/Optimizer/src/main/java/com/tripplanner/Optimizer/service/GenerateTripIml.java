@@ -4,6 +4,7 @@ package com.tripplanner.Optimizer.service;
 import com.tripplanner.Optimizer.DTO.*;
 import com.tripplanner.Optimizer.DTO.Response.ComplexResponse;
 import com.tripplanner.Optimizer.DTO.Response.DesDetailsDTO;
+import com.tripplanner.Optimizer.DTO.Response.UserDetailResponseDTO;
 import com.tripplanner.Optimizer.DTO.request.ExpenseDTO;
 import com.tripplanner.Optimizer.DTO.request.TripDetailsGenerateDTO;
 import com.tripplanner.Optimizer.DTO.request.TripGenerateDTO;
@@ -17,13 +18,13 @@ import com.tripplanner.Optimizer.service.interfaces.GenerateTrip;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.tripplanner.Optimizer.repository.RequestRepository;
+import com.tripplanner.Optimizer.utils.MailSenderManager;
+import org.apache.catalina.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.client.ServiceInstance;
 import org.springframework.cloud.client.discovery.DiscoveryClient;
 import org.springframework.core.env.Environment;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.MediaType;
+import org.springframework.http.*;
 
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
@@ -42,6 +43,9 @@ import lombok.extern.slf4j.Slf4j;
 public class GenerateTripIml implements GenerateTrip {
 
     @Autowired
+    MailSenderManager mailSender;
+
+    @Autowired
     RestTemplateClient restTemplateClient;
 
     @Autowired
@@ -58,7 +62,7 @@ public class GenerateTripIml implements GenerateTrip {
 
     @Override
     @Async("asyncTaskExecutor")
-    public CompletableFuture<ComplexResponse> generateTrip(GenerateTripUserInput input, String baseUrl) throws ExecutionException, InterruptedException {
+    public CompletableFuture<ComplexResponse> generateTrip(GenerateTripUserInput input, String baseUrl,String token) throws ExecutionException, InterruptedException {
         CompletableFuture<ComplexResponse> task = new CompletableFuture<>();
         OptimizerRequest r = new OptimizerRequest();
         r.setTrip(null);
@@ -102,8 +106,9 @@ public class GenerateTripIml implements GenerateTrip {
         Solution s = ga.implementGA(data);
 
 
-        task.complete(new ComplexResponse(s,data,input));
 
+
+        task.complete(new ComplexResponse(s,data,input,saved,token));
 //        repository.insert(RequestStatus.IN_PROGRESS.name(), baseUrl, input.getUserId());
 
         return task;
@@ -117,7 +122,9 @@ public class GenerateTripIml implements GenerateTrip {
         Data data = response.getData();
         GenerateTripUserInput input =response.getInput();
         repository.changeSuccess(input.getUserId());
-
+        OptimizerRequest optimizerRequest = response.getRequest();
+    optimizerRequest.setStatus(RequestStatus.COMPLETE);
+    optimizerRequest = repository.save(optimizerRequest);
 
 
         log.info("Insert to DB ");
@@ -145,7 +152,8 @@ public class GenerateTripIml implements GenerateTrip {
         System.out.println(request);
 
         int id= restTemplateClient.restTemplate().postForObject(instance.getUri()+"/trip/insert", request, Integer.class);
-
+        optimizerRequest.setTrip(id);
+        optimizerRequest = repository.save(optimizerRequest);
         Trip tour = s.toTrip(data);
         repository.changeSuccess(input.getUserId());
 
@@ -179,17 +187,31 @@ public class GenerateTripIml implements GenerateTrip {
             HttpEntity<String> request2 =
                     new HttpEntity<String>(nodeObject2, headers);
             restTemplateClient.restTemplate().postForObject(instance.getUri()+"/trip/api/insertGenerated", request2, String.class);
-
+        response.setRequest(optimizerRequest);
 
         }
         task.complete(response);
         task.whenComplete(new BiConsumer<ComplexResponse, Throwable>() {
             @Override
             public void accept(ComplexResponse response, Throwable throwable) {
-                log.info("success");
+
+                List<ServiceInstance> userInstances = discoveryClient.getInstances("user-service");
+                ServiceInstance userInstance = userInstances.get(0);
+                HttpHeaders headers = new HttpHeaders();
+                headers.setContentType(MediaType.APPLICATION_JSON);
+                headers.set("Authorization", response.getToken());
+                HttpEntity<String> request2 =
+                        new HttpEntity<String>(headers);
+                ResponseEntity<UserDetailResponseDTO> user = restTemplateClient.restTemplate().exchange(userInstance.getUri()+"/user/api/user/findById/"+input.getUserId(), HttpMethod.GET,request2, UserDetailResponseDTO.class);
+                String emailContent = "dear "+user.getBody().getName()+",\n \n"
+                        + "See your trip at http://localhost:3000/timeline/"+response.getRequest().getTrip() ;
+                mailSender.sendSimpleMessage(user.getBody().getEmail(), "Your trip is ready", emailContent);
+               
             }
         });
         return  task;
 
     }
+
+
     }

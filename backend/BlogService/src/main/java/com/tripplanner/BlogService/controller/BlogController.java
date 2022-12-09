@@ -47,6 +47,7 @@ public class BlogController {
     private BlogRepository blogRepo;
     @Autowired
     BlogService blogService;
+
     @Autowired
     GoogleDriveManager driveManager;
     @Transactional(rollbackFor = {Exception.class, Throwable.class})
