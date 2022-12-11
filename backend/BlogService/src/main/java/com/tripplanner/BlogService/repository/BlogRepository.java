@@ -74,7 +74,7 @@ public interface BlogRepository extends JpaRepository<Blog, Integer> {
     @Query(
             value = "SELECT blog_id as blogId FROM blog ORDER BY blog_id DESC LIMIT 1",
             nativeQuery = true)
-    int getLastestBlog();
+    int getLatestBlog();
 
     @Modifying
     @Transactional

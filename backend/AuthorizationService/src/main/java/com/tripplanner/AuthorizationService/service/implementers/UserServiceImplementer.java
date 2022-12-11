@@ -9,7 +9,6 @@ import com.tripplanner.AuthorizationService.security.JwtTokenProvider;
 import com.tripplanner.AuthorizationService.service.interfaces.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
 
 @Service
 public class UserServiceImplementer implements UserService {
@@ -55,34 +54,34 @@ public class UserServiceImplementer implements UserService {
             userRepository.save(newUser);
         }
     }
-
-    @Override
-    public void updateProvider(int userID, Provider authType) {
-
-    }
-
-    @Override
-    public void register(User user) {
-
-    }
-
-    @Override
-    public boolean checkExistByEmail(String email) {
-        return false;
-    }
-
-    @Override
-    public String editAvatar(int userId, MultipartFile file) {
-        return null;
-    }
-
-    @Override
-    public void editUsername(int userId, String newUsername) {
-
-    }
-
-    @Override
-    public boolean requestPasswordReset(String email) {
-        return false;
-    }
+//
+//    @Override
+//    public void updateProvider(int userID, Provider authType) {
+//
+//    }
+//
+//    @Override
+//    public void register(User user) {
+//
+//    }
+//
+//    @Override
+//    public boolean checkExistByEmail(String email) {
+//        return false;
+//    }
+//
+//    @Override
+//    public String editAvatar(int userId, MultipartFile file) {
+//        return null;
+//    }
+//
+//    @Override
+//    public void editUsername(int userId, String newUsername) {
+//
+//    }
+//
+//    @Override
+//    public boolean requestPasswordReset(String email) {
+//        return false;
+//    }
 }
