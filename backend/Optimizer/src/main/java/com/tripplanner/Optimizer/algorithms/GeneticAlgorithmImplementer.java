@@ -4,7 +4,6 @@ import com.tripplanner.Optimizer.DTO.Data;
 import com.tripplanner.Optimizer.DTO.Solution;
 import lombok.extern.slf4j.Slf4j;
 
-
 import java.util.*;
 
 
@@ -18,6 +17,7 @@ public class GeneticAlgorithmImplementer {
 
         this.data = data;
     }
+
     static int getNum(ArrayList<Integer> v) {
         // Size of the vector
         int n = v.size();
@@ -56,8 +56,14 @@ public class GeneticAlgorithmImplementer {
         return vc;
     }
 
+    public static <T> Set<T> newShuffledSet(Collection<T> collection) {
+        List<T> shuffleMe = new ArrayList<T>(collection);
+        Collections.shuffle(shuffleMe);
+        return new HashSet<T>(shuffleMe);
+    }
+
     // Driver code
-    public Solution generatePopulation(Data data)  {
+    public Solution generatePopulation(Data data) {
 
         ArrayList<Integer> fullTrip = generateRandom(data.getNumberOfPOI());
         Solution s = new Solution(data);
@@ -89,7 +95,7 @@ public class GeneticAlgorithmImplementer {
 
     }
 
-    public Solution crossover(Solution parent1, Solution parent2, Data data)  {
+    public Solution crossover(Solution parent1, Solution parent2, Data data) {
         Solution child = new Solution(data);
         Collection<Integer> set = new HashSet<Integer>();
         for (ArrayList<Integer> list : parent1.gene) {
@@ -104,7 +110,7 @@ public class GeneticAlgorithmImplementer {
             }
 
         }
-        set = (Set<Integer>) newShuffledSet(set);
+        set = newShuffledSet(set);
 
         ArrayList<Integer> fullTrip = new ArrayList<>(set);
 
@@ -150,25 +156,25 @@ public class GeneticAlgorithmImplementer {
         for (int i = 0; i < tripNumber; i++) {
             if (tripNumber != 0) {
                 for (Integer poi : s.gene.get(i)) {
-                    poiList.remove(poiList.indexOf(poi));
+                    poiList.remove(poi);
                 }
                 newS.gene.add(s.gene.get(i));
             }
         }
         ArrayList<Integer> newTrip = new ArrayList<>();
-        double time = Double.max(data.getDailyStartTime()[tripNumber], data.getPOIs()[s.gene.get(tripNumber).get(0)].getOpenTime()) + data.getPOIs()[s.gene.get(tripNumber).get(0)].getDuration();;
+        double time = Double.max(data.getDailyStartTime()[tripNumber], data.getPOIs()[s.gene.get(tripNumber).get(0)].getOpenTime()) + data.getPOIs()[s.gene.get(tripNumber).get(0)].getDuration();
         double cost = data.getPOIs()[s.gene.get(tripNumber).get(0)].getTypicalPrice();
         for (int i = 0; i < cutoffPoint; i++) {
             int currentPOI = s.gene.get(tripNumber).get(i);
             newTrip.add(currentPOI);
-            poiList.remove(poiList.indexOf(currentPOI));
+            poiList.remove((Integer) currentPOI);
             time = Double.max(time + data.getDistanceOfPOI()[currentPOI][s.gene.get(tripNumber).get(i + 1)] * 90, data.getPOIs()[s.gene.get(tripNumber).get(i + 1)].getOpenTime()) + data.getPOIs()[s.gene.get(tripNumber).get(i + 1)].getDuration();
             cost += data.getPOIs()[s.gene.get(tripNumber).get(i)].getTypicalPrice();
         }
 
         int current = s.gene.get(tripNumber).get(cutoffPoint);
         newTrip.add(current);
-        poiList.remove(poiList.indexOf(current));
+        poiList.remove((Integer) current);
 
         ArrayList<Integer> fullTrip = new ArrayList<>();
         int size = poiList.size();
@@ -218,13 +224,13 @@ public class GeneticAlgorithmImplementer {
         return newS;
     }
 
-    public Solution mutation2(Solution s, Data data){
+    public Solution mutation2(Solution s, Data data) {
         Solution newS = new Solution(data);
 
         return generatePopulation(data);
     }
 
-    public Solution implementGA(Data data){
+    public Solution implementGA(Data data) {
         ArrayList<Solution> results = new ArrayList<>();
         ArrayList<Solution> population = new ArrayList<>();
         //Generation
@@ -240,8 +246,7 @@ public class GeneticAlgorithmImplementer {
         });
 
         for (int j = 1; j <= 300; j++) {
-
-
+            log.info(String.valueOf(j));
             //Selection
 
             ArrayList<Solution> nextPopulation = new ArrayList<>();
@@ -291,15 +296,7 @@ public class GeneticAlgorithmImplementer {
 //        }
 
 
+        return results.get(results.size() - 1);
 
-
-        return results.get(results.size()-1);
-
-    }
-
-    public static <T> Set<T> newShuffledSet(Collection<T> collection) {
-        List<T> shuffleMe = new ArrayList<T>(collection);
-        Collections.shuffle(shuffleMe);
-        return new HashSet<T>(shuffleMe);
     }
 }
