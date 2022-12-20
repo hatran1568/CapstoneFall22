@@ -91,7 +91,7 @@ const NavBar = () => {
                   <MDBDropdownToggle tag="a" className="nav-link link-dark">
                     <PersonIcon />
                   </MDBDropdownToggle>
-                  <MDBDropdownMenu>
+                  <MDBDropdownMenu style={{ padding: 0 }}>
                     <MDBDropdownItem link href="/profile">
                       Hồ sơ cá nhân
                     </MDBDropdownItem>

@@ -166,18 +166,18 @@ function Map(props) {
                         </a>
                       )
                     )}
-                    <a
-                      onClick={() => changeDay(0)}
-                      className={
-                        0 == daySelected
-                          ? style.date
-                          : `${style.date} ${style.dateActive}`
-                      }
-                    >
-                      All
-                    </a>
                   </div>
                 ))}
+              <a
+                onClick={() => changeDay(0)}
+                className={
+                  0 == daySelected
+                    ? style.date
+                    : `${style.date} ${style.dateActive}`
+                }
+              >
+                Tất cả
+              </a>
             </div>
           </div>
           <div className="col-10 ">
