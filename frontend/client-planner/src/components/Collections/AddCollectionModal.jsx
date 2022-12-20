@@ -91,6 +91,7 @@ const AddCollectionModal = (prop) => {
               setTitleInput(e.target.value);
             }}
             size="large"
+            spellCheck="false"
           />
         </MDBInputGroup>
         <MDBInputGroup className="px-2">
@@ -103,6 +104,7 @@ const AddCollectionModal = (prop) => {
             }}
             maxLength={100}
             style={{ width: 1000, resize: "none" }}
+            spellCheck="false"
           />
         </MDBInputGroup>
       </Modal>

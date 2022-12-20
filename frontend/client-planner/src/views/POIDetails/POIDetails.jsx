@@ -265,9 +265,10 @@ const POIDetails = () => {
           placeholder="Chia sẻ trải nghiệm của bạn về nơi này"
           onChange={handleChange}
           value={comment}
+          spellCheck="false"
         />
         <MDBBtn color="info" className="mt-2" onClick={handleEdit}>
-          Edit
+          Sửa
         </MDBBtn>
       </MDBCol>
     );
@@ -292,6 +293,7 @@ const POIDetails = () => {
           placeholder="Chia sẻ trải nghiệm của bạn về nơi này"
           onChange={handleChange}
           value={comment}
+          spellCheck="false"
         />
         <MDBBtn color="info" className="mt-2" onClick={handleCreate}>
           Gửi

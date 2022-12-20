@@ -13,7 +13,7 @@ function ConfirmEditModal(props) {
     <>
       <Modal
         {...rest}
-        size="md"
+        size="lg"
         aria-labelledby="contained-modal-title-vcenter"
         centered
       >

@@ -141,18 +141,6 @@ function Login() {
               >
                 <i className="fab fa-google me-2"></i> Tiếp tục với Google
               </MDBBtn>
-              <MDBBtn
-                className="btn btn-lg col-6 mx-auto btn-primary mb-5"
-                style={{
-                  backgroundColor: "#3b5998",
-                  border: 0,
-                  fontSize: "16px",
-                }}
-                type="submit"
-                onClick={handleLoginFacebook}
-              >
-                <i className="fab fa-facebook me-2"></i> Tiếp tục với Facebook
-              </MDBBtn>
               <p
                 className="mb-0 pb-lg-2 text-center"
                 style={{ color: "#393f81" }}

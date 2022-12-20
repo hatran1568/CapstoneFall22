@@ -139,7 +139,7 @@ function Signup() {
               <div className={style.registerInputDiv}>
                 <MDBInput
                   wrapperClass="mt-4 mx-5"
-                  label="Email address"
+                  label="Địa chỉ email"
                   id="formEmail"
                   type="email"
                   size="lg"
@@ -156,7 +156,7 @@ function Signup() {
               <div className={style.registerInputDiv}>
                 <MDBInput
                   wrapperClass="mt-4 mx-5"
-                  label="Password"
+                  label="Mật khẩu"
                   id="formPwd"
                   type="password"
                   size="lg"
@@ -175,7 +175,7 @@ function Signup() {
               <div className={style.registerInputDiv}>
                 <MDBInput
                   wrapperClass="mt-4 mx-5"
-                  label="Confirm password"
+                  label="Xác nhận mật khẩu"
                   id="formPwdCf"
                   type="password"
                   size="lg"
@@ -205,13 +205,13 @@ function Signup() {
                 type="button"
                 onClick={handleRegister}
               >
-                Register
+                Đăng ký
               </MDBBtn>
               <p
                 className="mt-5 mb-0 pb-lg-2 text-center"
                 style={{ color: "#393f81" }}
               >
-                Already have an account? <Link to="/login">Login</Link>
+                Bạn đã có tài khoản? <Link to="/login">Đăng nhập tại đây</Link>
               </p>
             </MDBCardBody>
           </MDBCol>
