@@ -1,11 +1,11 @@
 import React from "react";
 import ReactDOM from "react-dom";
-import { useState, useRef, useMemo  } from "react";
+import { useState, useRef, useMemo } from "react";
 import { Modal } from "antd";
-import { Component } from 'react';
-import ReactPaginate from 'react-paginate';
+import { Component } from "react";
+import ReactPaginate from "react-paginate";
 import axios from "../../api/axios";
-import Dropdown from 'react-bootstrap/Dropdown';
+import Dropdown from "react-bootstrap/Dropdown";
 import UserRequestDetails from "./UserRequestDetails";
 import {
   MDBBtn,
@@ -40,48 +40,59 @@ class UserRequestList extends Component {
     this.state = {
       requests: [],
       dataLoaded: false,
-      currentNameKey: '*',
+      currentNameKey: "*",
       currentPage: 0,
       pageCount: 0,
-      currentFilter: 'idASC'
+      currentFilter: "idASC",
     };
   }
   componentDidMount() {
-    axios.get("http://localhost:8080/api/request/list/" + this.state.currentFilter
-              + "/" + this.state.currentNameKey + "/" + this.state.currentPage, {
-                headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
-                withCredentials: true,
-              }).then((res) => {
-      const data = res.data;
-      this.setState({
-        requests: data,
-        dataLoaded: true,
+    axios
+      .get(
+        "http://localhost:8080/location/api/request/list/" +
+          this.state.currentFilter +
+          "/" +
+          this.state.currentNameKey +
+          "/" +
+          this.state.currentPage,
+        {
+          headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+        }
+      )
+      .then((res) => {
+        const data = res.data;
+        this.setState({
+          requests: data,
+          dataLoaded: true,
+        });
+      })
+      .catch(function (error) {
+        console.log(error);
+        return Promise.reject(error);
       });
-    }).catch(
-      function (error) {
-        console.log(error)
-        return Promise.reject(error)
-      }
-    );
-    axios.get("http://localhost:8080/api/request/list/count/" + this.state.currentNameKey, {
-      headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
-      withCredentials: true,
-    }).then((res) => {
-      const data = res.data;
-      this.setState({
-        pageCount: data / 30,
+    axios
+      .get(
+        "http://localhost:8080/location/api/request/list/count/" +
+          this.state.currentNameKey,
+        {
+          headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+        }
+      )
+      .then((res) => {
+        const data = res.data;
+        this.setState({
+          pageCount: data / 30,
+        });
+      })
+      .catch(function (error) {
+        console.log(error);
+        return Promise.reject(error);
       });
-    }).catch(
-      function (error) {
-        console.log(error)
-        return Promise.reject(error)
-      }
-    );
   }
-  
+
   handlePageClick = async (event) => {
     await this.setState({
-      currentPage: event.selected
+      currentPage: event.selected,
     });
     this.componentDidMount();
   };
@@ -90,12 +101,12 @@ class UserRequestList extends Component {
     const searchBarName = document.getElementById("searchBarName");
     if (searchBarName.value == null || searchBarName.value == "")
       this.setState({
-        currentNameKey: "*"
-      })
+        currentNameKey: "*",
+      });
     else
       this.setState({
-        currentNameKey: searchBarName.value
-      })
+        currentNameKey: searchBarName.value,
+      });
     this.componentDidMount();
   };
 
@@ -108,22 +119,26 @@ class UserRequestList extends Component {
       okType: "danger",
       cancelText: "Không",
       onOk: async () => {
-        await axios.post(`http://localhost:8080/api/user/delete/` + userId, {
-          headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
-          withCredentials: true,
-        });
+        await axios.post(
+          `http://localhost:8080/location/api/user/delete/` + userId,
+          {
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("token")}`,
+            },
+          }
+        );
         this.componentDidMount();
       },
       onCancel() {},
     });
-  }
+  };
 
   sortClick = async (event) => {
     await this.setState({
-      currentFilter: event.currentTarget.id
+      currentFilter: event.currentTarget.id,
     });
     this.componentDidMount();
-  }
+  };
 
   render() {
     const poiTableData = [];
@@ -140,32 +155,47 @@ class UserRequestList extends Component {
       var dateCreated = new Date(dateCreatedRaw);
       dateCreated = dateCreated.toLocaleDateString("vi", options);
       var name = entry.name;
-      if (name == " " || name == "")
-        name = "Chưa đặt tên";
+      if (name == " " || name == "") name = "Chưa đặt tên";
       var avatar = entry.avatar;
       if (avatar == null)
-        avatar = "https://t4.ftcdn.net/jpg/03/59/58/91/360_F_359589186_JDLl8dIWoBNf1iqEkHxhUeeOulx0wOC5.jpg";
+        avatar =
+          "https://t4.ftcdn.net/jpg/03/59/58/91/360_F_359589186_JDLl8dIWoBNf1iqEkHxhUeeOulx0wOC5.jpg";
       // const hideBtn = [];
       // if (entry.status == "ACTIVE")
-      //   hideBtn.push( 
+      //   hideBtn.push(
       //   <a className={style.tableIcons} id={entry.userId} name={name} onClick={this.deactivateUser}><FontAwesomeIcon icon={faEyeSlash}/></a>
       //   );
       // if (entry.status == "DEACTIVATED")
-      //   hideBtn.push( 
+      //   hideBtn.push(
       //   <a className={style.tableIcons} id={entry.userId} name={name} onClick={this.activateUser}><FontAwesomeIcon icon={faEye}/></a>
       //   );
       if (index % 2 == 0)
         poiTableData.push(
           <tr className={style.tableDataGrey}>
-            <th scope='col' className={style.tableIdData}>{entry.requestId}</th>
-            <th scope='col' className={style.tableAuthor}><img className={style.avatar} src={avatar}/>{entry.username}</th>
-            <th scope='col' className={style.tableDateData}>{dateModified}</th>
-            <th scope='col' className={style.tableDateData}>{dateCreated}</th>
-            <th scope='col' className={style.tablePoiName}>{entry.poiName}</th>
-            <th scope='col' className={style.tableStatus}>{entry.status}</th>
-            <th scope='col' className={style.tableActions}>
-              <UserRequestDetails data={entry.requestId}
-                refreshHandler={() => this.componentDidMount()}/>
+            <th scope="col" className={style.tableIdData}>
+              {entry.requestId}
+            </th>
+            <th scope="col" className={style.tableAuthor}>
+              <img className={style.avatar} src={avatar} />
+              {entry.username}
+            </th>
+            <th scope="col" className={style.tableDateData}>
+              {dateModified}
+            </th>
+            <th scope="col" className={style.tableDateData}>
+              {dateCreated}
+            </th>
+            <th scope="col" className={style.tablePoiName}>
+              {entry.poiName}
+            </th>
+            <th scope="col" className={style.tableStatus}>
+              {entry.status}
+            </th>
+            <th scope="col" className={style.tableActions}>
+              <UserRequestDetails
+                data={entry.requestId}
+                refreshHandler={() => this.componentDidMount()}
+              />
               {/* <a className={style.tableIcons} id={entry.userId} name={name} onClick={this.deleteUser}><FontAwesomeIcon icon={faTrash}/></a> */}
             </th>
           </tr>
@@ -173,51 +203,132 @@ class UserRequestList extends Component {
       else
         poiTableData.push(
           <tr className={style.tableData}>
-            <th scope='col' className={style.tableIdData}>{entry.requestId}</th>
-            <th scope='col' className={style.tableAuthor}><img className={style.avatar} src={avatar}/>{entry.username}</th>
-            <th scope='col' className={style.tableDateData}>{dateModified}</th>
-            <th scope='col' className={style.tableDateData}>{dateCreated}</th>
-            <th scope='col' className={style.tablePoiName}>{entry.poiName}</th>
-            <th scope='col' className={style.tableStatus}>{entry.status}</th>
-            <th scope='col' className={style.tableActions}>
-              <UserRequestDetails data={entry.requestId}
-                refreshHandler={() => this.componentDidMount()}/>
+            <th scope="col" className={style.tableIdData}>
+              {entry.requestId}
+            </th>
+            <th scope="col" className={style.tableAuthor}>
+              <img className={style.avatar} src={avatar} />
+              {entry.username}
+            </th>
+            <th scope="col" className={style.tableDateData}>
+              {dateModified}
+            </th>
+            <th scope="col" className={style.tableDateData}>
+              {dateCreated}
+            </th>
+            <th scope="col" className={style.tablePoiName}>
+              {entry.poiName}
+            </th>
+            <th scope="col" className={style.tableStatus}>
+              {entry.status}
+            </th>
+            <th scope="col" className={style.tableActions}>
+              <UserRequestDetails
+                data={entry.requestId}
+                refreshHandler={() => this.componentDidMount()}
+              />
               {/* <a className={style.tableIcons} id={entry.userId} name={name} onClick={this.deleteDes}><FontAwesomeIcon icon={faTrash}/></a> */}
             </th>
           </tr>
         );
-    })
+    });
     const tableId = [];
     if (this.state.currentFilter == "idASC")
       tableId.push(
-        <th scope='col' className={style.tableId}>ID<FontAwesomeIcon className={style.sortIcon} icon={faSortUp}/></th>);
+        <th scope="col" className={style.tableId}>
+          ID
+          <FontAwesomeIcon className={style.sortIcon} icon={faSortUp} />
+        </th>
+      );
     else
       tableId.push(
-        <th scope='col' className={style.tableId} onClick={this.sortClick} id="idASC">ID<FontAwesomeIcon className={style.sortIcon} icon={faSort}/></th>);
+        <th
+          scope="col"
+          className={style.tableId}
+          onClick={this.sortClick}
+          id="idASC"
+        >
+          ID
+          <FontAwesomeIcon className={style.sortIcon} icon={faSort} />
+        </th>
+      );
 
     const tablePOI = [];
     if (this.state.currentFilter == "poiASC")
       tablePOI.push(
-        <th scope='col' className={style.tableName} onClick={this.sortClick} id="poiDESC">ĐỊA ĐIỂM<FontAwesomeIcon className={style.sortIcon} icon={faSortUp}/></th>);
+        <th
+          scope="col"
+          className={style.tableName}
+          onClick={this.sortClick}
+          id="poiDESC"
+        >
+          ĐỊA ĐIỂM
+          <FontAwesomeIcon className={style.sortIcon} icon={faSortUp} />
+        </th>
+      );
     else if (this.state.currentFilter == "poiDESC")
       tablePOI.push(
-        <th scope='col' className={style.tableName} onClick={this.sortClick} id="poiASC">ĐỊA ĐIỂM<FontAwesomeIcon className={style.sortIcon} icon={faSortDown}/></th>);
+        <th
+          scope="col"
+          className={style.tableName}
+          onClick={this.sortClick}
+          id="poiASC"
+        >
+          ĐỊA ĐIỂM
+          <FontAwesomeIcon className={style.sortIcon} icon={faSortDown} />
+        </th>
+      );
     else
       tablePOI.push(
-        <th scope='col' className={style.tableName} onClick={this.sortClick} id="poiDESC">ĐỊA ĐIỂM<FontAwesomeIcon className={style.sortIcon} icon={faSort}/></th>);
-    
+        <th
+          scope="col"
+          className={style.tableName}
+          onClick={this.sortClick}
+          id="poiDESC"
+        >
+          ĐỊA ĐIỂM
+          <FontAwesomeIcon className={style.sortIcon} icon={faSort} />
+        </th>
+      );
+
     const tableDate = [];
     if (this.state.currentFilter == "dateASC")
       tableDate.push(
-        <th scope='col' className={style.tableDate} onClick={this.sortClick} id="dateDESC">NGÀY SỬA<FontAwesomeIcon className={style.sortIcon} icon={faSortUp}/></th>);
+        <th
+          scope="col"
+          className={style.tableDate}
+          onClick={this.sortClick}
+          id="dateDESC"
+        >
+          NGÀY SỬA
+          <FontAwesomeIcon className={style.sortIcon} icon={faSortUp} />
+        </th>
+      );
     else if (this.state.currentFilter == "dateDESC")
       tableDate.push(
-        <th scope='col' className={style.tableDate} onClick={this.sortClick} id="dateASC">NGÀY SỬA<FontAwesomeIcon className={style.sortIcon} icon={faSortDown}/></th>);
+        <th
+          scope="col"
+          className={style.tableDate}
+          onClick={this.sortClick}
+          id="dateASC"
+        >
+          NGÀY SỬA
+          <FontAwesomeIcon className={style.sortIcon} icon={faSortDown} />
+        </th>
+      );
     else
       tableDate.push(
-        <th scope='col' className={style.tableDate} onClick={this.sortClick} id="dateDESC">NGÀY SỬA<FontAwesomeIcon className={style.sortIcon} icon={faSort}/></th>);
+        <th
+          scope="col"
+          className={style.tableDate}
+          onClick={this.sortClick}
+          id="dateDESC"
+        >
+          NGÀY SỬA
+          <FontAwesomeIcon className={style.sortIcon} icon={faSort} />
+        </th>
+      );
 
-        
     return (
       <MDBContainer className={style.bodyContainer}>
         <h2>Quản lí Yêu cầu thay đổi Thông tin</h2>
@@ -227,28 +338,36 @@ class UserRequestList extends Component {
               <span className="input-group-text">
                 <FontAwesomeIcon icon={faPenToSquare} />
               </span>
-              <MDBInput label='Tìm theo tên' id="searchBarName" maxLength={100} className={style.searchInput}/>
-              <MDBBtn color="info" onClick={this.searchPOIs} onMouseUp={this.searchPOIs} rippleColor='dark'>
-                <MDBIcon icon='search' />
+              <MDBInput
+                label="Tìm theo tên"
+                id="searchBarName"
+                maxLength={100}
+                className={style.searchInput}
+              />
+              <MDBBtn
+                color="info"
+                onClick={this.searchPOIs}
+                onMouseUp={this.searchPOIs}
+                rippleColor="dark"
+              >
+                <MDBIcon icon="search" />
               </MDBBtn>
             </MDBInputGroup>
           </MDBCol>
         </MDBRow>
         <MDBTable>
           <MDBTableHead className={style.tableHead}>
-          <tr>
-            {tableId}
-            <th scope='col'>NGƯỜI YÊU CẦU</th>
-            <th scope='col'>NGÀY TẠO</th>
-            {tableDate}
-            {tablePOI}
-            <th scope='col'>TRẠNG THÁI</th>
-            <th scope='col'>HÀNH ĐỘNG</th>
-          </tr>
+            <tr>
+              {tableId}
+              <th scope="col">NGƯỜI YÊU CẦU</th>
+              <th scope="col">NGÀY TẠO</th>
+              {tableDate}
+              {tablePOI}
+              <th scope="col">TRẠNG THÁI</th>
+              <th scope="col">HÀNH ĐỘNG</th>
+            </tr>
           </MDBTableHead>
-          <MDBTableBody>
-            {poiTableData}
-          </MDBTableBody>
+          <MDBTableBody>{poiTableData}</MDBTableBody>
         </MDBTable>
         <ReactPaginate
           nextLabel=" >"
@@ -271,7 +390,7 @@ class UserRequestList extends Component {
           renderOnZeroPageCount={null}
         />
       </MDBContainer>
-    )
+    );
   }
 }
 export default UserRequestList;

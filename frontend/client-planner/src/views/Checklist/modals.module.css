@@ -30,7 +30,7 @@
 }
 .modalBody{
     display: block;
-    margin: 3em;
+    margin: 1em;
     margin-top: 1em;
     /* text-align: center; */
 }
@@ -61,7 +61,6 @@
     font-size: small;
     height: auto;
     margin-left: 1em;
-  
   }
   .warningMessage.hide{
     visibility: hidden;

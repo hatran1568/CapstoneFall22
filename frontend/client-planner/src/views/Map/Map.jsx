@@ -12,10 +12,11 @@ import { Popup } from "react-leaflet";
 import L from "leaflet";
 import TripGeneralInfo from "../GeneralInfo/TripGeneralInfo";
 import TripDetailTabs from "../GeneralInfo/TripDetailTabs";
+import TripNotFound from "../../components/Trips/TripNotFound";
 function Map(props) {
   const { id } = useParams();
   const [selectedPoi, setSelectedPOI] = useState();
-  const [trip, setTrip] = useState(null);
+  const [trip, setTrip] = useState({});
   const [allDates, setAllDates] = useState([]);
   const [allMonths, setAllMonths] = useState([]);
   const [daySelected, setDaySelected] = useState();
@@ -23,21 +24,35 @@ function Map(props) {
 
   useEffect(() => {
     console.log(id);
-
-    axios.get(`http://localhost:8080/trip/` + id).then((res) => {
-      setTrip(res.data);
-      setDaySelected(1);
-      setAllDates(getAllDates(res.data.startDate, res.data.endDate));
-      setAllMonths(
-        getAllMonths(getAllDates(res.data.startDate, res.data.endDate))
-      );
-    });
+    const userId = localStorage.getItem("id") ? localStorage.getItem("id") : -1;
+    axios
+      .get(`http://localhost:8080/trip/` + id + "?userId=" + userId)
+      .then((res) => {
+        setTrip(res.data);
+        setDaySelected(1);
+        setAllDates(getAllDates(res.data.startDate, res.data.endDate));
+        setAllMonths(
+          getAllMonths(getAllDates(res.data.startDate, res.data.endDate))
+        );
+      })
+      .catch((error) => {
+        if (error.response) {
+          if (error.response.status == 404) {
+            setTrip(null);
+            console.log("trip not found");
+          }
+          if (error.response.status >= 500) {
+            setTrip(null);
+            console.log("internal server error", error);
+          }
+        }
+      });
   }, []);
 
   const getAllMonths = (dateArr) => {
     var monthArr = [];
     dateArr.forEach((date) => {
-      var month = date.toLocaleString("default", { month: "long" });
+      var month = date.toLocaleString("vi", { month: "long" });
       if (!monthArr.includes(month)) monthArr.push(month);
     });
     return monthArr;
@@ -59,7 +74,7 @@ function Map(props) {
   const getAllDatesOfMonth = (dateArr, month) => {
     var arr = [];
     dateArr.forEach((dt) => {
-      if (dt.toLocaleString("default", { month: "long" }) == month) {
+      if (dt.toLocaleString("vi", { month: "long" }) == month) {
         arr.push(new Date(dt));
       }
     });
@@ -89,26 +104,6 @@ function Map(props) {
   useEffect(() => {
     if (markerRef.current != null) markerRef.current.fire("mouseover");
   }, [selectedPoi]);
-  const vietMonths = {
-    January: "Tháng Một",
-    February: "Tháng Hai",
-    March: "Tháng Ba",
-    April: "Tháng Tư",
-    May: "Tháng Năm",
-    June: "Tháng Sáu",
-    July: "Tháng Bảy",
-    August: "Tháng Tám",
-    September: "Tháng Chín",
-    October: "Tháng Mười",
-    November: "Tháng Mười Một",
-    December: "Tháng Mười Hai",
-  };
-  const options = {
-    weekday: "long",
-    year: "numeric",
-    month: "numeric",
-    day: "numeric",
-  };
   function getMarker(text) {
     return L.divIcon({
       className: "custom-div-icon",
@@ -135,6 +130,13 @@ function Map(props) {
       .filter((v, i) => v !== "00" || i > 0)
       .join(":");
   };
+  const options = {
+    weekday: "long",
+    year: "numeric",
+    month: "numeric",
+    day: "numeric",
+  };
+  if (trip == null) return <TripNotFound />;
   return (
     <div>
       <TripGeneralInfo />
@@ -154,17 +156,28 @@ function Map(props) {
                           onClick={() =>
                             changeDay(index * arr.length + subindex + 1)
                           }
-                          className={style.date}
+                          className={
+                            index * arr.length + subindex + 1 == daySelected
+                              ? style.date
+                              : `${style.date} ${style.dateActive}`
+                          }
                         >
                           {date.getDate()}
                         </a>
                       )
                     )}
-                    <a onClick={() => changeDay(0)} className={style.date}>
-                      All
-                    </a>
                   </div>
                 ))}
+              <a
+                onClick={() => changeDay(0)}
+                className={
+                  0 == daySelected
+                    ? style.date
+                    : `${style.date} ${style.dateActive}`
+                }
+              >
+                Tất cả
+              </a>
             </div>
           </div>
           <div className="col-10 ">
@@ -180,78 +193,88 @@ function Map(props) {
                       attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
                       url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
                     />
-                    {trip &&
-                      trip.listTripDetails.map(
-                        (mark, index) =>
-                          (daySelected == 0 ||
-                            daySelected == mark.dayNumber) && (
-                            <Marker
-                              ref={selectedPoi == index + 1 ? markerRef : null}
-                              position={[
-                                mark.masterActivity.latitude,
-                                mark.masterActivity.longitude,
-                              ]}
-                              icon={getMarker(index + 1)}
-                            >
-                              <Tooltip direction="top" offset={[0, -30]}>
-                                <h5>{mark.masterActivity.name}</h5>
-                                <div className={style.poiTime}>
-                                  {new Date(
-                                    new Date(trip.startDate).getTime() +
-                                      (mark.dayNumber - 1) * 86400000
-                                  ).toDateString()}
-                                </div>
-                                <div className={style.poiTime}>
-                                  {toHHMMSS(mark.startTime)} -{" "}
-                                  {toHHMMSS(mark.endTime)}
-                                </div>
-                              </Tooltip>
-                            </Marker>
-                          )
-                      )}
+                    {trip && trip.listTripDetails
+                      ? trip.listTripDetails.map(
+                          (mark, index) =>
+                            (daySelected == 0 ||
+                              daySelected == mark.dayNumber) && (
+                              <Marker
+                                ref={
+                                  selectedPoi == index + 1 ? markerRef : null
+                                }
+                                position={[
+                                  mark.masterActivity.latitude,
+                                  mark.masterActivity.longitude,
+                                ]}
+                                icon={getMarker(index + 1)}
+                              >
+                                <Tooltip direction="top" offset={[0, -30]}>
+                                  <h5>{mark.masterActivity.name}</h5>
+                                  <div className={style.poiTime}>
+                                    {new Date(
+                                      new Date(trip.startDate).getTime() +
+                                        (mark.dayNumber - 1) * 86400000
+                                    ).toLocaleDateString("vi", options)}
+                                  </div>
+                                  <div className={style.poiTime}>
+                                    {toHHMMSS(mark.startTime)} -{" "}
+                                    {toHHMMSS(mark.endTime)}
+                                  </div>
+                                </Tooltip>
+                              </Marker>
+                            )
+                        )
+                      : null}
                   </MapContainer>
                 </div>
                 <div className={"col-4 " + style.mapBox}>
                   <h4 className={style.tripName}>
                     &nbsp;&nbsp;{trip && trip.name}
+                    {daySelected > 0 ? (
+                      <span className={style.dayNum}>Ngày {daySelected}</span>
+                    ) : (
+                      <span className={style.dayNum}>Tất cả</span>
+                    )}
                   </h4>
-                  {trip &&
-                    trip.listTripDetails.map(
-                      (mark, index) =>
-                        (daySelected == 0 || daySelected == mark.dayNumber) && (
-                          <div className={"container " + style.poiContainer}>
-                            <div className="row">
-                              <div className={"col-2 "}>
-                                <div
-                                  onMouseOver={() => {
-                                    setSelectedPOI(index + 1);
-                                    markerRef.current.fire("mouseout");
-                                  }}
-                                  onMouseLeave={() => {
-                                    setSelectedPOI(-1);
-                                    markerRef.current.fire("mouseout");
-                                  }}
-                                  className={style.numberCircle}
-                                >
-                                  {" "}
-                                  {index + 1}
+                  {trip && trip.listTripDetails
+                    ? trip.listTripDetails.map(
+                        (mark, index) =>
+                          (daySelected == 0 ||
+                            daySelected == mark.dayNumber) && (
+                            <div className={"container " + style.poiContainer}>
+                              <div className="row">
+                                <div className={"col-2 "}>
+                                  <div
+                                    onMouseOver={() => {
+                                      setSelectedPOI(index + 1);
+                                      markerRef.current.fire("mouseout");
+                                    }}
+                                    onMouseLeave={() => {
+                                      setSelectedPOI(-1);
+                                      markerRef.current.fire("mouseout");
+                                    }}
+                                    className={style.numberCircle}
+                                  >
+                                    {" "}
+                                    {index + 1}
+                                  </div>
+                                </div>
+                                <div className={"col-8 "}>
+                                  <a
+                                    href={
+                                      "../poi?id=" +
+                                      mark.masterActivity.activityId
+                                    }
+                                    className={style.poiName}
+                                  >
+                                    {mark.masterActivity.name}{" "}
+                                  </a>
                                 </div>
                               </div>
-                              <div className={"col-8 "}>
-                                <a
-                                  href={
-                                    "../poi?id=" +
-                                    mark.masterActivity.activityId
-                                  }
-                                  className={style.poiName}
-                                >
-                                  {mark.masterActivity.name}{" "}
-                                </a>
-                              </div>
                             </div>
-                          </div>
-                        )
-                    )}
+                          )
+                      )
+                    : null}
                 </div>
               </div>
             </div>

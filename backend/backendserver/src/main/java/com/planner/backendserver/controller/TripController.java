@@ -9,34 +9,26 @@ import com.google.gson.GsonBuilder;
 import com.planner.backendserver.DTO.GenerateTripUserInput;
 import com.planner.backendserver.DTO.response.TripDTO;
 import com.planner.backendserver.DTO.UserDTO;
-import com.planner.backendserver.DTO.response.ChecklistItemDTO;
 import com.planner.backendserver.DTO.response.DetailedTripDTO;
 import com.planner.backendserver.DTO.response.TripDetailDTO;
 import com.planner.backendserver.DTO.response.SimpleResponse;
 import com.planner.backendserver.dto.response.TripGeneralDTO;
-import com.planner.backendserver.entity.ChecklistItem;
 import com.planner.backendserver.entity.MasterActivity;
 import com.planner.backendserver.entity.TripDetails;
-import com.planner.backendserver.repository.ChecklistItemRepository;
 import com.planner.backendserver.repository.POIRepository;
 import com.planner.backendserver.repository.TripRepository;
 import com.planner.backendserver.service.UserDTOServiceImplementer;
 import com.planner.backendserver.service.implementers.AsyncManager;
 import com.planner.backendserver.service.interfaces.TripService;
 import lombok.extern.slf4j.Slf4j;
-import net.minidev.json.JSONObject;
-import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cloud.client.ServiceInstance;
-import org.springframework.cloud.client.discovery.DiscoveryClient;
+
 import org.springframework.http.*;
-import org.springframework.security.access.method.P;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 
 import java.sql.Date;
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 import java.util.Optional;
@@ -54,12 +46,12 @@ public class TripController {
     private TripRepository tripRepo;
     @Autowired
     private AsyncManager asyncManager;
-    @Autowired
-    private DiscoveryClient discoveryClient;
+
     @GetMapping("/{id}")
-    public ResponseEntity<DetailedTripDTO> getTripById(@PathVariable int id){
+    public ResponseEntity<DetailedTripDTO> getTripById(@PathVariable int id, @RequestParam(required = false) Integer userId){
         try{
-            DetailedTripDTO trip = tripService.getDetailedTripById(id);
+            if(userId == null) userId = -1;
+            DetailedTripDTO trip = tripService.getDetailedTripById(id, userId);
             if (trip == null){
                 return new ResponseEntity<>(HttpStatus.NOT_FOUND);
             }
@@ -171,7 +163,8 @@ public class TripController {
             int tripId = objectNode.get("tripId").asInt();
             String name = objectNode.get("name").asText();
             String address = objectNode.get("address").asText();
-            TripDetailDTO result = tripService.addCustomTripDetail(date, startTime, endTime, tripId, name, address);
+            String note = objectNode.get("note").asText();
+            TripDetailDTO result = tripService.addCustomTripDetail(date, startTime, endTime, tripId, name, address, note);
             return new ResponseEntity<>(result, HttpStatus.OK);
         } catch (Exception e){
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
@@ -226,13 +219,13 @@ public class TripController {
     }
     @DeleteMapping("/delete-detail")
     public ResponseEntity<TripDetails> deleteTripDetail(@RequestBody ObjectNode objectNode){
-        try{
+//        try{
             int id = objectNode.get("id").asInt();
             tripService.deleteDetailById(id);
             return new ResponseEntity<>(HttpStatus.OK);
-        } catch (Exception e){
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-        }
+//        } catch (Exception e){
+//            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+//        }
     }
     @PreAuthorize("hasAuthority('Admin')")
     @RequestMapping(value="/test/{id}", method = RequestMethod.GET)
@@ -303,84 +296,84 @@ public class TripController {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
-    @PostMapping("/generate")
-    public ResponseEntity<SimpleResponse> generateTrip(@RequestBody GenerateTripUserInput input) throws JsonProcessingException {
-        List<ServiceInstance> instances = discoveryClient.getInstances("Optimizer");
+//    @PostMapping("/generate")
+//    public ResponseEntity<SimpleResponse> generateTrip(@RequestBody GenerateTripUserInput input) throws JsonProcessingException {
+//        List<ServiceInstance> instances = discoveryClient.getInstances("Optimizer");
+//
+//        ServiceInstance instance =  instances.get(0);
+//
+//        System.out.println(instance);
+//
+//
+//        String url = "http://localhost:"+instance.getPort()+"/trip/generate";
+//
+//        System.out.println(url);
+//
+//        RestTemplate restTemplate = new RestTemplate();
+//        HttpHeaders headers = new HttpHeaders();
+//
+//        headers.setContentType(MediaType.APPLICATION_JSON);
+//        ObjectMapper mapper = new ObjectMapper();
+//        Gson gson = new GsonBuilder()
+//                .setDateFormat("yyyy-MM-dd").create();
+//        String personJsonObject  = gson.toJson(input);
+//        HttpEntity<String> request =
+//                new HttpEntity<String>(personJsonObject, headers);
+//        System.out.println(request);
+//        String personResultAsJsonStr =
+//                restTemplate.postForObject(url, request, String.class);
+//
+//        JsonNode root = mapper.readTree(personResultAsJsonStr);
+//        System.out.println(root.path("port").asText());
+//        SimpleResponse target2 = gson.fromJson(personResultAsJsonStr, SimpleResponse.class);
+//        if(asyncManager.checkExistUser(input.getUserId())){
+//            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+//        }
+//        asyncManager.putJob(target2.getId(),target2.getUserID());
+//        asyncManager.putPort(target2.getUserID(),target2.getPort());
+//        return new ResponseEntity<>(target2,HttpStatus.OK);
+//    }
 
-        ServiceInstance instance =  instances.get(0);
-
-        System.out.println(instance);
-
-
-        String url = "http://localhost:"+instance.getPort()+"/trip/generate";
-
-        System.out.println(url);
-
-        RestTemplate restTemplate = new RestTemplate();
-        HttpHeaders headers = new HttpHeaders();
-
-        headers.setContentType(MediaType.APPLICATION_JSON);
-        ObjectMapper mapper = new ObjectMapper();
-        Gson gson = new GsonBuilder()
-                .setDateFormat("yyyy-MM-dd").create();
-        String personJsonObject  = gson.toJson(input);
-        HttpEntity<String> request =
-                new HttpEntity<String>(personJsonObject, headers);
-        System.out.println(request);
-        String personResultAsJsonStr =
-                restTemplate.postForObject(url, request, String.class);
-
-        JsonNode root = mapper.readTree(personResultAsJsonStr);
-        System.out.println(root.path("port").asText());
-        SimpleResponse target2 = gson.fromJson(personResultAsJsonStr, SimpleResponse.class);
-        if(asyncManager.checkExistUser(input.getUserId())){
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        }
-        asyncManager.putJob(target2.getId(),target2.getUserID());
-        asyncManager.putPort(target2.getUserID(),target2.getPort());
-        return new ResponseEntity<>(target2,HttpStatus.OK);
-    }
-
-    @GetMapping("/checkGenerating/{id}")
-    public boolean checkGenerating(@PathVariable int id){
-        if(!asyncManager.checkExistUser(id)) {
-            return false;
-        }
-        List<ServiceInstance> instances = discoveryClient.getInstances("Optimizer");
-
-        ServiceInstance instance =  instances.get(0);
-
-        System.out.println(instance);
-
-
-        String url = "http://localhost:"+asyncManager.getPortByUserId(id)+"/trip/checkUserFree/"+id;
-
-        RestTemplate restTemplate = new RestTemplate();
-        String personResultAsJsonStr =
-                restTemplate.getForObject(url, String.class);
-        Boolean check = Boolean.parseBoolean(personResultAsJsonStr);
-        if(!check){
-            asyncManager.removeUser(id);
-            asyncManager.removeUserPort(id);
-        }
-        return Boolean.parseBoolean(personResultAsJsonStr);
-    }
-
-    @PostMapping("/cancel/{id}")
-    public  ResponseEntity<Boolean> cancelJob(@PathVariable int id){
-        String url = "http://localhost:"+asyncManager.getPortByUserId(id)+"/trip/cancel/"+asyncManager.getJobByUserId(id)+"/"+id;
-        RestTemplate restTemplate = new RestTemplate();
-        ResponseEntity<String> result = restTemplate.postForEntity(url,null,String.class);
-        if(result.getStatusCode().is2xxSuccessful()){
-            asyncManager.removeUserPort(id);
-            asyncManager.removeUser(id);
-            return new ResponseEntity<>(HttpStatus.OK);
-        }
-        else{
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
-
-    }
+//    @GetMapping("/checkGenerating/{id}")
+//    public boolean checkGenerating(@PathVariable int id){
+//        if(!asyncManager.checkExistUser(id)) {
+//            return false;
+//        }
+//        List<ServiceInstance> instances = discoveryClient.getInstances("Optimizer");
+//
+//        ServiceInstance instance =  instances.get(0);
+//
+//        System.out.println(instance);
+//
+//
+//        String url = "http://localhost:"+asyncManager.getPortByUserId(id)+"/trip/checkUserFree/"+id;
+//
+//        RestTemplate restTemplate = new RestTemplate();
+//        String personResultAsJsonStr =
+//                restTemplate.getForObject(url, String.class);
+//        Boolean check = Boolean.parseBoolean(personResultAsJsonStr);
+//        if(!check){
+//            asyncManager.removeUser(id);
+//            asyncManager.removeUserPort(id);
+//        }
+//        return Boolean.parseBoolean(personResultAsJsonStr);
+//    }
+//
+//    @PostMapping("/cancel/{id}")
+//    public  ResponseEntity<Boolean> cancelJob(@PathVariable int id){
+//        String url = "http://localhost:"+asyncManager.getPortByUserId(id)+"/trip/cancel/"+asyncManager.getJobByUserId(id)+"/"+id;
+//        RestTemplate restTemplate = new RestTemplate();
+//        ResponseEntity<String> result = restTemplate.postForEntity(url,null,String.class);
+//        if(result.getStatusCode().is2xxSuccessful()){
+//            asyncManager.removeUserPort(id);
+//            asyncManager.removeUser(id);
+//            return new ResponseEntity<>(HttpStatus.OK);
+//        }
+//        else{
+//            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+//        }
+//
+//    }
 
     @GetMapping("/getServiceInfo/{id}")
     public ResponseEntity<SimpleResponse> getServiceInfo(@PathVariable int id){
@@ -391,5 +384,38 @@ public class TripController {
         response.setPort(asyncManager.getPortByUserId(id));
         response.setId(asyncManager.getJobByUserId(id));
         return  new ResponseEntity<>(response,HttpStatus.OK);
+    }
+
+    @GetMapping("/get-public-trips")
+    public ResponseEntity<?> getPublicTrips(@RequestParam(required = false) Integer page, @RequestParam(required = false) String search, @RequestParam(required = false) Integer minDays, @RequestParam(required = false) Integer maxDays){
+        try{
+            if(page == null) page = 0;
+            if(search == null) search = "";
+            if(minDays == null) minDays = 1;
+            if(maxDays == null) maxDays = 0;
+            int pageSize = 12;
+        Calendar cal = Calendar.getInstance();
+        cal.add(Calendar.MONTH, -1);
+        Date earliest = new Date(cal.getTime().getTime());
+            return new ResponseEntity<>(tripService.getPublicTrips(page,pageSize, search, minDays,maxDays, earliest), HttpStatus.OK);
+        } catch(Exception e){
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+    @GetMapping("/get-public-trips/count")
+    public ResponseEntity<?> getPublicTripsCount(@RequestParam(required = false) String search, @RequestParam(required = false) Integer minDays, @RequestParam(required = false) Integer maxDays) {
+        try {
+        if(search == null) search = "";
+        if(minDays == null) minDays = 1;
+        if(maxDays == null) maxDays = 0;
+
+        Calendar cal = Calendar.getInstance();
+        cal.add(Calendar.MONTH, -1);
+        Date earliest = new Date(cal.getTime().getTime());
+            int count = tripService.countPublicTrips(search, minDays, maxDays, earliest);
+            return new ResponseEntity<>(count, HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 }

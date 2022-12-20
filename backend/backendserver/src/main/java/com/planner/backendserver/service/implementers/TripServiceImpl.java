@@ -1,10 +1,10 @@
 package com.planner.backendserver.service.implementers;
 
 import com.planner.backendserver.DTO.response.*;
+import com.planner.backendserver.service.interfaces.TripService;
 import com.planner.backendserver.dto.response.TripGeneralDTO;
 import com.planner.backendserver.entity.*;
 import com.planner.backendserver.repository.*;
-import com.planner.backendserver.service.interfaces.TripService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -38,9 +38,11 @@ public class TripServiceImpl implements TripService {
     private ExpenseRepository expenseRepository;
     @Autowired
     private ExpenseCategoryRepository expenseCategoryRepository;
+    @Autowired
+    private DestinationRepository destinationRepository;
     @Override
-    public DetailedTripDTO getDetailedTripById(int tripId) {
-        Trip trip = tripRepository.findById(tripId);
+    public DetailedTripDTO getDetailedTripById(int tripId, int userId) {
+        Trip trip = tripRepository.findDetailedTripById(tripId, userId);
         if(trip == null) return null;
         DetailedTripDTO tripDetailedDTO = mapper.map(trip, DetailedTripDTO.class);
         tripDetailedDTO.setListTripDetails(getListTripDetailDTO(trip));
@@ -164,17 +166,24 @@ public class TripServiceImpl implements TripService {
         return customActivityRepository.save(customActivity);
     }
     @Override
-    public TripDetailDTO addCustomTripDetail(Date date, int startTime, int endTime, int tripId, String name, String address) {
+    public TripDetailDTO addCustomTripDetail(Date date, int startTime, int endTime, int tripId, String name, String address, String note) {
         Trip trip = tripRepository.findById(tripId);
-        CustomActivity customActivity = addCustomActivity(name, address);
+        MasterActivity masterActivity = new MasterActivity();
+        masterActivity.setName(name);
+        masterActivity.setAddress(address);
+        MasterActivity savedMasterActivity = masterActivityRepository.save(masterActivity);
+        CustomActivity customActivity = new CustomActivity();
+        customActivity.setActivityId(savedMasterActivity.getActivityId());
+        customActivityRepository.save(customActivity);
 
         TripDetails tripDetails = new TripDetails();
         tripDetails.setStartTime(startTime);
         tripDetails.setEndTime(endTime);
-        tripDetails.setMasterActivity(customActivity);
+        tripDetails.setNote(note);
+        tripDetails.setMasterActivity(savedMasterActivity);
         tripDetails.setDayNumber(getDayNumberByFromStartDate((Date) trip.getStartDate(), date));
 
-        MasterActivityDTO masterActivityDTO = mapper.map(customActivity, MasterActivityDTO.class);
+        MasterActivityDTO masterActivityDTO = mapper.map(savedMasterActivity, MasterActivityDTO.class);
         masterActivityDTO.setCustom(true);
 
         tripDetails.setTrip(trip);
@@ -345,5 +354,25 @@ public class TripServiceImpl implements TripService {
         POIImage poiImage = poiImageRepository.findFirstByPoiId(tripDetails.getMasterActivity().getActivityId());
         if (poiImage == null) return null;
         return poiImage.getUrl();
+    }
+
+    @Override
+    public ArrayList<PublicTripDTO> getPublicTrips(int page, int pageSize, String search, int minDays, int maxDays, Date earliest){
+        ArrayList<Trip> trips = tripRepository.getPublicTripsWithSearch(page*pageSize, pageSize, search, minDays, maxDays, earliest);
+        ArrayList<PublicTripDTO> publicTripDTOS = new ArrayList<>();
+        for (Trip trip: trips
+        ) {
+            PublicTripDTO dto = mapper.map(trip, PublicTripDTO.class);
+            dto.setImage(getFirstPOIImage(trip.getTripId()));
+            dto.setDestinations(destinationRepository.getDestinationsOfTrip(trip.getTripId()));
+            dto.setNumberOfDays(getDayNumberByFromStartDate((Date) trip.getStartDate(), (Date) trip.getEndDate()));
+            dto.setPois(poiRepository.getPOIsByTripId(trip.getTripId(), 5));
+            publicTripDTOS.add(dto);
+        }
+        return publicTripDTOS;
+    }
+    @Override
+    public int countPublicTrips(String search, int minDays, int maxDays, Date earliest){
+        return tripRepository.getPublicTripsCount(search, minDays, maxDays, earliest);
     }
 }

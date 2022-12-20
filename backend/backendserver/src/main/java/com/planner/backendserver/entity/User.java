@@ -52,4 +52,7 @@ public class User {
 
     @Column(name="reset_password_token")
     private String resetPasswordToken;
+
+    @Column(name="optimizer_request_id")
+    private Integer requestId;
 }

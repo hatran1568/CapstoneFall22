@@ -24,9 +24,12 @@ const DestinationSearchBar = (props) => {
   const getResults = () => {
     if (searchInput.trim().length > 0) {
       axios
-        .get("http://localhost:8080/search/Destination/" + searchInput, {
-          headers: { "Content-Type": "application/json" },
-        })
+        .get(
+          "http://localhost:8080/location/search/Destination/" + searchInput,
+          {
+            headers: { "Content-Type": "application/json" },
+          }
+        )
         .then((response) => response.data)
         .catch(() => setResults(false))
         .then((data) => setResults(data));

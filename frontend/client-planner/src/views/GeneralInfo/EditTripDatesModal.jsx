@@ -13,7 +13,8 @@ function EditTripDatesModal(props) {
   const [showConfirm, setShowConfirm] = useState(false);
   const [warningDetails, setWarningDetails] = useState([]);
   const diff =
-    new Date(trip.endDate).getDate() - new Date(trip.startDate).getDate();
+    (new Date(trip.endDate).getTime() - new Date(trip.startDate).getTime()) /
+    (1000 * 3600 * 24);
   const handleHide = () => {
     setShowConfirm(false);
   };
@@ -28,7 +29,7 @@ function EditTripDatesModal(props) {
     onChange(data);
   };
   const onSave = () => {
-    let dayNum = new Date(endDate).getDate() - new Date(startDate).getDate();
+    let dayNum = (endDate.getTime() - startDate.getTime()) / (1000 * 3600 * 24);
     if (dayNum < diff) {
       getEventsToBeDeleted(dayNum);
     } else handleConfirmed();
@@ -51,6 +52,7 @@ function EditTripDatesModal(props) {
       tripId: trip.tripId,
       numberOfDays: dayNum + 1,
     };
+    console.log("events to delete: ", data);
     axios.post(`/trip/get-details-to-delete`, data).then((res) => {
       setWarningDetails(res.data, setShowConfirm(true));
     });

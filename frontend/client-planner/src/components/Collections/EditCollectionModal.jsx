@@ -41,7 +41,7 @@ const EditCollectionModal = (prop) => {
 
         axios
           .put(
-            "/api/collection/edit",
+            "/location/api/collection/edit",
             {
               id: prop.id,
               title: title,
@@ -51,11 +51,13 @@ const EditCollectionModal = (prop) => {
               headers: {
                 Authorization: `Bearer ${localStorage.getItem("token")}`,
               },
-              withCredentials: true,
-            },
+            }
           )
           .then((res) => {
-            prop.refresh({ title: res.data.title, description: res.data.description });
+            prop.refresh({
+              title: res.data.title,
+              description: res.data.description,
+            });
             handleCancel();
           });
       },
@@ -69,22 +71,30 @@ const EditCollectionModal = (prop) => {
   return (
     <>
       <button className={`${style.editBtn}`} onClick={handleEdit}>
-        <MDBIcon far icon='edit' size='lg' />
+        <MDBIcon far icon="edit" size="lg" />
       </button>
-      <Modal title='Chỉnh sửa thông tin bộ sưu tập' open={open} onOk={handleOk} onCancel={handleCancel}>
-        <MDBInputGroup className='px-2 mb-3'>
-          <p className='fs-5 fw-bold'>Tiêu đề</p>
+      <Modal
+        title="Chỉnh sửa thông tin bộ sưu tập"
+        open={open}
+        onOk={handleOk}
+        onCancel={handleCancel}
+        cancelText={"Hủy"}
+        okText="Lưu"
+      >
+        <MDBInputGroup className="px-2 mb-3">
+          <p className="fs-5 fw-bold">Tiêu đề</p>
           <Input
             showCount
             maxLength={30}
             onChange={(e) => {
               setTitleInput(e.target.value);
             }}
-            size='large'
+            size="large"
+            spellCheck="false"
           />
         </MDBInputGroup>
-        <MDBInputGroup className='px-2'>
-          <p className='fs-5 fw-bold'>Mô tả</p>
+        <MDBInputGroup className="px-2">
+          <p className="fs-5 fw-bold">Mô tả</p>
           <TextArea
             showCount
             rows={3}
@@ -93,6 +103,7 @@ const EditCollectionModal = (prop) => {
             }}
             maxLength={100}
             style={{ width: 1000, resize: "none" }}
+            spellCheck="false"
           />
         </MDBInputGroup>
       </Modal>

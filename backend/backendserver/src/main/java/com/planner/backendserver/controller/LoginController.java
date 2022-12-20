@@ -1,10 +1,10 @@
 package com.planner.backendserver.controller;
 
+
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.planner.backendserver.dto.request.LoginRequestDTO;
-import com.planner.backendserver.dto.response.LoginResponseDTO;
 import com.planner.backendserver.DTO.UserDTO;
+import com.planner.backendserver.DTO.response.LoginResponseDTO;
 import com.planner.backendserver.config.JwtTokenProvider;
 import com.planner.backendserver.entity.User;
 import com.planner.backendserver.repository.UserRepository;
@@ -15,7 +15,10 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/api"  )
@@ -27,7 +30,7 @@ public class LoginController {
     @Autowired
     private JwtTokenProvider tokenProvider;
     @RequestMapping(value = "/login", produces = { "*/*" }, method = RequestMethod.POST)
-    public String authenticateUser(@RequestBody LoginRequestDTO loginRequest) {
+    public String authenticateUser(@RequestBody com.planner.backendserver.dto.request.LoginRequestDTO loginRequest) {
 
         // Xác thực thông tin người dùng Request lên
         Authentication authentication = authenticationManager.authenticate(

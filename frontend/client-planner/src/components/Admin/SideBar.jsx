@@ -1,6 +1,6 @@
-import { Sidebar, Menu, MenuItem, useProSidebar } from 'react-pro-sidebar';
+import { Sidebar, Menu, MenuItem, useProSidebar } from "react-pro-sidebar";
 import BlogAddUpdate from "../../views/Admin/BlogAddUpdate";
-import { ProSidebarProvider } from 'react-pro-sidebar';
+import { ProSidebarProvider } from "react-pro-sidebar";
 import axios from "../../api/axios";
 import { useState } from "react";
 import { useEffect } from "react";
@@ -28,9 +28,9 @@ import {
   MDBContainer,
 } from "mdb-react-ui-kit";
 import PersonIcon from "@mui/icons-material/Person";
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import style from "./SideBar.module.css";
-function AdminSidebar({props}) {
+function AdminSidebar({ props }) {
   const { collapseSidebar } = useProSidebar();
   const pathname = window.location.pathname;
   const isLogged = localStorage.getItem("token");
@@ -45,7 +45,10 @@ function AdminSidebar({props}) {
     try {
       const listResp = async () => {
         await axios
-          .get("http://localhost:8080/api/user/findById/" + localStorage.getItem("id"))
+          .get(
+            "http://localhost:8080/user/api/user/findById/" +
+              localStorage.getItem("id")
+          )
           .then((response) => setUser(response.data));
       };
       listResp();
@@ -53,11 +56,16 @@ function AdminSidebar({props}) {
       console.log(error);
     }
   }, []);
-  
+
   return (
-    <div style={{ display: 'flex', height: '100%' }}>
-      <Sidebar id="sidebar" width="270px" collapsedWidth='0px' className={style.sidebar}>
-        <Menu width="270px" collapsedWidth='0px' className={style.sidebarMenu}>
+    <div style={{ display: "flex", height: "100%" }}>
+      <Sidebar
+        id="sidebar"
+        width="270px"
+        collapsedWidth="0px"
+        className={style.sidebar}
+      >
+        <Menu width="270px" collapsedWidth="0px" className={style.sidebarMenu}>
           <MDBNavbarBrand href="/" className="me-0">
             <p className="mb-0 d-flex align-items-center">
               <span className="fs-3 me-2">TPS</span>
@@ -66,50 +74,84 @@ function AdminSidebar({props}) {
           </MDBNavbarBrand>
           <MenuItem>
             <a href="/admin/dashboard" className={style.sidebarItem}>
-            <MDBRow><MDBCol md={2} className={style.sidebarIcon}><FontAwesomeIcon icon={faChartLine}/></MDBCol> 
-            <MDBCol md={2} className={style.sidebarText}>Bảng điều khiển</MDBCol></MDBRow>
+              <MDBRow>
+                <MDBCol md={2} className={style.sidebarIcon}>
+                  <FontAwesomeIcon icon={faChartLine} />
+                </MDBCol>
+                <MDBCol md={2} className={style.sidebarText}>
+                  Bảng điều khiển
+                </MDBCol>
+              </MDBRow>
             </a>
           </MenuItem>
           <MenuItem>
             <a href="/poi/adminlist" className={style.sidebarItem}>
-            <MDBRow><MDBCol md={2} className={style.sidebarIcon}><FontAwesomeIcon icon={faPlaceOfWorship}/></MDBCol> 
-            <MDBCol md={2} className={style.sidebarText}>Địa điểm</MDBCol></MDBRow>
+              <MDBRow>
+                <MDBCol md={2} className={style.sidebarIcon}>
+                  <FontAwesomeIcon icon={faPlaceOfWorship} />
+                </MDBCol>
+                <MDBCol md={2} className={style.sidebarText}>
+                  Địa điểm
+                </MDBCol>
+              </MDBRow>
             </a>
           </MenuItem>
           <MenuItem>
             <a href="/destination/adminlist" className={style.sidebarItem}>
-            <MDBRow><MDBCol md={2} className={style.sidebarIcon}><FontAwesomeIcon icon={faLocationDot}/></MDBCol> 
-            <MDBCol md={2} className={style.sidebarText}>Điểm đến</MDBCol></MDBRow>
+              <MDBRow>
+                <MDBCol md={2} className={style.sidebarIcon}>
+                  <FontAwesomeIcon icon={faLocationDot} />
+                </MDBCol>
+                <MDBCol md={2} className={style.sidebarText}>
+                  Điểm đến
+                </MDBCol>
+              </MDBRow>
             </a>
           </MenuItem>
           <MenuItem>
             <a href="/blog/list" className={style.sidebarItem}>
-            <MDBRow><MDBCol md={2} className={style.sidebarIcon}><FontAwesomeIcon icon={faBook}/></MDBCol> 
-            <MDBCol md={2} className={style.sidebarText}>Blogs</MDBCol></MDBRow>
+              <MDBRow>
+                <MDBCol md={2} className={style.sidebarIcon}>
+                  <FontAwesomeIcon icon={faBook} />
+                </MDBCol>
+                <MDBCol md={2} className={style.sidebarText}>
+                  Blogs
+                </MDBCol>
+              </MDBRow>
             </a>
           </MenuItem>
           <MenuItem>
             <a href="/request/list" className={style.sidebarItem}>
-            <MDBRow><MDBCol md={2} className={style.sidebarIcon}><FontAwesomeIcon icon={faPenToSquare}/></MDBCol> 
-            <MDBCol md={2} className={style.sidebarText}>Yêu cầu chỉnh sửa</MDBCol></MDBRow>
+              <MDBRow>
+                <MDBCol md={2} className={style.sidebarIcon}>
+                  <FontAwesomeIcon icon={faPenToSquare} />
+                </MDBCol>
+                <MDBCol md={2} className={style.sidebarText}>
+                  Yêu cầu chỉnh sửa
+                </MDBCol>
+              </MDBRow>
             </a>
           </MenuItem>
           <MenuItem>
             <a href="/user/list" className={style.sidebarItem}>
-            <MDBRow><MDBCol md={2} className={style.sidebarIcon}><FontAwesomeIcon icon={faUsers}/></MDBCol> 
-            <MDBCol md={2} className={style.sidebarText}>Tài khoản người dùng</MDBCol></MDBRow>
+              <MDBRow>
+                <MDBCol md={2} className={style.sidebarIcon}>
+                  <FontAwesomeIcon icon={faUsers} />
+                </MDBCol>
+                <MDBCol md={2} className={style.sidebarText}>
+                  Tài khoản người dùng
+                </MDBCol>
+              </MDBRow>
             </a>
           </MenuItem>
-          
+
           {isLogged ? (
             <span className={style.profileIcon}>
               <MDBDropdown>
                 <MDBDropdownToggle tag="a" className="nav-link link-dark">
-                  <img src={user.avatar} className={style.userAvatar}/>
+                  <img src={user.avatar} className={style.userAvatar} />
                   <span className={style.username}>{user.name}</span>
                 </MDBDropdownToggle>
-                Đã đăng nhập bằng tài khoản Admin<br/>
-                Nếu đây không phải bạn, đăng xuất ngay lập tức
                 <MDBDropdownMenu>
                   <MDBDropdownItem link href="/profile">
                     Hồ sơ cá nhân
@@ -134,11 +176,10 @@ function AdminSidebar({props}) {
       </Sidebar>
       <a className={style.expandBtn} onClick={() => collapseSidebar()}>
         <main>
-          <FontAwesomeIcon icon={faBars}/>
+          <FontAwesomeIcon icon={faBars} />
         </main>
       </a>
       {props}
-      
     </div>
   );
 }

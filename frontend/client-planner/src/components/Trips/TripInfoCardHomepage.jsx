@@ -32,7 +32,7 @@ function TripInfoCardHomepage(trip) {
             headers: {
               Authorization: `Bearer ${localStorage.getItem("token")}`,
             },
-            withCredentials: true,
+
             data: {
               id: trip.trip.tripId,
             },

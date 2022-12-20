@@ -2,8 +2,6 @@ package com.planner.backendserver.config;
 
 import com.planner.backendserver.DTO.UserDTO;
 import com.planner.backendserver.service.UserDTOServiceImplementer;
-import com.planner.backendserver.service.interfaces.UserDTOService;
-import com.planner.backendserver.service.interfaces.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;

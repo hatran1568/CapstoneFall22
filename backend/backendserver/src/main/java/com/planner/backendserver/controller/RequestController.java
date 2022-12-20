@@ -2,10 +2,7 @@ package com.planner.backendserver.controller;
 
 import com.planner.backendserver.DTO.request.*;
 import com.planner.backendserver.DTO.response.*;
-import com.planner.backendserver.entity.MasterActivity;
-import com.planner.backendserver.repository.POIRepository;
 import com.planner.backendserver.repository.RequestRepository;
-import com.planner.backendserver.service.interfaces.POIService;
 import com.planner.backendserver.utils.GoogleDriveManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -16,7 +13,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 
 @RestController
 @RequestMapping("/api/request")

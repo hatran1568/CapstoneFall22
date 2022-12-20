@@ -88,3 +88,25 @@
     height: auto;
     transform: scaleY(1);
 }
+.recentTrips{
+    width: 100%;
+    background-color: #267b9cb0;
+    color: white;
+    padding: auto;
+    padding-bottom: 2em;
+    text-align: center;
+    cursor: pointer;
+    font-family: Klarna Text,Helvetica Neue,Arial,Helvetica,sans-serif;
+}
+.recentTrips:hover{
+    background-color: #0e0e0fd2;
+    color: #34a9d9;
+}
+.recentTrips .number{
+    font-size: 7em;
+    font-weight: 700;
+}
+.recentTrips .text{
+    text-transform: uppercase;
+    font-size: 1.2em;
+}

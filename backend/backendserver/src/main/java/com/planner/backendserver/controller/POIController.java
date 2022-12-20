@@ -7,7 +7,6 @@ import com.google.gson.GsonBuilder;
 import com.planner.backendserver.DTO.SearchPOIAndDestinationDTO;
 import com.planner.backendserver.DTO.request.HotelsRequestDTO;
 
-import com.planner.backendserver.DTO.request.BlogDetailsDTO;
 import com.planner.backendserver.DTO.request.POIListDTO;
 
 import com.planner.backendserver.DTO.request.POIofDestinationDTO;
@@ -290,6 +289,7 @@ public class POIController {
                     poi.getEmail(), poi.getClosingTime(), date, date, poi.getDuration(), poi.getOpeningTime(),
                     poi.getPhoneNumber(), poi.getPrice(), poi.getWebsite(), poiRepo.getLastestPOI(), poi.getCategoryId(), poi.getRating(), false, poi.getLat(), poi.getLon());
             index = 0;
+            log.info(String.valueOf(poiRepo.getLastestPOI()));
             for (Row row : target2.getRows()
             ) {
                 for (Element e : row.elements

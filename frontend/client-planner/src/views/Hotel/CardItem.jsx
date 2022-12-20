@@ -46,6 +46,34 @@ function CardItem(props) {
             <MDBCardText>
               <small className="text-muted">{props.item.price + " ₫"}</small>
             </MDBCardText>
+            <div className={style.hotelBtnGroup}>
+              <button
+                type="button"
+                className={`${style.hotelBtn} ${style.hotelChangeBtn}`}
+                onClick={() => {
+                  window.location.href = "../poi?id=" + props.item.id;
+                }}
+              >
+                Chi tiết
+              </button>
+              <button
+                type="button"
+                className={`${style.hotelBtn} ${style.hotelBookBtn}`}
+                onClick={() => {
+                  if (props.item.website.length > 0)
+                    window.open(props.item.website);
+                }}
+              >
+                Đặt chỗ
+              </button>
+              <button
+                type="button"
+                className={`${style.hotelBtn} ${style.hotelBookBtn}`}
+                onClick={(event) => props.addHotel(event)}
+              >
+                Thêm
+              </button>
+            </div>
           </MDBCardBody>
         </MDBCol>
       </MDBRow>

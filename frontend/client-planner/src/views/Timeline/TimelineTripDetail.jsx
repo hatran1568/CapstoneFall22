@@ -4,6 +4,7 @@ import {
   faCalendarDays,
   faCar,
   faCircleExclamation,
+  faAngleRight,
 } from "@fortawesome/free-solid-svg-icons";
 import style from "./timeline.module.css";
 import {
@@ -35,20 +36,16 @@ class TripDetail extends Component {
   }
   //get distance to next activity and set state
   setDistanceState = () => {
-    if (this.props.nextActivityId != -1) {
+    if (this.props.nextActivity) {
       axios
         .get(`http://localhost:8080/trip/get-distance`, {
           params: {
             from: this.state.tripDetail.masterActivity.activityId,
-            to: this.props.nextActivityId,
+            to: this.props.nextActivity.activityId,
           },
         })
         .then((res) => {
-          var newState = this.state;
-          if (res.status === 404) {
-            newState.distanceToNext = -1;
-          } else newState.distanceToNext = res.data;
-          this.setState(newState);
+          this.setState({ distanceToNext: Math.round(res.data * 10) / 10 });
         })
         .catch((err) => {
           if (err.response) {
@@ -57,9 +54,9 @@ class TripDetail extends Component {
         });
     }
   };
-  //set distance again after props.nextActivityId changes
+  //set distance again after props.nextActivity changes
   componentDidUpdate(prevProps) {
-    if (prevProps.nextActivityId !== this.props.nextActivityId) {
+    if (prevProps.nextActivity !== this.props.nextActivity) {
       this.setDistanceState();
     }
     if (prevProps.tripDetail !== this.props.tripDetail) {
@@ -100,6 +97,25 @@ class TripDetail extends Component {
   render() {
     var moment = require("moment"); // require
     var isCustom = this.state.tripDetail.masterActivity.custom;
+    const imageUrl = this.state.tripDetail.masterActivity.images
+      ? this.state.tripDetail.masterActivity.images[0]
+        ? this.state.tripDetail.masterActivity.images[0].url.includes("img/", 0)
+          ? `../${this.state.tripDetail.masterActivity.images[0].url}`
+          : this.state.tripDetail.masterActivity.images[0].url
+        : "../img/default/detail-img.jpg"
+      : "";
+    let address = this.state.tripDetail.masterActivity.address;
+    let nextAddress = this.props.nextActivity
+      ? this.props.nextActivity.address
+      : "";
+    let uri = "";
+    if (address.length > 0 && nextAddress.length > 0)
+      uri =
+        "https://www.google.com/maps/dir/?api=1&origin=" +
+        address +
+        "&destination=" +
+        nextAddress;
+    let encodedUri = encodeURI(uri);
     return (
       <React.Fragment>
         <li className={`${style.timelineItem} card`}>
@@ -158,16 +174,7 @@ class TripDetail extends Component {
                       this.state.tripDetail.masterActivity.activityId
                     }
                   >
-                    <img
-                      src={
-                        this.state.tripDetail.masterActivity.images
-                          ? this.state.tripDetail.masterActivity.images[0]
-                            ? `../${this.state.tripDetail.masterActivity.images[0].url}`
-                            : "https://picsum.photos/seed/picsum/300/200"
-                          : "https://picsum.photos/seed/picsum/300/200"
-                      }
-                      className={style.activityImg}
-                    ></img>
+                    <img src={imageUrl} className={style.activityImg}></img>
                   </Link>
                 </div>
               ) : (
@@ -271,11 +278,27 @@ class TripDetail extends Component {
             ) : null}
           </div>
         </li>
-        <li className={style.timelineTransport}>
-          <FontAwesomeIcon icon={faCar} />{" "}
-          {this.state.distanceToNext != -1
-            ? this.state.distanceToNext + "km"
-            : ""}
+        <li
+          className={style.timelineTransport}
+          onClick={() => {
+            if (encodedUri.length > 0 && this.state.distanceToNext != -1)
+              window.open(encodedUri);
+          }}
+        >
+          <FontAwesomeIcon icon={faCar} />
+          {"  "}
+          {this.state.distanceToNext != -1 ? (
+            <span>
+              {this.state.distanceToNext} km
+              <FontAwesomeIcon
+                icon={faAngleRight}
+                size="2xs"
+                className={style.directionIcon}
+              />
+            </span>
+          ) : (
+            ""
+          )}
         </li>
       </React.Fragment>
     );

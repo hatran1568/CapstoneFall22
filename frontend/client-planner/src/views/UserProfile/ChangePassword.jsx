@@ -31,11 +31,10 @@ function ChangePassword() {
       setErrMsg("New password and confirm password doesn't match");
     } else {
       axios
-        .post("/api/user/edit-password", user, {
+        .post("/user/api/user/edit-password", user, {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("token")}`,
           },
-          withCredentials: true,
         })
         .catch((err) => {
           if (err.response.status == 400) {
@@ -53,9 +52,8 @@ function ChangePassword() {
 
   useEffect(() => {
     async function getUserProfile() {
-      const response = await axios.get("/api/user/findById/" + user.id, {
+      const response = await axios.get("/user/api/user/findById/" + user.id, {
         headers: { "Content-Type": "application/json" },
-        withCredentials: true,
       });
 
       setCurUser(response.data);
@@ -69,7 +67,7 @@ function ChangePassword() {
     <MDBContainer className={style.container}>
       <MDBCard alignment="center" style={{ marginTop: "50px" }}>
         <MDBCardBody>
-          <MDBCardTitle className="my-4">Change password</MDBCardTitle>
+          <MDBCardTitle className="my-4">Đổi mật khẩu</MDBCardTitle>
           <div
             className={` d-flex flex-column justify-content-center align-items-center`}
           >
@@ -86,7 +84,7 @@ function ChangePassword() {
             <h6>{curUser.name}</h6>
           </div>
           <p className="mt-4">
-            Please enter your old password and new password
+            Vui lòng nhập mật khẩu cũ và mật khẩu mới của bạn
           </p>
           <p id="invalidWarning" className="text-danger my-1 mx-5">
             {errMsg}
@@ -96,7 +94,7 @@ function ChangePassword() {
               wrapperClass="my-4 mx-5"
               type="password"
               id="oldpwd"
-              label="Old password"
+              label="Mật khẩu cũ"
               onChange={(e) =>
                 setUser({ ...user, oldPassword: e.target.value })
               }
@@ -106,7 +104,7 @@ function ChangePassword() {
               wrapperClass="mb-4 mx-5"
               type="password"
               id="newpwd"
-              label="New password"
+              label="Mật khẩu mới"
               onChange={(e) =>
                 setUser({ ...user, newPassword: e.target.value })
               }
@@ -115,7 +113,7 @@ function ChangePassword() {
               wrapperClass="mb-4 mx-5"
               type="password"
               id="confirmpwd"
-              label="Confirm new password"
+              label="Xác nhận mật khẩu mới"
               onChange={(e) =>
                 setUser({ ...user, confirmPassword: e.target.value })
               }
@@ -126,7 +124,7 @@ function ChangePassword() {
               type="button"
               onClick={handleChangePwd}
             >
-              Change password
+              Đổi mật khẩu
             </MDBBtn>
           </form>
         </MDBCardBody>

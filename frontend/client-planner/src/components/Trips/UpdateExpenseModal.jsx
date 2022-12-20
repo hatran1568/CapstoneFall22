@@ -52,15 +52,13 @@ function UpdateExpenseModal(props) {
     if (document.getElementById(modalDescName).value == null)
       document.getElementById(modalDescName).value = " ";
     if (document.getElementById(modalAmountName).value == "") {
-      document.getElementById(modalErrorName).innerHTML =
-        "Hãy nhập giá tiền.";
+      document.getElementById(modalErrorName).innerHTML = "Hãy nhập giá tiền.";
     } else if (currentCat == 0)
-      document.getElementById(modalErrorName).innerHTML =
-        "Hãy chọn danh mục.";
+      document.getElementById(modalErrorName).innerHTML = "Hãy chọn danh mục.";
     else
       axios({
         method: "post",
-        url: "http://localhost:8080/api/expense/update",
+        url: "http://localhost:8080/trip/api/expense/update",
         data: {
           amount: document.getElementById(modalAmountName).value,
           description: document.getElementById(modalDescName).value,
@@ -74,7 +72,7 @@ function UpdateExpenseModal(props) {
       }).then(function (response) {
         refreshHandler();
         toggleShow();
-    });
+      });
   };
   //Add Expense Modal
   const [basicModal, setBasicModal] = useState(false);
@@ -84,7 +82,12 @@ function UpdateExpenseModal(props) {
   return (
     <span>
       <FontAwesomeIcon icon={faPenToSquare} onClick={toggleShow} />
-      <MDBModal key={data.amount} show={basicModal} setShow={setBasicModal} tabIndex="-1">
+      <MDBModal
+        key={data.amount}
+        show={basicModal}
+        setShow={setBasicModal}
+        tabIndex="-1"
+      >
         <MDBModalDialog>
           <MDBModalContent className={style.modalContainer}>
             <MDBModalHeader>
@@ -186,7 +189,7 @@ function UpdateExpenseModal(props) {
                   >
                     <FontAwesomeIcon icon={faBus} />
                     <br />
-                    <span style={{fontSize:8.5}}>Phương tiện công cộng</span>
+                    <span style={{ fontSize: 8.5 }}>Phương tiện công cộng</span>
                   </MDBBtn>
                 </MDBCol>
               </MDBRow>

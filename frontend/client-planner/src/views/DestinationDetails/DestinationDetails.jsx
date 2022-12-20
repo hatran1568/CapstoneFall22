@@ -24,7 +24,7 @@ function DestinationDetails() {
     try {
       const listResp = async () => {
         await axios
-          .get("http://localhost:8080/api/destination/images/" + id)
+          .get("http://localhost:8080/location/api/destination/images/" + id)
           .then((response) => setImages(response.data));
       };
       listResp();
@@ -37,7 +37,7 @@ function DestinationDetails() {
     try {
       const listResp = async () => {
         await axios
-          .get("http://localhost:8080/api/destination/" + id)
+          .get("http://localhost:8080/location/api/destination/" + id)
           .then((response) => setDestination(response.data));
       };
       listResp();
@@ -45,14 +45,15 @@ function DestinationDetails() {
       console.log(error);
     }
   }, []);
-  if (destination.deleted == true)
-    window.location.href = "/";
+  if (destination.deleted == true) window.location.href = "/";
   const [pois, setPOIs] = useState([]);
   useEffect(() => {
     try {
       const listResp = async () => {
         await axios
-          .get("http://localhost:8080/api/destination/first3POIs/" + id)
+          .get(
+            "http://localhost:8080/location/api/destination/first3POIs/" + id
+          )
           .then((response) => setPOIs(response.data));
       };
       listResp();
@@ -89,7 +90,7 @@ function DestinationDetails() {
         <MDBCardBody className={style.container2}>
           <h3>Du lịch tới {destination.name}?</h3>
           <MDBBtn href="../" className={style.button2} id="generateTrip">
-              Lên kế hoạch
+            Lên kế hoạch
           </MDBBtn>
           <br />
           <br />
@@ -98,7 +99,8 @@ function DestinationDetails() {
         <MDBCardBody>
           <MDBRow className={style.row}>{poiBox}</MDBRow>
         </MDBCardBody>
-        <MDBCardBody className={style.container2}><br/>
+        <MDBCardBody className={style.container2}>
+          <br />
           <a href={poiLink}>
             <MDBBtn className={style.button2} id="poiList">
               Tìm thêm địa điểm tại {destination.name}

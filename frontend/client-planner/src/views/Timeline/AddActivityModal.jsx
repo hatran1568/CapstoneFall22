@@ -58,6 +58,7 @@ function AddActivityModal(props) {
     if (validated) {
       var sendFields = { ...inputField };
       resetInputField();
+      console.log(sendFields);
       activityAdded(event, sendFields);
     }
   };
@@ -108,6 +109,7 @@ function AddActivityModal(props) {
                         onChange={(e) => {
                           inputField.name = e.target.value;
                         }}
+                        spellcheck="false"
                       />
                     </label>
                     <label className={style.customLabel}>
@@ -118,6 +120,7 @@ function AddActivityModal(props) {
                         onChange={(e) => {
                           inputField.address = e.target.value;
                         }}
+                        spellcheck="false"
                       />
                     </label>
                   </>
@@ -205,6 +208,7 @@ function AddActivityModal(props) {
                 onChange={(e) => {
                   inputField.note = e.target.value;
                 }}
+                spellcheck="false"
               ></textarea>
             </div>
           </form>

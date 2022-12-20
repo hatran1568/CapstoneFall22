@@ -13,6 +13,10 @@ import ConfirmDelete from "../Timetable/ConfirmDelete";
 import EditActivityModal from "./EditActivityModal";
 import TripGeneralInfo from "../GeneralInfo/TripGeneralInfo";
 import CloneTripModal from "../../components/Trips/CloneTripModal";
+import TripNotFound from "../../components/Trips/TripNotFound";
+import HotelDetails from "./HotelDetails";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 class Timeline extends Component {
   state = {};
   //set state of component
@@ -37,26 +41,43 @@ class Timeline extends Component {
   //get request to get trip info
   componentDidMount() {
     const { id } = this.props.params;
-    axios.get(`/trip/` + id).then((res) => {
-      const tripData = res.data;
-      var own = false;
-      if (tripData.userID && tripData.userID == localStorage.getItem("id")) {
-        own = true;
-      }
-      this.setState({
-        trip: tripData,
-        showAddModal: false,
-        showEditModal: false,
-        dataLoaded: true,
-        own: own,
-      });
-    });
+    const userId = localStorage.getItem("id") ? localStorage.getItem("id") : -1;
+    axios
+      .get(`/trip/` + id + "?userId=" + userId)
+      .then((res) => {
+        const tripData = res.data;
+        var own = false;
+        if (tripData.user && tripData.user == userId) {
+          own = true;
+        }
+        this.setState({
+          trip: tripData,
+          showAddModal: false,
+          showEditModal: false,
+          dataLoaded: true,
+          own: own,
+        });
+      })
+      .catch((error) => {
+        if (error.response) {
+          // The request was made and the server responded with a status code
+          // that falls out of the range of 2xx
+          console.log(error);
+          if (error.response.status == 404) {
+            this.setState({
+              dataLoaded: true,
+              trip: null,
+            });
+          }
+        }
+      })
+      .finally(() => {});
   }
   //get all months of a trip
   getAllMonths = (dateArr) => {
     var monthArr = [];
     dateArr.forEach((date) => {
-      var month = date.toLocaleString("default", { month: "long" });
+      var month = date.toLocaleString("vi", { month: "long" });
       if (!monthArr.includes(month)) monthArr.push(month);
     });
     return monthArr;
@@ -76,7 +97,7 @@ class Timeline extends Component {
   getAllDatesOfMonth = (dateArr, month) => {
     var arr = [];
     dateArr.forEach((dt) => {
-      if (dt.toLocaleString("default", { month: "long" }) == month) {
+      if (dt.toLocaleString("vi", { month: "long" }) == month) {
         arr.push(new Date(dt));
       }
     });
@@ -132,29 +153,38 @@ class Timeline extends Component {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("token")}`,
           },
-          withCredentials: true,
         }
       )
       .then((response) => {
-        if (response.status == 200) {
-          var newTrip = this.state.trip;
-          newTrip.listTripDetails = newTrip.listTripDetails.filter(function (
-            detail
-          ) {
-            return detail.tripDetailsId !== detailId;
-          });
-          this.setState({
-            trip: newTrip,
-            showAddModal: false,
-            showEditModal: false,
-            dataLoaded: true,
-            delete: {
-              detailId: "",
-              name: "",
-              show: false,
-            },
-          });
-        }
+        var newTrip = this.state.trip;
+        newTrip.listTripDetails = newTrip.listTripDetails.filter(function (
+          detail
+        ) {
+          return detail.tripDetailsId !== detailId;
+        });
+        this.setState({
+          trip: newTrip,
+          showAddModal: false,
+          showEditModal: false,
+          dataLoaded: true,
+          delete: {
+            detailId: "",
+            name: "",
+            show: false,
+          },
+        });
+        this.showToastSuccess();
+      })
+      .catch(function (error) {
+        console.log(error);
+        this.setState({
+          delete: {
+            detailId: "",
+            name: "",
+            show: false,
+          },
+        });
+        this.showToastError();
       });
   };
   //get a tripDetail inside trip in state
@@ -182,14 +212,17 @@ class Timeline extends Component {
       headers: {
         Authorization: `Bearer ${localStorage.getItem("token")}`,
       },
-      withCredentials: true,
     })
       .then((response) => {
         this.updateDetail(detail.tripDetailsId, response.data);
-        this.closeEditModal();
+        this.showToastSuccess();
       })
       .catch(function (error) {
         console.log(error);
+        this.showToastError();
+      })
+      .finally(() => {
+        this.closeEditModal();
       });
   };
   //put request to edit a detail
@@ -209,17 +242,18 @@ class Timeline extends Component {
       headers: {
         Authorization: `Bearer ${localStorage.getItem("token")}`,
       },
-      withCredentials: true,
 
       data: detail,
     })
       .then((response) => {
         this.updateDetail(detail.tripDetailsId, response.data);
-        this.closeEditModal();
+        this.showToastSuccess();
       })
       .catch(function (error) {
         console.log(error);
-      });
+        this.showToastError();
+      })
+      .finally(() => this.closeEditModal());
   };
   //update an activity in the state
   updateDetail = (oldDetailId, newDetail) => {
@@ -254,25 +288,23 @@ class Timeline extends Component {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("token")}`,
           },
-          withCredentials: true,
         }
       )
       .then((response) => {
-        console.log("custom response: ", response);
         var newDetail = response.data;
         var newTrip = this.state.trip;
         newTrip.listTripDetails.push(newDetail);
-        this.setState(
-          {
-            trip: newTrip,
-            showAddModal: false,
-            dataLoaded: true,
-          },
-          this.render
-        );
+        this.setState({
+          trip: newTrip,
+          showAddModal: false,
+          dataLoaded: true,
+        });
+        this.showToastSuccess("Thêm vào chuyến đi thành công!");
       })
       .catch(function (error) {
         console.log(error);
+        this.setState({ showAddModal: false });
+        this.showToastError();
       });
   };
   //insert an activity into the trip
@@ -293,35 +325,68 @@ class Timeline extends Component {
       tripId: this.state.trip.tripId,
       note: input.note ? input.note : "",
     };
-    console.log("data: ", data);
     axios
       .post(`/trip/add-detail`, data, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
-        withCredentials: true,
       })
       .then((response) => {
         var newDetail = response.data;
         var newTrip = this.state.trip;
         newTrip.listTripDetails.push(newDetail);
         this.setState({
-          strip: newTrip,
+          trip: newTrip,
           showAddModal: false,
           dataLoaded: true,
         });
+        this.showToastSuccess("Thêm vào chuyến đi thành công!");
       })
       .catch(function (error) {
+        this.setState({ showAddModal: false });
+        this.showToastError();
         console.log(error);
       });
+  };
+  showToastSuccess = (message) => {
+    if (message === undefined) message = "Lưu thay đổi thành công!";
+    toast.success(message, {
+      position: "top-center",
+      autoClose: 1000,
+      hideProgressBar: true,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "light",
+    });
+  };
+  showToastError = (message) => {
+    if (message === undefined)
+      message = "Đã có lỗi xảy ra, vui lòng thử lại sau.";
+    toast.error(message, {
+      position: "top-center",
+      autoClose: 1000,
+      hideProgressBar: true,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "light",
+    });
   };
   //gets the id of the next trip detail in the list, to get the distance between the 2 later
   getNextTripDetail = (list, detail) => {
     var index = list.indexOf(detail);
     var nextItem;
     if (index >= 0 && index < list.length - 1) nextItem = list[index + 1];
-    if (nextItem) return nextItem.masterActivity.activityId;
-    return -1;
+    if (nextItem) {
+      let item = {};
+      item.activityId = nextItem.masterActivity.activityId;
+      item.address = nextItem.masterActivity.address;
+      return item;
+    }
+    return null;
   };
   //gets the id of the next trip detail in the list, to get the distance between the 2 later
   isConflicting = (list, detail) => {
@@ -410,6 +475,9 @@ class Timeline extends Component {
           <div></div>
         </LoadingScreen>
       );
+    if (this.state.dataLoaded && this.state.trip == null) {
+      return <TripNotFound />;
+    }
     document.title = this.state.trip.name + " | Tripplanner";
     var allDates = this.getAllDates(
       this.state.trip.startDate,
@@ -422,24 +490,14 @@ class Timeline extends Component {
       month: "numeric",
       day: "numeric",
     };
-    const vietMonths = {
-      January: "Tháng Một",
-      February: "Tháng Hai",
-      March: "Tháng Ba",
-      April: "Tháng Tư",
-      May: "Tháng Năm",
-      June: "Tháng Sáu",
-      July: "Tháng Bảy",
-      August: "Tháng Tám",
-      September: "Tháng Chín",
-      October: "Tháng Mười",
-      November: "Tháng Mười Một",
-      December: "Tháng Mười Hai",
-    };
     return (
       <div>
         <TripGeneralInfo />
-        <TripDetailTabs />
+        <TripDetailTabs
+          own={this.state.own}
+          status={this.state.trip.status}
+          tripId={this.state.trip.tripId}
+        />
         {this.state.showEditModal ? (
           <EditActivityModal
             show={this.state.showEditModal}
@@ -454,6 +512,8 @@ class Timeline extends Component {
             show={this.state.showCloneModal}
             onHide={this.closeCloneModal}
             tripId={this.state.trip.tripId}
+            tripStartDate={this.state.trip.startDate}
+            tripEndDate={this.state.trip.endDate}
           />
         ) : (
           <ConfirmDelete
@@ -464,6 +524,18 @@ class Timeline extends Component {
             name={this.state.delete.name}
           />
         )}
+        <ToastContainer
+          position="top-center"
+          autoClose={1000}
+          hideProgressBar
+          newestOnTop={false}
+          closeOnClick
+          rtl={false}
+          pauseOnFocusLoss
+          draggable
+          pauseOnHover
+          theme="light"
+        />
         <div className="container ">
           <div className="timeline-container row ">
             <div className="col-2">
@@ -497,28 +569,65 @@ class Timeline extends Component {
                     </div>
                     <ul className={style.timeline}>
                       {this.getTripDetailsByDate(date).length > 0 ? (
-                        this.getTripDetailsByDate(date).map((tripDetail) => (
-                          <TripDetail
-                            key={tripDetail.tripDetailsId}
-                            tripDetail={tripDetail}
-                            deleteEvent={(event, detailId, name) =>
-                              this.openConfirmDelete(event, detailId, name)
-                            }
-                            editEvent={(event, detail) => {
-                              console.log("opening edit");
-                              this.openEditModal(event, detail);
-                            }}
-                            nextActivityId={this.getNextTripDetail(
-                              this.getTripDetailsByDate(date),
-                              tripDetail
-                            )}
-                            allDates={allDates}
-                            isConflicting={this.isConflicting(
-                              this.getTripDetailsByDate(date),
-                              tripDetail
-                            )}
-                          ></TripDetail>
-                        ))
+                        <>
+                          {this.getTripDetailsByDate(date).map((tripDetail) =>
+                            tripDetail.masterActivity.category &&
+                            tripDetail.masterActivity.category.categoryName ==
+                              "Hotels" ? (
+                              <HotelDetails
+                                key={tripDetail.tripDetailsId}
+                                tripDetail={tripDetail}
+                                deleteEvent={(event, detailId, name) =>
+                                  this.openConfirmDelete(event, detailId, name)
+                                }
+                                editEvent={(event, detail) => {
+                                  this.openEditModal(event, detail);
+                                }}
+                                nextActivity={this.getNextTripDetail(
+                                  this.getTripDetailsByDate(date),
+                                  tripDetail
+                                )}
+                                allDates={allDates}
+                                isConflicting={this.isConflicting(
+                                  this.getTripDetailsByDate(date),
+                                  tripDetail
+                                )}
+                                tripId={this.state.trip.tripId}
+                              />
+                            ) : (
+                              <TripDetail
+                                key={tripDetail.tripDetailsId}
+                                tripDetail={tripDetail}
+                                deleteEvent={(event, detailId, name) =>
+                                  this.openConfirmDelete(event, detailId, name)
+                                }
+                                editEvent={(event, detail) => {
+                                  this.openEditModal(event, detail);
+                                }}
+                                nextActivity={this.getNextTripDetail(
+                                  this.getTripDetailsByDate(date),
+                                  tripDetail
+                                )}
+                                allDates={allDates}
+                                isConflicting={this.isConflicting(
+                                  this.getTripDetailsByDate(date),
+                                  tripDetail
+                                )}
+                              ></TripDetail>
+                            )
+                          )}
+                          <div className={style.emptyDay}>
+                            <a
+                              onClick={() => {
+                                window.location.href =
+                                  "../hotel/" + this.state.trip.tripId;
+                              }}
+                              className={style.addHotel}
+                            >
+                              Thêm khách sạn
+                            </a>
+                          </div>
+                        </>
                       ) : (
                         <div className={style.emptyDay}>
                           <span>Thời gian trống.</span>
@@ -531,6 +640,16 @@ class Timeline extends Component {
                             className={style.addActivity}
                           >
                             Thêm hoạt động
+                          </a>
+                          <span>&nbsp;&nbsp;hoặc&nbsp;&nbsp;</span>
+                          <a
+                            onClick={() => {
+                              window.location.href =
+                                "../hotel/" + this.state.trip.tripId;
+                            }}
+                            className={style.addHotel}
+                          >
+                            Thêm khách sạn
                           </a>
                         </div>
                       )}
@@ -545,12 +664,16 @@ class Timeline extends Component {
             <FontAwesomeIcon icon={faPlus} className={style.addIcon} />
           </a>
         </div>
-        <AddActivityModal
-          show={this.state.showAddModal}
-          onHide={this.toggleAddModal}
-          allDates={allDates}
-          activityAdded={(event, input) => this.insertTripDetail(event, input)}
-        />
+        {this.state.showAddModal ? (
+          <AddActivityModal
+            show={this.state.showAddModal}
+            onHide={this.toggleAddModal}
+            allDates={allDates}
+            activityAdded={(event, input) =>
+              this.insertTripDetail(event, input)
+            }
+          />
+        ) : null}
       </div>
     );
   }

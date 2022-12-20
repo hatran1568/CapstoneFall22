@@ -12,7 +12,7 @@ import {
 import style from "./Login.module.css";
 import useAuth from "../../hooks/useAuth";
 import axios from "../../api/axios";
-const LOGIN_URL = "/api/login";
+const LOGIN_URL = "/auth/api/login";
 
 function Login() {
   const { setAuth } = useAuth();
@@ -29,7 +29,6 @@ function Login() {
     try {
       const response = await axios.post(LOGIN_URL, user, {
         headers: { "Content-Type": "application/json" },
-        withCredentials: true,
       });
       const accessToken = response?.data?.accessToken;
       const role = response?.data?.role;
@@ -57,11 +56,11 @@ function Login() {
   }, []);
 
   const handleLoginGoogle = (e) => {
-    window.location.href = "http://localhost:8080/oauth2/authorization/google";
+    window.location.href = "http://localhost:8088/oauth2/authorization/google";
   };
   const handleLoginFacebook = (e) => {
     window.location.href =
-      "http://localhost:8080/oauth2/authorization/facebook";
+      "http://localhost:8088/oauth2/authorization/facebook";
   };
   return (
     <MDBContainer className="my-5 ">
@@ -75,27 +74,35 @@ function Login() {
 
           <MDBCol md="6">
             <MDBCardBody className="d-flex flex-column">
-              <h3 className="fw-normal my-4 pb-3 text-center">Login</h3>
-              <MDBInput
-                autocomplete="new-password"
-                wrapperClass="mb-4 mx-5"
-                label="Email address"
-                id="loginEmail"
-                type="email"
-                size="lg"
-                onChange={(e) => setUser({ ...user, username: e.target.value })}
-              />
-              <MDBInput
-                wrapperClass="mb-2 mx-5"
-                label="Password"
-                id="loginPwd"
-                type="password"
-                size="lg"
-                onChange={(e) => setUser({ ...user, password: e.target.value })}
-              />
+              <h3 className="fw-normal my-4 pb-3 text-center">Đăng Nhập</h3>
+              <div className={style.inputDiv}>
+                <MDBInput
+                  autocomplete="new-password"
+                  wrapperClass="mb-4 mx-5"
+                  label="Địa chỉ email"
+                  id="loginEmail"
+                  type="email"
+                  size="lg"
+                  onChange={(e) =>
+                    setUser({ ...user, username: e.target.value })
+                  }
+                />
+              </div>
+              <div className={style.inputDiv}>
+                <MDBInput
+                  wrapperClass="mb-2 mx-5"
+                  label="Mật khẩu"
+                  id="loginPwd"
+                  type="password"
+                  size="lg"
+                  onChange={(e) =>
+                    setUser({ ...user, password: e.target.value })
+                  }
+                />
+              </div>
               <div className="d-flex justify-content-end">
                 <a className="small text-muted mx-5" href="/forgot-password">
-                  Forgot password?
+                  Quên mật khẩu?
                 </a>
               </div>
 
@@ -104,7 +111,7 @@ function Login() {
                 className="text-danger my-1 mx-5"
                 style={{ display: "none" }}
               >
-                Wrong email or password!
+                Sai tên đăng nhập hoặc mật khẩu!
               </p>
 
               <MDBBtn
@@ -113,13 +120,13 @@ function Login() {
                 size="lg"
                 onClick={handleLogin}
               >
-                Login
+                Đăng nhập
               </MDBBtn>
 
               <div
                 className={`${style.divider}  d-flex align-items-center my-4`}
               >
-                <p className="text-center fw-bold mx-3 mb-0">OR</p>
+                <p className="text-center fw-bold mx-3 mb-0">HOẶC</p>
               </div>
 
               <MDBBtn
@@ -132,25 +139,13 @@ function Login() {
                 type="submit"
                 onClick={handleLoginGoogle}
               >
-                <i className="fab fa-google me-2"></i> Continue with google
-              </MDBBtn>
-              <MDBBtn
-                className="btn btn-lg col-6 mx-auto btn-primary mb-5"
-                style={{
-                  backgroundColor: "#3b5998",
-                  border: 0,
-                  fontSize: "16px",
-                }}
-                type="submit"
-                onClick={handleLoginFacebook}
-              >
-                <i className="fab fa-facebook me-2"></i> Continue with Facebook
+                <i className="fab fa-google me-2"></i> Tiếp tục với Google
               </MDBBtn>
               <p
                 className="mb-0 pb-lg-2 text-center"
                 style={{ color: "#393f81" }}
               >
-                Don't have an account? <Link to="/register">Sign up</Link>
+                Bạn chưa có tài khoản? <Link to="/register">Đăng ký</Link>
               </p>
             </MDBCardBody>
           </MDBCol>
