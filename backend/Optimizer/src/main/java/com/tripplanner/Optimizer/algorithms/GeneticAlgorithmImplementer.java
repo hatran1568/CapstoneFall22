@@ -229,6 +229,7 @@ public class GeneticAlgorithmImplementer {
         ArrayList<Solution> population = new ArrayList<>();
         //Generation
         for (int i = 0; i < 6000; i++) {
+            log.info(String.valueOf(i));
             population.add(generatePopulation(data));
         }
         Collections.sort(population, new Comparator<Solution>() {
@@ -240,7 +241,7 @@ public class GeneticAlgorithmImplementer {
         });
 
         for (int j = 1; j <= 300; j++) {
-
+            log.info(String.valueOf(j));
 
             //Selection
 
