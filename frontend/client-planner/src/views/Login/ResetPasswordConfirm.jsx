@@ -57,16 +57,16 @@ function ResetPasswordConfirm() {
     >
       <Stepper activeStep={current} alternativeLabel>
         <Step key="Step 1">
-          <StepLabel>Step 1</StepLabel>
+          <StepLabel>Bước 1</StepLabel>
         </Step>
         <Step key="Step 2">
-          <StepLabel>Step 2</StepLabel>
+          <StepLabel>Bước 2</StepLabel>
         </Step>
         <Step key="Step 3">
-          <StepLabel>Step 3</StepLabel>
+          <StepLabel>Bước 3</StepLabel>
         </Step>
         <Step key="Step 4">
-          <StepLabel>Step 4</StepLabel>
+          <StepLabel>Bước 4</StepLabel>
         </Step>
       </Stepper>
 
@@ -78,14 +78,14 @@ function ResetPasswordConfirm() {
             icon="key"
             size="3x"
           />{" "}
-          <h4>Set new password</h4>
-          <p style={{ margin: "0px 10% " }}> Enter your new password</p>
+          <h4>Đặt lại mật khẩu</h4>
+          <p style={{ margin: "0px 10% " }}> Hãy nhập mật khẩu mới của bạn </p>
           <div style={{ margin: "0px 20% " }}>
             <p
               style={{ textAlign: "left", fontWeight: "bold" }}
               className="text-left mt-2 mx-5"
             >
-              New password
+              Mật khẩu mới
             </p>
             <MDBInput
               wrapperClass="mb-4 mx-5"
@@ -97,7 +97,7 @@ function ResetPasswordConfirm() {
               style={{ textAlign: "left", fontWeight: "bold" }}
               className="text-left mt-2 mx-5"
             >
-              Confirm password
+              Xác nhận mật khẩu
             </p>
             <MDBInput
               wrapperClass="mb-4 mx-5"
@@ -114,7 +114,7 @@ function ResetPasswordConfirm() {
             color="dark"
             onClick={handlePasswordSubmit}
           >
-            Reset password
+            Đặt lại mật khẩu
           </MDBBtn>
         </div>
       ) : (
@@ -125,11 +125,11 @@ function ResetPasswordConfirm() {
             icon="key"
             size="3x"
           />
-          <h4>Finished!</h4>
+          <h4>Hoàn thành!</h4>
 
           <p style={{ margin: "0px 10% " }}>
             {" "}
-            Your password has been resetted successfully!
+            Mật khẩu của bạn đã được đặt lại thành công!
           </p>
         </div>
       )}

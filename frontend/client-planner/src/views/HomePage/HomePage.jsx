@@ -294,7 +294,7 @@ function HomePage() {
           }
           localStorage.setItem("trips", JSON.stringify(trips));
         }
-        navigate("../Timeline/" + response.data);
+        navigate("../Timeline/" + response.data.tripId);
         window.location.reload(false);
       });
     }
@@ -645,7 +645,7 @@ function HomePage() {
                             color="secondary"
                             onClick={toggleShowGenerate}
                           >
-                            Close
+                            Đóng
                           </MDBBtn>
                           {!isGenerating ? (
                             <MDBBtn onClick={submitGenerateTrip}>

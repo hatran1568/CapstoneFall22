@@ -92,9 +92,9 @@ const CollectionDetail = () => {
     confirm({
       title: "Đồng ý xóa?",
       content: "Địa điểm này sẽ bị xóa khỏi bộ sưu tập.",
-      okText: "Ok",
+      okText: "Xóa",
       okType: "danger",
-      cancelText: "Không",
+      cancelText: "Hủy",
       centered: true,
       onOk() {
         axios
@@ -234,6 +234,8 @@ const CollectionDetail = () => {
                   open={open}
                   onOk={handleOk}
                   onCancel={handleCancel}
+                  cancelText="Hủy"
+                  okText="Thêm"
                 >
                   <POISearchBar POISelected={setSelectedPOI} />
                 </Modal>
