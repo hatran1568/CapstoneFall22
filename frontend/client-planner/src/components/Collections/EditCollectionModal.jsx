@@ -78,6 +78,8 @@ const EditCollectionModal = (prop) => {
         open={open}
         onOk={handleOk}
         onCancel={handleCancel}
+        cancelText={"Hủy"}
+        okText="Lưu"
       >
         <MDBInputGroup className="px-2 mb-3">
           <p className="fs-5 fw-bold">Tiêu đề</p>
@@ -88,6 +90,7 @@ const EditCollectionModal = (prop) => {
               setTitleInput(e.target.value);
             }}
             size="large"
+            spellCheck="false"
           />
         </MDBInputGroup>
         <MDBInputGroup className="px-2">
@@ -100,6 +103,7 @@ const EditCollectionModal = (prop) => {
             }}
             maxLength={100}
             style={{ width: 1000, resize: "none" }}
+            spellCheck="false"
           />
         </MDBInputGroup>
       </Modal>

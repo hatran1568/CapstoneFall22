@@ -75,4 +75,8 @@ public interface ExpenseRepository extends JpaRepository<ExpenseCategory,Double>
     @Query(value = "insert into trip_expense (amount,description,expense_category_id,trip_id,trip_details_id) VALUE(?1,?2,8,?3,?4)",nativeQuery = true)
     void insertExpense(double amount,String description, int trip_id,int details);
 
+    @Modifying
+    @Transactional
+    @Query(value = "delete te from trip_expense te left join trip_details td on te.trip_details_id = td.trip_details_id where td.trip_id=:tripId and td.day_number > :numberOfDays", nativeQuery = true)
+    void deleteByRange(int tripId, int numberOfDays);
 }
