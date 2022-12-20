@@ -41,6 +41,7 @@ class BlogList extends Component {
     };
   }
   componentDidMount() {
+    document.title = "Danh sách blog | Tripplanner"
     axios
       .get(
         "http://localhost:8080/blog/api/blog/admin/" +

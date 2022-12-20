@@ -67,6 +67,10 @@ class DestinationAddUpdate extends Component {
   componentDidMount() {
     const queryParams = new URLSearchParams(window.location.search);
     const id = queryParams.get("id");
+    if (id > 0)
+      document.title = "Chỉnh sửa điểm đến | Tripplanner"
+    else
+      document.title = "Thêm điểm đến";
     axios
       .get(`http://localhost:8080/location/api/destination/select/all`, {
         headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },

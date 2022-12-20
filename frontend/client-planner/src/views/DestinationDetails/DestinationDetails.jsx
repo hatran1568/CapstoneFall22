@@ -74,6 +74,7 @@ function DestinationDetails() {
     );
   });
   const poiLink = "./Destination/POIs?desid=" + id + "&catid=0&rating=0";
+  document.title = "Khám phá " + destination.name + " | Tripplanner";
   return (
     <MDBContainer className={style.container}>
       <br />

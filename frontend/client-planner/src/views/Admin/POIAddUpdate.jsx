@@ -6,6 +6,7 @@ import { useParams } from "react-router-dom";
 import { Editor } from "react-draft-wysiwyg";
 import Rating from "../../components/POIs/Rating";
 import { Component } from "react";
+import validator from 'validator'
 import {
   convertToRaw,
   EditorState,
@@ -67,6 +68,10 @@ class POIAddUpdate extends Component {
   componentDidMount() {
     const queryParams = new URLSearchParams(window.location.search);
     const id = queryParams.get("id");
+    if (id > 0)
+      document.title = "Chỉnh sửa địa điểm | Tripplanner"
+    else
+      document.title = "Thêm địa điểm";
     axios
       .get(`http://localhost:8080/location/api/destination/select/all`, {
         headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
@@ -268,6 +273,12 @@ class POIAddUpdate extends Component {
         validated = false;
         document.getElementById("errorMessage").innerHTML =
           "Hãy chọn danh mục của địa điểm.";
+      }
+    if (
+      document.getElementById("emailInput").value != null && !validator.isEmail(document.getElementById("emailInput").value)) {
+        validated = false;
+        document.getElementById("errorMessage").innerHTML =
+          "Hãy nhập đúng email.";
       }
     if (id != 0 && curDes == null && this.state.destinationChanged == true) {
       validated = false;

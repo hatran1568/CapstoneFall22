@@ -60,6 +60,7 @@ class POIRequest extends Component {
     };
   }
   componentDidMount() {
+    document.title = "Yêu cầu chỉnh sửa thông tin địa điểm | Tripplanner";
     const queryParams = new URLSearchParams(window.location.search);
     const id = queryParams.get("id");
     if (id > 0) {

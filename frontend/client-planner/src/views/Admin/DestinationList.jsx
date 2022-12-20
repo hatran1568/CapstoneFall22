@@ -47,6 +47,7 @@ class DestinationList extends Component {
     };
   }
   componentDidMount() {
+    document.title = "Danh sách điểm đến | Tripplanner"
     axios
       .get(
         "http://localhost:8080/location/api/destination/admin/list/" +
