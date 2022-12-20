@@ -60,9 +60,7 @@ public class ChecklistServiceImpl implements ChecklistService {
             item.setNote(newItem.getNote());
             item.setChecked(newItem.isChecked());
             return mapper.map(checklistItemRepository.save(item), ChecklistItemDTO.class);
-        }).orElseGet(() -> {
-            return null;
-        });
+        }).orElseGet(() -> null);
     }
 
     @Override

@@ -2,9 +2,7 @@ package com.tripplanner.LocationService.service.implementers;
 
 import com.tripplanner.LocationService.dto.response.CollectionDTO;
 import com.tripplanner.LocationService.dto.response.POIOfCollectionDTO;
-import com.tripplanner.LocationService.entity.Collection;
-import com.tripplanner.LocationService.entity.CollectionPOI;
-import com.tripplanner.LocationService.entity.POI;
+import com.tripplanner.LocationService.entity.*;
 import com.tripplanner.LocationService.repository.CollectionRepository;
 import com.tripplanner.LocationService.repository.POIImageRepository;
 import com.tripplanner.LocationService.repository.POIRepository;
@@ -64,5 +62,36 @@ class CollectionServiceImplTest {
         service.deletePOIFromCollection(1, 1);
 
         verify(colRepo, times(1)).removePOIFromCollection(1, 1);
+    }
+
+    @Test
+    void getPOIListOfCollectionTest() {
+        POI poi = new POI();
+        poi.setActivityId(1);
+        poi.setName("");
+        poi.setAddress("");
+        poi.setGoogleRate(4);
+        Category cat = new Category();
+        cat.setCategoryName("");
+        poi.setCategory(cat);
+        Optional<POI> poiOptional = Optional.of(poi);
+        Collection col = new Collection();
+        col.setCollectionId(1);
+        CollectionPOI colPoi = new CollectionPOI();
+        colPoi.setPoi(poi);
+        colPoi.setCollection(col);
+        ArrayList<CollectionPOI> list = new ArrayList<>();
+        list.add(colPoi);
+        POIImage img = new POIImage();
+        img.setImageId(1);
+        img.setPoi(poi);
+        img.setUrl("");
+        doReturn(list).when(colRepo).getPOIListOfCollectionByID(1);
+        doReturn(poiOptional).when(poiRepo).getPOIByMasterActivity(1);
+        doReturn(img).when(poiImgRepo).findFirstByPoiId(1);
+
+        ArrayList<POIOfCollectionDTO> returnedList = service.getPOIListOfCollection(1);
+
+        Assertions.assertEquals(returnedList.size(), list.size());
     }
 }

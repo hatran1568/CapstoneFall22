@@ -71,7 +71,7 @@ class UserServiceImplTest {
 
     @Test
     void editAvatarTest() throws Exception {
-        FileInputStream fis = new FileInputStream("test.jpg");
+        FileInputStream fis = new FileInputStream("D:\\60595330_p0.jpg");
         MockMultipartFile file = new MockMultipartFile("mock", fis);
         User user = new User();
         user.setUserID(1);
