@@ -136,7 +136,7 @@ public class DestinationController {
     @Transactional(rollbackFor = {Exception.class, Throwable.class})
     @PreAuthorize("hasAuthority('Admin')")
     @RequestMapping(value = "/destination/poi/update/{poiId}", consumes = "application/json", produces = { "*/*" }, method = RequestMethod.POST)
-    public ResponseEntity<?> updateExpense(@RequestBody ArrayList<POIDesRequestDTO> poides, @PathVariable("poiId") int poiId) {
+    public ResponseEntity<?> updateDesOfPOI(@RequestBody ArrayList<POIDesRequestDTO> poides, @PathVariable("poiId") int poiId) {
         try{
             if (poides.get(0).getValue() == 0)
                 return new ResponseEntity<>(HttpStatus.OK);
@@ -168,7 +168,7 @@ public class DestinationController {
     @Transactional(rollbackFor = {Exception.class, Throwable.class})
    @PreAuthorize("hasAuthority('Admin')")
     @GetMapping("/destination/admin/list/update/{desId}")
-    public ResponseEntity<DesAddUpdateDTO> getDesListAdmin(@PathVariable("desId") int desId) {
+    public ResponseEntity<DesAddUpdateDTO> getDesUpdate(@PathVariable("desId") int desId) {
         try {
             DesAddUpdateDTO destination = destinationRepo.getDesUpdate(desId);
             if (destination == null){
@@ -182,7 +182,7 @@ public class DestinationController {
     @Transactional(rollbackFor = {Exception.class, Throwable.class})
     @PreAuthorize("hasAuthority('Admin')")
     @GetMapping("/destination/admin/list/update/images/{desId}")
-    public ResponseEntity<ArrayList<POIImageUpdateDTO>> getPOIImageUpdate(@PathVariable("desId") int desId) {
+    public ResponseEntity<ArrayList<POIImageUpdateDTO>> getDesImageUpdate(@PathVariable("desId") int desId) {
         try {
             ArrayList<POIImageUpdateDTO> images = destinationRepo.getDesImagesUpdate(desId);
             if (images.isEmpty()) {
@@ -208,7 +208,7 @@ public class DestinationController {
     @Transactional(rollbackFor = {Exception.class, Throwable.class})
     @PreAuthorize("hasAuthority('Admin')")
     @RequestMapping(value = "/destination/add", consumes = "application/json", produces = { "*/*" }, method = RequestMethod.POST)
-    public ResponseEntity<?> addPOI(@RequestBody UpdateDesDTO destination) {
+    public ResponseEntity<?> addDes(@RequestBody UpdateDesDTO destination) {
         try{
             java.sql.Timestamp date = new java.sql.Timestamp(Calendar.getInstance().getTime().getTime());
             destinationRepo.addDes(destination.getName(), destination.getDescription(),
@@ -224,16 +224,16 @@ public class DestinationController {
     @PostMapping("/destination/addImg/{desId}/{description}")
     @ResponseBody
     public ResponseEntity<?> addImage(@PathVariable int desId, @PathVariable String description, @RequestPart("File") MultipartFile file) throws Exception{
-//        try{
+        try{
         String webViewLink = driveManager.uploadFile(file, "tripplanner/img/destination");
         if (description.equals("*"))
             destinationRepo.addImage(desId, null, webViewLink);
         else
             destinationRepo.addImage(desId, description, webViewLink);
         return new ResponseEntity<>(HttpStatus.OK);
-//        } catch (Exception e){
-//            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-//        }
+        } catch (Exception e){
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
     @Transactional(rollbackFor = {Exception.class, Throwable.class})
     @RequestMapping(value = "/destination/deleteImg/{imgId}", produces = { "*/*" }, method = RequestMethod.POST)

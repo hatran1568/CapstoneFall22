@@ -159,18 +159,23 @@ function HomePage() {
     return /^-?\d+$/.test(value);
   }
   const toggleShowGenerate = () => {
+    checkGenerating();
     setCentredModal(!centredModal);
   };
   const toggleOffGenerate = () => {
     setCentredModal(false);
+    document.getElementById("budgetGenerateInput").value = "";
+    document.getElementById("destination").value = "";
+    document.getElementById("startDateGenerateInput").value = null;
+    document.getElementById("endDateGenerateInput").value = null;
   };
-  useEffect(() => {
-    const interval = setInterval(() => {
-      checkGenerating();
-    }, 5000);
+  // useEffect(() => {
+  //   const interval = setInterval(() => {
+  //     checkGenerating();
+  //   }, 5000);
 
-    return () => clearInterval(interval);
-  }, []);
+  //   return () => clearInterval(interval);
+  // }, []);
   const toggleShow = () => {
     setBasicModal(!basicModal);
     document.getElementById("budgetInput").value = "";
@@ -181,22 +186,22 @@ function HomePage() {
   };
 
   useEffect(() => {
-    if (isFirst) {
-      setIsFirst(false);
-      return;
-    }
-    if (!isGenerating) {
-      toast(" Your trip is ready!!", {
-        position: "top-center",
-        autoClose: 5000,
-        hideProgressBar: true,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: 0,
-        theme: "light",
-      });
-    }
+    // if (isFirst) {
+    //   setIsFirst(false);
+    //   return;
+    // }
+    // if (!isGenerating) {
+    //   toast(" Your trip is ready!!", {
+    //     position: "top-center",
+    //     autoClose: 5000,
+    //     hideProgressBar: true,
+    //     closeOnClick: true,
+    //     pauseOnHover: true,
+    //     draggable: true,
+    //     progress: 0,
+    //     theme: "light",
+    //   });
+    // }
     async function getExistingTrips() {
       if (localStorage.getItem("token")) {
         await axios
@@ -232,19 +237,27 @@ function HomePage() {
   }, [isGenerating]);
   const submitTrip = (event) => {
     if (
-      document.getElementById("budgetInput").value == "" ||
-      document.getElementById("tripNameInput").value == "" ||
+      document.getElementById("budgetInput").value == "") {
+        document.getElementById("errorEmptyPlan1").innerHTML =
+          "Hãy nhập ngân sách.";
+    }
+    else if (
+      document.getElementById("tripNameInput").value == "") {
+        document.getElementById("errorEmptyPlan1").innerHTML =
+          "Hãy nhập tên chuyến đi.";
+    }
+    else if (
       !document.getElementById("startDateInput").value ||
       !document.getElementById("endDateInput").value
     ) {
       document.getElementById("errorEmptyPlan1").innerHTML =
-        "Please enter all fields.";
+        "Hãy nhập ngày đi và ngày về.";
     } else if (
       document.getElementById("startDateInput").value >
       document.getElementById("endDateInput").value
     )
       document.getElementById("errorEmptyPlan1").innerHTML =
-        "Please enter valid dates.";
+        "Ngày đi không thể ở sau ngày về.";
     else {
       var userId = -1;
       if (
@@ -292,7 +305,7 @@ function HomePage() {
       setIsGenerating(false);
       setProgress(0);
 
-      toast(" Your trip is ready!!", {
+      toast(" Chuyến đi của bạn đã sẵn sàng!!", {
         position: "top-center",
         autoClose: 5000,
         hideProgressBar: true,
@@ -305,42 +318,42 @@ function HomePage() {
       stompClient = null;
     }
   }, [progress != 100]);
-  const cancelGenerating = () => {
-    axios({
-      method: "post",
-      url: "http://localhost:8080/trip/cancel/" + localStorage.getItem("id"),
+  // const cancelGenerating = () => {
+  //   axios({
+  //     method: "post",
+  //     url: "http://localhost:8080/trip/cancel/" + localStorage.getItem("id"),
 
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: "Bearer " + localStorage.getItem("token"),
-      },
-    })
-      .then(function (response) {
-        setIsGenerating(false);
-        toast.success("🦄 Canceled!", {
-          position: "top-center",
-          autoClose: 5000,
-          hideProgressBar: true,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          theme: "light",
-        });
-      })
-      .catch(function (err) {
-        toast.error("🦄Cancel Failed! Try to reload the page!", {
-          position: "top-center",
-          autoClose: 5000,
-          hideProgressBar: true,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          theme: "light",
-        });
-      });
-  };
+  //     headers: {
+  //       "Content-Type": "application/json",
+  //       Authorization: "Bearer " + localStorage.getItem("token"),
+  //     },
+  //   })
+  //     .then(function (response) {
+  //       setIsGenerating(false);
+  //       toast.success("🦄 Canceled!", {
+  //         position: "top-center",
+  //         autoClose: 5000,
+  //         hideProgressBar: true,
+  //         closeOnClick: true,
+  //         pauseOnHover: true,
+  //         draggable: true,
+  //         progress: undefined,
+  //         theme: "light",
+  //       });
+  //     })
+  //     .catch(function (err) {
+  //       toast.error("🦄Cancel Failed! Try to reload the page!", {
+  //         position: "top-center",
+  //         autoClose: 5000,
+  //         hideProgressBar: true,
+  //         closeOnClick: true,
+  //         pauseOnHover: true,
+  //         draggable: true,
+  //         progress: undefined,
+  //         theme: "light",
+  //       });
+  //     });
+  // };
   const checkGenerating = () => {
     axios({
       method: "get",
@@ -372,17 +385,25 @@ function HomePage() {
       document.getElementById("endDateGenerateInput").value
     );
     if (
-      document.getElementById("budgetGenerateInput").value == "" ||
-      document.getElementById("destination").value == "-1" ||
+      document.getElementById("budgetGenerateInput").value == "") {
+        document.getElementById("errorEmptyPlan").innerHTML =
+          "Hãy nhập ngân sách.";
+    }
+    else if (
+      document.getElementById("destination").value == "-1") {
+        document.getElementById("errorEmptyPlan").innerHTML =
+          "Hãy nhập điểm đến.";
+    }
+    else if (
       !document.getElementById("startDateGenerateInput").value ||
       !document.getElementById("endDateGenerateInput").value
     ) {
       document.getElementById("errorEmptyPlan").innerHTML =
-        "Please enter all fields.";
+        "Hãy nhập ngày đi và ngày về";
     } else {
       if (endDate < startDate) {
         document.getElementById("errorEmptyPlan").innerHTML =
-          "Please enter valid date.";
+          "Ngày đi không thể sau ngày về.";
         return;
       }
       let preferences = [];
@@ -441,15 +462,9 @@ function HomePage() {
                   riêng bạn
                 </p>
                 <MDBBtnGroup className={style.btn}>
-                  {isGenerating ? (
-                    <MDBBtn color="info" onClick={toggleShowGenerate}>
-                      Chuyến đi của bạn sắp hoàn thành!
-                    </MDBBtn>
-                  ) : (
-                    <MDBBtn color="info" onClick={toggleShowGenerate}>
-                      Gợi ý chuyến đi
-                    </MDBBtn>
-                  )}
+                  <MDBBtn color="info" onClick={toggleShowGenerate}>
+                    Gợi ý chuyến đi
+                  </MDBBtn>
 
                   <MDBModal
                     tabIndex="-1"
@@ -637,9 +652,7 @@ function HomePage() {
                               Gợi ý chuyến đi
                             </MDBBtn>
                           ) : (
-                            <MDBBtn onClick={cancelGenerating}>
-                              Dừng gợi ý
-                            </MDBBtn>
+                            <></>
                           )}
                         </MDBModalFooter>
                       </MDBModalContent>

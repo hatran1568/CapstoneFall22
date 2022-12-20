@@ -168,7 +168,7 @@ class POIRequest extends Component {
       await this.delay(3000);
       const queryParams = new URLSearchParams(window.location.search);
       id = queryParams.get("id");
-      window.location.href = "/poi?id=" + id;
+      //window.location.href = "/poi?id=" + id;
     } else
       document.getElementById("errorMessage").innerHTML =
         "Hãy nhập hết dữ liệu cần thiết một cách chính xác";
