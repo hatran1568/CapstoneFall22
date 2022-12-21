@@ -112,15 +112,18 @@ class BlogAddUpdate extends Component {
         let imageLink;
         const formData = new FormData();
         formData.append("File", file);
-
-        axios
-          .post("/blog/api/blog/uploadImg/", formData, {
-            headers: {
-              Authorization: `Bearer ${localStorage.getItem("token")}`,
-              "Content-Type": "multipart/form-data",
-            },
-          })
-          .then((response) => resolve({ data: { link: response.data } }));
+        const newThumbnail = file;
+        if (newThumbnail.size/1024 > 10240)
+          alert("Ảnh không được nặng quá 10MB.");
+        else 
+          axios
+            .post("/blog/api/blog/uploadImg/", formData, {
+              headers: {
+                Authorization: `Bearer ${localStorage.getItem("token")}`,
+                "Content-Type": "multipart/form-data",
+              },
+            })
+            .then((response) => resolve({ data: { link: response.data } }));
       });
     };
     const htmlPuri = draftToHtmlPuri(
@@ -138,8 +141,11 @@ class BlogAddUpdate extends Component {
       const formData = new FormData();
       console.log(e.target.files[0]);
       formData.append("File", e.target.files[0]);
-
-      axios
+      const newThumbnail = e.target.files[0];
+      if (newThumbnail.size/1024 > 10240)
+        alert("Ảnh không được nặng quá 10MB.");
+      else {
+        axios
         .post("/blog/api/blog/uploadImg/", formData, {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("token")}`,
@@ -151,6 +157,7 @@ class BlogAddUpdate extends Component {
             thumbnail: response.data,
           })
         );
+      }
     };
 
     //Publish or save Blog manually

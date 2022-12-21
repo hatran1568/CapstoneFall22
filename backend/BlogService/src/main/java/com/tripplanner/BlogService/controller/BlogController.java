@@ -141,7 +141,7 @@ public class BlogController {
     @RequestMapping(value = "/blog/hide/{blogId}", produces = { "*/*" }, method = RequestMethod.POST)
     public ResponseEntity<?> hideBlog(@PathVariable int blogId) {
         try{
-            BlogDetailsDTO blog = blogRepo.getBlogById(blogId);
+            BlogDetailsDTO blog = blogService.getBlogById(blogId);
             if (blog == null){
                 return new ResponseEntity<>(HttpStatus.NOT_FOUND);
             }
@@ -155,7 +155,7 @@ public class BlogController {
     @RequestMapping(value = "/blog/unhide/{blogId}", produces = { "*/*" }, method = RequestMethod.POST)
     public ResponseEntity<?> unhideBlog(@PathVariable int blogId) {
         try{
-            BlogDetailsDTO blog = blogRepo.getBlogById(blogId);
+            BlogDetailsDTO blog = blogService.getBlogById(blogId);
             if (blog == null){
                 return new ResponseEntity<>(HttpStatus.NOT_FOUND);
             }
@@ -169,7 +169,7 @@ public class BlogController {
     @RequestMapping(value = "/blog/delete/{blogId}", produces = { "*/*" }, method = RequestMethod.POST)
     public ResponseEntity<?> deleteBlog(@PathVariable int blogId) {
         try{
-            BlogDetailsDTO blog = blogRepo.getBlogById(blogId);
+            BlogDetailsDTO blog = blogService.getBlogById(blogId);
             if (blog == null){
                 return new ResponseEntity<>(HttpStatus.NOT_FOUND);
             }
