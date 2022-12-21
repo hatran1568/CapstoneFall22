@@ -63,7 +63,12 @@ public class TripServiceImpl implements TripService {
         ArrayList<TripDetailDTO> tripDetailDTOS = new ArrayList<>();
 
         for (TripDetailsQueryDTO query : tripDetailedDTO) {
-            Boolean isCustom = restTemplateClient.restTemplate().getForObject(instance.getUri() + "/location/api/pois/isExistCustom/" + query.getMasterActivity(), Boolean.class);
+            Boolean isCustom = restTemplateClient
+                    .restTemplate()
+                    .getForObject(
+                            instance.getUri() + "/location/api/pois/isExistCustom/" + query.getMasterActivity(),
+                            Boolean.class
+                    );
             TripDetailDTO dto = new TripDetailDTO();
             dto.setNote(query.getNote());
             dto.setDate(getDateByStartDateAndDayNumber((Date) trip.getStartDate(), query.getDayNumber()));
@@ -71,10 +76,20 @@ public class TripServiceImpl implements TripService {
             dto.setEndTime(query.getEndTime());
             dto.setTripDetailsId(query.getDetailsId());
             if (isCustom) {
-                MasterActivityDTO masterActivityDTO = restTemplateClient.restTemplate().getForObject(instance.getUri() + "/location/api/pois/getMasterActivity/" + query.getMasterActivity(), MasterActivityDTO.class);
+                MasterActivityDTO masterActivityDTO = restTemplateClient
+                        .restTemplate()
+                        .getForObject(
+                                instance.getUri() + "/location/api/pois/getMasterActivity/" + query.getMasterActivity(),
+                                MasterActivityDTO.class
+                        );
                 dto.setMasterActivity(masterActivityDTO);
             } else {
-                POIDTO masterActivityDTO = restTemplateClient.restTemplate().getForObject(instance.getUri() + "/location/api/pois/getMasterActivity/" + query.getMasterActivity(), POIDTO.class);
+                POIDTO masterActivityDTO = restTemplateClient
+                        .restTemplate()
+                        .getForObject(
+                                instance.getUri() + "/location/api/pois/getMasterActivity/" + query.getMasterActivity(),
+                                POIDTO.class
+                        );
                 dto.setMasterActivity(masterActivityDTO);
             }
             dto.setDayNumber(query.getDayNumber());
@@ -142,8 +157,13 @@ public class TripServiceImpl implements TripService {
         for (TripDetails detail : tripDetails) {
             TripDetails newDetail = new TripDetails();
             int activityId = detail.getMasterActivity();
-            Boolean isExist = restTemplateClient.restTemplate().getForObject(instance.getUri() + "/location/api/pois/isExistCustom/" + activityId, Boolean.class);
-            if (isExist) {
+            Boolean isExist = restTemplateClient
+                    .restTemplate()
+                    .getForObject(
+                            instance.getUri() + "/location/api/pois/isExistCustom/" + activityId,
+                            Boolean.class
+                    );
+            if (Boolean.TRUE.equals(isExist)) {
                 HttpHeaders headers = new HttpHeaders();
                 headers.setContentType(MediaType.APPLICATION_JSON);
                 activityId = restTemplateClient

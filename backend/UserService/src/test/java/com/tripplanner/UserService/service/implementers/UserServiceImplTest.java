@@ -12,6 +12,7 @@ import com.tripplanner.UserService.utils.MailSenderManager;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
+import org.mockito.stubbing.Answer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -71,19 +72,20 @@ class UserServiceImplTest {
 
     @Test
     void editAvatarTest() throws Exception {
-        FileInputStream fis = new FileInputStream("D:\\60595330_p0.jpg");
-        MockMultipartFile file = new MockMultipartFile("mock", fis);
         User user = new User();
         user.setUserID(1);
-        user.setAvatar("dummy");
-        doReturn(user).when(userRepo).findByUserID(user.getUserID());
-        String url = doReturn("stub").when(driveManager).uploadFile(file, "tripplanner/img");
-        doNothing().when(driveManager).deleteFile("dummy");
-        doNothing().when(userRepo).updateAvatar(user.getUserID(), url);
+        user.setAvatar("id=1234");
+        doReturn(user).when(userRepo).findByUserID(1);
+        FileInputStream fis = new FileInputStream("src/test/java/com/tripplanner/UserService/service/implementers/test.jpg");
+        MockMultipartFile file = new MockMultipartFile("avatar", fis);
+        doReturn("").when(driveManager).uploadFile(file, "tripplanner/img");
+        String oldImg = user.getAvatar();
+        doNothing().when(driveManager).deleteFile(oldImg.split("id=")[1]);
+        doNothing().when(userRepo).updateAvatar(1, "");
 
-        String returnUrl = service.editAvatar(1, file);
+        String returned = service.editAvatar(1, file);
 
-        Assertions.assertSame(returnUrl, "stub");
+        Assertions.assertEquals(returned.split("id=")[1], "1234");
     }
 
     @Nested

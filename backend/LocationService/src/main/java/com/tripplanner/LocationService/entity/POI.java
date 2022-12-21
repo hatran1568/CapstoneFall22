@@ -1,7 +1,6 @@
 package com.tripplanner.LocationService.entity;
 
 import com.tripplanner.LocationService.dto.response.SearchType;
-
 import lombok.Data;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
@@ -11,37 +10,36 @@ import java.util.Date;
 
 @Data
 @Entity
-@Table(name="poi")
+@Table(name = "poi")
 public class POI extends MasterActivity {
 
 //    @OneToOne(cascade = CascadeType.ALL)
 //    @JoinColumn(name="poi_id")
 //    private MasterActivity masterActivity;
 
-
     @ManyToOne
     @JoinColumn(name = "category_id", nullable = false)
     private Category category;
 
-    @Column(name="description", columnDefinition = "text")
+    @Column(name = "description", columnDefinition = "text")
     private String Description;
 
-    @Column(name="google_rate")
+    @Column(name = "google_rate")
     private double googleRate;
 
-    @Column(name="telephone_number",columnDefinition = "text")
+    @Column(name = "telephone_number", columnDefinition = "text")
     private String phone;
 
-    @Column(name="business_email")
+    @Column(name = "business_email")
     private String businessEmail;
 
-    @Column(name="website")
+    @Column(name = "website")
     private String website;
 
-    @Column(name="opening_time")
+    @Column(name = "opening_time")
     private int openTime;
 
-    @Column(name="duration")
+    @Column(name = "duration")
     private int duration;
 
     @Column(name = "closing_time")
@@ -62,12 +60,13 @@ public class POI extends MasterActivity {
     @Temporal(TemporalType.TIMESTAMP)
     @UpdateTimestamp
     private Date dateModified;
-    @Column(name="longitude")
+    @Column(name = "longitude")
     private Double longitude;
-    @Column(name="latitude")
+    @Column(name = "latitude")
     private Double latitude;
-    @Column(name="is_deleted")
+    @Column(name = "is_deleted")
     private boolean isDeleted;
+
     public static SearchType mapFromPOICategory(POI poi) {
         switch (poi.getCategory().getCategoryName()) {
             case "Art and Culture":

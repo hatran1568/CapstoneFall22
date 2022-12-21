@@ -25,8 +25,6 @@ public class BLogServiceImpl implements BlogService {
     @Override
     public BlogDetailsDTO getBlogById(int id) {
         Blog blog = blogRepository.findById(id).get();
-        if (blog == null)
-            return null;
         BlogDetailsDTO blogDetailsDTO = new BlogDetailsDTO();
         blogDetailsDTO.setBlogId(id);
         blogDetailsDTO.setStatus(blog.getStatus());

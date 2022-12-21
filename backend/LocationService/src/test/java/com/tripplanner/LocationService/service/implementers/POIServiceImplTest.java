@@ -219,6 +219,19 @@ class POIServiceImplTest {
         }
 
         @Test
+        void Case7() {
+            HotelsRequestDTO input = new HotelsRequestDTO();
+            input.setPoiId(1);
+            input.setPage(1);
+            input.setDistance(1);
+            input.setRate(4);
+            input.setPrice(1);
+            String thumbnail = "";
+
+            testing(input, Optional.of(thumbnail));
+        }
+
+        @Test
         void CaseAbnormal() {
             HotelsRequestDTO input = new HotelsRequestDTO();
             input.setPoiId(-1);

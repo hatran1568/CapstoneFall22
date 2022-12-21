@@ -8,12 +8,16 @@ import com.tripplanner.LocationService.repository.POIImageRepository;
 import com.tripplanner.LocationService.repository.POIRepository;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.parallel.Execution;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Optional;
+import java.util.concurrent.Executor;
 
 import static org.mockito.Mockito.*;
 
@@ -74,7 +78,6 @@ class CollectionServiceImplTest {
         Category cat = new Category();
         cat.setCategoryName("");
         poi.setCategory(cat);
-        Optional<POI> poiOptional = Optional.of(poi);
         Collection col = new Collection();
         col.setCollectionId(1);
         CollectionPOI colPoi = new CollectionPOI();
@@ -82,12 +85,13 @@ class CollectionServiceImplTest {
         colPoi.setCollection(col);
         ArrayList<CollectionPOI> list = new ArrayList<>();
         list.add(colPoi);
+        doReturn(list).when(colRepo).getPOIListOfCollectionByID(1);
+        Optional<POI> poiOptional = Optional.of(poi);
+        doReturn(poiOptional).when(poiRepo).getPOIByMasterActivity(1);
         POIImage img = new POIImage();
         img.setImageId(1);
         img.setPoi(poi);
         img.setUrl("");
-        doReturn(list).when(colRepo).getPOIListOfCollectionByID(1);
-        doReturn(poiOptional).when(poiRepo).getPOIByMasterActivity(1);
         doReturn(img).when(poiImgRepo).findFirstByPoiId(1);
 
         ArrayList<POIOfCollectionDTO> returnedList = service.getPOIListOfCollection(1);
