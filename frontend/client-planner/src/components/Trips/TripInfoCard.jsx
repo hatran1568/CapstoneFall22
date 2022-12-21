@@ -91,8 +91,7 @@ function TripInfoCard(trip) {
               </a>
               <small className={style.lastUpdated}>
                 <i>
-                  Last updated:{" "}
-                  {toLongDate(trip.trip.dateModified.split("T")[0])}
+                  Chỉnh sửa: {toLongDate(trip.trip.dateModified.split("T")[0])}
                 </i>
               </small>
             </MDBCol>

@@ -24,8 +24,10 @@ function CloneTripModal(props) {
         userId: localStorage.getItem("id") ? localStorage.getItem("id") : -1,
       };
       axios.post(`/trip/clone-trip`, data).then((res) => {
-        if (!localStorage.getItem("id")) localStorage.setItem("id", res.data.user);
-        if (!localStorage.getItem("role")) localStorage.setItem("role", "Guest");
+        if (!localStorage.getItem("id"))
+          //localStorage.setItem("id", response.data.user);
+        if (!localStorage.getItem("role"))
+          localStorage.setItem("role", "Guest");
         if (res.status == 200) {
           if (localStorage.getItem("role").toLowerCase() == "guest") {
             var trips = localStorage.getItem("trips");

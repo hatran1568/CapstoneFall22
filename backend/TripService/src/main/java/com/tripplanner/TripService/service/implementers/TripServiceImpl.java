@@ -382,6 +382,7 @@ public class TripServiceImpl implements TripService {
     public void editStartAndEndDates(int tripId, Date startDate, Date endDate) {
         int numberOfDays = getDayNumberByFromStartDate(startDate, endDate);
         tripRepository.updateStartAndEndDates(tripId, startDate, endDate);
+        expenseRepository.deleteByRange(tripId, numberOfDays);
         tripDetailRepository.deleteByRange(tripId, numberOfDays);
     }
 

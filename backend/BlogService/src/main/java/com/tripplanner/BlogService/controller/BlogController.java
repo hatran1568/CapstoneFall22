@@ -65,7 +65,7 @@ public class BlogController {
     }
     @Transactional(rollbackFor = {Exception.class, Throwable.class})
     @GetMapping("/blog/keyword/{keyword}")
-    public ResponseEntity<ListBlogDTO> getBlogDByKeyword(@PathVariable String keyword){
+    public ResponseEntity<ListBlogDTO> getBlogByKeyword(@PathVariable String keyword){
         try{
             List<Blog> blog = blogService.getBlogByKeyWord(keyword);
             ListBlogDTO blogDTO = new ListBlogDTO();

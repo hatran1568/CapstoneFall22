@@ -41,7 +41,6 @@ const CollectionDetail = () => {
       setCurCol(response.data);
     };
 
-    document.title = "Trip planner | Collection Details";
     getCurCol();
   }, [colId]);
 
@@ -92,9 +91,9 @@ const CollectionDetail = () => {
     confirm({
       title: "Đồng ý xóa?",
       content: "Địa điểm này sẽ bị xóa khỏi bộ sưu tập.",
-      okText: "Ok",
+      okText: "Xóa",
       okType: "danger",
-      cancelText: "Không",
+      cancelText: "Hủy",
       centered: true,
       onOk() {
         axios
@@ -116,6 +115,7 @@ const CollectionDetail = () => {
   };
 
   if (curCol !== undefined) {
+    document.title = "Bộ sưu tầm " + curCol.title + " | Tripplanner";
     var header;
     if (curCol.imgUrl !== null) {
       header = (
@@ -234,6 +234,8 @@ const CollectionDetail = () => {
                   open={open}
                   onOk={handleOk}
                   onCancel={handleCancel}
+                  cancelText="Hủy"
+                  okText="Thêm"
                 >
                   <POISearchBar POISelected={setSelectedPOI} />
                 </Modal>

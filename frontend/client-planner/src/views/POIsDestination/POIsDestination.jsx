@@ -202,6 +202,7 @@ function POIsDestination() {
     // ReactDOM.render(poiBox, poiSet);
     //setCurrentPage(event.selected);
   };
+  document.title = "Địa điểm tại " + destination.name + " | Tripplanner";
   return (
     <MDBContainer className={style.mainContainer}>
       <img className={style.thumbnail} src={thumbImage} />

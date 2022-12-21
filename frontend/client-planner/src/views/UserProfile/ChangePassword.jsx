@@ -67,7 +67,7 @@ function ChangePassword() {
     <MDBContainer className={style.container}>
       <MDBCard alignment="center" style={{ marginTop: "50px" }}>
         <MDBCardBody>
-          <MDBCardTitle className="my-4">Change password</MDBCardTitle>
+          <MDBCardTitle className="my-4">Đổi mật khẩu</MDBCardTitle>
           <div
             className={` d-flex flex-column justify-content-center align-items-center`}
           >
@@ -84,7 +84,7 @@ function ChangePassword() {
             <h6>{curUser.name}</h6>
           </div>
           <p className="mt-4">
-            Please enter your old password and new password
+            Vui lòng nhập mật khẩu cũ và mật khẩu mới của bạn
           </p>
           <p id="invalidWarning" className="text-danger my-1 mx-5">
             {errMsg}
@@ -94,7 +94,7 @@ function ChangePassword() {
               wrapperClass="my-4 mx-5"
               type="password"
               id="oldpwd"
-              label="Old password"
+              label="Mật khẩu cũ"
               onChange={(e) =>
                 setUser({ ...user, oldPassword: e.target.value })
               }
@@ -104,7 +104,7 @@ function ChangePassword() {
               wrapperClass="mb-4 mx-5"
               type="password"
               id="newpwd"
-              label="New password"
+              label="Mật khẩu mới"
               onChange={(e) =>
                 setUser({ ...user, newPassword: e.target.value })
               }
@@ -113,7 +113,7 @@ function ChangePassword() {
               wrapperClass="mb-4 mx-5"
               type="password"
               id="confirmpwd"
-              label="Confirm new password"
+              label="Xác nhận mật khẩu mới"
               onChange={(e) =>
                 setUser({ ...user, confirmPassword: e.target.value })
               }
@@ -124,7 +124,7 @@ function ChangePassword() {
               type="button"
               onClick={handleChangePwd}
             >
-              Change password
+              Đổi mật khẩu
             </MDBBtn>
           </form>
         </MDBCardBody>

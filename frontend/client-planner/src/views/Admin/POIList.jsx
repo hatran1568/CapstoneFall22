@@ -47,6 +47,7 @@ class POIList extends Component {
     };
   }
   componentDidMount() {
+    document.title = "Danh sách địa điểm | Tripplanner"
     axios
       .get(
         "http://localhost:8080/location/api/pois/list/admin/" +

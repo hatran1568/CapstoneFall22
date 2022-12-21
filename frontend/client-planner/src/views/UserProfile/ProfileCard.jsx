@@ -107,7 +107,7 @@ function ProfileCard(props) {
         <span className={style.email}>{props.user.email}</span>
         <div className={`px-2 rounded mt-4 ${style.date}`}>
           <span className={style.join}>
-            Joined {toLongDate(props.user.dateCreated.split("T")[0])}
+            Đã tham gia {toLongDate(props.user.dateCreated.split("T")[0])}
           </span>
         </div>
       </div>

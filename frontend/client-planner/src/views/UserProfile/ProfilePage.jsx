@@ -83,7 +83,7 @@ function ProfilePage() {
                 onClick={() => handleBasicClick("myTrips")}
                 active={basicActive === "myTrips"}
               >
-                My Trips
+                Chuyến đi của tôi
               </MDBTabsLink>
             </MDBTabsItem>
             <MDBTabsItem>
@@ -91,7 +91,7 @@ function ProfilePage() {
                 onClick={() => handleBasicClick("myCollection")}
                 active={basicActive === "myCollection"}
               >
-                My Collection
+                Bộ sưu tập của tôi
               </MDBTabsLink>
             </MDBTabsItem>
           </MDBTabs>

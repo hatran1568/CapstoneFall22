@@ -67,6 +67,7 @@ function SearchResults(props) {
       .catch(() => setResult(false));
   };
   useEffect(getResult, [result != false, type, page]);
+  document.title = "Kết quả tìm kiếm cho \"" + keyword + "\" | Tripplanner";
   return (
     <MDBContainer>
       <div className={style.pageTitle}>

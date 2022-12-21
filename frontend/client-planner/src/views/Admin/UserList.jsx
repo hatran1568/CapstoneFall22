@@ -46,6 +46,7 @@ class UserList extends Component {
     };
   }
   componentDidMount() {
+    document.title = "Danh sách người dùng | Tripplanner"
     axios
       .get(
         "http://localhost:8080/user/api/user/list/admin/" +

@@ -378,9 +378,9 @@ public class POIController {
     @Transactional(rollbackFor = {Exception.class, Throwable.class})
     @RequestMapping(value = "/add", consumes = "application/json", produces = {"*/*"}, method = RequestMethod.POST)
     public ResponseEntity<?> addPOI(@RequestBody UpdatePOIDTO poi) throws Exception {
-//        try {
-        String uri = "https://api.distancematrix.ai/maps/api/distancematrix/json?origins=";
-        String origin = poi.getLat() + "," + poi.getLon();
+        try {
+            String uri = "https://api.distancematrix.ai/maps/api/distancematrix/json?origins=";
+            String origin = poi.getLat() + "," + poi.getLon();
 
         RestTemplate restTemplate = new RestTemplate();
         ArrayList<POI> pois = poiRepo.getPOIsByDestinationId(1);
@@ -427,12 +427,33 @@ public class POIController {
                 distanceRepository.insertDistance(e.distance.value / 1000.0, pois.get(index).getActivityId(), poiRepo.getLastestMA());
                 index++;
             }
+            uri = uri + origin + "&destinations=" + dest + "&key=" + distanceToken;
+            ObjectMapper mapper = new ObjectMapper();
+            Gson gson = new GsonBuilder().create();
+            String result = restTemplate.getForObject(uri, String.class);
+            DistanceMatrixDTO target2 = gson.fromJson(result, DistanceMatrixDTO.class);
+            java.sql.Timestamp date = new java.sql.Timestamp(Calendar.getInstance().getTime().getTime());
+            poiRepo.addMA(poi.getAddress(), poi.getName());
+            poiRepo.addPOI(poi.getDescription(), poi.getAdditionalInfo(),
+                    poi.getEmail(), poi.getClosingTime(), date, date, poi.getDuration(), poi.getOpeningTime(),
+                    poi.getPhoneNumber(), poi.getPrice(), poi.getWebsite(), poiRepo.getLastestMA(), poi.getCategoryId(), poi.getRating(), false, poi.getLat(), poi.getLon());
+            index = 0;
+            for (Row row : target2.getRows()
+            ) {
+                for (Element e : row.elements
+                ) {
+
+                    distanceRepository.insertDistance(e.distance.value / 1000.0, poiRepo.getLastestMA(), pois.get(index).getActivityId());
+                    distanceRepository.insertDistance(e.distance.value / 1000.0, pois.get(index).getActivityId(), poiRepo.getLastestMA());
+
+                    index++;
+                }
+            }
+            distanceRepository.insertDistance(0, poiRepo.getLastestMA(), poiRepo.getLastestMA());
+            return new ResponseEntity<>(poiRepo.getLastestMA(), HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
-        distanceRepository.insertDistance(0, poiRepo.getLastestMA(), poiRepo.getLastestMA());
-        return new ResponseEntity<>(poiRepo.getLastestMA(), HttpStatus.OK);
-//        } catch (Exception e) {
-//            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-//        }
     }
 
     @GetMapping("isExistCustom/{id}")

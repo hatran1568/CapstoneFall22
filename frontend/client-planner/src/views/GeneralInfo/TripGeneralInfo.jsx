@@ -85,7 +85,9 @@ class TripGeneralInfo extends Component {
   };
   editDates = (data) => {
     if (this.state.own) {
-      axios.post("/trip/edit-dates", data);
+      axios.post("/trip/edit-dates", data).then((response) => {
+        console.log("response: ", response);
+      });
       this.closeEditDates();
       window.location.reload();
     }

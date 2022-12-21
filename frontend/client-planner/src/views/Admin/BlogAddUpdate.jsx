@@ -40,6 +40,7 @@ class BlogAddUpdate extends Component {
     };
   }
   componentDidMount() {
+    document.title = "Chỉnh sửa blog | Tripplanner"
     const queryParams = new URLSearchParams(window.location.search);
     const id = queryParams.get("id");
     axios

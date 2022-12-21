@@ -47,6 +47,7 @@ class UserRequestList extends Component {
     };
   }
   componentDidMount() {
+    document.title = "Danh sách yêu cầu chỉnh sửa | Tripplanner"
     axios
       .get(
         "http://localhost:8080/location/api/request/list/" +
