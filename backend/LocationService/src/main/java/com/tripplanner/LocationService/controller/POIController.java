@@ -40,8 +40,6 @@ import java.util.Date;
 public class POIController {
     private final String distanceToken = "tqkoPaQkFYlIvpSPWX17eWa4H6Brg";
     @Autowired
-    GoogleDriveManager driveManager;
-    @Autowired
     private DistanceRepository distanceRepository;
     @Autowired
     private POIRepository poiRepo;
@@ -49,6 +47,8 @@ public class POIController {
     private POIService poiService;
     @Autowired
     private CustomActivityRepository customActivityRepository;
+    @Autowired
+    GoogleDriveManager driveManager;
 
     @GetMapping("/{desid}/{page}/{catid}/{rating}")
     public ResponseEntity<ArrayList<POIofDestinationDTO>> getPOIsOfDestinationFilter(
@@ -65,7 +65,6 @@ public class POIController {
             else
                 pois = poiRepo.getPOIOfDestinationFilter(desid, catid, page * 10, 10, rating);
             if (pois.isEmpty()) {
-
                 return new ResponseEntity<>(HttpStatus.NOT_FOUND);
             }
             return new ResponseEntity<>(pois, HttpStatus.OK);
@@ -127,7 +126,6 @@ public class POIController {
     }
 
     @GetMapping("/{poiId}/ratings")
-
     public ResponseEntity<ArrayList<RatingDTO>> getPOIRatings(
             @RequestHeader(value = "Authorization", required = false) String token,
             @PathVariable("poiId") int poiId
@@ -167,7 +165,6 @@ public class POIController {
     @PostMapping("/addCustom")
     public ResponseEntity<Integer> addTripDetailGenerated(@RequestBody ObjectNode objectNode) {
         try {
-
             String name = objectNode.get("name").asText();
             String address = objectNode.get("address").asText();
             Integer result = poiService.insertCustomActivity(name, address);
@@ -181,7 +178,6 @@ public class POIController {
     @PutMapping("/editCustom")
     public ResponseEntity<?> addTripDetailGenerated(@RequestBody TripDetailDTO input) {
         try {
-
             poiService.editCustom(input);
             return new ResponseEntity<>(HttpStatus.OK);
         } catch (Exception e) {
@@ -230,11 +226,11 @@ public class POIController {
             if (paging.getContent().isEmpty()) {
                 return new ResponseEntity<>(HttpStatus.NOT_FOUND);
             }
-            SearchRespondeDTO respondDTO = new SearchRespondeDTO();
-            respondDTO.setList(paging.getContent());
-            respondDTO.setTotalPage((int) Math.ceil(results.size() / 10.0));
-            respondDTO.setCurrentPage(input.getPage());
-            return new ResponseEntity<SearchRespondeDTO>(respondDTO, HttpStatus.OK);
+            SearchRespondeDTO respondeDTO = new SearchRespondeDTO();
+            respondeDTO.setList(paging.getContent());
+            respondeDTO.setTotalPage((int) Math.ceil(results.size() / 10.0));
+            respondeDTO.setCurrentPage(input.getPage());
+            return new ResponseEntity<SearchRespondeDTO>(respondeDTO, HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
@@ -261,7 +257,10 @@ public class POIController {
 
     //    @PreAuthorize("hasAuthority('Admin')")
     @GetMapping("/list/admin/count/{catId}/{nameKey}")
-    public ResponseEntity<Integer> getPOIListAdminCount(@PathVariable("catId") int catId, @PathVariable("nameKey") String nameKey) {
+    public ResponseEntity<Integer> getPOIListAdminCount(
+            @PathVariable("catId") int catId,
+            @PathVariable("nameKey") String nameKey
+    ) {
         try {
             int count;
             if (nameKey.equals("*"))
@@ -321,21 +320,11 @@ public class POIController {
             java.sql.Timestamp date = new java.sql.Timestamp(Calendar.getInstance().getTime().getTime());
             poiRepo.updateMA(poi.getActivityId(), poi.getAddress(), poi.getName());
             poiRepo.updatePOI(
-                    poi.getActivityId(),
-                    poi.getDescription(),
-                    poi.getAdditionalInfo(),
-                    poi.getEmail(),
-                    poi.getClosingTime(),
-                    date,
-                    poi.getDuration(),
-                    poi.getOpeningTime(),
-                    poi.getPhoneNumber(),
-                    poi.getPrice(),
-                    poi.getWebsite(),
-                    poi.getCategoryId(),
-                    poi.getRating(),
-                    poi.getLat(),
-                    poi.getLon()
+                    poi.getActivityId(), poi.getDescription(), poi.getAdditionalInfo(),
+                    poi.getEmail(), poi.getClosingTime(), date,
+                    poi.getDuration(), poi.getOpeningTime(), poi.getPhoneNumber(),
+                    poi.getPrice(), poi.getWebsite(), poi.getCategoryId(),
+                    poi.getRating(), poi.getLat(), poi.getLon()
             );
             return new ResponseEntity<>(HttpStatus.OK);
         } catch (Exception e) {
@@ -374,6 +363,7 @@ public class POIController {
 //        }
     }
 
+
     //    @PreAuthorize("hasAuthority('Admin')")
     @Transactional(rollbackFor = {Exception.class, Throwable.class})
     @RequestMapping(value = "/add", consumes = "application/json", produces = {"*/*"}, method = RequestMethod.POST)
@@ -381,51 +371,16 @@ public class POIController {
         try {
             String uri = "https://api.distancematrix.ai/maps/api/distancematrix/json?origins=";
             String origin = poi.getLat() + "," + poi.getLon();
-
-        RestTemplate restTemplate = new RestTemplate();
-        ArrayList<POI> pois = poiRepo.getPOIsByDestinationId(1);
-        String dest = "";
-        int index = 0;
-        for (POI des : pois
-        ) {
-            index++;
-            dest += des.getLatitude() + "," + des.getLongitude();
-            if (index != pois.size())
-                dest += "|";
-        }
-        uri = uri + origin + "&destinations=" + dest + "&key=" + distanceToken;
-        ObjectMapper mapper = new ObjectMapper();
-        Gson gson = new GsonBuilder().create();
-        String result = restTemplate.getForObject(uri, String.class);
-        DistanceMatrixDTO target2 = gson.fromJson(result, DistanceMatrixDTO.class);
-        java.sql.Timestamp date = new java.sql.Timestamp(Calendar.getInstance().getTime().getTime());
-        poiRepo.addMA(poi.getAddress(), poi.getName());
-        poiRepo.addPOI(
-                poi.getDescription(),
-                poi.getAdditionalInfo(),
-                poi.getEmail(),
-                poi.getClosingTime(),
-                date, date,
-                poi.getDuration(),
-                poi.getOpeningTime(),
-                poi.getPhoneNumber(),
-                poi.getPrice(),
-                poi.getWebsite(),
-                poiRepo.getLastestMA(),
-                poi.getCategoryId(),
-                poi.getRating(),
-                false,
-                poi.getLat(),
-                poi.getLon()
-        );
-        index = 0;
-        for (Row row : target2.getRows()
-        ) {
-            for (Element e : row.elements
+            RestTemplate restTemplate = new RestTemplate();
+            ArrayList<POI> pois = poiRepo.getPOIsByDestinationId(1);
+            String dest = "";
+            int index = 0;
+            for (POI des : pois
             ) {
-                distanceRepository.insertDistance(e.distance.value / 1000.0, poiRepo.getLastestMA(), pois.get(index).getActivityId());
-                distanceRepository.insertDistance(e.distance.value / 1000.0, pois.get(index).getActivityId(), poiRepo.getLastestMA());
                 index++;
+                dest += des.getLatitude() + "," + des.getLongitude();
+                if (index != pois.size())
+                    dest += "|";
             }
             uri = uri + origin + "&destinations=" + dest + "&key=" + distanceToken;
             ObjectMapper mapper = new ObjectMapper();
@@ -434,18 +389,30 @@ public class POIController {
             DistanceMatrixDTO target2 = gson.fromJson(result, DistanceMatrixDTO.class);
             java.sql.Timestamp date = new java.sql.Timestamp(Calendar.getInstance().getTime().getTime());
             poiRepo.addMA(poi.getAddress(), poi.getName());
-            poiRepo.addPOI(poi.getDescription(), poi.getAdditionalInfo(),
-                    poi.getEmail(), poi.getClosingTime(), date, date, poi.getDuration(), poi.getOpeningTime(),
-                    poi.getPhoneNumber(), poi.getPrice(), poi.getWebsite(), poiRepo.getLastestMA(), poi.getCategoryId(), poi.getRating(), false, poi.getLat(), poi.getLon());
+            poiRepo.addPOI(
+                    poi.getDescription(), poi.getAdditionalInfo(), poi.getEmail(),
+                    poi.getClosingTime(), date, date,
+                    poi.getDuration(), poi.getOpeningTime(), poi.getPhoneNumber(),
+                    poi.getPrice(), poi.getWebsite(), poiRepo.getLastestMA(),
+                    poi.getCategoryId(), poi.getRating(), false,
+                    poi.getLat(), poi.getLon()
+            );
             index = 0;
-            for (Row row : target2.getRows()
-            ) {
+            for (Row row : target2.getRows()) {
                 for (Element e : row.elements
                 ) {
-
-                    distanceRepository.insertDistance(e.distance.value / 1000.0, poiRepo.getLastestMA(), pois.get(index).getActivityId());
-                    distanceRepository.insertDistance(e.distance.value / 1000.0, pois.get(index).getActivityId(), poiRepo.getLastestMA());
-
+                    distanceRepository
+                            .insertDistance(
+                                    e.distance.value / 1000.0,
+                                    poiRepo.getLastestMA(),
+                                    pois.get(index).getActivityId()
+                            );
+                    distanceRepository
+                            .insertDistance(
+                                    e.distance.value / 1000.0,
+                                    pois.get(index).getActivityId(),
+                                    poiRepo.getLastestMA()
+                            );
                     index++;
                 }
             }
@@ -459,9 +426,9 @@ public class POIController {
     @GetMapping("isExistCustom/{id}")
     public ResponseEntity<?> isExistCustom(@PathVariable int id) {
         if (customActivityRepository.existsById(id)) {
-            return new ResponseEntity<>(true, HttpStatus.OK);
+            return new ResponseEntity(true, HttpStatus.OK);
         } else {
-            return new ResponseEntity<>(false, HttpStatus.OK);
+            return new ResponseEntity(false, HttpStatus.OK);
         }
     }
 
