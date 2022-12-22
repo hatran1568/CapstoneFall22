@@ -22,13 +22,12 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.cloud.client.ServiceInstance;
 import org.springframework.cloud.client.discovery.DiscoveryClient;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.MediaType;
+import org.springframework.http.*;
 import org.springframework.web.client.RestTemplate;
 
 import java.sql.Date;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 import java.util.Optional;
 
@@ -328,45 +327,6 @@ class TripServiceImplTest {
     }
 
     @Test
-    void addTripDetailTest() {
-        Trip trip = new Trip();
-        trip.setTripId(1);
-        trip.setStartDate(new Date(10000));
-        doReturn(trip).when(tripRepository).findById(1);
-        TripDetails tripDetails = new TripDetails();
-        tripDetails.setDayNumber(5);
-        tripDetails.setStartTime(0);
-        tripDetails.setEndTime(2);
-        tripDetails.setMasterActivity(1);
-        tripDetails.setTrip(trip);
-        tripDetails.setNote("");
-        when(tripDetailRepository.save(any())).thenReturn(tripDetails);
-        TripDetailDTO tripDetailDTO = new TripDetailDTO();
-        tripDetailDTO.setDayNumber(5);
-        tripDetailDTO.setStartTime(0);
-        tripDetailDTO.setEndTime(2);
-        tripDetailDTO.setNote("");
-        when(mapper.map(tripDetails, TripDetailDTO.class)).thenReturn(tripDetailDTO);
-        List<ServiceInstance> locationServiceInstances = new ArrayList<>();
-        ServiceInstance locationServiceInstance = mock(ServiceInstance.class);
-        locationServiceInstances.add(locationServiceInstance);
-        doReturn(locationServiceInstances).when(discoveryClient).getInstances("location-service");
-        RestTemplate restTemplate = mock(RestTemplate.class);
-        doReturn(restTemplate).when(restTemplateClient).restTemplate();
-        POIDTO poiDto = new POIDTO();
-        when(
-                restTemplate.getForObject(
-                        locationServiceInstance.getUri() + "/location/api/pois/getMasterActivity/" + 1,
-                        POIDTO.class
-                )
-        ).thenReturn(poiDto);
-
-        TripDetailDTO returnedDto = service.addTripDetail(new Date(2000000), 0, 2, 1, 1, "");
-
-        Assertions.assertEquals(returnedDto.getDayNumber(), 5);
-    }
-
-    @Test
     void addTripDetailGeneratedTest() {
         TripDetails td = new TripDetails();
         Trip t = new Trip();
@@ -526,12 +486,32 @@ class TripServiceImplTest {
     }
 
     @Test
-    void editTripDetailByIdTest() {
+    void editCustomTripDetailByIdTest() {
         TripDetailDTO newDetail = new TripDetailDTO();
         newDetail.setStartTime(0);
         newDetail.setEndTime(3);
         newDetail.setDate(new Date(10000));
         newDetail.setNote("");
+        List<ServiceInstance> locationServiceInstances = new ArrayList<>();
+        ServiceInstance locationServiceInstance = mock(ServiceInstance.class);
+        locationServiceInstances.add(locationServiceInstance);
+        doReturn(locationServiceInstances).when(discoveryClient).getInstances("location-service");
+        RestTemplate restTemplate = mock(RestTemplate.class);
+        doReturn(restTemplate).when(restTemplateClient).restTemplate();
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd").create();
+        String personJsonObject = gson.toJson(newDetail);
+        HttpEntity<String> request = new HttpEntity<>(personJsonObject, headers);
+        String response = "";
+        when(
+                restTemplate.exchange(
+                        locationServiceInstance.getUri() + "/location/api/pois/editCustom",
+                        HttpMethod.PUT,
+                        request,
+                        String.class
+                )
+        ).thenReturn(ResponseEntity.of(Optional.of(response)));
         TripDetails tripDetails = new TripDetails();
         tripDetails.setTripDetailsId(1);
         tripDetails.setMasterActivity(1);
@@ -546,11 +526,162 @@ class TripServiceImplTest {
         doReturn(tripDetailsOptional).when(tripDetailRepository).findById(1);
         when(tripDetailRepository.save(any())).thenReturn(tripDetails);
         TripDetailDTO saved = new TripDetailDTO();
+        saved.setTripDetailsId(tripDetails.getTripDetailsId());
         saved.setDayNumber(tripDetails.getDayNumber());
         saved.setStartTime(tripDetails.getStartTime());
         saved.setEndTime(tripDetails.getEndTime());
         saved.setNote(tripDetails.getNote());
         when(mapper.map(tripDetails, TripDetailDTO.class)).thenReturn(saved);
+        POIDTO poiDto = new POIDTO();
+        poiDto.setActivityId(1);
+        poiDto.setName("");
+        Category category = new Category();
+        category.setCategoryID(1);
+        poiDto.setCategory(category);
+        when(
+                restTemplate.getForObject(
+                        locationServiceInstance.getUri() + "/location/api/pois/getMasterActivity/" + 1,
+                        POIDTO.class
+                )
+        ).thenReturn(poiDto);
+
+        TripDetailDTO returnedDto = service.editCustomTripDetailById(newDetail, 1, 1);
+
+        Assertions.assertEquals(returnedDto.getTripDetailsId(), 1);
+    }
+
+    @Test
+    void getTripsByUserTest() {
+        ArrayList<Trip> trips = new ArrayList<>();
+        Trip trip = new Trip();
+        trip.setTripId(1);
+        trip.setName("");
+        trip.setBudget(69420);
+        trip.setStartDate(new Date(69420));
+        trip.setEndDate(new Date(9999999));
+        trip.setDateModified(new Date(69420));
+        trips.add(trip);
+        doReturn(trips).when(tripRepository).getTripsByUser(1);
+        TripDetails tripDetails = new TripDetails();
+        tripDetails.setMasterActivity(1);
+        doReturn(tripDetails).when(tripDetailRepository).findFirstInTrip(1);
+        List<ServiceInstance> locationServiceInstances = new ArrayList<>();
+        ServiceInstance locationServiceInstance = mock(ServiceInstance.class);
+        locationServiceInstances.add(locationServiceInstance);
+        doReturn(locationServiceInstances).when(discoveryClient).getInstances("location-service");
+        RestTemplate restTemplate = mock(RestTemplate.class);
+        doReturn(restTemplate).when(restTemplateClient).restTemplate();
+        when(
+                restTemplate.getForObject(
+                        locationServiceInstance.getUri() + "/location/api/pois/getFirstImg/" + tripDetails.getMasterActivity(),
+                        String.class
+                )
+        ).thenReturn("");
+
+        List<TripGeneralDTO> returnedList = service.getTripsByUser(1);
+
+        Assertions.assertEquals(returnedList.size(), 1);
+    }
+
+    @Test
+    void deleteTripByIdTest() {
+        doNothing().when(tripRepository).deleteTripById(1);
+
+        service.deleteTripById(1);
+
+        verify(tripRepository, times(1)).deleteTripById(1);
+    }
+
+    @Test
+    void getLast3TripsByUserTest() {
+        ArrayList<Trip> trips = new ArrayList<>();
+        Trip trip = new Trip();
+        trip.setTripId(1);
+        trip.setName("");
+        trip.setBudget(69420);
+        trip.setStartDate(new Date(69420));
+        trip.setEndDate(new Date(9999999));
+        trip.setDateModified(new Date(69420));
+        trips.add(trip);
+        doReturn(trips).when(tripRepository).getLast3TripsByUser(1);
+        TripDetails tripDetails = new TripDetails();
+        tripDetails.setMasterActivity(1);
+        doReturn(tripDetails).when(tripDetailRepository).findFirstInTrip(1);
+        List<ServiceInstance> locationServiceInstances = new ArrayList<>();
+        ServiceInstance locationServiceInstance = mock(ServiceInstance.class);
+        locationServiceInstances.add(locationServiceInstance);
+        doReturn(locationServiceInstances).when(discoveryClient).getInstances("location-service");
+        RestTemplate restTemplate = mock(RestTemplate.class);
+        doReturn(restTemplate).when(restTemplateClient).restTemplate();
+        when(
+                restTemplate.getForObject(
+                        locationServiceInstance.getUri() + "/location/api/pois/getFirstImg/" + tripDetails.getMasterActivity(),
+                        String.class
+                )
+        ).thenReturn("");
+
+        List<TripGeneralDTO> returnedList = service.getLast3TripsByUser(1);
+
+        Assertions.assertEquals(returnedList.size(), 1);
+    }
+
+    @Test
+    void countTripByUserTest() {
+        doReturn(69).when(tripRepository).getNumberOfTripsByUser(1);
+
+        int returnedNumber = service.countTripByUser(1);
+
+        Assertions.assertEquals(returnedNumber, 69);
+    }
+
+    @Test
+    void editTripNameTest() {
+        doNothing().when(tripRepository).updateTripName(1, "");
+
+        service.editTripName(1, "");
+
+        verify(tripRepository, times(1)).updateTripName(1, "");
+    }
+
+    @Test
+    void editStartAndEndDatesTest() {
+        Date startDate = new Date(69420);
+        Date endDate = new Date(694200);
+        doNothing().when(tripRepository).updateStartAndEndDates(1, startDate, endDate);
+
+        service.editStartAndEndDates(1, startDate, endDate);
+
+        verify(tripRepository, times(1)).updateStartAndEndDates(1, startDate, endDate);
+    }
+
+    @Test
+    void getTripDetailsToBeDeletedTest() {
+        Trip trip = new Trip();
+        trip.setTripId(1);
+        trip.setName("");
+        trip.setBudget(69420);
+        trip.setStartDate(new Date(69420));
+        trip.setEndDate(new Date(9999999));
+        trip.setDateModified(new Date(69420));
+        doReturn(trip).when(tripRepository).findById(1);
+        TripDetails tripDetails = new TripDetails();
+        tripDetails.setTripDetailsId(1);
+        tripDetails.setMasterActivity(1);
+        tripDetails.setTrip(trip);
+        tripDetails.setDayNumber(2);
+        tripDetails.setStartTime(0);
+        tripDetails.setEndTime(2);
+        tripDetails.setNote("");
+        ArrayList<TripDetails> tripDetailsList = new ArrayList<>();
+        tripDetailsList.add(tripDetails);
+        doReturn(tripDetailsList).when(tripDetailRepository).getTripDetailsOutOfRange(1, 5);
+        TripDetailDTO tripDetailDTO = new TripDetailDTO();
+        tripDetailDTO.setTripDetailsId(1);
+        MasterActivityDTO masterActivityDTO = new MasterActivityDTO();
+        masterActivityDTO.setActivityId(1);
+        tripDetailDTO.setMasterActivity(masterActivityDTO);
+        tripDetailDTO.setDayNumber(5);
+        when(mapper.map(tripDetails, TripDetailDTO.class)).thenReturn(tripDetailDTO);
         List<ServiceInstance> locationServiceInstances = new ArrayList<>();
         ServiceInstance locationServiceInstance = mock(ServiceInstance.class);
         locationServiceInstances.add(locationServiceInstance);
@@ -570,8 +701,150 @@ class TripServiceImplTest {
                 )
         ).thenReturn(poiDto);
 
-        TripDetailDTO returnedDto = service.editTripDetailById(newDetail, 1);
+        List<TripDetailDTO> returnedList = service.getTripDetailsToBeDeleted(1, 5);
 
-        Assertions.assertEquals(returnedDto.getMasterActivity().getActivityId(), 1);
+        Assertions.assertEquals(returnedList.size(), 1);
+    }
+
+    @Test
+    void tripExistsTest() {
+        doReturn(true).when(tripRepository).existsById(1);
+
+        boolean returned = service.tripExists(1);
+
+        Assertions.assertTrue(returned);
+    }
+
+    @Test
+    void insertExpenseTest() {
+        doNothing().when(expenseRepository).insertExpense(1, "", 1, 1);
+
+        service.insertExpense(1, "", 1, 1);
+
+        verify(expenseRepository, times(1))
+                .insertExpense(1, "", 1, 1);
+    }
+
+    @Test
+    void getPublicTripTest() {
+        ArrayList<Trip> trips = new ArrayList<>();
+        Trip trip = new Trip();
+        trip.setTripId(1);
+        trip.setName("");
+        trip.setBudget(69420);
+        trip.setStartDate(new Date(69420));
+        trip.setEndDate(new Date(9999999));
+        trip.setDateModified(new Date(69420));
+        trips.add(trip);
+        doReturn(trips).when(tripRepository).getPublicTrips(
+                1, 1, "", 1, 5, new Date(69420)
+        );
+        PublicTripDTO dto = new PublicTripDTO();
+        dto.setTripId(trip.getTripId());
+        dto.setName(trip.getName());
+        dto.setBudget(trip.getBudget());
+        dto.setStartDate(trip.getStartDate());
+        dto.setEndDate(trip.getEndDate());
+        when(mapper.map(trip, PublicTripDTO.class)).thenReturn(dto);
+        List<ServiceInstance> locationServiceInstances = new ArrayList<>();
+        ServiceInstance locationServiceInstance = mock(ServiceInstance.class);
+        locationServiceInstances.add(locationServiceInstance);
+        doReturn(locationServiceInstances).when(discoveryClient).getInstances("location-service");
+        RestTemplate restTemplate = mock(RestTemplate.class);
+        doReturn(restTemplate).when(restTemplateClient).restTemplate();
+        when(
+                restTemplate.getForObject(
+                        locationServiceInstance.getUri() + "/location/api/pois/getFirstImg/" + 1,
+                        String.class
+                )
+        ).thenReturn("");
+        String destination = "";
+        ArrayList<String> destinations = new ArrayList<>();
+        destinations.add(destination);
+        doReturn(destinations).when(tripRepository).getDestinationsOfTrip(1);
+        String poi = "";
+        ArrayList<String> pois = new ArrayList<>();
+        pois.add(poi);
+        doReturn(pois).when(tripRepository).getPOIsByTripId(1, 5);
+
+        ArrayList<PublicTripDTO> returnedList = service
+                .getPublicTrips(1, 1, "", 1, 5, new Date(69420));
+
+        Assertions.assertEquals(returnedList.size(), 1);
+    }
+
+    @Test
+    void countPublicTripTest() {
+        doReturn(69).when(tripRepository).getPublicTripsCount(
+                "", 1, 5, new Date(69420)
+        );
+
+        int returnedCount = service.countPublicTrips("", 1, 5, new Date(69420));
+
+        Assertions.assertEquals(returnedCount, 69);
+    }
+
+    @Test
+    void toggleStatusTest() {
+        doNothing().when(tripRepository).toggleStatus(1, "");
+
+        service.toggleStatus(1, "");
+
+        verify(tripRepository, times(1)).toggleStatus(1, "");
+    }
+
+    @Test
+    void createEmptyTrip() {
+        Trip trip = new Trip();
+        trip.setStartDate(new Date(69420));
+        trip.setEndDate(new Date(99999999));
+        trip.setUser(1);
+        trip.setName("");
+        trip.setBudget(69420.0);
+        Date now = new Date(Calendar.getInstance().getTime().getTime());
+        trip.setDateCreated(now);
+        trip.setDateModified(now);
+        trip.setStatus(TripStatus.PRIVATE);
+        when(tripRepository.save(any())).thenReturn(trip);
+        TripGeneralDTO dto = new TripGeneralDTO();
+        dto.setTripId(1);
+        dto.setUser(trip.getUser());
+        dto.setName(trip.getName());
+        dto.setStartDate(trip.getStartDate());
+        dto.setEndDate(trip.getEndDate());
+        dto.setBudget(trip.getBudget());
+        when(mapper.map(trip, TripGeneralDTO.class)).thenReturn(dto);
+
+        TripGeneralDTO returnedDto = service
+                .createEmptyTrip(69420.0, "", 1, new Date(69420), new Date(99999999));
+
+        Assertions.assertEquals(returnedDto.getBudget(), 69420);
+    }
+
+    @Test
+    void getLast3TripsByGuestTest() {
+        Trip trip = new Trip();
+        trip.setTripId(1);
+        doReturn(trip).when(tripRepository).findById(1);
+        TripGeneralDTO dto = new TripGeneralDTO();
+        dto.setTripId(trip.getTripId());
+        when(mapper.map(trip, TripGeneralDTO.class)).thenReturn(dto);
+        List<ServiceInstance> locationServiceInstances = new ArrayList<>();
+        ServiceInstance locationServiceInstance = mock(ServiceInstance.class);
+        locationServiceInstances.add(locationServiceInstance);
+        doReturn(locationServiceInstances).when(discoveryClient).getInstances("location-service");
+        RestTemplate restTemplate = mock(RestTemplate.class);
+        doReturn(restTemplate).when(restTemplateClient).restTemplate();
+        when(
+                restTemplate.getForObject(
+                        locationServiceInstance.getUri() + "/location/api/pois/getFirstImg/" + 1,
+                        String.class
+                )
+        ).thenReturn("");
+
+        int[] id = {1};
+        List<TripGeneralDTO> returnedList = service.getLast3TripsByGuest(id);
+
+        Assertions.assertEquals(returnedList.size(), 1);
     }
 }
