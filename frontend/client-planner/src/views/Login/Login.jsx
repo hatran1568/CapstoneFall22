@@ -11,6 +11,7 @@ import {
 } from "mdb-react-ui-kit";
 import style from "./Login.module.css";
 import useAuth from "../../hooks/useAuth";
+import validator from 'validator';
 import axios from "../../api/axios";
 const LOGIN_URL = "/auth/api/login";
 
@@ -26,26 +27,29 @@ function Login() {
 
   const handleLogin = async (e) => {
     e.preventDefault();
-    try {
-      const response = await axios.post(LOGIN_URL, user, {
-        headers: { "Content-Type": "application/json" },
-      });
-      const accessToken = response?.data?.accessToken;
-      const role = response?.data?.role;
-      const id = response?.data?.id;
-      if (accessToken) {
-        setAuth({ user, role, accessToken });
-        localStorage.setItem("token", accessToken);
-        localStorage.setItem("role", role);
-        localStorage.setItem("id", id);
-        window.location.href = "http://localhost:3000/";
+    if (!validator.isEmail(user.username) || user.password.length < 8)
+      document.getElementById("invalidWarning").style.display = "block";
+    else
+      try {
+        const response = await axios.post(LOGIN_URL, user, {
+          headers: { "Content-Type": "application/json" },
+        });
+        const accessToken = response?.data?.accessToken;
+        const role = response?.data?.role;
+        const id = response?.data?.id;
+        if (accessToken) {
+          setAuth({ user, role, accessToken });
+          localStorage.setItem("token", accessToken);
+          localStorage.setItem("role", role);
+          localStorage.setItem("id", id);
+          window.location.href = "http://localhost:3000/";
+        }
+        setUser({ ...user, username: "", password: "" });
+      } catch (error) {
+        if (error.response.status === 403) {
+          document.getElementById("invalidWarning").style.display = "block";
+        }
       }
-      setUser({ ...user, username: "", password: "" });
-    } catch (error) {
-      if (error.response.status === 403) {
-        document.getElementById("invalidWarning").style.display = "block";
-      }
-    }
   };
 
   useEffect(() => {
@@ -95,6 +99,7 @@ function Login() {
                   id="loginPwd"
                   type="password"
                   size="lg"
+                  maxLength={64}
                   onChange={(e) =>
                     setUser({ ...user, password: e.target.value })
                   }
@@ -111,7 +116,7 @@ function Login() {
                 className="text-danger my-1 mx-5"
                 style={{ display: "none" }}
               >
-                Sai tên đăng nhập hoặc mật khẩu!
+                Sai email hoặc mật khẩu!
               </p>
 
               <MDBBtn

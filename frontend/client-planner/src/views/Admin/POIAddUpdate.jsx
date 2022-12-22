@@ -510,9 +510,15 @@ class POIAddUpdate extends Component {
       const currentNewImgs = this.state.newImages;
       const files = document.getElementById("fileInput").files;
       const imgs = Array.from(files);
+      var sizeValidator = false;
       imgs.forEach((entry, index) => {
-        currentNewImgs.push(entry);
+        if (entry.size/1024 > 10240)
+          sizeValidator = true;
+        else
+          currentNewImgs.push(entry);
       });
+      if (sizeValidator)
+        alert("Một hoặc nhiều ảnh nặng quá mức cho phép và đã không được thêm vào.")
       this.setState({
         newImages: currentNewImgs,
       });

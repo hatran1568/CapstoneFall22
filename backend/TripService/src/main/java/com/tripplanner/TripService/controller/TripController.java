@@ -261,14 +261,16 @@ public class TripController {
         }
     }
 
-    @Transactional(rollbackFor = {Exception.class, Throwable.class})
+//    @Transactional(rollbackFor = {Exception.class, Throwable.class})
     @GetMapping("/getTripsByUser/{userId}")
     public ResponseEntity<?> getTripsByUser(@PathVariable int userId) {
-        try {
+//        try {
+
             return new ResponseEntity<>(tripService.getTripsByUser(userId), HttpStatus.OK);
-        } catch (Exception e) {
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-        }
+
+//        } catch (Exception e) {
+//            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+//        }
     }
 
     @Transactional(rollbackFor = {Exception.class, Throwable.class})

@@ -15,17 +15,22 @@ function ProfileCard(props) {
 
   const onFileChange = (e) => {
     console.log(e.target.files[0]);
-    const objectUrl = URL.createObjectURL(e.target.files[0]);
-    setAvatar(objectUrl);
-    const id = localStorage.getItem("id");
-    formData.append("File", e.target.files[0]);
-
-    axios.post("/user/api/user/edit-avatar/" + id, formData, {
-      headers: {
-        Authorization: `Bearer ${localStorage.getItem("token")}`,
-        "Content-Type": "multipart/form-data",
-      },
-    });
+    const newThumbnail = e.target.files[0];
+    if (newThumbnail.size/1024 > 10240)
+      alert("Ảnh không được nặng quá 10MB.");
+    else {
+      const objectUrl = URL.createObjectURL(e.target.files[0]);
+      setAvatar(objectUrl);
+      const id = localStorage.getItem("id");
+      formData.append("File", e.target.files[0]);
+      
+      axios.post("/user/api/user/edit-avatar/" + id, formData, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+          "Content-Type": "multipart/form-data",
+        },
+      });
+    }
   };
 
   const toLongDate = (date) => {
@@ -73,6 +78,7 @@ function ProfileCard(props) {
               id="file"
               accept=".jpg,.jpeg,.png"
               ref={ref}
+              maxLength={200}
               onChange={onFileChange}
               style={{ display: "none" }}
             />
