@@ -52,10 +52,9 @@ public class TripServiceImpl implements TripService {
 
     @Override
     public DetailedTripDTO getDetailedTripById(int tripId, int userId) {
-        if (userId < 0) userId = getGuestId();
+        if (userId < 1) userId = getGuestId();
         Trip trip = tripRepository.findById(tripId);
         List<ServiceInstance> instances = discoveryClient.getInstances("location-service");
-
         ServiceInstance instance = instances.get(0);
         if (trip == null) return null;
         if (trip.getStatus() == TripStatus.PRIVATE && trip.getUser() != userId) return null;
@@ -75,7 +74,7 @@ public class TripServiceImpl implements TripService {
             dto.setStartTime(query.getStartTime());
             dto.setEndTime(query.getEndTime());
             dto.setTripDetailsId(query.getDetailsId());
-            if (isCustom) {
+            if (Boolean.TRUE.equals(isCustom)) {
                 MasterActivityDTO masterActivityDTO = restTemplateClient
                         .restTemplate()
                         .getForObject(
@@ -100,19 +99,19 @@ public class TripServiceImpl implements TripService {
         return detailedTripDTO;
     }
 
-    public ArrayList<TripDetailDTO> getListTripDetailDTO(Trip trip) {
-        ArrayList<TripDetails> tripDetails = tripDetailRepository.getListByTripId(trip.getTripId());
-        Date startDate = (Date) trip.getStartDate();
-        ArrayList<TripDetailDTO> tripDetailDTOS = new ArrayList<>();
-        for (TripDetails tripDetail : tripDetails) {
-            TripDetailDTO tripDetailDTO = mapper.map(tripDetail, TripDetailDTO.class);
-            int masterActivityDTO = tripDetailDTO.getMasterActivity().getActivityId();
-            tripDetailDTO.setMasterActivity(getMasterActivity(masterActivityDTO));
-            tripDetailDTO.setDate(getDateByStartDateAndDayNumber(startDate, tripDetailDTO.getDayNumber()));
-            tripDetailDTOS.add(tripDetailDTO);
-        }
-        return tripDetailDTOS;
-    }
+//    public ArrayList<TripDetailDTO> getListTripDetailDTO(Trip trip) {
+//        ArrayList<TripDetails> tripDetails = tripDetailRepository.getListByTripId(trip.getTripId());
+//        Date startDate = (Date) trip.getStartDate();
+//        ArrayList<TripDetailDTO> tripDetailDTOS = new ArrayList<>();
+//        for (TripDetails tripDetail : tripDetails) {
+//            TripDetailDTO tripDetailDTO = mapper.map(tripDetail, TripDetailDTO.class);
+//            int masterActivityDTO = tripDetailDTO.getMasterActivity().getActivityId();
+//            tripDetailDTO.setMasterActivity(getMasterActivity(masterActivityDTO));
+//            tripDetailDTO.setDate(getDateByStartDateAndDayNumber(startDate, tripDetailDTO.getDayNumber()));
+//            tripDetailDTOS.add(tripDetailDTO);
+//        }
+//        return tripDetailDTOS;
+//    }
 
     @Override
     public TripGeneralDTO getTripGeneralById(int id) {
@@ -173,7 +172,14 @@ public class TripServiceImpl implements TripService {
                                 new HttpEntity<>("", headers),
                                 Integer.class
                         );
-                tripRepository.insertTripDetails(detail.getDayNumber(), detail.getEndTime(), detail.getNote(), detail.getStartTime(), activityId, newTripId);
+                tripRepository
+                        .insertTripDetails(
+                                detail.getDayNumber(),
+                                detail.getEndTime(),
+                                detail.getNote(),
+                                detail.getStartTime(),
+                                activityId, newTripId
+                        );
                 tripDetailRepository.save(newDetail);
             } else {
                 newDetail.setMasterActivity(activityId);
@@ -182,16 +188,18 @@ public class TripServiceImpl implements TripService {
                 newDetail.setDayNumber(detail.getDayNumber());
                 newDetail.setStartTime(detail.getStartTime());
                 newDetail.setEndTime(detail.getEndTime());
-                TripDetails tdsaved = tripDetailRepository.save(newDetail);
-                addPOICostToExpenses(newTripId, activityId, tdsaved.getTripDetailsId());
+                TripDetails tdSaved = tripDetailRepository.save(newDetail);
+                addPOICostToExpenses(newTripId, activityId, tdSaved.getTripDetailsId());
             }
         }
     }
 
     @Override
-    public TripDetailDTO addTripDetail(Date date, int startTime, int endTime, int activityId, int tripId, String note) {
-        List<ServiceInstance> instances = discoveryClient.getInstances("location-service");
-        ServiceInstance instance = instances.get(0);
+    public TripDetailDTO addTripDetail(
+            Date date, int startTime, int endTime, int activityId, int tripId, String note
+    ) {
+//        List<ServiceInstance> instances = discoveryClient.getInstances("location-service");
+//        ServiceInstance instance = instances.get(0);
         Trip trip = tripRepository.findById(tripId);
         TripDetails tripDetails = new TripDetails();
         tripDetails.setDayNumber(getDayNumberByFromStartDate((Date) trip.getStartDate(), date));
@@ -207,7 +215,9 @@ public class TripServiceImpl implements TripService {
     }
 
     @Override
-    public Integer addTripDetailGenerated(int day, int startTime, int endTime, int activityId, int tripId, String note) {
+    public Integer addTripDetailGenerated(
+            int day, int startTime, int endTime, int activityId, int tripId, String note
+    ) {
         TripDetails td = new TripDetails();
         Trip t = new Trip();
         t.setTripId(tripId);
@@ -239,11 +249,18 @@ public class TripServiceImpl implements TripService {
     public MasterActivityDTO getMasterActivity(int id) {
         List<ServiceInstance> instances = discoveryClient.getInstances("location-service");
         ServiceInstance instance = instances.get(0);
-        return restTemplateClient.restTemplate().getForObject(instance.getUri() + "/location/api/pois//getMasterActivity/" + id, POIDTO.class);
+        return restTemplateClient
+                .restTemplate()
+                .getForObject(
+                        instance.getUri() + "/location/api/pois//getMasterActivity/" + id,
+                        POIDTO.class
+                );
     }
 
     @Override
-    public TripDetailDTO addCustomTripDetail(Date date, int startTime, int endTime, int tripId, String name, String address, String note) {
+    public TripDetailDTO addCustomTripDetail(
+            Date date, int startTime, int endTime, int tripId, String name, String address, String note
+    ) {
         List<ServiceInstance> instances = discoveryClient.getInstances("location-service");
         ServiceInstance instance = instances.get(0);
         HttpHeaders headers = new HttpHeaders();
@@ -253,8 +270,14 @@ public class TripServiceImpl implements TripService {
         customActivityDTO.setName(name);
         Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd").create();
         String personJsonObject = gson.toJson(customActivityDTO);
-        HttpEntity<String> request = new HttpEntity<String>(personJsonObject, headers);
-        Integer id = restTemplateClient.restTemplate().postForObject(instance.getUri() + "/location/api/pois/addCustom", request, Integer.class);
+        HttpEntity<String> request = new HttpEntity<>(personJsonObject, headers);
+        Integer id = restTemplateClient
+                .restTemplate()
+                .postForObject(
+                        instance.getUri() + "/location/api/pois/addCustom",
+                        request,
+                        Integer.class
+                );
         TripDetailDTO saved = addTripDetail(date, startTime, endTime, id, tripId, note);
         saved.setMasterActivity(getMasterActivity(id));
         return saved;
@@ -269,7 +292,12 @@ public class TripServiceImpl implements TripService {
     public Optional<Double> getDistanceBetweenTwoPOIs(int from, int to) {
         List<ServiceInstance> instances = discoveryClient.getInstances("location-service");
         ServiceInstance instance = instances.get(0);
-        Double distance = restTemplateClient.restTemplate().getForObject(instance.getUri() + "/location/api/pois/distance/" + from + "/" + to, Double.class);
+        Double distance = restTemplateClient
+                .restTemplate()
+                .getForObject(
+                        instance.getUri() + "/location/api/pois/distance/" + from + "/" + to,
+                        Double.class
+                );
         return Optional.ofNullable(distance);
     }
 
@@ -326,7 +354,14 @@ public class TripServiceImpl implements TripService {
         Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd").create();
         String personJsonObject = gson.toJson(newDetail);
         HttpEntity<String> request = new HttpEntity<>(personJsonObject, headers);
-        restTemplateClient.restTemplate().exchange(instance.getUri() + "/location/api/pois/editCustom", HttpMethod.PUT, request, String.class);
+        restTemplateClient
+                .restTemplate()
+                .exchange(
+                        instance.getUri() + "/location/api/pois/editCustom",
+                        HttpMethod.PUT,
+                        request,
+                        String.class
+                );
         return editTripDetailById(newDetail, detailId);
     }
 
@@ -354,7 +389,7 @@ public class TripServiceImpl implements TripService {
     @Override
     public List<TripGeneralDTO> getLast3TripsByUser(int userId) {
         ArrayList<Trip> trips = tripRepository.getLast3TripsByUser(userId);
-        List<TripGeneralDTO> results = trips.stream().map(trip -> {
+        return trips.stream().map(trip -> {
             TripGeneralDTO tripDTO = new TripGeneralDTO();
             tripDTO.setTripId(trip.getTripId());
             tripDTO.setName(trip.getName());
@@ -365,7 +400,6 @@ public class TripServiceImpl implements TripService {
             tripDTO.setDateModified(trip.getDateModified());
             return tripDTO;
         }).collect(Collectors.toList());
-        return results;
     }
 
     @Override
@@ -412,7 +446,10 @@ public class TripServiceImpl implements TripService {
         ServiceInstance instance = instances.get(0);
         return restTemplateClient
                 .restTemplate()
-                .getForObject(instance.getUri() + "/location/api/pois/getFirstImg/" + tripDetails.getMasterActivity(), String.class);
+                .getForObject(
+                        instance.getUri() + "/location/api/pois/getFirstImg/" + tripDetails.getMasterActivity(),
+                        String.class
+                );
     }
 
     public void insertExpense(double amount, String description, int trip_id, int details) {
@@ -420,8 +457,11 @@ public class TripServiceImpl implements TripService {
     }
 
     @Override
-    public ArrayList<PublicTripDTO> getPublicTrips(int page, int pageSize, String search, int minDays, int maxDays, Date earliest) {
-        ArrayList<Trip> trips = tripRepository.getPublicTrips(page * pageSize, pageSize, search, minDays, maxDays, earliest);
+    public ArrayList<PublicTripDTO> getPublicTrips(
+            int page, int pageSize, String search, int minDays, int maxDays, Date earliest
+    ) {
+        ArrayList<Trip> trips = tripRepository
+                .getPublicTrips(page * pageSize, pageSize, search, minDays, maxDays, earliest);
         ArrayList<PublicTripDTO> publicTripDTOS = new ArrayList<>();
         for (Trip trip : trips) {
             PublicTripDTO dto = mapper.map(trip, PublicTripDTO.class);
@@ -464,7 +504,12 @@ public class TripServiceImpl implements TripService {
     public int getGuestId() {
         List<ServiceInstance> instances = discoveryClient.getInstances("user-service");
         ServiceInstance instance = instances.get(0);
-        return restTemplateClient.restTemplate().getForObject(instance.getUri() + "/user/api/user/get-guest-id", Integer.class);
+        return restTemplateClient
+                .restTemplate()
+                .getForObject(
+                        instance.getUri() + "/user/api/user/get-guest-id",
+                        Integer.class
+                );
     }
 
     public List<TripGeneralDTO> getLast3TripsByGuest(int[] array) {

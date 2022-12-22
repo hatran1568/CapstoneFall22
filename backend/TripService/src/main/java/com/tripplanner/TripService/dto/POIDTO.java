@@ -1,7 +1,6 @@
 package com.tripplanner.TripService.dto;
 
 import com.tripplanner.TripService.dto.response.MasterActivityDTO;
-
 import lombok.Data;
 
 import java.util.ArrayList;
