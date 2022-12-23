@@ -664,7 +664,7 @@ function HomePage() {
                     </MDBModalDialog>
                   </MDBModal>
                   {/* <MDBBtn color='info'>Create&nbsp;trip</MDBBtn> */}
-                  <MDBBtn color="info" onClick={toggleOffGenerate}>
+                  <MDBBtn color="info" onClick={toggleShow}>
                     Tạo chuyến đi
                   </MDBBtn>
                 </MDBBtnGroup>
