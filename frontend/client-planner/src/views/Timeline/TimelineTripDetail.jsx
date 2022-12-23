@@ -97,13 +97,16 @@ class TripDetail extends Component {
   render() {
     var moment = require("moment"); // require
     var isCustom = this.state.tripDetail.masterActivity.custom;
-    const imageUrl = this.state.tripDetail.masterActivity.images
+    const image = this.state.tripDetail.masterActivity.images
       ? this.state.tripDetail.masterActivity.images[0]
-        ? this.state.tripDetail.masterActivity.images[0].url.includes("img/", 0)
-          ? `../${this.state.tripDetail.masterActivity.images[0].url}`
-          : this.state.tripDetail.masterActivity.images[0].url
+      : null;
+    const imageUrl = image
+      ? image.url
+        ? image.url.includes("img/", 0)
+          ? `../${image.url}`
+          : image.url
         : "../img/default/detail-img.jpg"
-      : "";
+      : "../img/default/detail-img.jpg";
     let address = this.state.tripDetail.masterActivity.address;
     let nextAddress = this.props.nextActivity
       ? this.props.nextActivity.address

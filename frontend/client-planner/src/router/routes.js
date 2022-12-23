@@ -38,7 +38,7 @@ import Map from "../views/Map/Map";
 import Dashboard from "../views/Admin/Dashboard";
 
 import Hotel from "../views/Hotel/Hotel";
-
+import NewHomePage from "../views/HomePage/NewHomePage"
 export default function RootRoutes() {
   return (
     <Router>
@@ -46,6 +46,7 @@ export default function RootRoutes() {
         {/*Any route that needs a nav bar goes inside this one.*/}
         <Route path="/" element={<LayoutsWithNavbar />}>
           <Route path="/" element={<HomePage />} />
+          <Route path="/new" element={<NewHomePage />} />
           <Route exact path="login" element={<Login />} />
           <Route path="register" element={<Signup />} />
           <Route path="oauth2/*" element={<OAuthHandler />} />

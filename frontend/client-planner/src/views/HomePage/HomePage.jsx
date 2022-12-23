@@ -236,17 +236,13 @@ function HomePage() {
     getExistingTrips();
   }, [isGenerating]);
   const submitTrip = (event) => {
-    if (
-      document.getElementById("budgetInput").value == "") {
-        document.getElementById("errorEmptyPlan1").innerHTML =
-          "Hãy nhập ngân sách.";
-    }
-    else if (
-      document.getElementById("tripNameInput").value == "") {
-        document.getElementById("errorEmptyPlan1").innerHTML =
-          "Hãy nhập tên chuyến đi.";
-    }
-    else if (
+    if (document.getElementById("budgetInput").value == "") {
+      document.getElementById("errorEmptyPlan1").innerHTML =
+        "Hãy nhập ngân sách.";
+    } else if (document.getElementById("tripNameInput").value == "") {
+      document.getElementById("errorEmptyPlan1").innerHTML =
+        "Hãy nhập tên chuyến đi.";
+    } else if (
       !document.getElementById("startDateInput").value ||
       !document.getElementById("endDateInput").value
     ) {
@@ -384,17 +380,13 @@ function HomePage() {
     const endDate = new Date(
       document.getElementById("endDateGenerateInput").value
     );
-    if (
-      document.getElementById("budgetGenerateInput").value == "") {
-        document.getElementById("errorEmptyPlan").innerHTML =
-          "Hãy nhập ngân sách.";
-    }
-    else if (
-      document.getElementById("destination").value == "-1") {
-        document.getElementById("errorEmptyPlan").innerHTML =
-          "Hãy nhập điểm đến.";
-    }
-    else if (
+    if (document.getElementById("budgetGenerateInput").value == "") {
+      document.getElementById("errorEmptyPlan").innerHTML =
+        "Hãy nhập ngân sách.";
+    } else if (document.getElementById("destination").value == "-1") {
+      document.getElementById("errorEmptyPlan").innerHTML =
+        "Hãy nhập điểm đến.";
+    } else if (
       !document.getElementById("startDateGenerateInput").value ||
       !document.getElementById("endDateGenerateInput").value
     ) {
