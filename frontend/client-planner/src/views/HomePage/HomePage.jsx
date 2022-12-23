@@ -53,6 +53,7 @@ function HomePage() {
   const [request, setRequest] = useState();
   const [port, setPort] = useState();
   const [isFirst, setIsFirst] = useState(true);
+  const [destination, setDestination] = useState(-1);
   var stompClient = null;
   const connect = function (userId, port) {
     if ((userId, port)) {
@@ -165,7 +166,7 @@ function HomePage() {
   const toggleOffGenerate = () => {
     setCentredModal(false);
     document.getElementById("budgetGenerateInput").value = "";
-    document.getElementById("destination").value = "";
+    setDestination(-1);
     document.getElementById("startDateGenerateInput").value = null;
     document.getElementById("endDateGenerateInput").value = null;
   };
@@ -372,6 +373,7 @@ function HomePage() {
   };
   const setSelectedPOI = (item) => {
     document.getElementById("destination").value = item.id;
+    setDestination(item.id);
   };
   const submitGenerateTrip = (event) => {
     const startDate = new Date(
@@ -383,7 +385,7 @@ function HomePage() {
     if (document.getElementById("budgetGenerateInput").value == "") {
       document.getElementById("errorEmptyPlan").innerHTML =
         "Hãy nhập ngân sách.";
-    } else if (document.getElementById("destination").value == "-1") {
+    } else if (destination == -1) {
       document.getElementById("errorEmptyPlan").innerHTML =
         "Hãy nhập điểm đến.";
     } else if (
@@ -411,7 +413,7 @@ function HomePage() {
         data: {
           userId: localStorage.getItem("id"),
           budget: document.getElementById("budgetGenerateInput").value,
-          destinationId: "1",
+          destinationId: destination,
           startDate: document.getElementById("startDateGenerateInput").value,
           endDate: document.getElementById("endDateGenerateInput").value,
           startTime: "30600",
@@ -422,6 +424,20 @@ function HomePage() {
           "Content-Type": "application/json",
         },
       }).then(function (response) {
+        toggleOffGenerate();
+        toast(
+          "Chuyến đi của bạn sẽ sẵn sàng trong ít phút. Kết quả sẽ được gửi đến mail của bạn.",
+          {
+            position: "top-center",
+            autoClose: 5000,
+            hideProgressBar: true,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "light",
+          }
+        );
         setIsGenerating(true);
         setRequest(response.data.id);
         setPort(response.data.port);
@@ -633,10 +649,7 @@ function HomePage() {
                         )}
 
                         <MDBModalFooter>
-                          <MDBBtn
-                            color="secondary"
-                            onClick={toggleShowGenerate}
-                          >
+                          <MDBBtn color="secondary" onClick={toggleOffGenerate}>
                             Đóng
                           </MDBBtn>
                           {!isGenerating ? (

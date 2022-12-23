@@ -19,6 +19,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.tripplanner.Optimizer.repository.RequestRepository;
 import com.tripplanner.Optimizer.utils.MailSenderManager;
+import javassist.NotFoundException;
 import org.apache.catalina.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.client.ServiceInstance;
@@ -37,6 +38,7 @@ import java.util.concurrent.ExecutionException;
 import java.util.function.BiConsumer;
 
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.web.client.HttpStatusCodeException;
 
 @Slf4j
 @Service
@@ -79,9 +81,29 @@ public class GenerateTripIml implements GenerateTrip {
         List<ServiceInstance> instances = discoveryClient.getInstances("location-service");
 
         ServiceInstance instance = instances.get(0);
+        ListPoi listPoi =new ListPoi();
+        try{
+            listPoi = restTemplateClient.restTemplate().getForObject(instance.getUri() + "/location/api/pois/poisByDestination/" + input.getDestinationId(), ListPoi.class);
 
-        ListPoi listPoi = restTemplateClient.restTemplate().getForObject(instance.getUri() + "/location/api/pois/poisByDestination/" + input.getDestinationId(), ListPoi.class);
+        }
+        catch (HttpStatusCodeException exception){
+            repository.changeSuccess(input.getUserId());
 
+            saved.setStatus(RequestStatus.ERROR);
+            repository.save(saved);
+            List<ServiceInstance> userInstances = discoveryClient.getInstances("user-service");
+            ServiceInstance userInstance = userInstances.get(0);
+            HttpHeaders headers = new HttpHeaders();
+            headers.setContentType(MediaType.APPLICATION_JSON);
+            headers.set("Authorization", token);
+            HttpEntity<String> request2 =
+                    new HttpEntity<String>(headers);
+            ResponseEntity<UserDetailResponseDTO> user = restTemplateClient.restTemplate().exchange(userInstance.getUri()+"/user/api/user/findById/"+input.getUserId(), HttpMethod.GET,request2, UserDetailResponseDTO.class);
+            String emailContent = "Xin chào "+ user.getBody().getName()+",\n \n"
+                    + "Đã có lỗi xảy ra trong quá trình khởi tạo chuyến đi của bạn!"+"\n"+"Xin hãy thử lại sau" ;
+            mailSender.sendSimpleMessage(user.getBody().getEmail(), "Chuyến đi của bạn đã bị lỗi.", emailContent);
+            return null;
+        }
         int numberOfPOI = listPoi.getList().size();
         POI[] POIs = new POI[numberOfPOI];
         for (int i = 0; i < listPoi.getList().size(); i++) {
@@ -123,8 +145,8 @@ public class GenerateTripIml implements GenerateTrip {
         GenerateTripUserInput input =response.getInput();
         repository.changeSuccess(input.getUserId());
         OptimizerRequest optimizerRequest = response.getRequest();
-    optimizerRequest.setStatus(RequestStatus.COMPLETE);
-    optimizerRequest = repository.save(optimizerRequest);
+        optimizerRequest.setStatus(RequestStatus.COMPLETE);
+        optimizerRequest = repository.save(optimizerRequest);
 
 
         log.info("Insert to DB ");
@@ -141,7 +163,7 @@ public class GenerateTripIml implements GenerateTrip {
                 .setDateFormat("yyyy-MM-dd").create();
         ServiceInstance locationInstance = locationInstances.get(0);
         DesDetailsDTO destination = restTemplateClient.restTemplate().getForObject(locationInstance.getUri()+"/location/api/destination/"+input.getDestinationId(), DesDetailsDTO.class);
-        trip.setName(data.getDayOfTrip() + " days in " +destination.getName());
+        trip.setName(data.getDayOfTrip() + " ngày ở " +destination.getName());
         trip.setBudget(input.getBudget());
         trip.setStartDate(input.getStartDate());
         trip.setEndDate(input.getEndDate());
@@ -203,10 +225,12 @@ public class GenerateTripIml implements GenerateTrip {
                 HttpEntity<String> request2 =
                         new HttpEntity<String>(headers);
                 ResponseEntity<UserDetailResponseDTO> user = restTemplateClient.restTemplate().exchange(userInstance.getUri()+"/user/api/user/findById/"+input.getUserId(), HttpMethod.GET,request2, UserDetailResponseDTO.class);
-                String emailContent = "dear "+user.getBody().getName()+",\n \n"
-                        + "See your trip at http://localhost:3000/timeline/"+response.getRequest().getTrip() ;
-                mailSender.sendSimpleMessage(user.getBody().getEmail(), "Your trip is ready", emailContent);
-               
+
+                String emailContent = "Xin chào "+user.getBody().getName()+",\n \n"
+                        + "Hãy xem chuyến đi phù hợp với bạn tại http://localhost:3000/timeline/"+response.getRequest().getTrip() ;
+                mailSender.sendSimpleMessage(user.getBody().getEmail(), "Chuyến đi của bạn đã sẵn sàng", emailContent);
+
+
             }
         });
         return  task;

@@ -106,7 +106,7 @@ function NewHomePage() {
                   show={generateModal}
                   isGenerating={isGenerating}
                   toggleShowGenerate={toggleShowGenerate}
-                  onSubmit={(data) => this.submitGenerateTrip(data)}
+                  onSubmit={(data) => submitGenerateTrip(data)}
                   closeGenerate={closeGenerate}
                 />
               </p>

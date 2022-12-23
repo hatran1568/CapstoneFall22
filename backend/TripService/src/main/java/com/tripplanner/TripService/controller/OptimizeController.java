@@ -37,8 +37,8 @@ public class OptimizeController {
     @Transactional(rollbackFor = {Exception.class, Throwable.class})
     @PostMapping("/generate")
     public ResponseEntity<SimpleResponse> generateTrip(@RequestBody GenerateTripUserInput input) throws JsonProcessingException {
-
-
+        log.info("-----------\n----------\n----------\n----------\n----------\n----------\n----------\n----------\n----------\n----------\n----------");
+        log.info(String.valueOf(System.currentTimeMillis() / 1000));
         List<ServiceInstance> instances = discoveryClient.getInstances("Optimizer");
 
         ServiceInstance instance =  instances.get(0);
@@ -67,7 +67,7 @@ public class OptimizeController {
         JsonNode root = mapper.readTree(personResultAsJsonStr);
         System.out.println(root.path("port").asText());
         SimpleResponse target2 = gson.fromJson(personResultAsJsonStr, SimpleResponse.class);
-        if(tripRepo.getStatusGenerating(input.getUserId())==null ){
+        if(tripRepo.getStatusGenerating(input.getUserId())!=null ){
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
 

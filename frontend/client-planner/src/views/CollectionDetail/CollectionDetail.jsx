@@ -41,7 +41,6 @@ const CollectionDetail = () => {
       setCurCol(response.data);
     };
 
-    document.title = "Trip planner | Collection Details";
     getCurCol();
   }, [colId]);
 
@@ -116,6 +115,7 @@ const CollectionDetail = () => {
   };
 
   if (curCol !== undefined) {
+    document.title = "Bộ sưu tầm " + curCol.title + " | Tripplanner";
     var header;
     if (curCol.imgUrl !== null) {
       header = (
