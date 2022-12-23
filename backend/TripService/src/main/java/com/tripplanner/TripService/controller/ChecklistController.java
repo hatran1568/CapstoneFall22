@@ -21,14 +21,14 @@ public class ChecklistController {
     @Transactional(rollbackFor = {Exception.class, Throwable.class})
     @GetMapping("/get-by-trip")
     public ResponseEntity<ChecklistDTO> getChecklistItemsByTripId(@RequestParam int tripId, @RequestParam(required = false) Integer userId){
-//        try{
+        try{
             if(userId == null) userId = -1;
             ChecklistDTO result = checklistService.getChecklistItemsByTripId(tripId, userId);
             if(result == null) return new ResponseEntity<>(HttpStatus.NOT_FOUND);
             return new ResponseEntity<>(result, HttpStatus.OK);
-//        } catch (Exception e){
-//            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-//        }
+        } catch (Exception e){
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
     @Transactional(rollbackFor = {Exception.class, Throwable.class})
     @PostMapping("/toggle-checked")

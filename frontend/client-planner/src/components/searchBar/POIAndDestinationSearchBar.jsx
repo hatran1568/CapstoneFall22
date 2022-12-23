@@ -46,6 +46,9 @@ function POIAndDestinationSearchBar(Children) {
           }}
           placeholder="Tìm kiếm"
           label="Search"
+          inputProps={{
+            maxLength: 32,
+          }}
           id="form1"
           type="text"
           className={style.searchBar}

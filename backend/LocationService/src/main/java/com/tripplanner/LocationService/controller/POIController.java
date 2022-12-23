@@ -353,7 +353,7 @@ public class POIController {
     @Transactional(rollbackFor = {Exception.class, Throwable.class})
     @RequestMapping(value = "/add", consumes = "application/json", produces = {"*/*"}, method = RequestMethod.POST)
     public ResponseEntity<?> addPOI(@RequestBody UpdatePOIDTO poi) throws Exception {
-//        try {
+        try {
             String uri = "https://api.distancematrix.ai/maps/api/distancematrix/json?origins=";
             String origin = poi.getLat() + "," + poi.getLon();
 
@@ -392,9 +392,9 @@ public class POIController {
             }
             distanceRepository.insertDistance(0, poiRepo.getLastestMA(), poiRepo.getLastestMA());
             return new ResponseEntity<>(poiRepo.getLastestMA(), HttpStatus.OK);
-//        } catch (Exception e) {
-//            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-//        }
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
     @GetMapping("isExistCustom/{id}")

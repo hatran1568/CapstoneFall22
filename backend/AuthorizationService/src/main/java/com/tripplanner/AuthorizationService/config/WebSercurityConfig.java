@@ -151,6 +151,7 @@ public class WebSercurityConfig extends WebSecurityConfigurerAdapter {
                             userService.processOAuthPostLoginFacebook(oauthUser.getEmail());
                             String jwt = tokenProvider.generateToken(oauthUser);
                             User user = userRepository.findByEmail(oauthUser.getEmail());
+                            user.getRole();
                             String uri = UriComponentsBuilder.fromUriString("http://localhost:3000/oauth2/redirect")
 
                                     .queryParam("token", jwt)

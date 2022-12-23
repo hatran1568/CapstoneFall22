@@ -67,6 +67,10 @@ class DestinationAddUpdate extends Component {
   componentDidMount() {
     const queryParams = new URLSearchParams(window.location.search);
     const id = queryParams.get("id");
+    if (id > 0)
+      document.title = "Chỉnh sửa điểm đến | Tripplanner"
+    else
+      document.title = "Thêm điểm đến";
     axios
       .get(`http://localhost:8080/location/api/destination/select/all`, {
         headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
@@ -380,9 +384,15 @@ class DestinationAddUpdate extends Component {
       const currentNewImgs = this.state.newImages;
       const files = document.getElementById("fileInput").files;
       const imgs = Array.from(files);
+      var sizeValidator = false;
       imgs.forEach((entry, index) => {
-        currentNewImgs.push(entry);
+        if (entry.size/1024 > 10240)
+          sizeValidator = true;
+        else
+          currentNewImgs.push(entry);
       });
+      if (sizeValidator)
+        alert("Một hoặc nhiều ảnh nặng quá mức cho phép và đã không được thêm vào.")
       this.setState({
         newImages: currentNewImgs,
       });

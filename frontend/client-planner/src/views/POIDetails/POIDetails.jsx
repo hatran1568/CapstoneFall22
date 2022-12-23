@@ -51,8 +51,6 @@ const POIDetails = () => {
         .get("/location/api/pois/" + poiId + "/images")
         .then((res) => setImages(res.data));
     };
-
-    document.title = "Trip planner | POIDetails";
     getPOI();
     getRatings();
     getImages();
@@ -307,6 +305,7 @@ const POIDetails = () => {
     curPOI.category !== undefined &&
     !curPOI.deleted
   ) {
+    document.title = curPOI.name + " | Tripplanner";
     return (
       <MDBContainer className={style.container}>
         <MDBRow className="pb-3 pt-5">

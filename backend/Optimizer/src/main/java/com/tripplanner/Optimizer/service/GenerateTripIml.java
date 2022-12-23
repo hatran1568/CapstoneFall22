@@ -101,7 +101,7 @@ public class GenerateTripIml implements GenerateTrip {
             ResponseEntity<UserDetailResponseDTO> user = restTemplateClient.restTemplate().exchange(userInstance.getUri()+"/user/api/user/findById/"+input.getUserId(), HttpMethod.GET,request2, UserDetailResponseDTO.class);
             String emailContent = "Xin chào "+ user.getBody().getName()+",\n \n"
                     + "Đã có lỗi xảy ra trong quá trình khởi tạo chuyến đi của bạn!"+"\n"+"Xin hãy thử lại sau" ;
-            mailSender.sendSimpleMessage(user.getBody().getEmail(), "Chuyến đi của bạn đã bị lõi.", emailContent);
+            mailSender.sendSimpleMessage(user.getBody().getEmail(), "Chuyến đi của bạn đã bị lỗi.", emailContent);
             return null;
         }
         int numberOfPOI = listPoi.getList().size();
@@ -225,9 +225,11 @@ public class GenerateTripIml implements GenerateTrip {
                 HttpEntity<String> request2 =
                         new HttpEntity<String>(headers);
                 ResponseEntity<UserDetailResponseDTO> user = restTemplateClient.restTemplate().exchange(userInstance.getUri()+"/user/api/user/findById/"+input.getUserId(), HttpMethod.GET,request2, UserDetailResponseDTO.class);
+
                 String emailContent = "Xin chào "+user.getBody().getName()+",\n \n"
                         + "Hãy xem chuyến đi phù hợp với bạn tại http://localhost:3000/timeline/"+response.getRequest().getTrip() ;
                 mailSender.sendSimpleMessage(user.getBody().getEmail(), "Chuyến đi của bạn đã sẵn sàng", emailContent);
+
 
             }
         });

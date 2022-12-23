@@ -78,6 +78,7 @@ class Dashboard extends Component {
     };
   }
   async componentDidMount() {
+    document.title = "Bảng điều khiển Admin | Tripplanner"
     axios
       .get("http://localhost:8080/blog/api/admin/countall", {
         headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },

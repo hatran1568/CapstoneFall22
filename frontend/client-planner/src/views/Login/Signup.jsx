@@ -10,11 +10,12 @@ import {
   MDBInput,
 } from "mdb-react-ui-kit";
 import axios from "../../api/axios";
+import validator from 'validator'
 import { useState } from "react";
 import style from "./Login.module.css";
 
 const REGISTER_URL = "/user/api/register";
-const LOGIN_URL = "/user/api/login";
+const LOGIN_URL = "/auth/api/login";
 
 function Signup() {
   const pattern = /^[A-Za-z0-9_!#$%&'*+\/=?`{|}~^.-]+@[A-Za-z0-9.-]+$/;
@@ -29,7 +30,7 @@ function Signup() {
 
   const handleValidation = () => {
     let formIsValid = true;
-    if (user.username === "") {
+    if (user.username === "" || user.username.length < 3) {
       formIsValid = false;
       document.getElementById("errUsername").style.display = "block";
     } else {
@@ -41,7 +42,7 @@ function Signup() {
     } else {
       document.getElementById("errEmail").style.display = "none";
     }
-    if (user.password === "") {
+    if (user.password === "" || user.password.length < 8) {
       formIsValid = false;
       document.getElementById("errPwd").style.display = "block";
     } else {
@@ -71,27 +72,30 @@ function Signup() {
           {
             headers: { "Content-Type": "application/json" },
           }
-        );
-        const response = await axios.post(
-          LOGIN_URL,
-          {
-            username: user.email,
-            password: user.password,
-          },
-          {
-            headers: { "Content-Type": "application/json" },
+        ).then((res) => {
+          if (res.status == 200) {
+            const response = axios.post(
+              LOGIN_URL,
+              {
+                username: user.email,
+                password: user.password,
+              },
+              {
+                headers: { "Content-Type": "application/json" },
+              }
+            ).then((resLogin) => {
+              const accessToken = resLogin?.data?.accessToken;
+              const role = resLogin?.data?.role;
+              const id = resLogin?.data?.id;
+              if (accessToken) {
+                localStorage.setItem("token", accessToken);
+                localStorage.setItem("role", role);
+                localStorage.setItem("id", id);
+              }
+              window.location.href = "http://localhost:3000/";
+            });
           }
-        );
-        const accessToken = response?.data?.accessToken;
-        const role = response?.data?.role;
-        const id = response?.data?.id;
-
-        if (accessToken) {
-          localStorage.setItem("token", accessToken);
-          localStorage.setItem("role", role);
-          localStorage.setItem("id", id);
-        }
-        window.location.href = "http://localhost:3000/";
+        });
       } catch (error) {
         if (error.response.status === 400) {
           document.getElementById("invalidWarning").style.display = "block";
@@ -120,10 +124,11 @@ function Signup() {
               <div className={style.registerInputDiv}>
                 <MDBInput
                   wrapperClass="mt-4 mx-5"
-                  label="Username"
+                  label="Tên hiển thị"
                   id="formUsername"
                   type="text"
                   size="lg"
+                  maxLength={200}
                   onChange={(e) =>
                     setUser({ ...user, username: e.target.value })
                   }
@@ -133,7 +138,7 @@ function Signup() {
                   className="mx-5"
                   id="errUsername"
                 >
-                  Username must not be empty
+                  Tên hiển thị phải dài 3-200 kí tự
                 </span>
               </div>
               <div className={style.registerInputDiv}>
@@ -142,6 +147,7 @@ function Signup() {
                   label="Địa chỉ email"
                   id="formEmail"
                   type="email"
+                  maxLength={500}
                   size="lg"
                   onChange={(e) => setUser({ ...user, email: e.target.value })}
                 />
@@ -150,7 +156,7 @@ function Signup() {
                   className="mx-5"
                   id="errEmail"
                 >
-                  Please check your email
+                  Hãy kiểm tra lại email của bạn
                 </span>
               </div>
               <div className={style.registerInputDiv}>
@@ -160,6 +166,7 @@ function Signup() {
                   id="formPwd"
                   type="password"
                   size="lg"
+                  maxLength={64}
                   onChange={(e) =>
                     setUser({ ...user, password: e.target.value })
                   }
@@ -169,7 +176,7 @@ function Signup() {
                   className="mx-5"
                   id="errPwd"
                 >
-                  Password cannot be empty
+                  Mật khẩu phải dài 8-64 kí tự
                 </span>
               </div>
               <div className={style.registerInputDiv}>
@@ -178,6 +185,7 @@ function Signup() {
                   label="Xác nhận mật khẩu"
                   id="formPwdCf"
                   type="password"
+                  maxLength={64}
                   size="lg"
                   onChange={(e) =>
                     setUser({ ...user, confirmPassword: e.target.value })
@@ -188,14 +196,14 @@ function Signup() {
                   className="mx-5"
                   id="errCfPwd"
                 >
-                  Confirm password doesn't match password
+                  Mật khẩu xác nhận không trùng với mật khẩu
                 </span>
                 <span
                   style={{ color: "red", display: "none" }}
                   className="mx-5"
                   id="invalidWarning"
                 >
-                  Email already in use!
+                  Email này đã được sử dụng
                 </span>
               </div>
               <MDBBtn
