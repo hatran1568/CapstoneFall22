@@ -41,16 +41,16 @@ public class TripController {
     private DiscoveryClient discoveryClient;
     @GetMapping("/{id}")
     public ResponseEntity<DetailedTripDTO> getTripById(@PathVariable int id, @RequestParam(required = false) Integer userId){
-        try{
+//        try{
             if(userId == null) userId = -1;
             DetailedTripDTO trip = tripService.getDetailedTripById(id,userId);
             if (trip == null){
                 return new ResponseEntity<>(HttpStatus.NOT_FOUND);
             }
             return new ResponseEntity<>(trip, HttpStatus.OK);
-        } catch (Exception e){
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-        }
+//        } catch (Exception e){
+//            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+//        }
     }
     @Transactional(rollbackFor = {Exception.class, Throwable.class})
     @GetMapping("/general/{id}")

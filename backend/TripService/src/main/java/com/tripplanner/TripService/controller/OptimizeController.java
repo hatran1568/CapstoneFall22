@@ -67,7 +67,7 @@ public class OptimizeController {
         JsonNode root = mapper.readTree(personResultAsJsonStr);
         System.out.println(root.path("port").asText());
         SimpleResponse target2 = gson.fromJson(personResultAsJsonStr, SimpleResponse.class);
-        if(tripRepo.getStatusGenerating(input.getUserId())==null ){
+        if(tripRepo.getStatusGenerating(input.getUserId())!=null ){
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
 
