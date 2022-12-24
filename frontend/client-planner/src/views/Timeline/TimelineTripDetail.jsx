@@ -99,7 +99,10 @@ class TripDetail extends Component {
     var isCustom = this.state.tripDetail.masterActivity.custom;
     const imageUrl = this.state.tripDetail.masterActivity.images
       ? this.state.tripDetail.masterActivity.images[0]
-        ? this.state.tripDetail.masterActivity.images[0].url.includes("img/", 0)
+        ? this.state.tripDetail.masterActivity.images[0].url?.includes(
+            "img/",
+            0
+          )
           ? `../${this.state.tripDetail.masterActivity.images[0].url}`
           : this.state.tripDetail.masterActivity.images[0].url
         : "../img/default/detail-img.jpg"

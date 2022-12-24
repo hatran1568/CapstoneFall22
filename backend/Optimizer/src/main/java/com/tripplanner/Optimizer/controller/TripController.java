@@ -6,6 +6,7 @@ import com.tripplanner.Optimizer.DTO.Response.RequestStatus;
 import com.tripplanner.Optimizer.DTO.Response.SimpleResponse;
 import com.tripplanner.Optimizer.service.AsyncJobsManager;
 import com.tripplanner.Optimizer.service.interfaces.GenerateTrip;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.http.HttpStatus;
@@ -17,7 +18,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import javax.servlet.http.HttpServletRequest;
 import java.text.SimpleDateFormat;
 import java.util.concurrent.ExecutionException;
-
+@Slf4j
 @RestController
 @RequestMapping("/optimizer/trip")
 public class TripController {
@@ -35,7 +36,7 @@ public class TripController {
     @PostMapping("/generate")
     public ResponseEntity<?> generateTrip(HttpServletRequest request, @RequestBody GenerateTripUserInput input) throws ExecutionException, InterruptedException {
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
-        System.out.println("----------");
+        log.info("----------");
         System.out.println(input.getStartDate());
         System.out.println(input.getEndDate());
         System.out.println(input.getBudget());

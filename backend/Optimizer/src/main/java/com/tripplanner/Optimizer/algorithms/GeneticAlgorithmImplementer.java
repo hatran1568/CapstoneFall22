@@ -235,6 +235,7 @@ public class GeneticAlgorithmImplementer {
         ArrayList<Solution> population = new ArrayList<>();
         //Generation
         for (int i = 0; i < 6000; i++) {
+
             population.add(generatePopulation(data));
         }
         Collections.sort(population, new Comparator<Solution>() {
@@ -245,23 +246,24 @@ public class GeneticAlgorithmImplementer {
             }
         });
 
-        for (int j = 1; j <= 300; j++) {
-            log.info(String.valueOf(j));
+        for (int j = 1; j <= 200; j++) {
+
+
             //Selection
 
             ArrayList<Solution> nextPopulation = new ArrayList<>();
-            for (int i = 0; i < 600; i++) {
+            for (int i = 0; i < 100; i++) {
                 nextPopulation.add(population.get(i));
             }
             //Crossover
-            for (int i = 0; i < 5400; i++) {
+            for (int i = 0; i < 5900; i++) {
                 Random rand = new Random();
                 int mom = rand.nextInt(6000);
-                int dad = rand.nextInt(6000);
-                while (mom == dad) {
-                    dad = rand.nextInt(6000);
-                }
-                //nextPopulation.add(crossover(population.get(dad), population.get(mom), data));
+//                int dad = rand.nextInt(6000);
+//                while (mom == dad) {
+//                    dad = rand.nextInt(6000);
+//                }
+//                //nextPopulation.add(crossover(population.get(dad), population.get(mom), data));
                 nextPopulation.add(mutation(population.get(mom), data));
             }
             Collections.sort(nextPopulation, new Comparator<Solution>() {
@@ -273,7 +275,7 @@ public class GeneticAlgorithmImplementer {
             });
 
             //mutation
-            for (int i = 0; i < 600; i++) {
+            for (int i = 0; i < 900; i++) {
                 Random rand = new Random();
                 int choosen = rand.nextInt(5700);
                 choosen += 300;
@@ -286,6 +288,7 @@ public class GeneticAlgorithmImplementer {
                     return Double.compare(o1.cal_fitness(), o2.cal_fitness());
                 }
             });
+
             results.add(nextPopulation.get(0));
             population.clear();
             population = new ArrayList<>(nextPopulation);
@@ -296,7 +299,20 @@ public class GeneticAlgorithmImplementer {
 //        }
 
 
-        return results.get(results.size() - 1);
+        int index =0;
+        for (Solution s: results
+        ) {
 
+            log.info(index+" "+String.valueOf(s.cal_fitness()));
+            index++;
+        }
+        return results.get(results.size()-1);
+
+    }
+
+    public static <T> Set<T> newShuffledSet(Collection<T> collection) {
+        List<T> shuffleMe = new ArrayList<T>(collection);
+        Collections.shuffle(shuffleMe);
+        return new HashSet<T>(shuffleMe);
     }
 }
