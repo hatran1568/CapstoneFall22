@@ -1,4 +1,4 @@
-body {
+.body {
   background: #fff;
   font-family: "Mukta Mahee", arial, sans-serif;
   font-weight: 200;
@@ -17,14 +17,14 @@ body {
   background: #65c0ba;
 }
 
-a {
+.section a {
   -webkit-transition: 0.3s all ease;
   -o-transition: 0.3s all ease;
   transition: 0.3s all ease;
   text-decoration: none;
 }
 
-a:hover {
+.section a:hover {
   text-decoration: none;
 }
 .h1,
@@ -36,16 +36,16 @@ a:hover {
   font-family: "Abril Fatface";
 }
 .siteHero {
-  height: 90vh;
+  height: 95vh;
   min-height: 700px;
   width: 100%;
 }
 .siteHero .backgroundImage {
-  height: 90vh;
+  height: 95vh;
   min-height: 700px;
   width: 100%;
   object-fit: cover;
-  filter: brightness(70%) opacity(80%);
+  filter: brightness(60%) opacity(80%);
 }
 .siteHero.overlay::before {
   /* background: rgba(0, 0, 0, 0.2);
@@ -126,7 +126,7 @@ a:hover {
   border-top: 1px solid #e0e0e0;
 }
 .section {
-  padding: 7em 7em;
+  padding: 5em 7em;
   font-family: "Mukta Mahee";
 }
 
@@ -156,6 +156,7 @@ h3.h3 {
 .blogSection {
   background-color: #65c0ba !important;
   color: #fff;
+  padding: 2em 7em;
 }
 .blogSection h2 {
   color: #0e0e0f;
@@ -170,6 +171,7 @@ h3.h3 {
   transition: 0.3s all ease;
   -webkit-box-shadow: 0 2px 5px -2px rgba(0, 0, 0, 0.1);
   box-shadow: 0 2px 5px -2px rgba(0, 0, 0, 0.1);
+  border-radius: 5px;
 }
 
 .post .mediaCustom:hover,
@@ -195,7 +197,7 @@ h3.h3 {
 }
 .mediaCustom .metaPost {
   color: #ced4da;
-  text-transform: uppercase;
+  /* text-transform: uppercase; */
   font-weight: 200;
   letter-spacing: 0.1em;
 }
@@ -203,12 +205,15 @@ h3.h3 {
   -webkit-box-flex: 1;
   -ms-flex: 1;
   flex: 1;
-  padding: 10px 30px;
+  padding: 10px 15px;
 }
 .mediaBody p {
   font-size: 18px;
   font-family: "Mukta Mahee";
   color: #6c757d;
+}
+.mediaBody a {
+  text-decoration: none;
 }
 .visitSection .visit {
   position: relative;
@@ -216,6 +221,7 @@ h3.h3 {
   -webkit-transition: 0.3s all ease;
   -o-transition: 0.3s all ease;
   transition: 0.3s all ease;
+  padding: 20px;
 }
 .visitSection .h2 {
   font-size: 40px;
@@ -224,7 +230,6 @@ h3.h3 {
 .visitSection .visit a {
   color: #000;
 }
-
 .visitSection .visit a:hover {
   color: #65c0ba;
 }
@@ -249,4 +254,78 @@ h3.h3 {
 .visitSection .reviews-count {
   color: #ccc;
   font-style: italic;
+}
+.createBtn {
+  margin: 1em;
+}
+.myTripsSection {
+  padding: 4em 7em;
+  font-family: "Abril Fatface", arial, sans-serif;
+}
+.myTripsSection h3 {
+  font-weight: 600;
+}
+.blogThumbnail,
+.visit img {
+  width: 100%;
+  height: 300px;
+  object-fit: cover;
+  border-top-left-radius: 5px;
+  border-top-right-radius: 5px;
+}
+.post:hover {
+  transform: scale(1.1);
+}
+.visit .description {
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  display: -webkit-box;
+}
+.recentTrips {
+  width: 100%;
+  height: 100%;
+  background-color: #267b9c13;
+  color: #267b9cb0;
+  padding: auto;
+  padding-bottom: 2em;
+  text-align: center;
+  cursor: pointer;
+  font-family: Klarna Text, Helvetica Neue, Arial, Helvetica, sans-serif;
+  border: 2px solid #267b9cb0;
+  border-right: none;
+}
+.recentTrips:hover {
+  background-color: #267b9c4b;
+  color: #0e0e0fb8;
+}
+.recentTrips .number {
+  font-size: 7em;
+  font-weight: 700;
+}
+.recentTrips .text {
+  text-transform: uppercase;
+  font-size: 1.2em;
+}
+.recentSection {
+  padding: 0;
+  margin: 0;
+  width: 71% !important;
+  margin-bottom: 5em;
+}
+.smallRecentSection {
+  padding: 0 !important;
+}
+.seeRecentButton .recentTrips {
+  background-color: #267b9cb0;
+  color: #fff;
+  border: none;
+}
+.seeRecentButton .recentTrips:hover {
+  color: #0e0e0fb8;
+}
+.seeMoreText {
+  font-size: 1.2em;
+  font-weight: bold;
+  text-transform: unset;
 }

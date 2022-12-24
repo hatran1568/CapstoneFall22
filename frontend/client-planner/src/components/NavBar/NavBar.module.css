@@ -11,3 +11,12 @@
   height: 35px;
   object-fit: cover;
 }
+.loginBtn {
+  border: solid 1px #34a9d9 !important;
+  background-color: #34a9d9 !important;
+  color: rgba(255, 255, 255, 0.815) !important;
+  font-weight: 500 !important;
+}
+.loginBtn:hover {
+  color: #042735 !important;
+}

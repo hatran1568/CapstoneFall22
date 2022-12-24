@@ -1,7 +1,7 @@
 .card {
-  height: 300px;
-  width: 300px;
-  margin: 20px;
+  height: 330px;
+  width: 330px;
+  margin: auto;
   overflow: hidden;
   transition: 0.5s;
   border: none;
@@ -9,7 +9,7 @@
 }
 
 .img {
-  height: 300px;
+  height: 330px;
   width: 100%;
   transition: 0.5s;
   filter: brightness(50%);
@@ -30,7 +30,7 @@
 .card:hover .description {
   height: 75px;
   bottom: 0;
-  background-color: whitesmoke;
+  background-color: rgba(245, 245, 245, 0.855);
 }
 
 .card:hover .img {
@@ -71,4 +71,7 @@
 
 .card:hover .deleteButton {
   opacity: 1;
+}
+.tripName {
+  font-weight: 500;
 }

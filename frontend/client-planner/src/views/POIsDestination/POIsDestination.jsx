@@ -18,8 +18,7 @@ import {
 } from "mdb-react-ui-kit";
 import style from "./POIsDestination.module.css";
 function POIsDestination() {
-  const thumbImage =
-    "https://images.pexels.com/photos/1591373/pexels-photo-1591373.jpeg";
+  const [thumbImage, setThumbImage] = useState();
   const queryParams = new URLSearchParams(window.location.search);
   const desId = queryParams.get("desid");
   const catId = queryParams.get("catid");
@@ -27,6 +26,24 @@ function POIsDestination() {
   if (rating == null) rating = 0;
   const navigate = useNavigate();
   const [destination, setDestination] = useState([]);
+  useEffect(() => {
+    const listResp = async () => {
+      await axios
+        .get(
+          "http://localhost:8080/location/api/destination/thumbnail/" + desId
+        )
+        .then((response) => {
+          let res = response.data;
+          let url = res
+            ? res.includes("img\\", 0)
+              ? `../${res}`
+              : res
+            : "../img/default/beach.jpeg";
+          setThumbImage(url);
+        });
+    };
+    listResp();
+  }, []);
   useEffect(() => {
     const listResp = async () => {
       await axios
@@ -235,17 +252,17 @@ function POIsDestination() {
               marginPagesDisplayed={2}
               pageCount={pageCount}
               previousLabel="<"
-              pageClassName="page-item"
-              pageLinkClassName="page-link"
-              previousClassName="page-item"
-              previousLinkClassName="page-link"
-              nextClassName="page-item"
-              nextLinkClassName="page-link"
+              pageClassName={`page-item ${style.pageItem}`}
+              pageLinkClassName={`page-link ${style.pageLink}`}
+              previousClassName={`page-item ${style.pageItem}`}
+              previousLinkClassName={`page-link ${style.pageLink}`}
+              nextClassName={`page-item ${style.pageItem}`}
+              nextLinkClassName={`page-link ${style.pageLink}`}
               breakLabel="..."
-              breakClassName="page-item"
-              breakLinkClassName="page-link"
-              containerClassName="pagination"
-              activeClassName="active"
+              breakClassName={`page-item ${style.pageItem}`}
+              breakLinkClassName={`page-link ${style.pageLink}`}
+              containerClassName={`pagination ${style.customPagination}`}
+              activeClassName={`active ${style.active}`}
               renderOnZeroPageCount={null}
             />
           </MDBCol>

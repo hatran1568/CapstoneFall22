@@ -8,6 +8,7 @@ import com.tripplanner.LocationService.dto.response.*;
 import com.tripplanner.LocationService.entity.Destination;
 import com.tripplanner.LocationService.repository.DestinationRepository;
 
+import com.tripplanner.LocationService.service.interfaces.DestinationService;
 import com.tripplanner.LocationService.utils.GoogleDriveManager;
 import com.tripplanner.LocationService.dto.response.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +22,8 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/location/api")
@@ -30,6 +33,8 @@ public class DestinationController {
     private DestinationRepository destinationRepo;
     @Autowired
     GoogleDriveManager driveManager;
+    @Autowired
+    DestinationService destinationService;
     @Transactional(rollbackFor = {Exception.class, Throwable.class})
     @GetMapping("/destination/{id}")
     public ResponseEntity<DesDetailsDTO> getDestinationById(@PathVariable int id){
@@ -44,6 +49,17 @@ public class DestinationController {
         }
     }
     @Transactional(rollbackFor = {Exception.class, Throwable.class})
+    @GetMapping("/destination/thumbnail/{id}")
+    public ResponseEntity<String> getThumbnailById(@PathVariable int id){
+        try{
+            Optional<String> thumbnail = destinationRepo.getThumbnailById(id);
+            String result = thumbnail.isPresent()?thumbnail.get():null;
+            return new ResponseEntity<>(result, HttpStatus.OK);
+        } catch (Exception e){
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+    @Transactional(rollbackFor = {Exception.class, Throwable.class})
     @GetMapping("/destination/all")
     public ResponseEntity<ArrayList<Destination>> getAllDes(){
         try{
@@ -51,6 +67,16 @@ public class DestinationController {
             if (destinations.isEmpty()){
                 return new ResponseEntity<>(HttpStatus.NOT_FOUND);
             }
+            return new ResponseEntity<>(destinations, HttpStatus.OK);
+        } catch (Exception e){
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+    @Transactional(rollbackFor = {Exception.class, Throwable.class})
+    @GetMapping("/destination/get-destination-3")
+    public ResponseEntity<List<DestinationGeneralDTO>> get3Destinations(){
+        try{
+            List<DestinationGeneralDTO> destinations = destinationService.get3Destinations();
             return new ResponseEntity<>(destinations, HttpStatus.OK);
         } catch (Exception e){
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);

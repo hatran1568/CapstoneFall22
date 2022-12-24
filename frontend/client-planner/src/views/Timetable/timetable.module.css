@@ -1,146 +1,146 @@
-.mainContainer{
+.mainContainer {
   min-width: 1100px;
 }
-.calendarDiv{
-    width: 74vw;
-    margin-bottom: 100px;
-    position: relative;
-    padding: 0;
-    margin-left: 50px !important;
+.calendarDiv {
+  width: 74vw;
+  margin-bottom: 100px;
+  position: relative;
+  padding: 0;
+  margin-left: 50px !important;
 }
-.fcEvent{
-    height: 100%;
-    /* position: relative; */
-    padding-left: 10px;
-    border-left: 3px solid rgb(16, 165, 99);
-    background-color: #eefff7d9;
-    box-shadow: 0 0 5px #999;
-    padding-top: 5px;
-    overflow-y: hidden;
+.fcEvent {
+  height: 100%;
+  /* position: relative; */
+  padding-left: 10px;
+  border-left: 3px solid rgb(16, 165, 99);
+  background-color: #eefff7d9;
+  box-shadow: 0 0 5px #999;
+  padding-top: 5px;
+  overflow-y: hidden;
 }
-.fcEvent:hover .dropdown{
+.fcEvent:hover .dropdown {
   display: block;
 }
-.dropdown{
+.dropdown {
   display: none;
-    position: absolute;
-    right: 0;
-    top: 0;
+  position: absolute;
+  right: 0;
+  top: 0;
 }
-.dropdownMenu{
+.dropdownMenu {
   display: none;
   position: absolute;
   top: 10px;
   left: 0;
   /* transform: translateX(-50%); */
   background-color: #fff;
-  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+  box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
   padding: 0;
   z-index: 10 !important;
-  }
-  .dropdown:hover .dropdownMenu {
-    display: block;
-  }
-  .dropdownMenu a:hover {
-    background-color: #f1f1f1;
-  }
-  .dropdownMenu a {
-    color: black;
-    padding: 0.5em;
-    padding-right: 1em;
-    padding-left: 0.3em;
-    text-decoration: none;
-    display: block;
-    font-size: 14px;
-    text-align: left;
-    padding: none;
-  }
-  .dropdownIcon{
-    margin: 0;
-    width: 30px;
-    padding-left: 0;
-  }
-  .moreBtn{
-    background-color:transparent;
-    border: none;
-  }
-  .btnAdd {
-    text-decoration: none;
-    background: #97c83e;
-    text-align: center;
-    width: 65px;
-    height: 65px;
-    border-radius: 100%;
-    display: inline-flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    font-size: 35px;
-    color: white;
-    font-weight: bold;
-    position: fixed;
-    right: 30px;
-    bottom: 30px;
-    z-index: 10;
-    cursor: pointer;
-  }
-  .btnAdd:hover{
-    color: wheat;
-  }
-  .addIcon {
-    display: inline-block;
-    vertical-align: middle;
-    padding: 0;
-    margin: 0;
-  }
-  .eventTitle{
-    font-size: 14px;
-    font-weight: 500;
-    padding-right: 7px;
-  }
-  .duration{
-    color: #1100ff;
-    font-size: 13px;
-    overflow: hidden;
-    font-weight: 500;
-  }
-  .startEndTime{
-    font-size: 12px;
-  }
+}
+.dropdown:hover .dropdownMenu {
+  display: block;
+}
+.dropdownMenu a:hover {
+  background-color: #f1f1f1;
+}
+.dropdownMenu a {
+  color: black;
+  padding: 0.5em;
+  padding-right: 1em;
+  padding-left: 0.3em;
+  text-decoration: none;
+  display: block;
+  font-size: 14px;
+  text-align: left;
+  padding: none;
+}
+.dropdownIcon {
+  margin: 0;
+  width: 30px;
+  padding-left: 0;
+}
+.moreBtn {
+  background-color: transparent;
+  border: none;
+}
+.btnAdd {
+  text-decoration: none;
+  background: #267a9c;
+  text-align: center;
+  width: 65px;
+  height: 65px;
+  border-radius: 100%;
+  display: inline-flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  font-size: 35px;
+  color: white;
+  font-weight: bold;
+  position: fixed;
+  right: 30px;
+  bottom: 30px;
+  z-index: 10;
+  cursor: pointer;
+}
+.btnAdd:hover {
+  color: wheat;
+}
+.addIcon {
+  display: inline-block;
+  vertical-align: middle;
+  padding: 0;
+  margin: 0;
+}
+.eventTitle {
+  font-size: 14px;
+  font-weight: 500;
+  padding-right: 7px;
+}
+.duration {
+  color: #1100ff;
+  font-size: 13px;
+  overflow: hidden;
+  font-weight: 500;
+}
+.startEndTime {
+  font-size: 12px;
+}
 
-  .daysBox {
-    position: sticky;
-    top: 10vh;
-    overflow-y: auto;
-    height: 80vh;
-    padding: 0;
-    overflow-x: auto;
-  }
-.month{
-    font-weight: 500;
-    text-transform: uppercase;
-    font-size: 15px;
-    color: #0e0e0f;
-    margin-top: 0;
-    text-align: center;
+.daysBox {
+  position: sticky;
+  top: 10vh;
+  overflow-y: auto;
+  height: 80vh;
+  padding: 0;
+  overflow-x: auto;
 }
-.date{
-    display: block;
-    font-weight: 600;
-    text-transform: uppercase;
-    font-size: 18px;
-    text-decoration: none;
-    text-align: center;
-    margin-top: 20px;
-    color: blue;
+.month {
+  font-weight: 500;
+  text-transform: uppercase;
+  font-size: 15px;
+  color: #0e0e0f;
+  margin-top: 0;
+  text-align: center;
 }
-.dateActive{
+.date {
+  display: block;
+  font-weight: 600;
+  text-transform: uppercase;
+  font-size: 18px;
+  text-decoration: none;
+  text-align: center;
+  margin-top: 20px;
+  color: blue;
+}
+.dateActive {
   color: #0e0e0f;
 }
-.date:hover{
-    color: #0e0e0f;
-    text-decoration: none;
-    text-decoration: underline;
+.date:hover {
+  color: #0e0e0f;
+  text-decoration: none;
+  text-decoration: underline;
 }
 .navBtn {
   text-decoration: none;
@@ -156,14 +156,14 @@
   font-weight: bold;
   position: sticky;
   cursor: pointer;
-  border: #267A9C solid 1px;
-  color: #267A9C;
+  border: #267a9c solid 1px;
+  color: #267a9c;
   background: #ffffff;
 }
-.navBtn:hover{
-  border: #267A9C solid 1px;
+.navBtn:hover {
+  border: #267a9c solid 1px;
   color: #ffffff;
-  background: #267A9C;
+  background: #267a9c;
 }
 .navIcon {
   display: inline-block;
@@ -171,14 +171,14 @@
   padding: 0;
   margin: 0;
 }
-.nextBtn{
+.nextBtn {
   right: 0px;
   left: 100%;
   top: 52px;
   z-index: 5;
   /* transform: translateX(50%); */
 }
-.prevBtn{
+.prevBtn {
   left: 0px;
   right: 100%;
   top: 52px;
@@ -186,9 +186,10 @@
   /* transform: translateX(-80%); */
 }
 @media (max-width: 1000px) {
-  .daysBox{
+  .daysBox {
     display: none;
   }
-  .calendarDiv{
-    width: 100%;}
+  .calendarDiv {
+    width: 100%;
+  }
 }

@@ -1,69 +1,89 @@
-.bodyContainer{
+.bodyContainer {
   margin: 0px;
   margin-top: 10vh;
 }
-.tableHead{
-  color:white;
+.tableHead {
+  color: white;
   background-color: rgb(17, 0, 42);
 }
-.createBtn{
+.createBtn {
   margin-bottom: 10px;
   display: inline;
 }
-.avatar{
+.avatar {
   width: 40px;
   height: 40px;
   border-radius: 50%;
 }
-.thumbnail{
+.thumbnail {
   width: 120px;
   height: 80px;
   border-radius: 10px;
   object-fit: cover;
 }
-.tableTitle{
+.tableTitle {
   max-width: 450px !important;
 }
-.tableTitleData{
+.tableTitleData {
   max-width: 450px !important;
   text-decoration: none;
   color: rgb(0, 174, 232);
 }
-.tableTitleData:hover{
+.tableTitleData:hover {
   cursor: pointer;
   color: rgb(27, 27, 27);
 }
-.tableDate{
+.tableDate {
   width: 150px !important;
 }
-.tableAuthor{
+.tableAuthor {
   width: 200px !important;
 }
-.tableStatus{
+.tableStatus {
   width: 150px !important;
 }
-.tableIcons{
+.tableIcons {
   font-size: 20px;
   margin: 5px;
   color: rgb(0, 174, 232);
 }
-.tableIcons:hover{
+.tableIcons:hover {
   color: black;
 }
-.tableActions{
+.tableActions {
   width: 200px !important;
 }
-.searchBar{
+.searchBar {
   margin-bottom: 10px;
 }
-.tableDataGrey{
+.tableDataGrey {
   background-color: rgb(243, 242, 242);
 }
-.navItem{
+.navItem {
   text-decoration: none;
   color: black;
 }
-.navItem:hover{
+.navItem:hover {
   text-decoration: underline;
   color: rgb(0, 170, 255);
+}
+.customPagination .pageItem .pageLink {
+  text-align: center;
+  border: none;
+  background: none;
+  border-radius: 50% !important;
+  width: 50px;
+  height: 50px;
+  padding: 0;
+  line-height: 50px;
+  margin-right: 10px;
+  margin-bottom: 10px;
+  color: #65c0ba;
+}
+
+.customPagination .pageItem.active .pageLink {
+  background: #65c0ba;
+  color: #fff;
+  -webkit-box-shadow: 0 2px 7px 0 rgba(0, 0, 0, 0.2);
+  box-shadow: 0 2px 7px 0 rgba(0, 0, 0, 0.2);
 }

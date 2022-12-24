@@ -10,9 +10,6 @@ import {
   MDBCol,
   MDBRow,
   MDBInput,
-  MDBModal,
-  MDBModalDialog,
-  MDBModalContent,
   MDBModalHeader,
   MDBModalTitle,
   MDBModalBody,
@@ -88,175 +85,176 @@ function GenerateModal(props) {
   };
   return (
     <Modal {...rest} size="lg" centered>
-      <MDBModalContent>
-        <MDBModalHeader>
-          <MDBModalTitle>Gợi ý chuyến đi</MDBModalTitle>
-          <MDBBtn
-            className="btn-close"
-            color="none"
-            onClick={toggleShowGenerate}
-          ></MDBBtn>
-        </MDBModalHeader>
+      <MDBModalHeader>
+        <MDBModalTitle>Gợi ý chuyến đi</MDBModalTitle>
+        <MDBBtn
+          className="btn-close"
+          color="none"
+          onClick={toggleShowGenerate}
+        ></MDBBtn>
+      </MDBModalHeader>
 
-        {isGenerating ? (
-          <MDBModalBody>
-            <div className="d-flex justify-content-center">
-              <span> Đang tìm kiếm chuyến đi tốt nhất.</span>
-              <MDBSpinner role="status">
-                <span className="visually-hidden"></span>
-              </MDBSpinner>
+      {isGenerating ? (
+        <MDBModalBody>
+          <div className="d-flex justify-content-center">
+            <span> Đang tìm kiếm chuyến đi tốt nhất.</span>
+            <MDBSpinner role="status">
+              <span className="visually-hidden"></span>
+            </MDBSpinner>
+          </div>
+        </MDBModalBody>
+      ) : (
+        <MDBModalBody>
+          <MDBRow className={style.modalInput}>
+            <div className={style.formgroup}>
+              <div className="form-outline"></div>
+              <input
+                type="text"
+                id="destination"
+                defaultValue="-1"
+                hidden
+              ></input>
+              <DestinationSearchBar
+                POISelected={setSelectedPOI}
+              ></DestinationSearchBar>
             </div>
-          </MDBModalBody>
+          </MDBRow>
+          <br />
+          <MDBRow className={style.modalInput}>
+            <div className={style.formgroup}>
+              <MDBInput
+                label="Ngân sách"
+                id="budgetGenerateInput"
+                type="number"
+                className={""}
+              />
+            </div>
+          </MDBRow>
+          <br />
+          <MDBRow className={style.modalInput}>
+            <MDBCol className={style.formgroup}>
+              <span>Ngày bắt đầu</span>
+              <MDBInput
+                placeholder="Select date"
+                type="date"
+                id="startDateGenerateInput"
+                className={style.datepicker}
+              />
+            </MDBCol>
+            <MDBCol className={style.formgroup}>
+              <span>Ngày kết thúc</span>
+              <MDBInput
+                placeholder="Select date"
+                type="date"
+                id="endDateGenerateInput"
+                className={style.datepicker}
+              />
+            </MDBCol>
+            <div id="errorEmptyPlan" className={style.errorEmptyPlan}></div>
+          </MDBRow>
+          <br></br>
+          <MDBRow className={style.modalGenerateInput}>
+            <MDBCol>
+              <a onClick={toggleShowMore}>
+                Bạn muốn làm những gì trong chuyến đi{" "}
+                {!showPreferences ? (
+                  <MDBIcon fas icon="caret-down" />
+                ) : (
+                  <MDBIcon fas icon="caret-up" />
+                )}
+              </a>
+            </MDBCol>
+
+            <MDBRow
+              around
+              className={style.optional + " " + (showPreferences && style.show)}
+            >
+              <MDBCol size="4">
+                <MDBCheckbox
+                  className={style.formInput}
+                  name="ArtAndCulture"
+                  id="1"
+                  value="1"
+                  label="Văn hóa, nghệ thuật"
+                />
+                <MDBCheckbox
+                  className={style.formInput}
+                  name="Religion"
+                  id="3"
+                  value="3"
+                  label="Tôn giáo"
+                />
+                <MDBCheckbox
+                  className={style.formInput}
+                  name="Outdoors"
+                  id="2"
+                  value="2"
+                  label="Hoạt động ngoài trời"
+                />
+              </MDBCol>
+
+              <br />
+              <MDBCol size="4">
+                <MDBCheckbox
+                  className={style.formInput}
+                  name="Historic&sights"
+                  id="4"
+                  value="4"
+                  label="Lịch sử"
+                />
+                <MDBCheckbox
+                  className={style.formInput}
+                  name="Museums"
+                  id="5"
+                  value="5"
+                  label="Bảo tàng"
+                />
+                <MDBCheckbox
+                  className={style.formInput}
+                  name="Beaches"
+                  id="8"
+                  value="8"
+                  label="Bãi biển"
+                />
+              </MDBCol>
+              <MDBCol size="4">
+                <MDBCheckbox
+                  className={style.formInput}
+                  name="Spas&Wellness"
+                  id="6"
+                  value="6"
+                  label="Spa & Sức khỏe"
+                />
+                <MDBCheckbox
+                  className={style.formInput}
+                  name="Shopping"
+                  id="7"
+                  value="7"
+                  label="Mua sắm"
+                />
+                <MDBCheckbox
+                  className={style.formInput}
+                  name="Nightlife"
+                  id="9"
+                  value="9"
+                  label="Hoạt động đêm"
+                />
+              </MDBCol>
+            </MDBRow>
+          </MDBRow>
+        </MDBModalBody>
+      )}
+
+      <MDBModalFooter>
+        <MDBBtn color="secondary" onClick={toggleShowGenerate}>
+          Đóng
+        </MDBBtn>
+        {!isGenerating ? (
+          <MDBBtn onClick={submitGenerateTrip}>Gợi ý chuyến đi</MDBBtn>
         ) : (
-          <MDBModalBody>
-            <MDBRow className={style.modalInput}>
-              <div className={style.formgroup}>
-                <div className="form-outline"></div>
-                <input type="text" id="destination" value="-1" hidden></input>
-                <DestinationSearchBar
-                  POISelected={setSelectedPOI}
-                ></DestinationSearchBar>
-              </div>
-            </MDBRow>
-            <br />
-            <MDBRow className={style.modalInput}>
-              <div className={style.formgroup}>
-                <MDBInput
-                  label="Ngân sách"
-                  id="budgetGenerateInput"
-                  type="number"
-                  className={""}
-                />
-              </div>
-            </MDBRow>
-            <br />
-            <MDBRow className={style.modalInput}>
-              <MDBCol className={style.formgroup}>
-                <span>Ngày bắt đầu</span>
-                <MDBInput
-                  placeholder="Select date"
-                  type="date"
-                  id="startDateGenerateInput"
-                  className={style.datepicker}
-                />
-              </MDBCol>
-              <MDBCol className={style.formgroup}>
-                <span>Ngày kết thúc</span>
-                <MDBInput
-                  placeholder="Select date"
-                  type="date"
-                  id="endDateGenerateInput"
-                  className={style.datepicker}
-                />
-              </MDBCol>
-              <div id="errorEmptyPlan" className={style.errorEmptyPlan}></div>
-            </MDBRow>
-            <br></br>
-            <MDBRow className={style.modalGenerateInput}>
-              <MDBCol>
-                <a onClick={toggleShowMore}>
-                  Bạn muốn làm những gì trong chuyến đi{" "}
-                  {!showPreferences ? (
-                    <MDBIcon fas icon="caret-down" />
-                  ) : (
-                    <MDBIcon fas icon="caret-up" />
-                  )}
-                </a>
-              </MDBCol>
-
-              <MDBRow
-                around
-                className={
-                  style.optional + " " + (showPreferences && style.show)
-                }
-              >
-                <MDBCol size="4">
-                  <MDBCheckbox
-                    className={style.formInput}
-                    name="ArtAndCulture"
-                    id="1"
-                    value="1"
-                    label="Văn hóa, nghệ thuật"
-                  />
-                  <MDBCheckbox
-                    className={style.formInput}
-                    name="Religion"
-                    id="3"
-                    value="3"
-                    label="Tôn giáo"
-                  />
-                  <MDBCheckbox
-                    className={style.formInput}
-                    name="Outdoors"
-                    id="2"
-                    value="2"
-                    label="Hoạt động ngoài trời"
-                  />
-                </MDBCol>
-
-                <br />
-                <MDBCol size="4">
-                  <MDBCheckbox
-                    className={style.formInput}
-                    name="Historic&sights"
-                    id="4"
-                    value="4"
-                    label="Lịch sử"
-                  />
-                  <MDBCheckbox
-                    className={style.formInput}
-                    name="Museums"
-                    id="5"
-                    value="5"
-                    label="Bảo tàng"
-                  />
-                  <MDBCheckbox
-                    className={style.formInput}
-                    name="Beaches"
-                    id="8"
-                    value="8"
-                    label="Bãi biển"
-                  />
-                </MDBCol>
-                <MDBCol size="4">
-                  <MDBCheckbox
-                    className={style.formInput}
-                    name="Spas&Wellness"
-                    id="6"
-                    value="6"
-                    label="Spa & Sức khỏe"
-                  />
-                  <MDBCheckbox
-                    className={style.formInput}
-                    name="Shopping"
-                    id="7"
-                    value="7"
-                    label="Mua sắm"
-                  />
-                  <MDBCheckbox
-                    className={style.formInput}
-                    name="Nightlife"
-                    id="9"
-                    value="9"
-                    label="Hoạt động đêm"
-                  />
-                </MDBCol>
-              </MDBRow>
-            </MDBRow>
-          </MDBModalBody>
+          <></>
         )}
-
-        <MDBModalFooter>
-          <MDBBtn color="secondary" onClick={toggleShowGenerate}>
-            Đóng
-          </MDBBtn>
-          {!isGenerating ? (
-            <MDBBtn onClick={submitGenerateTrip}>Gợi ý chuyến đi</MDBBtn>
-          ) : (
-            <></>
-          )}
-        </MDBModalFooter>
-      </MDBModalContent>
+      </MDBModalFooter>
     </Modal>
   );
 }

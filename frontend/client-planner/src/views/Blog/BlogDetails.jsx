@@ -33,6 +33,9 @@ function BlogDetails() {
         .then((response) => {
           setNearbyBlogs(response.data);
           setLoading(false);
+        })
+        .catch((err) => {
+          console.log(err);
         });
     };
     listResp();
@@ -42,7 +45,10 @@ function BlogDetails() {
     const listResp = async () => {
       await axios
         .get("http://localhost:8080/blog/api/blog/" + id)
-        .then((response) => setBlog(response.data));
+        .then((response) => {
+          setBlog(response.data);
+          setLoading(false);
+        });
     };
     listResp();
   }, []);
