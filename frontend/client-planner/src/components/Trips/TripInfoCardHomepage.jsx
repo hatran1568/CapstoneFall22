@@ -21,11 +21,11 @@ function TripInfoCardHomepage(trip) {
     e.stopPropagation(); // notice this
 
     confirm({
-      title: "Are you sure to delete this plan?" + trip.trip.name,
-      content: "The plan and all its contents will be deleted",
-      okText: "Yes",
+      title: "Bạn có chắc chắn muốn xóa chuyến đi này?\n" + trip.trip.name,
+      content: "Chuyến đi và tất cả nội dung sẽ bị xóa hoàn toàn.",
+      okText: "Xóa",
       okType: "danger",
-      cancelText: "No",
+      cancelText: "Hủy",
       onOk() {
         axios
           .delete("/trip/delete-trip/", {
@@ -61,7 +61,7 @@ function TripInfoCardHomepage(trip) {
         alt="..."
       />
       <div className={style.caption}>
-        <p>{trip.trip.name}</p>
+        <p className={style.tripName}>{trip.trip.name}</p>
         <p style={{ fontSize: "1vw" }}>
           {toLongDate(trip.trip.startDate)}
           &nbsp;-&nbsp;{toLongDate(trip.trip.endDate)}

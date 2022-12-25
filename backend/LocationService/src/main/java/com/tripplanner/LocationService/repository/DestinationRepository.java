@@ -151,4 +151,8 @@ public interface DestinationRepository extends JpaRepository<Destination,Integer
             value = "SELECT destination_id as desId FROM destination ORDER BY destination_id DESC LIMIT 1",
             nativeQuery = true)
     int getLastestDes();
+    @Query(
+            value = "SELECT * FROM destination where is_deleted = false ORDER BY destination_id asc LIMIT 3",
+            nativeQuery = true)
+    ArrayList<Destination> get3Destinations();
 }

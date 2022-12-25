@@ -1,0 +1,350 @@
+.body {
+  background: #fff;
+  font-family: "Mukta Mahee", arial, sans-serif;
+  font-weight: 200;
+  font-size: 18px;
+  line-height: 1.8;
+  color: #6c757d;
+  font-variant: normal;
+}
+::-moz-selection {
+  color: #fff;
+  background: #65c0ba;
+}
+
+::selection {
+  color: #fff;
+  background: #65c0ba;
+}
+
+.section a {
+  -webkit-transition: 0.3s all ease;
+  -o-transition: 0.3s all ease;
+  transition: 0.3s all ease;
+  text-decoration: none;
+}
+
+.section a:hover {
+  text-decoration: none;
+}
+.h1,
+.h2,
+.h3,
+.h4,
+.h5 {
+  color: #0e0e0f;
+  font-family: "Abril Fatface";
+}
+.siteHero {
+  height: 95vh;
+  min-height: 700px;
+  width: 100%;
+}
+.siteHero .backgroundImage {
+  height: 95vh;
+  min-height: 700px;
+  width: 100%;
+  object-fit: cover;
+  filter: brightness(60%) opacity(80%);
+}
+.siteHero.overlay::before {
+  /* background: rgba(0, 0, 0, 0.2);
+  content: "";
+  position: absolute;
+  height: 100vh;
+  min-height: 700px;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0; */
+}
+.siteHeroInner {
+  margin: 0;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 80%;
+  transform: translate(-50%, -30%);
+}
+.siteHeroInner .heading {
+  font-size: 80px;
+  font-family: "Abril Fatface", times, serif;
+  color: #fff;
+  line-height: 1;
+  font-weight: bold;
+}
+@media (max-width: 991.98px) {
+  .siteHeroInner .heading {
+    font-size: 40px;
+  }
+}
+
+.siteHeroInner .subHeading {
+  font-size: 20px;
+  font-weight: 200;
+  color: #fff;
+  line-height: 1.5;
+}
+
+@media (max-width: 991.98px) {
+  .siteHeroInner .subHeading {
+    font-size: 18px;
+  }
+}
+
+.siteHeroInner .subHeading a {
+  border-bottom: 2px solid rgba(255, 255, 255, 0.1);
+  color: rgba(255, 255, 255, 0.5);
+}
+
+.siteHeroInner .subHeading a:hover {
+  color: white;
+  border-bottom: 2px solid white;
+}
+.siteHero .scrollDown {
+  position: absolute;
+  bottom: 20px;
+  left: 50%;
+  text-align: center;
+  -webkit-transform: translateX(-50%);
+  -ms-transform: translateX(-50%);
+  transform: translateX(-50%);
+  text-transform: uppercase;
+  font-size: 12px;
+  color: #fff;
+}
+.siteHero .scrollDown > span {
+  position: relative;
+  -webkit-transform: rotate(90deg);
+  -ms-transform: rotate(90deg);
+  transform: rotate(90deg);
+  font-size: 13px;
+  display: block;
+}
+.bgLight2 {
+  background: #fafafa;
+  border-top: 1px solid #e0e0e0;
+}
+.section {
+  padding: 5em 7em;
+  font-family: "Mukta Mahee";
+}
+
+.rightCol {
+  font-family: "Mukta Mahee";
+}
+@media (min-width: 992px) {
+  .rightCol {
+    padding-left: 3rem !important;
+  }
+}
+h2.h2,
+h3.h3 {
+  font-weight: 600;
+}
+.imgFlaticon {
+  text-align: center;
+}
+
+.imgFlaticon img {
+  width: 70px;
+}
+.sliderSection {
+  position: relative;
+  padding: 7em;
+}
+.blogSection {
+  background-color: #fbfbfb !important;
+  color: #fff;
+  padding: 2em 7em;
+  border-top: 1px solid #e0e0e0;
+  border-bottom: 1px solid #e0e0e0;
+}
+.blogSection h2 {
+  color: #0e0e0fdc;
+  font-weight: bold;
+  font-family: "Abril Fatface";
+  font-size: 50px;
+}
+.post .mediaCustom {
+  background: #fff;
+  -webkit-transition: 0.3s all ease;
+  -o-transition: 0.3s all ease;
+  transition: 0.3s all ease;
+  -webkit-box-shadow: 0 2px 5px -2px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 2px 5px -2px rgba(0, 0, 0, 0.1);
+  border-radius: 5px;
+  /* border: 2px solid rgb(173, 173, 173); */
+}
+
+.post .mediaCustom:hover,
+.post .mediaCustom:focus {
+  -webkit-box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.1);
+}
+
+.post .mediaCustom a {
+  color: #000;
+}
+
+.post .mediaCustom a:hover {
+  color: #65c0ba;
+}
+
+.post .mediaCustom .mediaBody {
+  padding: 10px 30px;
+}
+
+.post .mediaCustom h2 {
+  font-size: 26px;
+}
+.mediaCustom .metaPost {
+  color: #868686;
+  /* text-transform: uppercase; */
+  font-weight: 200;
+  letter-spacing: 0.1em;
+}
+.post .mediaCustom .mediaBody {
+  -webkit-box-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+  padding: 10px 15px;
+}
+.mediaBody p {
+  font-size: 18px;
+  font-family: "Mukta Mahee";
+  color: #6c757d;
+}
+.mediaBody a {
+  text-decoration: none;
+}
+.visitSection {
+  /* background: #fafafa; */
+}
+.visitSection .visit {
+  position: relative;
+  top: 0;
+  -webkit-transition: 0.3s all ease;
+  -o-transition: 0.3s all ease;
+  transition: 0.3s all ease;
+  padding: 0;
+  -webkit-box-shadow: 0 2px 5px -2px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 2px 5px -2px rgba(0, 0, 0, 0.1);
+  margin: 10px;
+}
+.visit .text {
+  padding: 20px;
+}
+.visitSection .h2 {
+  font-size: 40px;
+  font-weight: 600;
+}
+.visitSection .visit a {
+  color: #000;
+}
+.visitSection .visit a:hover {
+  color: #65c0ba;
+}
+
+.visitSection .visit img {
+  -webkit-box-shadow: 0 2px 3px 0 rgba(0, 0, 0, 0.2);
+  box-shadow: 0 2px 3px 0 rgba(0, 0, 0, 0.2);
+  margin-bottom: 15px;
+}
+
+.visitSection .visit h3 {
+  font-size: 25px;
+  margin-bottom: 0;
+  color: #0e0e0f;
+}
+
+.visitSection .visit:hover,
+.visitSection .visit:focus {
+  top: -1;
+}
+
+.visitSection .reviews-count {
+  color: #ccc;
+  font-style: italic;
+}
+.createBtn {
+  margin: 1em;
+}
+.myTripsSection {
+  padding: 4em 7em;
+  font-family: "Abril Fatface", arial, sans-serif;
+}
+.myTripsSection h3 {
+  font-weight: 600;
+}
+.blogThumbnail,
+.visit img {
+  width: 100%;
+  height: 300px;
+  object-fit: cover;
+  border-top-left-radius: 5px;
+  border-top-right-radius: 5px;
+}
+.post:hover {
+  transform: scale(1.1);
+}
+.visit .description {
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  display: -webkit-box;
+}
+.recentTrips {
+  width: 100%;
+  height: 100%;
+  background-color: #267b9c13;
+  color: #267b9cb0;
+  padding: auto;
+  padding-bottom: 2em;
+  text-align: center;
+  cursor: pointer;
+  font-family: Klarna Text, Helvetica Neue, Arial, Helvetica, sans-serif;
+  border: 2px solid #267b9cb0;
+  border-right: none;
+}
+.recentTrips:hover {
+  background-color: #267b9c4b;
+  color: #0e0e0fb8;
+}
+.recentTrips .number {
+  font-size: 7em;
+  font-weight: 700;
+}
+.recentTrips .text {
+  text-transform: uppercase;
+  font-size: 1.2em;
+}
+.recentSection {
+  padding: 0;
+  margin: 0;
+  width: 71% !important;
+  margin-bottom: 5em;
+}
+.smallRecentSection {
+  padding: 0 !important;
+}
+.seeRecentButton .recentTrips {
+  background-color: #267b9cb0;
+  color: #fff;
+  border: none;
+}
+.seeRecentButton .recentTrips:hover {
+  color: #0e0e0fb8;
+}
+.seeMoreText {
+  font-size: 1.2em;
+  font-weight: bold;
+  text-transform: unset;
+}
+
+.blogSection .mediaBody {
+  padding: 20px;
+}
+.introSection {
+  border-top: 1px solid #e0e0e0;
+}

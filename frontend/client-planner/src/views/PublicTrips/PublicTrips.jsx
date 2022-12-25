@@ -285,7 +285,7 @@ class PublicTrips extends Component {
                   </div>
                 ))}
               </div>
-              <div className={style.paginate}>
+              <div className={`${style.paginate}`}>
                 <ReactPaginate
                   nextLabel=" >"
                   onPageChange={this.handlePageClick}
@@ -293,17 +293,17 @@ class PublicTrips extends Component {
                   marginPagesDisplayed={2}
                   pageCount={this.state.pageCount}
                   previousLabel="<"
-                  pageClassName="page-item"
-                  pageLinkClassName="page-link"
-                  previousClassName="page-item"
-                  previousLinkClassName="page-link"
-                  nextClassName="page-item"
-                  nextLinkClassName="page-link"
+                  pageClassName={`page-item ${style.pageItem}`}
+                  pageLinkClassName={`page-link ${style.pageLink}`}
+                  previousClassName={`page-item ${style.pageItem}`}
+                  previousLinkClassName={`page-link ${style.pageLink}`}
+                  nextClassName={`page-item ${style.pageItem}`}
+                  nextLinkClassName={`page-link ${style.pageLink}`}
                   breakLabel="..."
-                  breakClassName="page-item"
-                  breakLinkClassName="page-link"
-                  containerClassName="pagination"
-                  activeClassName="active"
+                  breakClassName={`page-item ${style.pageItem}`}
+                  breakLinkClassName={`page-link ${style.pageLink}`}
+                  containerClassName={`pagination ${style.customPagination}`}
+                  activeClassName={`active ${style.active}`}
                   renderOnZeroPageCount={null}
                 />
               </div>

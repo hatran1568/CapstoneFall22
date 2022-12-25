@@ -112,7 +112,11 @@ class TripGeneralInfo extends Component {
           <div></div>
         </LoadingScreen>
       );
-    var imgUrl = this.state.trip.image;
+    var imgUrl = this.state.trip.image
+      ? this.state.trip.image.includes("img/", 0)
+        ? `../${this.state.trip.image}`
+        : this.state.trip.image
+      : "../img/default/jp-mountain.jpg";
 
     return (
       <div>
@@ -133,14 +137,7 @@ class TripGeneralInfo extends Component {
           />
         )}
         <div className={style.tripImageDiv}>
-          <img
-            src={
-              imgUrl
-                ? `../${imgUrl}`
-                : "https://twimg0-a.akamaihd.net/a/1350072692/t1/img/front_page/jp-mountain@2x.jpg"
-            }
-            className={style.tripImage}
-          ></img>
+          <img src={imgUrl} className={style.tripImage}></img>
           <div className={style.infoBox}>
             <ContentEditable
               html={this.state.tripName}

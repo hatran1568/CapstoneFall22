@@ -254,6 +254,7 @@ public class TripServiceImpl implements TripService {
 
     @Override
     public void deleteDetailById(int id) {
+        expenseRepository.deleteByActivity(id);
         tripDetailRepository.deleteById(id);
     }
 

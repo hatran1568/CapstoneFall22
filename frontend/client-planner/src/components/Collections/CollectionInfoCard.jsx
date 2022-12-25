@@ -53,7 +53,7 @@ const CollectionInfoCard = (prop) => {
 
   return isDeleted ? null : (
     <>
-      <MDBCard shadow="0" style={{ border: "none" }}>
+      <MDBCard className={style.card}>
         <MDBRow className="g-0">
           <MDBCol sm="3">
             <MDBCardImage

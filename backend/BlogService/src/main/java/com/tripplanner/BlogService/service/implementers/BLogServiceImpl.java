@@ -2,17 +2,21 @@ package com.tripplanner.BlogService.service.implementers;
 
 import com.tripplanner.BlogService.config.RestTemplateClient;
 import com.tripplanner.BlogService.dto.request.BlogDetailsDTO;
+import com.tripplanner.BlogService.dto.response.BlogGeneralDTO;
 import com.tripplanner.BlogService.dto.response.UserDetailResponseDTO;
 import com.tripplanner.BlogService.entity.Blog;
 import com.tripplanner.BlogService.repository.BlogRepository;
 import com.tripplanner.BlogService.service.interfaces.BlogService;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.client.ServiceInstance;
 import org.springframework.cloud.client.discovery.DiscoveryClient;
 import org.springframework.stereotype.Service;
 
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class BLogServiceImpl implements BlogService {
@@ -48,5 +52,19 @@ public class BLogServiceImpl implements BlogService {
 
             return  blogRepository.getBlogsByKeyword(keyword);
 
+    }
+    public List<BlogGeneralDTO> getLatestBlogs(){
+        ArrayList<Blog> blogs = blogRepository.getLatestBlogs();
+        List<BlogGeneralDTO> blogGeneralDTOS = blogs.stream().map(blog -> {
+            BlogGeneralDTO dto = new BlogGeneralDTO();
+            dto.setBlogId(blog.getBlogId());
+            dto.setDateModified(blog.getDateModified());
+            dto.setDateCreated(blog.getDateCreated());
+            dto.setTitle(blog.getTitle());
+            dto.setStatus(blog.getStatus());
+            dto.setThumbnail(blog.getThumbnail());
+            return dto;
+        }).collect(Collectors.toList());
+        return blogGeneralDTOS;
     }
 }

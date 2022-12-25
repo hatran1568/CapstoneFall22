@@ -11,7 +11,7 @@ import {
 } from "mdb-react-ui-kit";
 import style from "./Login.module.css";
 import useAuth from "../../hooks/useAuth";
-import validator from 'validator';
+import validator from "validator";
 import axios from "../../api/axios";
 const LOGIN_URL = "/auth/api/login";
 
@@ -47,6 +47,7 @@ function Login() {
           } else {
             window.location.href = "http://localhost:3000/admin/dashboard";
           }
+          localStorage.removeItem("trips");
         }
         setUser({ ...user, username: "", password: "" });
       } catch (error) {
