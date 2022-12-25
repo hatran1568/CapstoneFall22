@@ -1,26 +1,4 @@
-import {
-  MDBCol,
-  MDBRow,
-  MDBContainer,
-  MDBNavbar,
-  MDBNavbarBrand,
-  MDBNavbarToggler,
-  MDBIcon,
-  MDBNavbarNav,
-  MDBNavbarItem,
-  MDBNavbarLink,
-  MDBDropdown,
-  MDBDropdownToggle,
-  MDBDropdownMenu,
-  MDBDropdownItem,
-  MDBDropdownLink,
-  MDBCollapse,
-  MDBRipple,
-  MDBBadge,
-  MDBInput,
-  MDBListGroup,
-  MDBListGroupItem,
-} from "mdb-react-ui-kit";
+import { MDBCol, MDBRow, MDBContainer } from "mdb-react-ui-kit";
 import React, { useState } from "react";
 import { useEffect } from "react";
 import ReactPaginate from "react-paginate";
@@ -67,7 +45,7 @@ function SearchResults(props) {
       .catch(() => setResult(false));
   };
   useEffect(getResult, [result != false, type, page]);
-  document.title = "Kết quả tìm kiếm cho \"" + keyword + "\" | Tripplanner";
+  document.title = 'Kết quả tìm kiếm cho "' + keyword + '" | Tripplanner';
   return (
     <MDBContainer>
       <div className={style.pageTitle}>
@@ -81,24 +59,24 @@ function SearchResults(props) {
           {result ? <ListItems list={result}></ListItems> : null}
           {result ? (
             <ReactPaginate
-              className={style.pagination + " pagination"}
+              // className={style.pagination + " pagination"}
               nextLabel=">"
               onPageChange={handlePageClick}
               pageRangeDisplayed={3}
               marginPagesDisplayed={2}
               pageCount={totalPage}
               previousLabel="<"
-              pageClassName={style.page + " page-item"}
-              pageLinkClassName={"page-link " + style.page}
-              previousClassName={style.next + " page-item"}
-              previousLinkClassName={"page-link " + style.next}
-              nextClassName={"page-item " + style.next}
-              nextLinkClassName={"page-link " + style.next}
+              pageClassName={`page-item ${style.pageItem}`}
+              pageLinkClassName={`page-link ${style.pageLink}`}
+              previousClassName={`page-item ${style.pageItem}`}
+              previousLinkClassName={`page-link ${style.pageLink}`}
+              nextClassName={`page-item ${style.pageItem}`}
+              nextLinkClassName={`page-link ${style.pageLink}`}
               breakLabel="..."
-              breakClassName={"page-item " + style.page}
-              breakLinkClassName={"page-link " + style.page}
-              containerClassName="pagination"
-              activeClassName="active"
+              breakClassName={`page-item ${style.pageItem}`}
+              breakLinkClassName={`page-link ${style.pageLink}`}
+              containerClassName={`pagination ${style.customPagination}`}
+              activeClassName={`active ${style.active}`}
               renderOnZeroPageCount={null}
             />
           ) : null}

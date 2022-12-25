@@ -189,15 +189,15 @@
     font-weight: bold;
     position: sticky;
     cursor: pointer;
-    border: #267A9C solid 1px;
-    color: #267A9C;
+    border: #267a9c solid 1px;
+    color: #267a9c;
     background: #ffffff;
 }
 
 .navBtn:hover {
-    border: #267A9C solid 1px;
+    border: #267a9c solid 1px;
     color: #ffffff;
-    background: #267A9C;
+    background: #267a9c;
 }
 
 .navIcon {
@@ -223,6 +223,14 @@
     /* transform: translateX(-80%); */
 }
 
+.prevBtn {
+    left: 0px;
+    right: 100%;
+    top: 52px;
+    z-index: 5;
+    /* transform: translateX(-80%); */
+}
+
 @media (max-width: 1000px) {
     .daysBox {
         display: none;
@@ -230,14 +238,4 @@
     .calendarDiv {
         width: 100%;
     }
-}
-
-.disclamcer {
-    position: absolute;
-    top: 5px;
-    left: 5px;
-}
-
-.danger {
-    color: red;
 }

@@ -97,16 +97,16 @@ class TripDetail extends Component {
   render() {
     var moment = require("moment"); // require
     var isCustom = this.state.tripDetail.masterActivity.custom;
-    const imageUrl = this.state.tripDetail.masterActivity.images
+    const image = this.state.tripDetail.masterActivity.images
       ? this.state.tripDetail.masterActivity.images[0]
-        ? this.state.tripDetail.masterActivity.images[0].url?.includes(
-            "img/",
-            0
-          )
-          ? `../${this.state.tripDetail.masterActivity.images[0].url}`
-          : this.state.tripDetail.masterActivity.images[0].url
+      : null;
+    const imageUrl = image
+      ? image.url
+        ? image.url.includes("img/", 0)
+          ? `../${image.url}`
+          : image.url
         : "../img/default/detail-img.jpg"
-      : "";
+      : "../img/default/detail-img.jpg";
     let address = this.state.tripDetail.masterActivity.address;
     let nextAddress = this.props.nextActivity
       ? this.props.nextActivity.address
@@ -187,7 +187,7 @@ class TripDetail extends Component {
               <div className={!isCustom ? "col-6" : "col-10"}>
                 <MDBDropdown animation={false} className={style.btnMore}>
                   <MDBDropdownToggle color="light"></MDBDropdownToggle>
-                  <MDBDropdownMenu>
+                  <MDBDropdownMenu style={{ padding: 0 }}>
                     {!isCustom ? (
                       <MDBDropdownItem
                         link
