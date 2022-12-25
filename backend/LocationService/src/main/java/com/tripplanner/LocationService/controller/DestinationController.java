@@ -238,7 +238,7 @@ public class DestinationController {
             java.sql.Timestamp date = new java.sql.Timestamp(Calendar.getInstance().getTime().getTime());
             destinationRepo.addDes(destination.getName(), destination.getDescription(),
                     date, date, false, destination.getBelongTo());
-            return new ResponseEntity<>(destinationRepo.getLatestDes(), HttpStatus.OK);
+            return new ResponseEntity<>(destinationRepo.getLastestDes(), HttpStatus.OK);
         }
         catch (Exception e){
             return  new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);

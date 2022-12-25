@@ -9,11 +9,13 @@ import style from "./EditCollectionModal.module.css";
 
 const EditCollectionModal = (prop) => {
   const [open, setOpen] = useState(false);
-  const [titleInput, setTitleInput] = useState("");
-  const [descriptionInput, setDescriptionInput] = useState("");
+  const [titleInput, setTitleInput] = useState(prop.collection.title);
+  const [descriptionInput, setDescriptionInput] = useState(prop.collection.description);
   const { confirm } = Modal;
 
-  const handleEdit = () => {
+  const handleEdit = (e) => {
+    e.stopPropagation();
+    e.preventDefault();
     setOpen(true);
   };
 
@@ -31,7 +33,7 @@ const EditCollectionModal = (prop) => {
         if (titleInput.trim().length > 0) {
           title = titleInput.trim();
         } else {
-          title = "Untitled";
+          title = "Không có tiêu đề";
         }
         if (descriptionInput.trim().length > 0) {
           description = descriptionInput.trim();
@@ -43,7 +45,7 @@ const EditCollectionModal = (prop) => {
           .put(
             "/location/api/collection/edit",
             {
-              id: prop.id,
+              id: prop.collection.collectionId,
               title: title,
               description: description,
             },
@@ -51,7 +53,7 @@ const EditCollectionModal = (prop) => {
               headers: {
                 Authorization: `Bearer ${localStorage.getItem("token")}`,
               },
-            }
+            },
           )
           .then((res) => {
             prop.refresh({
@@ -68,33 +70,36 @@ const EditCollectionModal = (prop) => {
     setOpen(false);
   };
 
+  console.log(prop.collection);
+
   return (
     <>
-      <button className={`${style.editBtn}`} onClick={handleEdit}>
-        <MDBIcon far icon="edit" size="lg" />
+      <button className={`${style.editBtn}`} onClick={(e) => handleEdit(e)}>
+        <MDBIcon fas icon='pencil-alt' size='lg' />
       </button>
       <Modal
-        title="Chỉnh sửa thông tin bộ sưu tập"
+        title='Chỉnh sửa thông tin bộ sưu tập'
         open={open}
         onOk={handleOk}
         onCancel={handleCancel}
         cancelText={"Hủy"}
-        okText="Lưu"
+        okText='Lưu'
       >
-        <MDBInputGroup className="px-2 mb-3">
-          <p className="fs-5 fw-bold">Tiêu đề</p>
+        <MDBInputGroup className='px-2 mb-3'>
+          <h5>Tiêu đề</h5>
           <Input
             showCount
             maxLength={30}
             onChange={(e) => {
               setTitleInput(e.target.value);
             }}
-            size="large"
-            spellCheck="false"
+            size='large'
+            spellCheck='false'
+            defaultValue={prop.collection.title}
           />
         </MDBInputGroup>
-        <MDBInputGroup className="px-2">
-          <p className="fs-5 fw-bold">Mô tả</p>
+        <MDBInputGroup className='px-2'>
+          <h5>Mô tả</h5>
           <TextArea
             showCount
             rows={3}
@@ -103,7 +108,8 @@ const EditCollectionModal = (prop) => {
             }}
             maxLength={100}
             style={{ width: 1000, resize: "none" }}
-            spellCheck="false"
+            spellCheck='false'
+            defaultValue={prop.collection.description}
           />
         </MDBInputGroup>
       </Modal>

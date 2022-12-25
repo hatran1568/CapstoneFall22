@@ -3,6 +3,7 @@ package com.tripplanner.UserService.service.interfaces;
 import com.tripplanner.UserService.dto.request.ChangePwdRequestDTO;
 import com.tripplanner.UserService.dto.request.PasswordResetRequestDTO;
 import com.tripplanner.UserService.dto.response.UserDetailResponseDTO;
+import com.tripplanner.UserService.entity.Provider;
 import com.tripplanner.UserService.entity.User;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -11,7 +12,7 @@ import javax.mail.MessagingException;
 public interface UserService {
     public void processOAuthPostLoginGoogle(String email);
     public void processOAuthPostLoginFacebook(String name);
-    public void updateProvider(int usernID, Provider authType);
+    public void updateProvider(int userID, Provider authType);
     public void register(User user);
     public boolean checkExistByEmail(String email);
     public UserDetailResponseDTO getUserProfileById(int userId);

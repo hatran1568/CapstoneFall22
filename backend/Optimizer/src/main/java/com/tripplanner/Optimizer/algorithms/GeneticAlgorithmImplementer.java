@@ -56,12 +56,6 @@ public class GeneticAlgorithmImplementer {
         return vc;
     }
 
-    public static <T> Set<T> newShuffledSet(Collection<T> collection) {
-        List<T> shuffleMe = new ArrayList<T>(collection);
-        Collections.shuffle(shuffleMe);
-        return new HashSet<T>(shuffleMe);
-    }
-
     // Driver code
     public Solution generatePopulation(Data data) {
 

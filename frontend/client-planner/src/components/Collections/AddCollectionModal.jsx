@@ -1,10 +1,13 @@
 import React, { useState } from "react";
 import { Modal } from "antd";
 import { MDBBtn, MDBIcon, MDBInputGroup, MDBRow } from "mdb-react-ui-kit";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faPlus } from "@fortawesome/free-solid-svg-icons";
 import TextArea from "antd/lib/input/TextArea";
 import Input from "antd/lib/input/Input";
 import axios from "../../api/axios";
 import { useNavigate } from "react-router-dom";
+import style from "./AddCollectionModal.module.css";
 
 const AddCollectionModal = (prop) => {
   const [open, setOpen] = useState(false);
@@ -51,7 +54,7 @@ const AddCollectionModal = (prop) => {
               headers: {
                 Authorization: `Bearer ${localStorage.getItem("token")}`,
               },
-            }
+            },
           )
           .then((response) => {
             prop.refresh(response.data);
@@ -67,35 +70,27 @@ const AddCollectionModal = (prop) => {
 
   return (
     <>
-      <MDBBtn
-        tag="a"
-        color="none"
-        className="m-2"
-        onClick={handleCreate}
-        style={{ textDecoration: "none" }}
-      >
-        <MDBIcon fas icon="plus-circle" /> Tạo mới
-      </MDBBtn>
-      <Modal
-        title="Bộ sưu tập mới"
-        open={open}
-        onOk={handleOk}
-        onCancel={handleCancel}
-      >
-        <MDBInputGroup className="px-2 mb-3">
-          <p className="fs-5 fw-bold">Tiêu đề</p>
+      <div className='d-flex justify-content-end'>
+        <a className={`${style.btnAdd} btn btn-success`} onClick={handleCreate}>
+          <FontAwesomeIcon icon={faPlus} className={style.addIcon} size='lg' />
+          Tạo mới
+        </a>
+      </div>
+      <Modal title='Bộ sưu tập mới' open={open} onOk={handleOk} onCancel={handleCancel}>
+        <MDBInputGroup className='px-2 mb-3'>
+          <h5>Tiêu đề</h5>
           <Input
             showCount
             maxLength={30}
             onChange={(e) => {
               setTitleInput(e.target.value);
             }}
-            size="large"
-            spellCheck="false"
+            size='large'
+            spellCheck='false'
           />
         </MDBInputGroup>
-        <MDBInputGroup className="px-2">
-          <p className="fs-5 fw-bold">Mô tả</p>
+        <MDBInputGroup className='px-2'>
+          <h5>Mô tả</h5>
           <TextArea
             showCount
             rows={3}
@@ -104,7 +99,7 @@ const AddCollectionModal = (prop) => {
             }}
             maxLength={100}
             style={{ width: 1000, resize: "none" }}
-            spellCheck="false"
+            spellCheck='false'
           />
         </MDBInputGroup>
       </Modal>

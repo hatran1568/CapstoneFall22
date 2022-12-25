@@ -5,8 +5,10 @@ import com.tripplanner.UserService.config.RestTemplateClient;
 import com.tripplanner.UserService.dto.request.ChangePwdRequestDTO;
 import com.tripplanner.UserService.dto.request.PasswordResetRequestDTO;
 import com.tripplanner.UserService.dto.response.UserDetailResponseDTO;
+import com.tripplanner.UserService.entity.Provider;
 import com.tripplanner.UserService.entity.Role;
 import com.tripplanner.UserService.entity.User;
+import com.tripplanner.UserService.entity.UserStatus;
 import com.tripplanner.UserService.repository.RoleRepository;
 import com.tripplanner.UserService.repository.UserRepository;
 import com.tripplanner.UserService.service.interfaces.UserService;
@@ -48,38 +50,38 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private DiscoveryClient discoveryClient;
 
-//    @Override
-//    public void processOAuthPostLoginGoogle(String email) {
-//        User user = userRepository.findByEmail(email);
-//        if (user == null) {
-//            User newUser = new User();
-//            newUser.setRole(new Role(2, "User"));
-//            newUser.setName(email);
-//            newUser.setEmail(email);
-//            newUser.setProvider(Provider.GOOGLE);
-//            newUser.setStatus(UserStatus.ACTIVE);
-//            userRepository.save(newUser);
-//        }
-//    }
-//
-//    @Override
-//    public void processOAuthPostLoginFacebook(String name) {
-//        User user = userRepository.findByEmail(name);
-//        if (user == null) {
-//            User newUser = new User();
-//            newUser.setRole(new Role(2, "User"));
-//            newUser.setName(name);
-//            newUser.setEmail(name);
-//            newUser.setProvider(Provider.FACEBOOK);
-//            newUser.setStatus(UserStatus.ACTIVE);
-//            userRepository.save(newUser);
-//        }
-//    }
-//
-//    @Override
-//    public void updateProvider(int userID, Provider authType) {
-//
-//    }
+    @Override
+    public void processOAuthPostLoginGoogle(String email) {
+        User user = userRepository.findByEmail(email);
+        if (user == null) {
+            User newUser = new User();
+            newUser.setRole(new Role(2, "User"));
+            newUser.setName(email);
+            newUser.setEmail(email);
+            newUser.setProvider(Provider.GOOGLE);
+            newUser.setStatus(UserStatus.ACTIVE);
+            userRepository.save(newUser);
+        }
+    }
+
+    @Override
+    public void processOAuthPostLoginFacebook(String name) {
+        User user = userRepository.findByEmail(name);
+        if (user == null) {
+            User newUser = new User();
+            newUser.setRole(new Role(2, "User"));
+            newUser.setName(name);
+            newUser.setEmail(name);
+            newUser.setProvider(Provider.FACEBOOK);
+            newUser.setStatus(UserStatus.ACTIVE);
+            userRepository.save(newUser);
+        }
+    }
+
+    @Override
+    public void updateProvider(int userID, Provider authType) {
+
+    }
 
     @Override
     public void register(User user) {
