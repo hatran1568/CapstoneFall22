@@ -24,7 +24,7 @@ function TripInfoCard(trip) {
       year: "numeric",
     };
     var today = new Date(date);
-    return today.toLocaleDateString("en-IE");
+    return today.toLocaleDateString("vi", options);
   };
 
   const formatCurrency = (string) => {
@@ -35,11 +35,11 @@ function TripInfoCard(trip) {
 
   const showDeleteConfirm = () => {
     confirm({
-      title: "Are you sure to delete this plan?" + trip.trip.name,
-      content: "The plan and all its contents will be deleted",
-      okText: "Yes",
+      title: "Bạn có chắc chắn muốn xóa chuyến đi này?\n" + trip.trip.name,
+      content: "Chuyến đi và tất cả nội dung sẽ bị xóa hoàn toàn.",
+      okText: "Xóa",
       okType: "danger",
-      cancelText: "No",
+      cancelText: "Hủy",
       onOk() {
         axios
           .delete("/trip/delete-trip/", {

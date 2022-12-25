@@ -33,7 +33,7 @@
 .h4,
 .h5 {
   color: #0e0e0f;
-  font-family: "Abril Fatface";
+  font-family: Klarna Display, Helvetica Neue, Arial, Helvetica, sans-serif;
 }
 .siteHero {
   height: 95vh;
@@ -72,6 +72,7 @@
   color: #fff;
   line-height: 1;
   font-weight: bold;
+  font-family: Klarna Display, Helvetica Neue, Arial, Helvetica, sans-serif;
 }
 @media (max-width: 991.98px) {
   .siteHeroInner .heading {
@@ -127,7 +128,7 @@
 }
 .section {
   padding: 5em 7em;
-  font-family: "Mukta Mahee";
+  font-family: Mukta Mahee;
 }
 
 .rightCol {
@@ -305,7 +306,7 @@ h3.h3 {
   cursor: pointer;
   font-family: Klarna Text, Helvetica Neue, Arial, Helvetica, sans-serif;
   border: 2px solid #267b9cb0;
-  border-right: none;
+  /* border-right: none; */
 }
 .recentTrips:hover {
   background-color: #267b9c4b;

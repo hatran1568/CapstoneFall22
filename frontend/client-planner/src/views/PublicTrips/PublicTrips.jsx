@@ -143,7 +143,7 @@ class PublicTrips extends Component {
           spinnerColor="#9ee5f8"
           textColor="#676767"
           // logoSrc="/logo.png"
-          text="Please wait a bit while we get your plan..."
+          text="Xin chờ một chút khi chúng tôi lấy thông tin..."
         >
           <div></div>
         </LoadingScreen>
