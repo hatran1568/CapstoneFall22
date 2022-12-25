@@ -3,6 +3,7 @@ import { json, useNavigate } from "react-router-dom";
 import style from "./newhomepage.module.css";
 import "react-datepicker/dist/react-datepicker.css";
 import axios from "../../api/axios";
+import { MDBCard, MDBCardBody } from "mdb-react-ui-kit";
 function Blogs() {
   const [blogs, setBlogs] = useState([]);
   useEffect(() => {
@@ -48,29 +49,36 @@ function Blogs() {
                   key={blog.blogId}
                 >
                   <div className={`media ${style.mediaCustom} d-block mb-4`}>
-                    <a href={"../Blog/?id=" + blog.blogId} className=" d-block">
-                      <img
-                        src={
-                          blog.thumbnail
-                            ? blog.thumbnail.includes("img/", 0)
-                              ? `../${blog.thumbnail.url}`
-                              : blog.thumbnail
-                            : "../img/homepage/blog_1.jpg"
-                        }
-                        className={`img-fluid ${style.blogThumbnail}`}
-                      />
-                    </a>
-                    <div className={style.mediaBody}>
-                      <span className={style.metaPost}>
-                        {new Date(blog.dateModified).toLocaleDateString(
-                          "vi",
-                          options
-                        )}
-                      </span>
-                      <h2 className="mt-0 mb-3">
-                        <a href={"../Blog/?id=" + blog.blogId}>{blog.title}</a>
-                      </h2>
-                    </div>
+                    <MDBCard className={`${style.card}`}>
+                      <a
+                        href={"../Blog/?id=" + blog.blogId}
+                        className=" d-block"
+                      >
+                        <img
+                          src={
+                            blog.thumbnail
+                              ? blog.thumbnail.includes("img/", 0)
+                                ? `../${blog.thumbnail.url}`
+                                : blog.thumbnail
+                              : "../img/homepage/blog_1.jpg"
+                          }
+                          className={`img-fluid ${style.blogThumbnail}`}
+                        />
+                      </a>
+                      <div className={style.mediaBody}>
+                        <span className={style.metaPost}>
+                          {new Date(blog.dateModified).toLocaleDateString(
+                            "vi",
+                            options
+                          )}
+                        </span>
+                        <h2 className="mt-0 mb-3">
+                          <a href={"../Blog/?id=" + blog.blogId}>
+                            {blog.title}
+                          </a>
+                        </h2>
+                      </div>
+                    </MDBCard>
                   </div>
                 </div>
               ))}

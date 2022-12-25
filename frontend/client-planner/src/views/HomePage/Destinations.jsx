@@ -3,6 +3,7 @@ import { json, useNavigate } from "react-router-dom";
 import style from "./newhomepage.module.css";
 import "react-datepicker/dist/react-datepicker.css";
 import axios from "../../api/axios";
+
 function Destinations() {
   const [destinations, setDestinations] = useState([]);
   useEffect(() => {
@@ -56,13 +57,17 @@ function Destinations() {
                       className="img-fluid"
                     />{" "}
                   </a>
-                  <h3 className={`${style.h3} mb-1`}>
-                    <a href={"../Destination?id=" + destination.destinationId}>
-                      {destination.name}
-                    </a>
-                  </h3>
-                  <div className={`${style.description}`}>
-                    {destination.description}
+                  <div className={style.text}>
+                    <h3 className={`${style.h3} mb-1`}>
+                      <a
+                        href={"../Destination?id=" + destination.destinationId}
+                      >
+                        {destination.name}
+                      </a>
+                    </h3>
+                    <div className={`${style.description}`}>
+                      {destination.description}
+                    </div>
                   </div>
                 </div>
               ))}

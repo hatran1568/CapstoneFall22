@@ -9,6 +9,8 @@ import MyTrips from "./MyTrips";
 import Blogs from "./Blogs";
 import Destinations from "./Destinations";
 import RecentTrips from "./RecentTrips";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 function NewHomePage() {
   const navigate = useNavigate();
   const [generateModal, setGenerateModal] = useState(false);
@@ -139,6 +141,18 @@ function NewHomePage() {
         onSubmit={(data) => submitCreateTrip(data)}
         closeCreateModal={closeCreateModal}
       />
+      <ToastContainer
+        position="top-center"
+        autoClose={5000}
+        hideProgressBar
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="light"
+      />
       <section className={`${style.siteHero} ${style.overlay} ${style.body}`}>
         <img
           src="../img/homepage/hero_1.jpg"
@@ -189,7 +203,7 @@ function NewHomePage() {
       </div>
       <RecentTrips />
 
-      <section className={`section ${style.bgLight2} ${style.section}`}>
+      <section className={`section ${style.section} ${style.introSection}`}>
         <div className="container">
           <div className="row justify-content-center text-center mb-5">
             <div className="col-md-8">

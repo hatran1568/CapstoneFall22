@@ -115,7 +115,7 @@ function EditActivityModal(props) {
                       onChange={(e) => {
                         inputField.masterActivity.name = e.target.value;
                       }}
-                      spellcheck="false"
+                      spellCheck="false"
                     />
                   </label>
                   <label className={style.customLabel}>
@@ -127,7 +127,7 @@ function EditActivityModal(props) {
                       onChange={(e) => {
                         inputField.masterActivity.address = e.target.value;
                       }}
-                      spellcheck="false"
+                      spellCheck="false"
                     />
                   </label>
                   <div
@@ -204,7 +204,7 @@ function EditActivityModal(props) {
                   onChange={(e) => {
                     inputField.note = e.target.value;
                   }}
-                  spellcheck="false"
+                  spellCheck="false"
                 ></textarea>
               </div>
             </form>

@@ -187,7 +187,7 @@ class TripDetail extends Component {
               <div className={!isCustom ? "col-6" : "col-10"}>
                 <MDBDropdown animation={false} className={style.btnMore}>
                   <MDBDropdownToggle color="light"></MDBDropdownToggle>
-                  <MDBDropdownMenu>
+                  <MDBDropdownMenu style={{ padding: 0 }}>
                     {!isCustom ? (
                       <MDBDropdownItem
                         link
