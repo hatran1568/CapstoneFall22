@@ -11,6 +11,7 @@ import org.springframework.cloud.client.ServiceInstance;
 import org.springframework.cloud.client.discovery.DiscoveryClient;
 import org.springframework.stereotype.Service;
 
+import java.sql.Timestamp;
 import java.util.List;
 
 @Service
@@ -29,6 +30,7 @@ public class BLogServiceImpl implements BlogService {
         BlogDetailsDTO blogDetailsDTO = new BlogDetailsDTO() ;
         blogDetailsDTO.setBlogId(id);
         blogDetailsDTO.setStatus(blog.getStatus());
+        blogDetailsDTO.setDateModified(new Timestamp(blog.getDateModified().getTime()));
         blogDetailsDTO.setUserId(blog.getUser());
         blogDetailsDTO.setContent(blog.getContent());
         blogDetailsDTO.setThumbnail(blog.getThumbnail());

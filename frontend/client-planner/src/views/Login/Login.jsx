@@ -42,7 +42,11 @@ function Login() {
           localStorage.setItem("token", accessToken);
           localStorage.setItem("role", role);
           localStorage.setItem("id", id);
-          window.location.href = "http://localhost:3000/";
+          if (role != "Admin") {
+            window.location.href = "http://localhost:3000/";
+          } else {
+            window.location.href = "http://localhost:3000/admin/dashboard";
+          }
         }
         setUser({ ...user, username: "", password: "" });
       } catch (error) {
