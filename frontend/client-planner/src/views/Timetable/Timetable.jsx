@@ -376,7 +376,7 @@ class Timetable extends Component {
           spinnerColor="#9ee5f8"
           textColor="#676767"
           // logoSrc="/logo.png"
-          text="Please wait a bit while we get your plan..."
+          text="Vui lòng đợi trong khi chúng tôi lấy thông tin chuyến đi ..."
         >
           <div></div>
         </LoadingScreen>
@@ -657,6 +657,7 @@ class Timetable extends Component {
     this.setState({ change: true });
     if (eventInfo.event.start.getDay() !== eventInfo.event.end.getDay()) {
       this.setState({ showNotiModal: true });
+      console.log("overlap");
       eventInfo.revert();
       return;
     }
@@ -969,7 +970,7 @@ class Timetable extends Component {
     if (message === undefined) message = "Lưu thay đổi thành công!";
     toast.success(message, {
       position: "top-center",
-      autoClose: 1000,
+      autoClose: 500,
       hideProgressBar: true,
       closeOnClick: true,
       pauseOnHover: true,

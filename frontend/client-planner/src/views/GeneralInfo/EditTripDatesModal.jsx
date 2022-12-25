@@ -13,8 +13,8 @@ function EditTripDatesModal(props) {
   const [showConfirm, setShowConfirm] = useState(false);
   const [warningDetails, setWarningDetails] = useState([]);
   const diff =
-    (new Date(trip.endDate).getTime() - new Date(trip.startDate).getTime()) /
-    (1000 * 3600 * 24);
+    new Date(trip.endDate).getTime() - new Date(trip.startDate).getTime();
+  //  /(1000 * 3600 * 24);
   const handleHide = () => {
     setShowConfirm(false);
   };
@@ -94,7 +94,7 @@ function EditTripDatesModal(props) {
                     setStartDate(date);
                     if (date > endDate) {
                       var newDate = new Date();
-                      newDate.setDate(date.getDate() + diff);
+                      newDate.setTime(date.getTime() + diff);
                       setEndDate(newDate);
                     }
                   }}

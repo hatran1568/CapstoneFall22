@@ -24,6 +24,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.mail.MessagingException;
 import java.sql.Date;
 import java.util.Calendar;
 
@@ -151,15 +152,15 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public boolean requestPasswordReset(String email) {
+    public boolean requestPasswordReset(String email) throws MessagingException {
         User user = userRepository.findByEmail(email);
         if (user == null){
             return false;
         }
         String token = tokenProvider.generatePasswordResetToken(user.getUserID());
         userRepository.updateResetToken(user.getUserID(), token);
-        String emailContent = "http://localhost:3000/reset-password-confirm?email="+email+"&&token=" + token;
-        mailSender.sendSimpleMessage(email, "Request reset password", emailContent);
+        String resetLink = "http://localhost:3000/reset-password-confirm?email="+email+"&&token=" + token;
+        mailSender.sendSimpleMessage(email, "Forgot your password?", resetLink);
         return true;
     }
 
