@@ -198,7 +198,7 @@ class TripBudget extends Component {
     const id = window.location.href.split("/")[4];
     const filterId = event.currentTarget.id;
     const filterDropdown = document.getElementById("filterDropdown");
-    filterDropdown.innerHTML = " Filter: " + event.currentTarget.name;
+    filterDropdown.innerHTML = " Bộ lọc: " + event.currentTarget.name;
     var elems = document.querySelectorAll(".active");
     [].forEach.call(elems, function (el) {
       el.classList.remove("active");

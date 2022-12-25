@@ -42,8 +42,12 @@ function Login() {
           localStorage.setItem("token", accessToken);
           localStorage.setItem("role", role);
           localStorage.setItem("id", id);
+          if (role != "Admin") {
+            window.location.href = "http://localhost:3000/";
+          } else {
+            window.location.href = "http://localhost:3000/admin/dashboard";
+          }
           localStorage.removeItem("trips");
-          window.location.href = "http://localhost:3000/";
         }
         setUser({ ...user, username: "", password: "" });
       } catch (error) {

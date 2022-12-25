@@ -470,7 +470,7 @@ class Timeline extends Component {
           spinnerColor="#9ee5f8"
           textColor="#676767"
           // logoSrc="/logo.png"
-          text="Xin chờ một chút khi chúng tôi lấy thông tin..."
+          text="Vui lòng đợi trong khi chúng tôi lấy thông tin chuyến đi ..."
         >
           <div></div>
         </LoadingScreen>

@@ -261,7 +261,7 @@ class Checklist extends Component {
           bgColor="#f1f1f1"
           spinnerColor="#9ee5f8"
           textColor="#676767"
-          text="Xin hãy chờ một chút khi chúng tôi chuẩn bị..."
+          text="Vui lòng đợi trong khi chúng tôi lấy thông tin ..."
         >
           <div></div>
         </LoadingScreen>
