@@ -120,7 +120,7 @@ public class GeneticAlgorithmImplementer {
                 //double predict = Double.max(time + data.distanceOfPOI[current][fullTrip.get(0)] * 90, data.POIs[fullTrip.get(0)].getOpenTime()) + data.POIs[fullTrip.get(0)].getDuration();
                 if (Double.max(time + data.getDistanceOfPOI()[current][fullTrip.get(0)] * 90, data.getPOIs()[fullTrip.get(0)].getOpenTime()) + data.getPOIs()[fullTrip.get(0)].getDuration() < data.getDailyEndTime()[i]
                         && cost + data.getPOIs()[fullTrip.get(0)].getTypicalPrice() < data.getDailyBudget()[i]) {
-                    time = Double.max(time + data.getDistanceOfPOI()[current][fullTrip.get(0)] * 90, data.getPOIs()[fullTrip.get(0)].getOpenTime()) + data.getPOIs()[fullTrip.get(0)].getDuration();
+                    time = Double.max(time + Double.max(data.getDistanceOfPOI()[current][fullTrip.get(0)] * 150,600), data.getPOIs()[fullTrip.get(0)].getOpenTime()) + data.getPOIs()[fullTrip.get(0)].getDuration();
                     cost += data.getPOIs()[fullTrip.get(0)].getTypicalPrice();
                     current = fullTrip.get(0);
                     dayTrip.add(fullTrip.get(0));
@@ -162,7 +162,7 @@ public class GeneticAlgorithmImplementer {
             int currentPOI = s.gene.get(tripNumber).get(i);
             newTrip.add(currentPOI);
             poiList.remove(poiList.indexOf(currentPOI));
-            time = Double.max(time + data.getDistanceOfPOI()[currentPOI][s.gene.get(tripNumber).get(i + 1)] * 90, data.getPOIs()[s.gene.get(tripNumber).get(i + 1)].getOpenTime()) + data.getPOIs()[s.gene.get(tripNumber).get(i + 1)].getDuration();
+            time = Double.max(time + Double.max(data.getDistanceOfPOI()[currentPOI][s.gene.get(tripNumber).get(i + 1)] * 150,600), data.getPOIs()[s.gene.get(tripNumber).get(i + 1)].getOpenTime()) + data.getPOIs()[s.gene.get(tripNumber).get(i + 1)].getDuration();
             cost += data.getPOIs()[s.gene.get(tripNumber).get(i)].getTypicalPrice();
         }
 
