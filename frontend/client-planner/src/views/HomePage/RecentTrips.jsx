@@ -3,6 +3,7 @@ import style from "./newhomepage.module.css";
 import axios from "../../api/axios";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faAngleRight } from "@fortawesome/free-solid-svg-icons";
+import { MDBBtn } from "mdb-react-ui-kit";
 class RecentTrips extends Component {
   state = {};
   constructor(props) {
@@ -37,7 +38,7 @@ class RecentTrips extends Component {
         className={`container ${style.section}  ${style.recentSection} section`}
       >
         <div className={` row `}>
-          <div className={`col-md-10 ${style.smallRecentSection}`}>
+          <div className={`${style.smallRecentSection}`}>
             <div
               className={style.recentTrips}
               onClick={() => (window.location.href = "/recent-plans")}
@@ -49,7 +50,7 @@ class RecentTrips extends Component {
               </div>
             </div>
           </div>
-          <div
+          {/* <div
             className={`col-md-2 ${style.smallRecentSection} ${style.seeRecentButton}`}
           >
             <div
@@ -59,12 +60,27 @@ class RecentTrips extends Component {
               <div className={style.number}>
                 <FontAwesomeIcon icon={faAngleRight} />
               </div>
-              {/* <div className={style.number}>10</div> */}
               <div className={`${style.text} ${style.seeMoreText}`}>
                 Xem thêm
               </div>
             </div>
-          </div>
+          </div> */}
+        </div>
+        <div className="mt-4 d-flex justify-content-center">
+          <MDBBtn
+            onClick={() => {
+              window.location.href = "http://localhost:3000/profile";
+            }}
+            style={{
+              backgroundColor: "black",
+              border: "none",
+              borderRadius: "20px",
+              padding: "10px 20px",
+              fontFamily: "arial",
+            }}
+          >
+            Xem thêm
+          </MDBBtn>
         </div>
       </section>
     );

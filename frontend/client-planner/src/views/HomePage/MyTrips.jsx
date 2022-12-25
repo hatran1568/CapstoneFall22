@@ -8,77 +8,79 @@ import { MDBBtn, MDBContainer } from "mdb-react-ui-kit";
 function MyTrips() {
   const [tripCount, setTripCount] = useState(0);
   const [trips, setTrips] = useState();
-  useEffect(() => {
-    async function getGuestId() {
-      if (!localStorage.getItem("id")) {
-        await axios
-          .get("http://localhost:8080/user/api/user/get-guest-id", {
+  async function getGuestId() {
+    if (!localStorage.getItem("id")) {
+      await axios
+        .get("http://localhost:8080/user/api/user/get-guest-id", {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        })
+        .then((response) => {
+          localStorage.setItem("id", response?.data);
+          localStorage.setItem("role", "Guest");
+          localStorage.setItem("trips", []);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    }
+  }
+  async function getExistingTrips() {
+    if (localStorage.getItem("token")) {
+      await axios
+        .get(
+          "http://localhost:8080/trip/get-total-trip/" +
+            localStorage.getItem("id"),
+          {
             headers: {
               "Content-Type": "application/json",
             },
-          })
-          .then((response) => {
-            localStorage.setItem("id", response?.data);
-            localStorage.setItem("role", "Guest");
-            localStorage.setItem("trips", []);
-          })
-          .catch((error) => {
-            console.log(error);
-          });
-      }
-    }
-    async function getExistingTrips() {
-      if (localStorage.getItem("token")) {
-        await axios
-          .get(
-            "http://localhost:8080/trip/get-total-trip/" +
-              localStorage.getItem("id"),
-            {
-              headers: {
-                "Content-Type": "application/json",
-              },
-            }
-          )
-          .then((response) => {
-            setTripCount(response.data);
-          });
-        await axios
-          .get(
-            "http://localhost:8080/trip/get-trip-3/" +
-              localStorage.getItem("id"),
-            {
-              headers: {
-                "Content-Type": "application/json",
-              },
-            }
-          )
+          }
+        )
+        .then((response) => {
+          setTripCount(response.data);
+        });
+      await axios
+        .get(
+          "http://localhost:8080/trip/get-trip-3/" + localStorage.getItem("id"),
+          {
+            headers: {
+              "Content-Type": "application/json",
+            },
+          }
+        )
+        .then((response) => {
+          setTrips(response.data);
+        });
+    } else {
+      let trips = localStorage.getItem("trips");
+      if (trips) {
+        trips = JSON.parse(trips);
+        setTripCount(trips.length);
+        if (trips.length > 3) trips = trips.slice(0, 3);
+        await axios({
+          method: "post",
+          url: "http://localhost:8080/trip/get-trip-3-guest",
+          data: trips,
+          headers: {
+            "Content-Type": "application/json",
+          },
+        })
           .then((response) => {
             setTrips(response.data);
-          });
-      } else {
-        let trips = localStorage.getItem("trips");
-        if (trips) {
-          trips = JSON.parse(trips);
-          setTripCount(trips.length);
-          if (trips.length > 3) trips = trips.slice(0, 3);
-          await axios({
-            method: "post",
-            url: "http://localhost:8080/trip/get-trip-3-guest",
-            data: trips,
-            headers: {
-              "Content-Type": "application/json",
-            },
           })
-            .then((response) => {
-              setTrips(response.data);
-            })
-            .catch((error) => console.log(error));
-        }
+          .catch((error) => console.log(error));
       }
     }
+  }
+  useEffect(() => {
     getGuestId();
     getExistingTrips();
   }, []);
+  const onTripDeleted = () => {
+    getExistingTrips();
+  };
   return (
     <>
       {tripCount != 0 && trips ? (
@@ -97,6 +99,7 @@ function MyTrips() {
                     <TripInfoCardHomepage
                       trip={trip}
                       key={trip.tripId}
+                      onDeleted={onTripDeleted}
                     ></TripInfoCardHomepage>
                   </div>
                 ))}
@@ -113,7 +116,7 @@ function MyTrips() {
                     padding: "10px 20px",
                   }}
                 >
-                  Xem tất cả
+                  Xem tất cả chuyến đi
                 </MDBBtn>
               </div>
             </div>
