@@ -1,112 +1,112 @@
 .formInput::after {
-    visibility: hidden!important;
+  visibility: hidden !important;
 }
 
 .formInput::before {
-    visibility: hidden!important;
+  visibility: hidden !important;
 }
 
 @media screen and (min-width: 730px) {
-    .img {
-        transform: scaleX(-1);
-        clip-path: polygon(0% 0%, 60% 0%, 60% 100%, 0% 100%);
-    }
-    .splash {
-        position: absolute;
-        width: 40%;
-        height: 100%;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-    }
-    #splash-text {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        font-size: 2.5vh;
-    }
+  .img {
+    transform: scaleX(-1);
+    clip-path: polygon(0% 0%, 60% 0%, 60% 100%, 0% 100%);
+  }
+  .splash {
+    position: absolute;
+    width: 40%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+  #splash-text {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    font-size: 2.5vh;
+  }
 }
 
 @media screen and (max-width: 730px) {
-    .img {
-        clip-path: polygon(100% 0%, 100% 0%, 100% 100%, 100% 100%);
-    }
-    .splash {
-        position: relative;
-        width: 100%;
-        height: 100%;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-    }
-    #splash-text {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        font-size: 2.5vh;
-    }
+  .img {
+    clip-path: polygon(100% 0%, 100% 0%, 100% 100%, 100% 100%);
+  }
+  .splash {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+  #splash-text {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    font-size: 2.5vh;
+  }
 }
 
 @media screen and (max-width: 300px) {
-    .btn {
-        position: relative;
-    }
+  .btn {
+    position: relative;
+  }
 }
 
 .splashContainer {
-    position: relative;
-    height: 100%;
-    width: 100%;
+  position: relative;
+  height: 100%;
+  width: 100%;
 }
 
 .modalInput {
-    margin: 0 3% 0 3%;
+  margin: 0 3% 0 3%;
 }
 
 .emptyTripInfo {
-    margin: auto;
-    text-align: center;
+  margin: auto;
+  text-align: center;
 }
 
 .errorEmptyPlan {
-    margin: auto;
-    text-align: center;
-    color: red;
+  margin: auto;
+  text-align: center;
+  color: red;
 }
 
 .optional {
-    max-height: 0;
-    transform: scaleY(0);
-    transform-origin: top;
-    transition: all 0.2s ease;
+  max-height: 0;
+  transform: scaleY(0);
+  transform-origin: top;
+  transition: all 0.2s ease;
 }
 
 .show {
-    max-height: fit-content;
-    height: auto;
-    transform: scaleY(1);
+  max-height: fit-content;
+  height: auto;
+  transform: scaleY(1);
 }
-.recentTrips{
-    width: 100%;
-    background-color: #267b9cb0;
-    color: white;
-    padding: auto;
-    padding-bottom: 2em;
-    text-align: center;
-    cursor: pointer;
-    font-family: Klarna Text,Helvetica Neue,Arial,Helvetica,sans-serif;
+.recentTrips {
+  width: 100%;
+  background-color: #267b9cb0;
+  color: white;
+  padding: auto;
+  padding-bottom: 2em;
+  text-align: center;
+  cursor: pointer;
+  font-family: Klarna Text, Helvetica Neue, Arial, Helvetica, sans-serif;
 }
-.recentTrips:hover{
-    background-color: #0e0e0fd2;
-    color: #34a9d9;
+.recentTrips:hover {
+  background-color: #0e0e0fd2;
+  color: #34a9d9;
 }
-.recentTrips .number{
-    font-size: 7em;
-    font-weight: 700;
+.recentTrips .number {
+  font-size: 7em;
+  font-weight: 700;
 }
-.recentTrips .text{
-    text-transform: uppercase;
-    font-size: 1.2em;
+.recentTrips .text {
+  text-transform: uppercase;
+  font-size: 1.2em;
 }

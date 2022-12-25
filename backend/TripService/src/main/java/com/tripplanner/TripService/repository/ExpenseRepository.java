@@ -85,4 +85,8 @@ public interface ExpenseRepository extends JpaRepository<ExpenseCategory, Double
     @Transactional
     @Query(value = "delete te from trip_expense te left join trip_details td on te.trip_details_id = td.trip_details_id where td.trip_id=:tripId and td.day_number > :numberOfDays", nativeQuery = true)
     void deleteByRange(int tripId, int numberOfDays);
+    @Modifying
+    @Transactional
+    @Query(value = "delete te from trip_expense te where te.trip_details_id=:detailsId", nativeQuery = true)
+    void deleteByActivity(int detailsId);
 }

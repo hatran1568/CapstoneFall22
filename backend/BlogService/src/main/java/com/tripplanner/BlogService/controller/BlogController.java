@@ -5,6 +5,7 @@ import com.tripplanner.BlogService.dto.request.BlogAddUpdateDTO;
 import com.tripplanner.BlogService.dto.request.BlogDetailsDTO;
 import com.tripplanner.BlogService.dto.request.BlogListDTO;
 import com.tripplanner.BlogService.dto.request.BlogNearbyDTO;
+import com.tripplanner.BlogService.dto.response.BlogGeneralDTO;
 import com.tripplanner.BlogService.dto.response.ListBlogDTO;
 import com.tripplanner.BlogService.entity.Blog;
 import com.tripplanner.BlogService.repository.BlogRepository;
@@ -59,6 +60,19 @@ public class BlogController {
                 return new ResponseEntity<>(HttpStatus.NOT_FOUND);
             }
             return new ResponseEntity<>(blog, HttpStatus.OK);
+        } catch (Exception e){
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+    @Transactional(rollbackFor = {Exception.class, Throwable.class})
+    @GetMapping("/blog/get-blog-3")
+    public ResponseEntity<List<BlogGeneralDTO>> getLatest3Blogs(){
+        try{
+        List<BlogGeneralDTO> blogs =  blogService.getLatestBlogs();
+            if (blogs == null){
+                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            }
+            return new ResponseEntity<>(blogs, HttpStatus.OK);
         } catch (Exception e){
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }

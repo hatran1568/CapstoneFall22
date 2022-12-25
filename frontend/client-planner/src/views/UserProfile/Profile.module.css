@@ -61,12 +61,11 @@ hr .new1 {
 
 .join {
   font-size: 14px;
-  color: #a0a0a0;
-  font-weight: bold;
+  color: #525252;
 }
 
 .date {
-  background-color: #ccc;
+  background-color: rgb(225, 223, 223);
 }
 
 .link {
@@ -95,8 +94,8 @@ hr .new1 {
   text-align: center;
 }
 
-.editInput :active,
-.editInput :focus-within {
-  border: none;
+.editInput:active,
+.editInput:focus {
+  outline: none !important;
   border-bottom: 1px solid black;
 }

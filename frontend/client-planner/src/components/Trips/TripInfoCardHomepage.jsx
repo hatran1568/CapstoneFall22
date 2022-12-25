@@ -5,12 +5,12 @@ import axios from "../../api/axios";
 import { Modal } from "antd";
 import "antd/dist/antd.css";
 
-function TripInfoCardHomepage(trip) {
+function TripInfoCardHomepage(props) {
+  const { trip, onDeleted } = props;
   const [isDeleted, setIsDeleted] = useState(false);
-
   const toLongDate = (date) => {
     var today = new Date(date);
-    return today.toLocaleDateString("en-IE");
+    return today.toLocaleDateString("vi");
   };
   const formatCurrency = (string) => {
     return string.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") + " VND";
@@ -21,11 +21,11 @@ function TripInfoCardHomepage(trip) {
     e.stopPropagation(); // notice this
 
     confirm({
-      title: "Are you sure to delete this plan?" + trip.trip.name,
-      content: "The plan and all its contents will be deleted",
-      okText: "Yes",
+      title: "Bạn có chắc chắn muốn xóa chuyến đi này?\n" + trip.name,
+      content: "Chuyến đi và tất cả nội dung sẽ bị xóa hoàn toàn.",
+      okText: "Xóa",
       okType: "danger",
-      cancelText: "No",
+      cancelText: "Hủy",
       onOk() {
         axios
           .delete("/trip/delete-trip/", {
@@ -34,10 +34,13 @@ function TripInfoCardHomepage(trip) {
             },
 
             data: {
-              id: trip.trip.tripId,
+              id: trip.tripId,
             },
           })
-          .then(setIsDeleted(true));
+          .then(() => {
+            setIsDeleted(true);
+            onDeleted();
+          });
       },
       onCancel() {},
     });
@@ -47,33 +50,32 @@ function TripInfoCardHomepage(trip) {
     <MDBCard
       className={style.card}
       onClick={() => {
-        window.location.href =
-          "http://localhost:3000/timeline/" + trip.trip.tripId;
+        window.location.href = "http://localhost:3000/timeline/" + trip.tripId;
       }}
     >
       <MDBCardImage
         className={style.img}
         src={
-          trip.trip.image
-            ? trip.trip.image
+          trip.image
+            ? trip.image
             : "https://i.picsum.photos/id/1015/6000/4000.jpg?hmac=aHjb0fRa1t14DTIEBcoC12c5rAXOSwnVlaA5ujxPQ0I"
         }
         alt="..."
       />
       <div className={style.caption}>
-        <p>{trip.trip.name}</p>
+        <p className={style.tripName}>{trip.name}</p>
         <p style={{ fontSize: "1vw" }}>
-          {toLongDate(trip.trip.startDate)}
-          &nbsp;-&nbsp;{toLongDate(trip.trip.endDate)}
+          {toLongDate(trip.startDate)}
+          &nbsp;-&nbsp;{toLongDate(trip.endDate)}
         </p>
       </div>
       <div className={style.description}>
         <div>
-          <b>Budget:</b>&nbsp;{formatCurrency(trip.trip.budget)}
+          <b>Budget:</b>&nbsp;{formatCurrency(trip.budget)}
         </div>
         <div>
           <b>Last updated:</b>&nbsp;
-          {toLongDate(trip.trip.dateModified.split("T")[0])}
+          {toLongDate(trip.dateModified.split("T")[0])}
         </div>
       </div>
       <MDBBtn

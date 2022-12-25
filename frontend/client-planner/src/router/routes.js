@@ -26,7 +26,7 @@ import ResetPasswordConfirm from "../views/Login/ResetPasswordConfirm";
 import BlogAddUpdate from "../views/Admin/BlogAddUpdate";
 import CollectionDetail from "../views/CollectionDetail/CollectionDetail";
 import AdminSidebar from "../components/Admin/SideBar";
-import PublicTrips from "../views/PublicTrips/PublicTrips"
+import PublicTrips from "../views/PublicTrips/PublicTrips";
 import BlogList from "../views/Admin/BlogList";
 import POIList from "../views/Admin/POIList";
 import POIAddUpdate from "../views/Admin/POIAddUpdate";
@@ -38,14 +38,15 @@ import Map from "../views/Map/Map";
 import Dashboard from "../views/Admin/Dashboard";
 
 import Hotel from "../views/Hotel/Hotel";
-
+import NewHomePage from "../views/HomePage/NewHomePage";
 export default function RootRoutes() {
   return (
     <Router>
       <Routes>
         {/*Any route that needs a nav bar goes inside this one.*/}
         <Route path="/" element={<LayoutsWithNavbar />}>
-          <Route path="/" element={<HomePage />} />
+          <Route path="/" element={<NewHomePage />} />
+          <Route path="/new" element={<HomePage />} />
           <Route exact path="login" element={<Login />} />
           <Route path="register" element={<Signup />} />
           <Route path="oauth2/*" element={<OAuthHandler />} />
@@ -72,20 +73,93 @@ export default function RootRoutes() {
           <Route path="/poi/request" element={<POIRequest />} />
           <Route path="/test" element={<Test></Test>}></Route>
           <Route path="/map/:id" element={<Map></Map>}></Route>
-          <Route path="/recent-plans" element={<PublicTrips></PublicTrips>}></Route>
+          <Route
+            path="/recent-plans"
+            element={<PublicTrips></PublicTrips>}
+          ></Route>
           <Route path="/hotel/:tripId" element={<Hotel></Hotel>}></Route>
         </Route>
         <Route element={<RequireAuth allowedRoles={["Admin"]} />}>
-          <Route path='/blog/list' element={<ProSidebarProvider><AdminSidebar props={<BlogList/>}/></ProSidebarProvider>} />
-          <Route path='/poi/adminlist' element={<ProSidebarProvider><AdminSidebar props={<POIList/>}/></ProSidebarProvider>} />
-          <Route path='/blog/update' element={<ProSidebarProvider><AdminSidebar props={<BlogAddUpdate/>}/></ProSidebarProvider>} />
-          <Route path='/admin' element={<ProSidebarProvider><AdminSidebar/></ProSidebarProvider>} />
-          <Route path='/poi/update' element={<ProSidebarProvider><AdminSidebar props={<POIAddUpdate/>}/></ProSidebarProvider>} />
-          <Route path='/destination/adminlist' element={<ProSidebarProvider><AdminSidebar props={<DestinationList/>}/></ProSidebarProvider>} />
-          <Route path='/destination/update' element={<ProSidebarProvider><AdminSidebar props={<DestinationAddUpdate/>}/></ProSidebarProvider>} />
-          <Route path='/user/list' element={<ProSidebarProvider><AdminSidebar props={<UserList/>}/></ProSidebarProvider>} />
-          <Route path='/request/list' element={<ProSidebarProvider><AdminSidebar props={<UserRequestList/>}/></ProSidebarProvider>} />
-          <Route path='/admin/dashboard' element={<ProSidebarProvider><AdminSidebar props={<Dashboard/>}/></ProSidebarProvider>} />
+          <Route
+            path="/blog/list"
+            element={
+              <ProSidebarProvider>
+                <AdminSidebar props={<BlogList />} />
+              </ProSidebarProvider>
+            }
+          />
+          <Route
+            path="/poi/adminlist"
+            element={
+              <ProSidebarProvider>
+                <AdminSidebar props={<POIList />} />
+              </ProSidebarProvider>
+            }
+          />
+          <Route
+            path="/blog/update"
+            element={
+              <ProSidebarProvider>
+                <AdminSidebar props={<BlogAddUpdate />} />
+              </ProSidebarProvider>
+            }
+          />
+          <Route
+            path="/admin"
+            element={
+              <ProSidebarProvider>
+                <AdminSidebar />
+              </ProSidebarProvider>
+            }
+          />
+          <Route
+            path="/poi/update"
+            element={
+              <ProSidebarProvider>
+                <AdminSidebar props={<POIAddUpdate />} />
+              </ProSidebarProvider>
+            }
+          />
+          <Route
+            path="/destination/adminlist"
+            element={
+              <ProSidebarProvider>
+                <AdminSidebar props={<DestinationList />} />
+              </ProSidebarProvider>
+            }
+          />
+          <Route
+            path="/destination/update"
+            element={
+              <ProSidebarProvider>
+                <AdminSidebar props={<DestinationAddUpdate />} />
+              </ProSidebarProvider>
+            }
+          />
+          <Route
+            path="/user/list"
+            element={
+              <ProSidebarProvider>
+                <AdminSidebar props={<UserList />} />
+              </ProSidebarProvider>
+            }
+          />
+          <Route
+            path="/request/list"
+            element={
+              <ProSidebarProvider>
+                <AdminSidebar props={<UserRequestList />} />
+              </ProSidebarProvider>
+            }
+          />
+          <Route
+            path="/admin/dashboard"
+            element={
+              <ProSidebarProvider>
+                <AdminSidebar props={<Dashboard />} />
+              </ProSidebarProvider>
+            }
+          />
         </Route>
         {/*Routes that don't need a nav bar go out here.*/}
       </Routes>

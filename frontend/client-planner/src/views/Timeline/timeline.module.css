@@ -13,7 +13,7 @@
   position: relative;
   color: gray;
 }
-.timelineTransport .directionIcon{
+.timelineTransport .directionIcon {
   margin: 0;
   margin-left: 0.5em;
   vertical-align: baseline;
@@ -24,7 +24,7 @@
   display: block;
   top: 0;
 }
-.timelineTransport:hover{
+.timelineTransport:hover {
   text-decoration: underline;
   color: #0e0e0f;
 }
@@ -54,7 +54,6 @@
 .timeline .timelineTransport {
   margin: 30px 0px;
   cursor: pointer;
-
 }
 .edit-form,
 .add-form {
@@ -75,7 +74,7 @@
 
 .btnAdd {
   text-decoration: none;
-  background: #97c83e;
+  background: #267a9c;
   text-align: center;
   width: 65px;
   height: 65px;
@@ -93,7 +92,7 @@
   z-index: 10;
   cursor: pointer;
 }
-.btnAdd:hover{
+.btnAdd:hover {
   color: wheat;
 }
 .addIcon {
@@ -121,7 +120,6 @@
   padding-top: 0;
 }
 .daysBox {
-  
   position: sticky;
   top: 10vh;
   overflow-y: auto;
@@ -129,7 +127,7 @@
   padding: 0;
   overflow-x: hidden;
 }
-.month{
+.month {
   font-weight: 500;
   text-transform: uppercase;
   font-size: 16px;
@@ -137,7 +135,7 @@
   margin-top: 20px;
   text-align: center;
 }
-.date{
+.date {
   display: block;
   font-weight: 600;
   text-transform: uppercase;
@@ -147,7 +145,7 @@
   text-align: center;
   margin-top: 20px;
 }
-.date:hover{
+.date:hover {
   color: #0e0e0f;
   text-decoration: none;
   text-decoration: underline;
@@ -157,11 +155,11 @@
   font-weight: 500;
   margin-bottom: 50px;
 }
-.emptyDay{
+.emptyDay {
   font-size: 18px;
   color: #0e0e0f;
 }
-.dayNum{
+.dayNum {
   font-weight: 500;
   font-size: large;
   background: #267b9ca4;
@@ -199,56 +197,56 @@
   height: 200px;
   overflow: auto;
 }
-.formField{
+.formField {
   margin-top: 10px;
 }
-.customBtn{
+.customBtn {
   font-size: 13px !important;
   text-transform: none !important;
   width: 100%;
   max-height: 100%;
-  border: solid 1px #267A9C !important;
+  border: solid 1px #267a9c !important;
   border-radius: 10px;
-  color: #267A9C !important;
+  color: #267a9c !important;
   background-color: #fff !important;
   font-weight: 500 !important;
 }
-.submitBtn{
+.submitBtn {
   border: solid 1px #34a9d9 !important;
   background-color: #34a9d9 !important;
   color: #fff !important;
 }
-.submitBtn:hover{
+.submitBtn:hover {
   color: #fff !important;
-  background-color: #267A9C !important;
-  border-color: #267A9C !important;
+  background-color: #267a9c !important;
+  border-color: #267a9c !important;
 }
-.customBtn:hover{
+.customBtn:hover {
   color: #fff !important;
-  background-color: #267A9C !important;
+  background-color: #267a9c !important;
 }
-.editForm{
+.editForm {
   display: block;
   margin-left: 40px;
   margin-right: 40px;
   padding-top: 40px !important;
 }
-.timeGroupDiv{
+.timeGroupDiv {
   padding: 0 !important;
 }
-.timeGroupDiv label{
+.timeGroupDiv label {
   font-size: large;
 }
-.timeGroupDiv select{
+.timeGroupDiv select {
   margin-top: 5px;
 }
-.timeGroupDiv input{
+.timeGroupDiv input {
   margin-top: 5px;
 }
-.closeBtn{
+.closeBtn {
   float: right;
 }
-.activityInfo{
+.activityInfo {
   display: block;
   margin-left: 40px;
   margin-right: 40px;
@@ -256,7 +254,7 @@
   max-height: 600px;
   overflow: auto;
 }
-.poiImage{
+.poiImage {
   width: 200px;
   height: 200px;
   border-radius: 5px;
@@ -266,73 +264,73 @@
   margin-top: 5px;
   margin-right: 15px;
 }
-.poiDiv{
+.poiDiv {
   float: left;
 }
-.poiDescription{
+.poiDescription {
   text-align: justify;
   font-size: 16px;
   margin-top: 5px;
 }
-.ratingNum{
+.ratingNum {
   position: relative;
   bottom: 0px;
   margin-left: 10px;
   font-size: 12px;
 }
-.detailLink{
-  color: #267A9C;
+.detailLink {
+  color: #267a9c;
   text-decoration: none;
   font-size: 16px;
   font-weight: 500;
   text-align: right;
 }
-.linkDiv{
+.linkDiv {
   text-align: right;
 }
-.detailLink:hover{
-  color: #267A9C;
+.detailLink:hover {
+  color: #267a9c;
   text-decoration: underline;
 }
-.customLabel{
+.customLabel {
   margin-bottom: 15px;
   display: block;
 }
 
-.addActivity{
+.addActivity {
   text-decoration: none;
-  color: #267A9C;
+  color: #267a9c;
   font-weight: 500;
   margin-left: 1.5em;
 }
-.addActivity:hover{
+.addActivity:hover {
   text-decoration: underline;
-  color: #267A9C;
+  color: #267a9c;
   font-weight: 500;
 }
-.detailTitleLink{
+.detailTitleLink {
   text-decoration: none;
-  font-family: Klarna Text,Helvetica Neue,Arial,Helvetica,sans-serif;
+  font-family: Klarna Text, Helvetica Neue, Arial, Helvetica, sans-serif;
   font-size: medium;
   font-weight: bold;
   color: #0e0e0f;
 }
-.detailTitleLink:hover{
+.detailTitleLink:hover {
   color: #0e0e0f;
   text-decoration: underline;
 }
-.noteDiv{
+.noteDiv {
   font-size: medium;
   margin-top: 0.5em;
 }
-.noteText{
+.noteText {
   font-weight: 500;
 }
-.hotelBtnGroup{
+.hotelBtnGroup {
   margin: 0;
   float: right;
 }
-.hotelBtn{
+.hotelBtn {
   display: block;
   width: auto;
   min-width: 5em;
@@ -343,27 +341,27 @@
   border-radius: 2px;
   padding: auto;
 }
-.hotelChangeBtn:hover{
+.hotelChangeBtn:hover {
   background-color: #0e0e0f;
   color: white;
 }
-.hotelBookBtn{
+.hotelBookBtn {
   color: #fff;
-  border-color: #267A9C;
-  background-color: #267A9C;
+  border-color: #267a9c;
+  background-color: #267a9c;
 }
-.hotelBookBtn:hover{
+.hotelBookBtn:hover {
   color: #fff;
   border-color: #34a9d9;
   background-color: #34a9d9;
 }
-.addHotel{
+.addHotel {
   text-decoration: none;
-  color: #267A9C;
+  color: #267a9c;
   font-weight: 500;
 }
-.addHotel:hover{
+.addHotel:hover {
   text-decoration: underline;
-  color: #267A9C;
+  color: #267a9c;
   font-weight: 500;
 }
