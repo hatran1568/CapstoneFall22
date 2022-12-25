@@ -1,0 +1,30 @@
+.formInput::after {
+  visibility: hidden !important;
+}
+
+.formInput::before {
+  visibility: hidden !important;
+}
+.modalInput {
+  margin: 0;
+}
+.formgroup {
+  padding: 0;
+}
+.errorEmptyPlan {
+  margin: auto;
+  text-align: center;
+  color: red;
+}
+.optional {
+  max-height: 0;
+  transform: scaleY(0);
+  transform-origin: top;
+  transition: all 0.2s ease;
+}
+
+.show {
+  max-height: fit-content;
+  height: auto;
+  transform: scaleY(1);
+}

@@ -54,9 +54,10 @@ const NavBar = () => {
   if (windowDimenion.winWidth > 575) {
     searchBar.push(
       <>
-        <MDBNavbarBrand href="/" className="me-0">
+        <MDBNavbarBrand href="/" className={`me-0 ${style.name}`}>
           <p className="mb-0 d-flex align-items-center">
-            <span className="fs-3 me-2">TPS</span>
+            {/* <span className="fs-3 me-2">TPS</span> */}
+            <img src="../img/default/T.png" alt="" className={style.logo} />
             <span className="fs-5 text-muted">Itinerary planner</span>
           </p>
         </MDBNavbarBrand>
@@ -81,7 +82,7 @@ const NavBar = () => {
   if (window)
     return (
       <MDBNavbar expand="sm" light className={`${style.navBar}`}>
-        <MDBContainer fluid>
+        <MDBContainer fluid className={style.container}>
           {searchBar}
 
           <MDBNavbarNav right fullWidth={false}>
@@ -106,7 +107,13 @@ const NavBar = () => {
               </MDBNavbarItem>
             ) : (
               <MDBNavbarItem>
-                <MDBBtn style={{ width: 150 }} href="/login" color="info">
+                <MDBBtn
+                  style={{ width: 150 }}
+                  size="sm"
+                  href="/login"
+                  color="info"
+                  className={style.loginBtn}
+                >
                   Đăng nhập
                 </MDBBtn>
               </MDBNavbarItem>

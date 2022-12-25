@@ -4,6 +4,7 @@ package com.tripplanner.BlogService.repository;
 import com.tripplanner.BlogService.dto.request.BlogDetailsDTO;
 import com.tripplanner.BlogService.dto.request.BlogListDTO;
 import com.tripplanner.BlogService.dto.request.BlogNearbyDTO;
+import com.tripplanner.BlogService.dto.response.BlogGeneralDTO;
 import com.tripplanner.BlogService.entity.Blog;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
@@ -90,4 +91,8 @@ public interface BlogRepository extends JpaRepository<Blog,Integer> {
                     "WHERE blog_id = ?1",
             nativeQuery = true)
     void deleteBlog(int blogId);
+    @Query(value="SELECT *" +
+            " from blog b where b.status = 'PUBLISHED' " +
+            " order by b.date_modified desc limit 3", nativeQuery = true)
+    ArrayList<Blog> getLatestBlogs();
 }

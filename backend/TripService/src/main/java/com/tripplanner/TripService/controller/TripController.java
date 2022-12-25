@@ -243,13 +243,13 @@ public class TripController {
     @Transactional(rollbackFor = {Exception.class, Throwable.class})
     @DeleteMapping("/delete-detail")
     public ResponseEntity<TripDetails> deleteTripDetail(@RequestBody ObjectNode objectNode){
-        try{
+//        try{
             int id = objectNode.get("id").asInt();
             tripService.deleteDetailById(id);
             return new ResponseEntity<>(HttpStatus.OK);
-        } catch (Exception e){
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-        }
+//        } catch (Exception e){
+//            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+//        }
     }
 
 //    @Transactional(rollbackFor = {Exception.class, Throwable.class})

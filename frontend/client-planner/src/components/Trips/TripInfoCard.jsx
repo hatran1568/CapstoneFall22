@@ -58,7 +58,7 @@ function TripInfoCard(trip) {
   };
 
   return isDeleted ? null : (
-    <MDBRow>
+    <MDBRow className={style.card}>
       <MDBCol sm="12">
         <MDBCard style={{ border: 0 }}>
           <MDBRow>
