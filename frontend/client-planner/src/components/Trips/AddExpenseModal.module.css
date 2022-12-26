@@ -1,14 +1,14 @@
-.modalBtn{
+.modalBtn {
   text-align: center;
   width: 100%;
 }
-.modalBody{
+.modalBody {
   text-align: center;
 }
-.modalInput{
+.modalInput {
   width: 100% !important;
 }
-.catBtn{
+.catBtn {
   width: 80px;
   height: 60px;
   background-color: rgb(0, 0, 0) !important;
@@ -16,11 +16,32 @@
   font-size: 10px !important;
   opacity: 0.9 !important;
 }
-.modalContainer{
-  width: 30vw !important
+.modalContainer {
+  width: 30vw !important;
 }
-.errorMessage{
+.errorMessage {
   margin: auto;
   text-align: center;
   color: red;
+}
+/* Chrome, Safari, Edge, Opera */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Firefox */
+input[type="number"] {
+  -moz-appearance: textfield;
+}
+.budgetBtn {
+  border: solid 1px #34a9d9 !important;
+  background-color: #34a9d9 !important;
+  color: #fff !important;
+}
+.budgetBtn:hover {
+  color: #fff !important;
+  background-color: #267a9c !important;
+  border-color: #267a9c !important;
 }

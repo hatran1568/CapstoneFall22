@@ -3,6 +3,8 @@ import TripDetailTabs from "../GeneralInfo/TripDetailTabs";
 import style from "./TripBudget.module.css";
 import axios from "axios";
 import { useParams } from "react-router-dom";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import { Modal } from "antd";
 import { Progress } from "antd";
 import ModalGraph from "../../components/Trips/ModalGraph";
@@ -10,6 +12,7 @@ import AddExpenseModal from "../../components/Trips/AddExpenseModal";
 import UpdateExpenseModal from "../../components/Trips/UpdateExpenseModal";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import TripGeneralInfo from "../GeneralInfo/TripGeneralInfo";
+import ChangeBudgetModal from "../../components/Trips/ChangeBudgetModal";
 import {
   faFilter,
   faTrash,
@@ -137,7 +140,6 @@ class TripBudget extends Component {
         return Promise.reject(error);
       });
   }
-
   refreshHandler = () => {
     const id = window.location.href.split("/")[4];
     axios
@@ -230,17 +232,33 @@ class TripBudget extends Component {
       cancelText: "Không",
       onOk: async () => {
         const id = window.location.href.split("/")[4];
-        await axios.delete(
-          `http://localhost:8080/trip/api/expense/` + expenseId,
-          {}
-        );
+        await axios
+          .delete(`http://localhost:8080/trip/api/expense/` + expenseId, {})
+          .then(() => {
+            this.refreshHandler();
+          });
         //window.location.reload();
-        this.refreshHandler();
       },
       onCancel() {},
     });
   };
-
+  //edit budget
+  editBudget = (event, newBudget) => {
+    let trip = this.state.trip;
+    trip.budget = newBudget;
+    this.setState({ trip: trip });
+    console.log("new state: ", this.state);
+    toast("Ngân sách đã được thay đổi thành công!", {
+      position: "top-center",
+      autoClose: 500,
+      hideProgressBar: true,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: 0,
+      theme: "light",
+    });
+  };
   render() {
     const formatter = new Intl.NumberFormat("vi", {
       style: "currency",
@@ -327,7 +345,9 @@ class TripBudget extends Component {
               {entry.description}
             </MDBCol>
             <MDBCol md={3} className={style.expenseBoxAmount}>
-              {formatter.format(entry.amount)}
+              <span className={style.amountNumber}>
+                {formatter.format(entry.amount)}
+              </span>
             </MDBCol>
             <MDBCol
               md={1}
@@ -392,30 +412,45 @@ class TripBudget extends Component {
           <MDBCard className={style.budgetContainer}>
             <MDBCardBody>
               <span className={style.expenseText}>
-                Chi tiêu: {formatter.format(this.state.totalBudget)}
+                Chi tiêu:{" "}
+                <span className={style.amountNumber}>
+                  {formatter.format(this.state.totalBudget)}
+                </span>
               </span>
               <span className={style.budgetText}>
-                Ngân sách: {formatter.format(this.state.trip.budget)}
+                Ngân sách:{" "}
+                <span className={style.amountNumber}>
+                  {formatter.format(this.state.trip.budget)}
+                </span>
               </span>
               <br />
               {progressBar}
               <ModalGraph props={graphProps} />
+              <br />
+              <ChangeBudgetModal
+                tripId={this.state.trip.tripId}
+                oldBudget={this.state.trip.budget}
+                onBudgetEdited={(event, input) => this.editBudget(event, input)}
+              />
             </MDBCardBody>
           </MDBCard>
           <br />
           <h2>Các chi tiêu</h2>
           <MDBRow className={style.btnGroup}>
-            <MDBCol md={4} className={style.expenseAdd}>
+            <MDBCol md={4} className={`${style.expenseAdd} `}>
               <AddExpenseModal refreshHandler={() => this.refreshHandler()} />
             </MDBCol>
             <MDBCol md={4} className={style.expenseFilter}>
               <Dropdown>
-                <Dropdown.Toggle variant="info">
+                <Dropdown.Toggle
+                  variant="outline-primary"
+                  className={style.budgetBtn}
+                >
                   <FontAwesomeIcon icon="filter" />
                   <span id="filterDropdown"> Bộ lọc: Theo ngày</span>
                 </Dropdown.Toggle>
 
-                <Dropdown.Menu>
+                <Dropdown.Menu style={{ padding: 0 }}>
                   <Dropdown.Item
                     onClick={this.filterChanged}
                     id={0}
@@ -452,6 +487,18 @@ class TripBudget extends Component {
           <br />
           {expenseBox}
         </MDBContainer>
+        <ToastContainer
+          position="top-center"
+          autoClose={5000}
+          hideProgressBar
+          newestOnTop={false}
+          closeOnClick
+          rtl={false}
+          pauseOnFocusLoss
+          draggable
+          pauseOnHover
+          theme="light"
+        />
       </div>
     );
   }

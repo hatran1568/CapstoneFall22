@@ -95,7 +95,22 @@ public class TripController {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+    @Transactional(rollbackFor = {Exception.class, Throwable.class})
+    @PostMapping("/edit-budget")
+    public ResponseEntity<?> updateTripBudget(@RequestBody ObjectNode request) {
+        try {
+            int tripId = request.get("tripId").asInt();
+            Double newBudget = request.get("budget").asDouble();
+            if (!tripService.tripExists(tripId)) {
+                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            }
+            tripService.editTripBudget(tripId, newBudget);
+            return new ResponseEntity<>(HttpStatus.OK);
 
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
     @Transactional(rollbackFor = {Exception.class, Throwable.class})
     @PostMapping("/edit-dates")
     public ResponseEntity<?> updateStartAndEndDates(@RequestBody ObjectNode requestBody) {
