@@ -41,7 +41,7 @@ import java.util.Date;
 @RestController
 @RequestMapping("/location/api/pois")
 public class POIController {
-    private final String distanceToken = "tqkoPaQkFYlIvpSPWX17eWa4H6Brg";
+    private final String distanceToken = "xK5OoRaQkivXBSQ1XO1FSmUlgSJbu";
 
     @Autowired
     private DistanceRepository distanceRepository;
@@ -358,7 +358,7 @@ public class POIController {
             String origin = poi.getLat() + "," + poi.getLon();
 
             RestTemplate restTemplate = new RestTemplate();
-            ArrayList<POI> pois = poiRepo.getPOIsByDestinationId(1);
+            ArrayList<POI> pois = poiRepo.getPOIsByButHotel();
             String dest = "";
             int index = 0;
             for (POI des : pois
@@ -391,6 +391,36 @@ public class POIController {
                 }
             }
             distanceRepository.insertDistance(0, poiRepo.getLastestMA(), poiRepo.getLastestMA());
+            uri = "https://api.distancematrix.ai/maps/api/distancematrix/json?origins=";
+            origin = poi.getLat() + "," + poi.getLon();
+
+
+            pois = poiRepo.getHotels();
+            dest = "";
+            index = 0;
+            for (POI des : pois
+            ) {
+                index++;
+                dest += des.getLatitude() + "," + des.getLongitude();
+                if (index != pois.size())
+                    dest += "|";
+            }
+            uri = uri + origin + "&destinations=" + dest + "&key=" + distanceToken;
+            result = restTemplate.getForObject(uri, String.class);
+            target2 = gson.fromJson(result, DistanceMatrixDTO.class);
+            date = new java.sql.Timestamp(Calendar.getInstance().getTime().getTime());
+            index = 0;
+            for (Row row : target2.getRows()
+            ) {
+                for (Element e : row.elements
+                ) {
+
+                    distanceRepository.insertDistance(e.distance.value / 1000.0, poiRepo.getLastestMA(), pois.get(index).getActivityId());
+                    distanceRepository.insertDistance(e.distance.value / 1000.0, pois.get(index).getActivityId(), poiRepo.getLastestMA());
+
+                    index++;
+                }
+            }
             return new ResponseEntity<>(poiRepo.getLastestMA(), HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
