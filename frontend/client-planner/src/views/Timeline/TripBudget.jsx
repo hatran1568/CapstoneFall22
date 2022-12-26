@@ -79,9 +79,14 @@ class TripBudget extends Component {
       .get(`http://localhost:8080/trip/general/` + id)
       .then((res) => {
         const tripData = res.data;
+        var own = false;
+        if (tripData.user && tripData.user == localStorage.getItem("id")) {
+          own = true;
+        }
         this.setState({
           trip: tripData,
           dataLoaded: true,
+          own: own,
         });
       })
       .catch(function (error) {

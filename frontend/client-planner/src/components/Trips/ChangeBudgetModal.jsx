@@ -55,7 +55,7 @@ function ModalGraph(props) {
     setBasicModal(false);
   };
   const cancel = () => {};
-  const editBudget = () => {
+  const editBudget = (event) => {
     let newBudget = document.getElementById("modalAmount").value;
     if (newBudget == "" || newBudget == null || newBudget <= 0) {
       document.getElementById("modalAmount").value = "";
@@ -124,7 +124,9 @@ function ModalGraph(props) {
               <div className={style.okBtnDiv}>
                 <Button
                   className={style.submitBtn}
-                  onClick={editBudget}
+                  onClick={(event) => {
+                    editBudget(event);
+                  }}
                   variant="outline-secondary"
                 >
                   OK
