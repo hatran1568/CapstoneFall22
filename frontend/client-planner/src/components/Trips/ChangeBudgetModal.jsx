@@ -46,19 +46,19 @@ function ModalGraph(props) {
     setBasicModal(!basicModal);
   };
   const clear = () => {
-    document.getElementById("modalAmount").value = "";
+    document.getElementById("modalAmountBudget").value = "";
     document.getElementById("errorMessage").innerHTML = "";
   };
   const close = () => {
-    document.getElementById("modalAmount").value = "";
+    // document.getElementById("modalAmountBudget").value = "";
     document.getElementById("errorMessage").innerHTML = "";
     setBasicModal(false);
   };
   const cancel = () => {};
-  const editBudget = () => {
-    let newBudget = document.getElementById("modalAmount").value;
+  const editBudget = (event) => {
+    let newBudget = document.getElementById("modalAmountBudget").value;
     if (newBudget == "" || newBudget == null || newBudget <= 0) {
-      document.getElementById("modalAmount").value = "";
+      document.getElementById("modalAmountBudget").value = "";
       document.getElementById("errorMessage").innerHTML = "Hãy nhập giá tiền.";
     } else {
       axios({
@@ -112,7 +112,7 @@ function ModalGraph(props) {
                 <input
                   type="number"
                   className="form-control"
-                  id="modalAmount"
+                  id="modalAmountBudget"
                   min={0}
                   label="Amount"
                   placeholder="Số tiền"
@@ -124,7 +124,9 @@ function ModalGraph(props) {
               <div className={style.okBtnDiv}>
                 <Button
                   className={style.submitBtn}
-                  onClick={editBudget}
+                  onClick={(event) => {
+                    editBudget(event);
+                  }}
                   variant="outline-secondary"
                 >
                   OK

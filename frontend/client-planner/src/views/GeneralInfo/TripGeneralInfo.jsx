@@ -49,7 +49,14 @@ class TripGeneralInfo extends Component {
         tripId: this.state.trip.tripId,
         name: newName,
       };
-      axios.post("/trip/edit-name", data);
+      axios
+        .post("/trip/edit-name", data)
+        .then(() => {
+          this.setState({ tripName: newName });
+        })
+        .catch((error) => {
+          console.log(error);
+        });
     }
   };
   toLongDate = (date) => {
