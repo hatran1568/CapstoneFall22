@@ -25,8 +25,8 @@ spring:
         show-sql: true
     mail:
         host: smtp.gmail.com
-        username: oanhha2001@gmail.com
-        password: oydlwnsgjxitbqca
+        username: tripplannersystem@gmail.com
+        password: ywvoybbjbecepwht
         port: 587
         properties:
             mail:
