@@ -412,7 +412,10 @@ public class TripServiceImpl implements TripService {
     public void editTripName(int tripId, String name) {
         tripRepository.updateTripName(tripId, name);
     }
-
+    @Override
+    public void editTripBudget(int tripId, Double budget) {
+        tripRepository.updateTripBudget(tripId, budget);
+    }
     @Override
     public void editStartAndEndDates(int tripId, Date startDate, Date endDate) {
         int numberOfDays = getDayNumberByFromStartDate(startDate, endDate);

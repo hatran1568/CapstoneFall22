@@ -51,9 +51,9 @@ public class ExpenseController {
                 default: {
                 }
             }
-            if (expenses.isEmpty()) {
-                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-            }
+//            if (expenses.isEmpty()) {
+//                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+//            }
             return new ResponseEntity<>(expenses, HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
@@ -77,23 +77,24 @@ public class ExpenseController {
     @Transactional(rollbackFor = {Exception.class, Throwable.class})
     @GetMapping("/expense/total/{tripId}")
     public ResponseEntity<Double> getTotalExpense(@PathVariable int tripId) {
-        try {
+//        try {
             Double expense = expenseRepo.getTotalExpense(tripId);
+            if(expense == null) expense = Double.valueOf(0);
             return new ResponseEntity<>(expense, HttpStatus.OK);
-        } catch (Exception e) {
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-        }
+//        } catch (Exception e) {
+//            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+//        }
     }
 
     @Transactional(rollbackFor = {Exception.class, Throwable.class})
     @GetMapping("/expense/user/{tripId}")
     public ResponseEntity<Integer> getTripUserId(@PathVariable int tripId) {
-        try {
+//        try {
             Integer userId = tripRepo.getTripUserId(tripId);
             return new ResponseEntity<>(userId, HttpStatus.OK);
-        } catch (Exception e) {
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-        }
+//        } catch (Exception e) {
+//            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+//        }
     }
 
     @Transactional(rollbackFor = {Exception.class, Throwable.class})
@@ -101,9 +102,9 @@ public class ExpenseController {
     public ResponseEntity<ArrayList<ExpenseGraphDTO>> getExpenseGraphData(@PathVariable int tripId) {
         try {
             ArrayList<ExpenseGraphDTO> graphData = expenseRepo.getExpensesGraph(tripId);
-            if (graphData.isEmpty()) {
-                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-            }
+//            if (graphData.isEmpty()) {
+//                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+//            }
             return new ResponseEntity<>(graphData, HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);

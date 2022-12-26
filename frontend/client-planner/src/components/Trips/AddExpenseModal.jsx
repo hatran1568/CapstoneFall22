@@ -50,8 +50,10 @@ function AddExpenseModal(props) {
       document.getElementById("modalDesc").value = " ";
     if (
       document.getElementById("modalAmount").value == "" ||
-      document.getElementById("modalAmount").value == null
+      document.getElementById("modalAmount").value == null ||
+      document.getElementById("modalAmount").value <= 0
     ) {
+      document.getElementById("modalAmount").value = "";
       document.getElementById("errorMessage").innerHTML = "Hãy nhập giá tiền.";
     } else if (currentCat == 0)
       document.getElementById("errorMessage").innerHTML = "Hãy chọn danh mục.";
@@ -87,7 +89,11 @@ function AddExpenseModal(props) {
   };
   return (
     <span>
-      <MDBBtn color="info" onClick={toggleShow}>
+      <MDBBtn
+        color="info"
+        onClick={toggleShow}
+        className={`${style.budgetBtn}`}
+      >
         Thêm chi tiêu
       </MDBBtn>
       <MDBModal show={basicModal} setShow={setBasicModal} tabIndex="-1">
@@ -110,6 +116,7 @@ function AddExpenseModal(props) {
                   type="number"
                   className="form-control"
                   id="modalAmount"
+                  min={0}
                   label="Amount"
                   placeholder="Số tiền"
                 />

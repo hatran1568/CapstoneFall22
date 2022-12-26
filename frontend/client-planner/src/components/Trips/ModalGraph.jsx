@@ -1,5 +1,5 @@
-import React from 'react'
-import {useState} from 'react';
+import React from "react";
+import { useState } from "react";
 import style from "./ModalGraph.module.css";
 import {
   MDBBtn,
@@ -9,7 +9,7 @@ import {
   MDBModalHeader,
   MDBModalTitle,
   MDBModalBody,
-  MDBModalFooter
+  MDBModalFooter,
 } from "mdb-react-ui-kit";
 import {
   Chart as ChartJS,
@@ -19,8 +19,8 @@ import {
   Title,
   Tooltip,
   Legend,
-} from 'chart.js';
-import { Bar } from 'react-chartjs-2';
+} from "chart.js";
+import { Bar } from "react-chartjs-2";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faChartSimple } from "@fortawesome/free-solid-svg-icons";
 ChartJS.register(
@@ -31,7 +31,7 @@ ChartJS.register(
   Tooltip,
   Legend
 );
-function ModalGraph({props}) {
+function ModalGraph({ props }) {
   //Graph data
   // const categoryDataB = categoryData;
   // const expenseDataB = expenseData;
@@ -47,7 +47,7 @@ function ModalGraph({props}) {
   // console.log(expenseData);
 
   const options = {
-    indexAxis: 'y',
+    indexAxis: "y",
     elements: {
       bar: {
         borderWidth: 2,
@@ -56,11 +56,11 @@ function ModalGraph({props}) {
     responsive: true,
     plugins: {
       legend: {
-        position: '',
+        position: "",
       },
       title: {
         display: true,
-        text: 'Chi tiêu',
+        text: "Chi tiêu",
       },
     },
   };
@@ -68,11 +68,11 @@ function ModalGraph({props}) {
     labels,
     datasets: [
       {
-        label: 'Chi tiêu',
+        label: "Chi tiêu",
         data: expenseData,
-        borderColor: 'rgb(255, 99, 132)',
-        backgroundColor: 'rgba(255, 99, 132, 0.5)',
-      }
+        borderColor: "rgb(255, 99, 132)",
+        backgroundColor: "rgba(255, 99, 132, 0.5)",
+      },
     ],
   };
   //Breakdown Modal
@@ -82,19 +82,26 @@ function ModalGraph({props}) {
   };
   return (
     <span>
-      <a className={style.breakdownBtn} onClick={toggleShow}><FontAwesomeIcon icon={faChartSimple}/><b> Xem phân tích</b></a>
-      <MDBModal show={basicModal} setShow={setBasicModal} tabIndex='-1'>
+      <a className={style.breakdownBtn} onClick={toggleShow}>
+        <FontAwesomeIcon icon={faChartSimple} />
+        <b> Xem phân tích</b>
+      </a>
+      <MDBModal show={basicModal} setShow={setBasicModal} tabIndex="-1">
         <MDBModalDialog>
           <MDBModalContent>
             <MDBModalHeader>
               <MDBModalTitle>Phân tích chi phí</MDBModalTitle>
-              <MDBBtn className='btn-close' color='none' onClick={toggleShow}></MDBBtn>
+              <MDBBtn
+                className="btn-close"
+                color="none"
+                onClick={toggleShow}
+              ></MDBBtn>
             </MDBModalHeader>
             <MDBModalBody>
               <Bar options={options} data={expenseDataProcessed} />
             </MDBModalBody>
             <MDBModalFooter>
-              <MDBBtn color='secondary' onClick={toggleShow}>
+              <MDBBtn color="secondary" onClick={toggleShow}>
                 Đóng
               </MDBBtn>
             </MDBModalFooter>
@@ -102,6 +109,6 @@ function ModalGraph({props}) {
         </MDBModalDialog>
       </MDBModal>
     </span>
-  )
+  );
 }
-export default ModalGraph
+export default ModalGraph;

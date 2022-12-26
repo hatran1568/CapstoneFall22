@@ -110,4 +110,8 @@ public interface TripRepository extends JpaRepository<Trip, Integer> {
             "left join master_activity ma on p.activity_id = ma.activity_id " +
             "where td.trip_id = :tripId and ma.activity_id is not null limit :limit", nativeQuery = true)
     ArrayList<String> getPOIsByTripId(int tripId, int limit);
+    @Modifying
+    @org.springframework.transaction.annotation.Transactional
+    @Query("UPDATE Trip t SET t.budget=:budget WHERE t.tripId=:tripId")
+    void updateTripBudget(int tripId, Double budget);
 }

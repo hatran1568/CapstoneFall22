@@ -22,7 +22,7 @@ public class Trip {
     private int user;
 
     @Column(name = "budget")
-    private double budget;
+    private Double budget;
 
     @Type(type = "date")
     @Column(name = "start_date")

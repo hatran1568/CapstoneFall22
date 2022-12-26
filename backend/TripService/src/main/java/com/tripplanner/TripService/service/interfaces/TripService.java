@@ -40,4 +40,5 @@ public interface TripService {
     TripGeneralDTO createEmptyTrip(Double budget, String name, int userId, Date startDate, Date endDate);
 
     List<TripGeneralDTO> getLast3TripsByGuest(int [] array);
+    public void editTripBudget(int tripId, Double budget);
 }

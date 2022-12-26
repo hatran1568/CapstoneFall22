@@ -93,6 +93,14 @@ const NavBar = () => {
                     <PersonIcon />
                   </MDBDropdownToggle>
                   <MDBDropdownMenu style={{ padding: 0 }}>
+                    {localStorage.getItem("role") &&
+                    localStorage.getItem("role").toLowerCase() == "admin" ? (
+                      <MDBDropdownItem link href="/admin/dashboard">
+                        Dashboard
+                      </MDBDropdownItem>
+                    ) : (
+                      <></>
+                    )}
                     <MDBDropdownItem link href="/profile">
                       Hồ sơ cá nhân
                     </MDBDropdownItem>

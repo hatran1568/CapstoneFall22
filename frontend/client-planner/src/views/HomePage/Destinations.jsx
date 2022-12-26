@@ -40,11 +40,11 @@ function Destinations() {
             </div>
             <div className="row">
               {destinations.map((destination) => (
-                <div className={`col-lg-4 col-md-6 ${style.visit} mb-4`}>
-                  <div
-                    className={style.visitWrapper}
-                    key={destination.destinationId}
-                  >
+                <div
+                  className={`col-lg-4 col-md-6 ${style.visit} mb-4`}
+                  key={destination.destinationId}
+                >
+                  <div className={style.visitWrapper}>
                     <a href={"../Destination?id=" + destination.destinationId}>
                       <img
                         src={
