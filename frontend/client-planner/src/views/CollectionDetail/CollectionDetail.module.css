@@ -20,7 +20,16 @@
   padding-top: 2em;
   padding-bottom: 2em;
   background-color: gray;
-  background: linear-gradient(rgba(50, 50, 50, 1), rgba(50, 50, 50, 0));
+  background: rgba(50, 50, 50, 0.8);
+  height: 35vh;
+  position: relative;
+}
+
+.textContainer {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
 }
 
 .text {

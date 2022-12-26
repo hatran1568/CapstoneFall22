@@ -16,12 +16,10 @@ import java.util.Collections;
 public class UserDTO implements UserDetails {
     User user;
 
-
     public Collection<? extends GrantedAuthority> getAuthorities() {
 
         return Collections.singleton(new SimpleGrantedAuthority(user.getRole().getRoleName()));
     }
-
 
     public String getPassword() {
         return user.getPassword();
@@ -31,7 +29,6 @@ public class UserDTO implements UserDetails {
     public String getUsername() {
         return user.getEmail();
     }
-
 
     public String getEmail() {
         return user.getEmail();
@@ -45,16 +42,13 @@ public class UserDTO implements UserDetails {
         return true;
     }
 
-
     public boolean isAccountNonLocked() {
         return true;
     }
 
-
     public boolean isCredentialsNonExpired() {
         return true;
     }
-
 
     public boolean isEnabled() {
         return true;

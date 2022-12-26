@@ -6,6 +6,6 @@ import java.util.List;
 
 @Data
 public class ListBlogDTO {
-   private  String test;
-   private List<Blog> list;
+    private String test;
+    private List<Blog> list;
 }

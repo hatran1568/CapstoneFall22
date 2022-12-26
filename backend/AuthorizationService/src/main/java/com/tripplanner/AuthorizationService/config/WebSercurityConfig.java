@@ -93,43 +93,30 @@ public class WebSercurityConfig extends WebSecurityConfigurerAdapter {
                 .csrf()
                 .disable()
                 .authorizeRequests()
-
-
                 .antMatchers("/auth/**", "/api/register", "/login", "/oauth/**", "/api/loginByOAuth", "/api/wrongUser", "/api/user/findById/**", "/search/**", "/trip/**", "/trip/put-detail", "/api/pois/**", "/api/destination/**", "/api/expense/**", "/api/blog/**", "/api/user/password-reset", "/api/user/password-reset-request", "/trip/generate", "/api/collection/**", "/api/checklist/**", "/api/user/**", "/api/request/**", "api/admin/**").permitAll()
-
-
                 .anyRequest().authenticated().and().formLogin().loginPage("/api/wrongUser").failureHandler(new AuthenticationFailureHandler() {
-
                     @Override
                     public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response,
                                                         AuthenticationException exception) throws IOException, ServletException {
-
-
                         response.sendRedirect("/api/wrongUser");
                     }
                 })
                 .permitAll();
         http.oauth2Login()
-
                 .userInfoEndpoint()
                 .userService(oAuth2User)
                 .and().failureHandler(new AuthenticationFailureHandler() {
-
                     @Override
                     public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response,
                                                         AuthenticationException exception) throws IOException, ServletException {
-
-
                         response.getWriter().write("failed");
                         response.setStatus(403);
                     }
                 })
                 .successHandler(new AuthenticationSuccessHandler() {
-
                     @Override
                     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response,
                                                         Authentication authentication) throws IOException, ServletException {
-
                         OAuth2UserDTO oauthUser = (OAuth2UserDTO) authentication.getPrincipal();
                         String oauth2ClientName = oauthUser.getClientName();
 
@@ -139,8 +126,6 @@ public class WebSercurityConfig extends WebSecurityConfigurerAdapter {
                             String jwt = tokenProvider.generateToken(oauthUser);
                             User user = userRepository.findByEmail(oauthUser.getEmail());
                             String uri = UriComponentsBuilder.fromUriString("http://localhost:3000/oauth2/redirect")
-
-
                                     .queryParam("token", jwt)
                                     .queryParam("role", user.getRole().getRoleName())
                                     .queryParam("id", user.getUserID())
@@ -153,21 +138,15 @@ public class WebSercurityConfig extends WebSecurityConfigurerAdapter {
                             User user = userRepository.findByEmail(oauthUser.getEmail());
                             user.getRole();
                             String uri = UriComponentsBuilder.fromUriString("http://localhost:3000/oauth2/redirect")
-
                                     .queryParam("token", jwt)
                                     .queryParam("role", user.getRole().getRoleName())
                                     .queryParam("id", user.getUserID())
                                     .build().toUriString();
                             response.sendRedirect(uri);
                         }
-
-
                     }
                 });
         // Thêm một lớp Filter kiểm tra jwt
         http.addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
-
     }
-
-
 }

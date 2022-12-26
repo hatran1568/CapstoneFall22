@@ -22,7 +22,8 @@
 
 .deleteButton {
   color: rgb(50, 50, 50);
-  text-decoration: none;
+  background-color: transparent;
+  border: 0;
 }
 
 .deleteButton :hover {

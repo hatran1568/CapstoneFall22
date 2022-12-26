@@ -13,15 +13,13 @@ import java.util.UUID;
 @Component
 @Slf4j
 public class JwtTokenProvider {
-    @Autowired
-    UserRepository userRepository;
     // Đoạn JWT_SECRET này là bí mật, chỉ có phía server biết
     private final String JWT_SECRET = "toikhongbietvietginencogiminhbanlaisaunhe";
-
     //Thời gian có hiệu lực của chuỗi jwt
     private final long JWT_EXPIRATION = 604800000L;
-
     private final long RESET_PASSWORD_EXPIRATION = 600000L;
+    @Autowired
+    UserRepository userRepository;
 
     // Tạo ra jwt từ thông tin user
 //    public String generateToken(UserDTO userDetails) {
@@ -35,8 +33,6 @@ public class JwtTokenProvider {
 //                .signWith(SignatureAlgorithm.HS512, JWT_SECRET)
 //                .compact();
 //    }
-
-
 
     // Lấy thông tin user từ jwt
     public int getUserIdFromJWT(String token) {
@@ -78,16 +74,12 @@ public class JwtTokenProvider {
         Date now = new Date();
         Date expiryDate = new Date(now.getTime() + RESET_PASSWORD_EXPIRATION);
 
-        String resetPasswordToken = Jwts.builder()
+        return Jwts.builder()
                 .setSubject("Reset password")
                 .claim("UUID", UUID.randomUUID().toString())
                 .setIssuedAt(now)
                 .setExpiration(expiryDate)
                 .signWith(SignatureAlgorithm.HS512, JWT_SECRET)
                 .compact();
-
-        return resetPasswordToken;
     }
-
-
 }

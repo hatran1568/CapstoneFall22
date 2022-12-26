@@ -11,29 +11,28 @@ import java.util.Date;
 
 @Data
 @Entity
-@Table(name="trip")
+@Table(name = "trip")
 public class Trip {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name="trip_id",columnDefinition = "INT(1)")
+    @Column(name = "trip_id", columnDefinition = "INT(1)")
     private int tripId;
-
 
     @Column(name = "user_id", nullable = false)
     private int user;
 
-    @Column(name="budget")
+    @Column(name = "budget")
     private double budget;
 
     @Type(type = "date")
-    @Column(name="start_date")
+    @Column(name = "start_date")
     private Date startDate;
 
     @Type(type = "date")
-    @Column(name="end_date")
+    @Column(name = "end_date")
     private Date endDate;
 
-    @Column(name="name")
+    @Column(name = "name")
     private String name;
 
     @Column(name = "date_created")
@@ -47,6 +46,6 @@ public class Trip {
     private Date dateModified;
 
     @Enumerated(EnumType.STRING)
-    @Column(name="status")
+    @Column(name = "status")
     private TripStatus status;
 }

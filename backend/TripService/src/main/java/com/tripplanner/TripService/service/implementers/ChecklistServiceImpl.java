@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+
 @Service
 public class ChecklistServiceImpl implements ChecklistService {
     @Autowired
@@ -21,15 +22,15 @@ public class ChecklistServiceImpl implements ChecklistService {
     private ChecklistItemRepository checklistItemRepository;
     @Autowired
     private TripRepository tripRepository;
-    public ChecklistDTO getChecklistItemsByTripId(int tripId, int userId){
+
+    public ChecklistDTO getChecklistItemsByTripId(int tripId, int userId) {
         Trip trip = tripRepository.findDetailedTripById(tripId, userId);
-        if(trip == null) return null;
+        if (trip == null) return null;
         ChecklistDTO checklistDTO = new ChecklistDTO();
         checklistDTO.setTrip(mapper.map(trip, TripGeneralDTO.class));
         ArrayList<ChecklistItemDTO> checklistItemDTOS = new ArrayList<>();
         ArrayList<ChecklistItem> checklistItems = checklistItemRepository.getByTripId(tripId);
-        for (ChecklistItem item: checklistItems
-        ) {
+        for (ChecklistItem item : checklistItems) {
             ChecklistItemDTO checklistItemDTO = mapper.map(item, ChecklistItemDTO.class);
             checklistItemDTOS.add(checklistItemDTO);
         }
@@ -46,8 +47,9 @@ public class ChecklistServiceImpl implements ChecklistService {
     public void updateCheckedState(int itemId, Boolean checked) {
         checklistItemRepository.updateCheckedState(itemId, checked);
     }
+
     @Override
-    public void deleteItemById(int id){
+    public void deleteItemById(int id) {
         checklistItemRepository.deleteItemById(id);
     }
 
@@ -58,9 +60,7 @@ public class ChecklistServiceImpl implements ChecklistService {
             item.setNote(newItem.getNote());
             item.setChecked(newItem.isChecked());
             return mapper.map(checklistItemRepository.save(item), ChecklistItemDTO.class);
-        }).orElseGet(() -> {
-            return null;
-        });
+        }).orElseGet(() -> null);
     }
 
     @Override

@@ -20,7 +20,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 @Service
-public class UserServiceImplementer implements UserService  {
+public class UserServiceImplementer implements UserService {
     @Autowired
     UserRepository userRepository;
 
@@ -39,9 +39,9 @@ public class UserServiceImplementer implements UserService  {
     @Override
     public void processOAuthPostLoginGoogle(String email) {
         User user = userRepository.findByEmail(email);
-        if(user == null){
+        if (user == null) {
             User newUser = new User();
-            newUser.setRole(new Role(2,"User"));
+            newUser.setRole(new Role(2, "User"));
             newUser.setName(email);
             newUser.setEmail(email);
             newUser.setProvider(Provider.GOOGLE);
@@ -53,9 +53,9 @@ public class UserServiceImplementer implements UserService  {
     @Override
     public void processOAuthPostLoginFacebook(String name) {
         User user = userRepository.findByEmail(name);
-        if(user == null){
+        if (user == null) {
             User newUser = new User();
-            newUser.setRole(new Role(2,"User"));
+            newUser.setRole(new Role(2, "User"));
             newUser.setName(name);
             newUser.setEmail(name);
             newUser.setProvider(Provider.FACEBOOK);
@@ -79,19 +79,16 @@ public class UserServiceImplementer implements UserService  {
     @Override
     public boolean checkExistByEmail(String email) {
         User check = userRepository.findByEmail(email);
-        if(check==null)
-            return false;
-        else return true;
+        return check != null;
     }
 
     @Override
     public UserDetailResponseDTO getUserProfileById(int userId) {
         User user = userRepository.findByUserID(userId);
-        if (user == null){
+        if (user == null) {
             return null;
         }
-        UserDetailResponseDTO userDTO = mapper.map(user, UserDetailResponseDTO.class);
-        return userDTO;
+        return mapper.map(user, UserDetailResponseDTO.class);
     }
 
     //return old avatar
@@ -102,16 +99,14 @@ public class UserServiceImplementer implements UserService  {
         try {
             webViewLink = driveManager.uploadFile(file, "tripplanner/img");
             String oldAvatar = user.getAvatar();
-            if (oldAvatar != null){
+            if (oldAvatar != null) {
                 driveManager.deleteFile(oldAvatar.split("id=")[1]);
             }
         } catch (Exception e) {
             throw new RuntimeException("Could not store the file. Error: " + e.getMessage());
         } finally {
             userRepository.updateAvatar(userId, webViewLink);
-
         }
-
         return user.getAvatar();
     }
 
@@ -124,7 +119,7 @@ public class UserServiceImplementer implements UserService  {
     public boolean editPassword(ChangePwdRequestDTO request) {
         User user = userRepository.findByUserID(request.getId());
         PasswordEncoder encoder = new BCryptPasswordEncoder();
-        if (!encoder.matches(request.getOldPassword(), user.getPassword())){
+        if (!encoder.matches(request.getOldPassword(), user.getPassword())) {
             return false;
         }
         userRepository.updatePassword(request.getId(), encoder.encode(request.getNewPassword()));
@@ -134,12 +129,12 @@ public class UserServiceImplementer implements UserService  {
     @Override
     public boolean requestPasswordReset(String email) {
         User user = userRepository.findByEmail(email);
-        if (user == null){
+        if (user == null) {
             return false;
         }
         String token = tokenProvider.generatePasswordResetToken(user.getUserID());
         userRepository.updateResetToken(user.getUserID(), token);
-        String emailContent = "http://localhost:3000/reset-password-confirm?email="+email+"&&token=" + token;
+        String emailContent = "http://localhost:3000/reset-password-confirm?email=" + email + "&&token=" + token;
         mailSender.sendSimpleMessage(email, "Request reset password", emailContent);
         return true;
     }
@@ -150,9 +145,9 @@ public class UserServiceImplementer implements UserService  {
         String token = request.getResetToken();
         PasswordEncoder encoder = new BCryptPasswordEncoder();
 
-        if (user!=null && token.equals(request.getResetToken())){
-            if (tokenProvider.validateToken(token)){
-                userRepository.updatePassword(user.getUserID(),encoder.encode(request.getNewPassword()));
+        if (user != null && token.equals(request.getResetToken())) {
+            if (tokenProvider.validateToken(token)) {
+                userRepository.updatePassword(user.getUserID(), encoder.encode(request.getNewPassword()));
                 return true;
             }
         }

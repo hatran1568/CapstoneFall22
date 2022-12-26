@@ -18,6 +18,10 @@ import DetailActivityModal from "./DetailActivityModal";
 import TripNotFound from "../../components/Trips/TripNotFound";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import jQuery from "jquery";
+import { Button, Tooltip } from "antd";
+import { faCircleInfo } from "@fortawesome/free-solid-svg-icons";
+
 import {
   faPlus,
   faCaretRight,
@@ -57,12 +61,44 @@ class Timetable extends Component {
         name: "",
         show: false,
       },
+      change: false,
       showNotiModal: false,
       showCloneModal: false,
       detailInView: {},
       showDetailModal: false,
     };
   }
+  isOverlapping(event) {
+    var array = this.calendarComponentRef.current;
+    console.log(array);
+    for (let i = 1; i < array.length - 1; i++) {
+      if (array[i].id != event.id) {
+        if (
+          (new Date(array[i].start) <= new Date(event.end) &&
+            new Date(array[i].start) >= new Date(event.start)) ||
+          (new Date(array[i].end) >= new Date(event.start) &&
+            new Date(array[i].end) <= new Date(event.end))
+        ) {
+          console.log(event);
+          console.log(array[i].start);
+          console.log(array[i].end);
+          console.log(event.start);
+          console.log(new Date(event.end));
+
+          event.setExtendedProp("overLap", true);
+          console.log("event overlap: ", event.id, true);
+          return true;
+        }
+      }
+    }
+    for (let i = 1; i < array.length - 1; i++) {
+      this.calendarComponentRef.current.props.initialEvents[i].overLap = false;
+    }
+    event.setExtendedProp("overLap", false);
+    console.log("event not overlap: ", event.id, false);
+    return false;
+  }
+
   componentDidMount() {
     const { id } = this.props.params;
     const userId = localStorage.getItem("id") ? localStorage.getItem("id") : -1;
@@ -87,6 +123,22 @@ class Timetable extends Component {
             tempEvents.push(event);
           }
         });
+        for (let i = 0; i < tempEvents.length; i++) {
+          for (let j = i; j < tempEvents.length; j++) {
+            if (i != j) {
+              if (
+                (new Date(tempEvents[i].start) <= new Date(tempEvents[j].end) &&
+                  new Date(tempEvents[i].start) >=
+                    new Date(tempEvents[j].start)) ||
+                (new Date(tempEvents[i].end) >= new Date(tempEvents[j].start) &&
+                  new Date(tempEvents[i].end) <= new Date(tempEvents[j].end))
+              ) {
+                tempEvents[i].overLap = "true";
+                tempEvents[j].overLap = "true";
+              }
+            }
+          }
+        }
         var tzoffset = new Date().getTimezoneOffset() * 60000;
         var endDt = new Date(tripData.endDate);
         var newEndDt = new Date(endDt - tzoffset);
@@ -463,6 +515,7 @@ class Timetable extends Component {
               )}
 
               <FullCalendar
+                id="calendar"
                 ref={this.calendarComponentRef}
                 plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin]}
                 headerToolbar={{
@@ -510,9 +563,10 @@ class Timetable extends Component {
                 // select={this.handleDateSelect}
                 eventContent={this.renderEventContent} // custom render function
                 // eventClick={this.handleEventClick}
-                //eventsSet={this.handleEvents} // called after events are initialized/added/changed/removed
+                eventsSet={this.handleEvents} // called after events are initialized/added/changed/removed
                 /* you can update a remote database when these fire:
             eventAdd={function(){}}*/
+
                 eventDrop={this.handleEventChange}
                 eventResize={this.handleEventChange}
                 eventRemove={this.deleteEventApi}
@@ -529,7 +583,9 @@ class Timetable extends Component {
     if (eventInfo.event.groupId && eventInfo.event.groupId == "available") {
       return;
     }
+
     var newProps = { ...eventInfo.event.extendedProps.detail };
+    let conflict = eventInfo.event.extendedProps.overLap;
     var tzoffset = new Date().getTimezoneOffset() * 60000;
     newProps.date = new Date(eventInfo.event.start - tzoffset)
       .toISOString()
@@ -541,15 +597,28 @@ class Timetable extends Component {
     var end = +endStr[0] * 60 * 60 + +endStr[1] * 60;
     newProps.startTime = getTimeString(eventInfo.event.start);
     newProps.endTime = getTimeString(eventInfo.event.end);
+
     return (
       <div
-        className={style.fcEvent}
+        className={conflict ? style.overLap : style.fcEvent}
         onClick={(event) => {
           if (!this.state.own) this.openDetailModal(event, newProps);
           else this.openEditModal(event, newProps);
         }}
       >
-        <div className={style.eventTitle}>{eventInfo.event.title}</div>
+        {conflict ? (
+          <div className={style.eventTitle}>
+            <Tooltip
+              placement="rightBottom"
+              title="Bạn có hai hoạt động trùng thời gian với nhau!"
+            >
+              <FontAwesomeIcon className={style.danger} icon={faCircleInfo} />
+            </Tooltip>{" "}
+            {eventInfo.event.title}
+          </div>
+        ) : (
+          <div className={style.eventTitle}>{eventInfo.event.title}</div>
+        )}
         <div>
           <span className={style.duration}>
             {this.getDuration(eventInfo.event.start, eventInfo.event.end)}
@@ -561,6 +630,7 @@ class Timetable extends Component {
             {getTimeString(eventInfo.event.end)}
             {")"}
           </span>
+          <br></br>
         </div>
         {this.state.own ? (
           <div className={style.dropdown}>
@@ -584,12 +654,21 @@ class Timetable extends Component {
   };
   //handle event change
   handleEventChange = (eventInfo) => {
+    this.setState({ change: true });
     if (eventInfo.event.start.getDay() !== eventInfo.event.end.getDay()) {
       this.setState({ showNotiModal: true });
       console.log("overlap");
       eventInfo.revert();
       return;
     }
+    var array = this.state.currentEvents;
+    let objIndex = array.findIndex((obj) => obj.id == eventInfo.event.id);
+    array[objIndex].start = eventInfo.event.start;
+    array[objIndex].end = eventInfo.event.end;
+    this.setState({
+      currentEvents: array,
+    });
+    // this.isOverlapping(eventInfo.event);
     var detail = {};
     var start = getTimeString(eventInfo.event.start).split(":");
     detail.startTime = +start[0] * 60 * 60 + +start[1] * 60;
@@ -625,6 +704,7 @@ class Timetable extends Component {
   };
   //callback delete from api
   deleteEventApi = (eventInfo) => {
+    this.setState({ change: true });
     var detailId = eventInfo.event.id;
     axios
       .delete(`/trip/delete-detail`, {
@@ -853,9 +933,38 @@ class Timetable extends Component {
   };
 
   handleEvents = (events) => {
-    this.setState({
-      currentEvents: events,
-    });
+    // this.setState({
+    //   currentEvents: events,
+    // });
+
+    if (this.state.change) {
+      this.setState({
+        change: false,
+      });
+      for (let i = 0; i < events.length; i++) {
+        events[i].setExtendedProp("overLap", false);
+      }
+      for (let i = 0; i < events.length - 1; i++) {
+        for (let j = i; j < events.length - 1; j++) {
+          if (i != j) {
+            if (
+              (events[i].start <= events[j].end &&
+                events[i].start >= events[j].start) ||
+              (events[i].end >= events[j].start &&
+                events[i].end <= events[j].end)
+            ) {
+              console.log(i + " overlap");
+              console.log(events[i].start);
+              console.log(events[i].end);
+              console.log(events[j].start);
+              console.log(events[j].end);
+              events[i].setExtendedProp("overLap", true);
+              events[j].setExtendedProp("overLap", true);
+            }
+          }
+        }
+      }
+    }
   };
   showToastSuccess = (message) => {
     if (message === undefined) message = "Lưu thay đổi thành công!";
