@@ -114,11 +114,12 @@
   font-size: 12px;
   color: #fff;
 }
-.siteHero .scrollDown > span {
+.siteHero .scrollDown span {
   position: relative;
   -webkit-transform: rotate(90deg);
   -ms-transform: rotate(90deg);
   transform: rotate(90deg);
+  text-decoration: none !important;
   font-size: 13px;
   display: block;
 }

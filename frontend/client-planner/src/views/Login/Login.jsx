@@ -76,9 +76,11 @@ function Login() {
       <MDBCard>
         <MDBRow className="g-0">
           <MDBCol md="6">
-            <div
-              className={`${style.customGradient} d-flex flex-column justify-content-center h-100 mb-4`}
-            ></div>
+            <div className={`d-flex flex-column justify-content-center h-100`}>
+              <img src="../img/default/loginimage.png"
+                className={`${style.customGradient}`}
+              ></img>
+            </div>
           </MDBCol>
 
           <MDBCol md="6">
