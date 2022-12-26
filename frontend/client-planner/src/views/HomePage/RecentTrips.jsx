@@ -79,7 +79,7 @@ class RecentTrips extends Component {
               fontFamily: "arial",
             }}
           >
-            Xem thêm
+            Xem thêm các chuyến đi
           </MDBBtn>
         </div>
       </section>

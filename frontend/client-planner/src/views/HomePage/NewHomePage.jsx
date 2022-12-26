@@ -191,7 +191,7 @@ function NewHomePage() {
           <p data-aos="fade-up" data-aos-offset="-500">
             <a href="#my-trips" className={`smoothscroll ${style.scrollDown}`}>
               {" "}
-              <span className="fa fa-play"></span> Scroll Down
+              <span className="fa fa-play"></span> Khám phá
             </a>
           </p>
         </div>
@@ -209,10 +209,8 @@ function NewHomePage() {
                 Tận hưởng những trải nghiệm tuyệt vời
               </h2>
               <p className="lead" data-aos="fade-up" data-aos-delay="100">
-                Far far away, behind the word mountains, far from the countries
-                Vokalia and Consonantia, there live the blind texts. Separated
-                they live in Bookmarksgrove right at the coast of the Semantics,
-                a large language ocean.
+                TPS cung cấp thông tin, blog và đánh giá về các địa điểm yêu thích để giúp
+                bạn lựa chọn địa điểm để đi cho chuyến đi của bạn
               </p>
             </div>
           </div>
@@ -221,14 +219,14 @@ function NewHomePage() {
             <div className="col-md-6 col-lg-4 mb-4" data-aos="fade-up">
               <div className={`d-block ${style.imgFlaticon}`}>
                 <img
-                  src="../img/homepage/icons/001-breakfast.svg"
+                  src="../img/homepage/icons/002-planet-earth.svg"
                   alt="Free Template by Free-Template.co"
                   className="img-fluid mb-4"
                 />
-                <h3 className={style.h3}>Good Foods</h3>
+                <h3 className={style.h3}>Gợi ý chuyến đi</h3>
                 <p>
-                  Far far away, behind the word mountains, far from the
-                  countries Vokalia and Consonantia, there live the blind texts.{" "}
+                  Thuật toán đề xuất của chúng tôi dựa trên thông tin nhập vào để về điểm đến 
+                  du lịch, thời gian, ngân sách và sở thích của bạn để tự động tạo một chuyến đi{" "}
                 </p>
               </div>
             </div>
@@ -239,14 +237,14 @@ function NewHomePage() {
             >
               <div className={`d-block ${style.imgFlaticon}`}>
                 <img
-                  src="../img/homepage/icons/002-planet-earth.svg"
+                  src="../img/homepage/icons/edit.png"
                   alt="Free Template by Free-Template.co"
                   className="img-fluid mb-4"
                 />
-                <h3 className={style.h3}>Travel Anywhere</h3>
+                <h3 className={style.h3}>Tùy chỉnh chuyến đi</h3>
                 <p>
-                  Far far away, behind the word mountains, far from the
-                  countries Vokalia and Consonantia, there live the blind texts.{" "}
+                  Tạo và chỉnh sửa chi tiết chuyến đi của bạn trên thời gian biểu và mốc thời gian, 
+                  quản lí chi phí và danh sách việc cần làm{" "}
                 </p>
               </div>
             </div>
@@ -257,14 +255,13 @@ function NewHomePage() {
             >
               <div className={`d-block ${style.imgFlaticon}`}>
                 <img
-                  src="../img/homepage/icons/003-airplane.svg"
+                  src="../img/homepage/icons/hotel.png"
                   alt="Free Template by Free-Template.co"
                   className="img-fluid mb-4"
                 />
-                <h3 className={style.h3}>Airplane</h3>
+                <h3 className={style.h3}>Nhà nghỉ & Khách sạn</h3>
                 <p>
-                  Far far away, behind the word mountains, far from the
-                  countries Vokalia and Consonantia, there live the blind texts.{" "}
+                  Tìm nhà nghỉ hoặc khách sạn gần nhất so với các địa điểm trong chuyến đi của bạn{" "}
                 </p>
               </div>
             </div>

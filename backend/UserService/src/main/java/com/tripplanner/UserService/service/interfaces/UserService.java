@@ -12,7 +12,7 @@ import javax.mail.MessagingException;
 public interface UserService {
     public void processOAuthPostLoginGoogle(String email);
     public void processOAuthPostLoginFacebook(String name);
-    public void updateProvider(int usernID, Provider authType);
+    public void updateProvider(int userID, Provider authType);
     public void register(User user);
     public boolean checkExistByEmail(String email);
     public UserDetailResponseDTO getUserProfileById(int userId);
@@ -22,8 +22,7 @@ public interface UserService {
     boolean requestPasswordReset(String email) throws MessagingException;
     boolean handleResetPasswordToken(PasswordResetRequestDTO request);
 
-    boolean checkIsGenerating(int id);
-
+//    boolean checkIsGenerating(int id);
 
     int getGuestId();
 }

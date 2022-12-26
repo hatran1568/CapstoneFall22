@@ -12,36 +12,34 @@ import java.util.Set;
 
 @Data
 @Entity
-@Table(name="destination")
+@Table(name = "destination")
 public class Destination {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name="destination_id",columnDefinition = "INT(1)")
+    @Column(name = "destination_id", columnDefinition = "INT(1)")
     private int destinationId;
 
-    @Column(name="name")
+    @Column(name = "name")
     private String name;
 
-
-
-    @Column(name="description", columnDefinition = "text")
+    @Column(name = "description", columnDefinition = "text")
     private String description;
 
-    @Column(name="date_created")
+    @Column(name = "date_created")
     @Temporal(TemporalType.TIMESTAMP)
     @CreationTimestamp
     private Date dateCreated;
 
-    @Column(name="is_deleted")
+    @Column(name = "is_deleted")
     private boolean isDeleted;
 
-    @Column(name="date_modified")
+    @Column(name = "date_modified")
     @Temporal(TemporalType.TIMESTAMP)
 
     @UpdateTimestamp
     private Date dateModified;
-    @ManyToOne(cascade={CascadeType.ALL})
-    @JoinColumn(name="belong_to")
+    @ManyToOne(cascade = {CascadeType.ALL})
+    @JoinColumn(name = "belong_to")
     @JsonIgnore
     private Destination belongTo;
 

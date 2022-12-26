@@ -10,7 +10,6 @@ import com.tripplanner.LocationService.repository.CollectionRepository;
 import com.tripplanner.LocationService.repository.POIImageRepository;
 import com.tripplanner.LocationService.repository.POIRepository;
 import com.tripplanner.LocationService.service.interfaces.CollectionService;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -33,7 +32,17 @@ public class CollectionServiceImpl implements CollectionService {
         ArrayList<CollectionDTO> list = new ArrayList<>();
         ArrayList<Collection> collections = collectionRepository.getCollectionsByUserID(uid);
         for (Collection collection : collections) {
-            CollectionDTO collectionDTO = new CollectionDTO(collection.getCollectionId(), collection.getTitle(), collection.getDescription(), collection.getDateModified(), collection.isDeleted(), collection.getUser(), getFirstImageOfCollection(collection.getCollectionId()), getPOIListOfCollection(collection.getCollectionId()));
+            CollectionDTO collectionDTO =
+                    new CollectionDTO(
+                            collection.getCollectionId(),
+                            collection.getTitle(),
+                            collection.getDescription(),
+                            collection.getDateModified(),
+                            collection.isDeleted(),
+                            collection.getUser(),
+                            getFirstImageOfCollection(collection.getCollectionId()),
+                            getPOIListOfCollection(collection.getCollectionId())
+                    );
             if (!collectionDTO.isDeleted()) {
                 list.add(collectionDTO);
             }
@@ -44,7 +53,16 @@ public class CollectionServiceImpl implements CollectionService {
     @Override
     public CollectionDTO getCollectionById(int colId) {
         Collection collection = collectionRepository.getCollectionByID(colId);
-        return new CollectionDTO(collection.getCollectionId(), collection.getTitle(), collection.getDescription(), collection.getDateModified(), collection.isDeleted(), collection.getUser(), getFirstImageOfCollection(collection.getCollectionId()), getPOIListOfCollection(colId));
+        return new CollectionDTO(
+                collection.getCollectionId(),
+                collection.getTitle(),
+                collection.getDescription(),
+                collection.getDateModified(),
+                collection.isDeleted(),
+                collection.getUser(),
+                getFirstImageOfCollection(collection.getCollectionId()),
+                getPOIListOfCollection(colId)
+        );
     }
 
     @Override
@@ -60,7 +78,15 @@ public class CollectionServiceImpl implements CollectionService {
             Optional<POI> poi = poiRepository.getPOIByMasterActivity(cp.getPoi().getActivityId());
             if (poi.isPresent()) {
                 POIImage img = poiImageRepository.findFirstByPoiId(poi.get().getActivityId());
-                POIOfCollectionDTO poiOfCollectionDTO = new POIOfCollectionDTO(poi.get().getActivityId(), poi.get().getName(), poi.get().getAddress(), poi.get().getCategory().getCategoryName(), poi.get().getGoogleRate(), img.getUrl());
+                POIOfCollectionDTO poiOfCollectionDTO =
+                        new POIOfCollectionDTO(
+                                poi.get().getActivityId(),
+                                poi.get().getName(),
+                                poi.get().getAddress(),
+                                poi.get().getCategory().getCategoryName(),
+                                poi.get().getGoogleRate(),
+                                img.getUrl()
+                        );
                 list.add(poiOfCollectionDTO);
             }
         }
@@ -72,8 +98,8 @@ public class CollectionServiceImpl implements CollectionService {
         if (POIList.size() == 0) {
             return null;
         }
-        POIOfCollectionDTO rndmPOI = POIList.get(POIList.size() / 2);
-        POIImage poiImage = poiImageRepository.findFirstByPoiId(rndmPOI.getActivityId());
+        POIOfCollectionDTO poi = POIList.get(POIList.size() / 2);
+        POIImage poiImage = poiImageRepository.findFirstByPoiId(poi.getActivityId());
         if (poiImage == null) {
             return null;
         }

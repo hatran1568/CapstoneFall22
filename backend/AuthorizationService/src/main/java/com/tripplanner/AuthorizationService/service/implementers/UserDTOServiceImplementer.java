@@ -10,6 +10,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+
 @Service
 public class UserDTOServiceImplementer implements UserDetailsService {
     @Autowired
@@ -22,13 +23,12 @@ public class UserDTOServiceImplementer implements UserDetailsService {
         }
         return new UserDTO(user);
     }
-    @Transactional
 
+    @Transactional
     public UserDTO loadUserById(int id) {
         User user = userRepository.findById(id).orElseThrow(
                 () -> new UsernameNotFoundException("User not found with id : " + id)
         );
-
         return new UserDTO(user);
     }
 
@@ -36,7 +36,7 @@ public class UserDTOServiceImplementer implements UserDetailsService {
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
         User user = userRepository.findByEmail(email);
         if (user == null) {
-            throw new UsernameNotFoundException("User not found with email : "+ email);
+            throw new UsernameNotFoundException("User not found with email : " + email);
         }
         return new UserDTO(user);
     }
