@@ -1,6 +1,6 @@
 .body {
   background: #fff;
-  font-family: "Mukta Mahee", arial, sans-serif;
+  /* font-family: "Mukta Mahee", arial, sans-serif; */
   font-weight: 200;
   font-size: 18px;
   line-height: 1.8;
@@ -68,7 +68,7 @@
 }
 .siteHeroInner .heading {
   font-size: 80px;
-  font-family: "Abril Fatface", times, serif;
+  /* font-family: "Abril Fatface", times, serif; */
   color: #fff;
   line-height: 1;
   font-weight: bold;
@@ -128,11 +128,11 @@
 }
 .section {
   padding: 5em 7em;
-  font-family: Mukta Mahee;
+  /* font-family: Mukta Mahee; */
 }
 
 .rightCol {
-  font-family: "Mukta Mahee";
+  /* font-family: "Mukta Mahee"; */
 }
 @media (min-width: 992px) {
   .rightCol {
@@ -164,7 +164,7 @@ h3.h3 {
 .blogSection h2 {
   color: #0e0e0fdc;
   font-weight: bold;
-  font-family: "Abril Fatface";
+  /* font-family: "Abril Fatface"; */
   font-size: 50px;
 }
 .post .mediaCustom {
@@ -197,7 +197,7 @@ h3.h3 {
 }
 
 .post .mediaCustom h2 {
-  font-size: 26px;
+  font-size: 23px;
 }
 .mediaCustom .metaPost {
   color: #868686;
@@ -213,7 +213,7 @@ h3.h3 {
 }
 .mediaBody p {
   font-size: 18px;
-  font-family: "Mukta Mahee";
+  /* font-family: "Mukta Mahee"; */
   color: #6c757d;
 }
 .mediaBody a {
@@ -231,7 +231,10 @@ h3.h3 {
   padding: 0;
   -webkit-box-shadow: 0 2px 5px -2px rgba(0, 0, 0, 0.1);
   box-shadow: 0 2px 5px -2px rgba(0, 0, 0, 0.1);
-  margin: 10px;
+  /* margin: 10px; */
+}
+.visitWrapper {
+  padding: 10px;
 }
 .visit .text {
   padding: 20px;
@@ -273,7 +276,7 @@ h3.h3 {
 }
 .myTripsSection {
   padding: 4em 7em;
-  font-family: "Abril Fatface", arial, sans-serif;
+  /* font-family: "Abril Fatface", arial, sans-serif; */
 }
 .myTripsSection h3 {
   font-weight: 600;
