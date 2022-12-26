@@ -50,7 +50,7 @@ function Destinations() {
                         src={
                           destination.thumbnail
                             ? destination.thumbnail.includes("img/", 0)
-                              ? `../${destination.thumbnail.url}`
+                              ? `../${destination.thumbnail}`
                               : destination.thumbnail
                             : "../img/homepage/blog_1.jpg"
                         }

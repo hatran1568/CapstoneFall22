@@ -14,25 +14,24 @@ function Footer() {
         <MDBRow>
           <MDBCol lg="8" md="12" className="mb-md-0">
             <h6 style={{ color: "whitesmoke" }} className="text-uppercase mb-4">
-              About us
+              Về chúng tôi
             </h6>
 
             <p style={{ fontSize: "14px", marginRight: "20%" }}>
-              Lorem ipsum dolor sit amet consectetur, adipisicing elit. Iste
-              atque ea quis molestias. Fugiat pariatur maxime quis culpa
-              corporis vitae repudiandae aliquam voluptatem veniam, est atque
-              cumque eum delectus sint!
+              Trip Planner System, được làm bởi nhóm SEP490_G2 cho dự án Final Capstone ngành Công nghệ phần mềm
+              của Đại học FPT học kỳ Fall 2022, là một ứng dụng web được phát triển với mục đích cung cấp nền tảng
+              để người sử dụng lên kế hoạch trước và chia sẻ chuyến đi du lịch của họ với người dùng khác.
             </p>
           </MDBCol>
 
           <MDBCol lg="4" md="12" className=" mb-md-0">
             <h6 style={{ color: "whitesmoke" }} className="text-uppercase mb-4">
-              Our contacts
+              Thông tin liên lạc
             </h6>
 
             <p style={{ fontSize: "14px" }}>
               <MDBIcon icon="home" className="me-2" />
-              FPT University, Hoa Lac, Hanoi
+              Đại học FPT, Hòa Lạc, Hà Nội
             </p>
             <p style={{ fontSize: "14px" }}>
               <MDBIcon icon="envelope" className="me-2" />
@@ -40,10 +39,6 @@ function Footer() {
             </p>
             <p style={{ fontSize: "14px" }}>
               <MDBIcon icon="phone" className="me-2" />
-              083 643 3574
-            </p>
-            <p style={{ fontSize: "14px" }}>
-              <MDBIcon icon="print" className="me-2" />
               083 643 3574
             </p>
           </MDBCol>
