@@ -418,11 +418,13 @@ public class POIController {
                 }
             }
             distanceRepository.insertDistance(0, poiRepo.getLastestMA(), poiRepo.getLastestMA());
+            log.info("-------");
             uri = "https://api.distancematrix.ai/maps/api/distancematrix/json?origins=";
             origin = poi.getLat() + "," + poi.getLon();
 
 
             pois = poiRepo.getHotels();
+            log.info(String.valueOf(pois.size()));
             dest = "";
             index = 0;
             for (POI des : pois
