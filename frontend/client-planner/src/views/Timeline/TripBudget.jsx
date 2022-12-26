@@ -146,6 +146,7 @@ class TripBudget extends Component {
       });
   }
   refreshHandler = () => {
+    console.log("refreshhandler");
     const id = window.location.href.split("/")[4];
     axios
       .get(`http://localhost:8080/trip/api/expense/total/` + id)
@@ -252,7 +253,6 @@ class TripBudget extends Component {
     let trip = this.state.trip;
     trip.budget = newBudget;
     this.setState({ trip: trip });
-    console.log("new state: ", this.state);
     toast("Ngân sách đã được thay đổi thành công!", {
       position: "top-center",
       autoClose: 500,
@@ -436,6 +436,7 @@ class TripBudget extends Component {
                 tripId={this.state.trip.tripId}
                 oldBudget={this.state.trip.budget}
                 onBudgetEdited={(event, input) => this.editBudget(event, input)}
+                key={this.state.trip.tripId + "changebudget"}
               />
             </MDBCardBody>
           </MDBCard>
