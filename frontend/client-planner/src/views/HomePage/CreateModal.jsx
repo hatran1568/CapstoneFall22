@@ -22,7 +22,11 @@ function CreateModal(props) {
   const [endDate, setEndDate] = useState();
   const [maxEndDate, setMaxEndDate] = useState();
   const submitTrip = (event) => {
-    if (document.getElementById("budgetInput").value == "") {
+    if (
+      document.getElementById("budgetInput").value == "" ||
+      document.getElementById("budgetInput").value <= 0
+    ) {
+      document.getElementById("budgetInput").value = "";
       document.getElementById("errorEmptyPlan1").innerHTML =
         "Hãy nhập ngân sách.";
     } else if (document.getElementById("tripNameInput").value == "") {
@@ -47,17 +51,19 @@ function CreateModal(props) {
       onSubmit(createData);
     }
   };
+  const cancel = () => {
+    document.getElementById("budgetInput").value = "";
+    setStartDate();
+    setEndDate();
+    closeCreateModal();
+  };
   return (
     <Modal {...rest} size="lg" centered>
       <MDBModalHeader className={style.modalHeader}>
         <MDBModalTitle className={style.modalTitle}>
           Tạo chuyến đi mới
         </MDBModalTitle>
-        <MDBBtn
-          className="btn-close"
-          color="none"
-          onClick={closeCreateModal}
-        ></MDBBtn>
+        <MDBBtn className="btn-close" color="none" onClick={cancel}></MDBBtn>
       </MDBModalHeader>
       <MDBModalBody className={style.modalBody}>
         <div className={style.emptyTripInfo}>
@@ -147,7 +153,7 @@ function CreateModal(props) {
       </MDBModalBody>
 
       <MDBModalFooter>
-        <MDBBtn color="secondary" outline onClick={closeCreateModal}>
+        <MDBBtn color="secondary" outline onClick={cancel}>
           Đóng
         </MDBBtn>
         <MDBBtn onClick={submitTrip} className={style.submitBtn}>

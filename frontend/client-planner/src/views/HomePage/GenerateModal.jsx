@@ -35,7 +35,11 @@ function GenerateModal(props) {
     if (destination == -1) {
       document.getElementById("errorEmptyPlan").innerHTML =
         "Hãy nhập điểm đến.";
-    } else if (document.getElementById("budgetGenerateInput").value == "") {
+    } else if (
+      document.getElementById("budgetGenerateInput").value == "" ||
+      document.getElementById("budgetGenerateInput").value <= 0
+    ) {
+      document.getElementById("budgetGenerateInput").value = "";
       document.getElementById("errorEmptyPlan").innerHTML =
         "Hãy nhập ngân sách.";
     } else if (!startDate || !endDate) {

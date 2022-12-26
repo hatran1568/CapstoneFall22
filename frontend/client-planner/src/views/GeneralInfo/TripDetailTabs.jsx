@@ -38,7 +38,7 @@ export default function Tabs(props) {
           setStatus(newStatus);
           toast.success("Lưu thay đổi thành công!", {
             position: "top-center",
-            autoClose: 1000,
+            autoClose: 500,
             hideProgressBar: true,
             closeOnClick: true,
             pauseOnHover: true,
