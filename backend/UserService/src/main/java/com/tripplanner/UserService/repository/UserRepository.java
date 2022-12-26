@@ -12,35 +12,37 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.ArrayList;
 
 @Repository
-public interface UserRepository extends JpaRepository<User,Integer> {
-
-
+public interface UserRepository extends JpaRepository<User, Integer> {
     @Query("SELECT u FROM User u WHERE u.userID = :id")
     User findByUserID(int id);
 
     @Query("SELECT u FROM User u WHERE u.email = :email")
     User findByEmail(String email);
+
     @Modifying
     @Query("UPDATE User u SET u.provider = ?2 WHERE u.userID = ?1")
-    public void updateAuthenticationType(int UserID, Provider authType);
+    void updateAuthenticationType(int UserID, Provider authType);
 
     @Modifying
     @Transactional
     @Query("UPDATE User u SET u.avatar=:newAvatar WHERE u.userID=:userID")
-    public void updateAvatar(int userID, String newAvatar);
+    void updateAvatar(int userID, String newAvatar);
 
     @Modifying
     @Transactional
     @Query("UPDATE User u SET u.name=:newUsername WHERE u.userID=:userId")
-    public void updateUsername(int userId, String newUsername);
+    void updateUsername(int userId, String newUsername);
+
     @Modifying
     @Transactional
     @Query("UPDATE User u SET u.password=:newPassword WHERE u.userID=:userId")
-    public void updatePassword(int userId, String newPassword);
+    void updatePassword(int userId, String newPassword);
+
     @Modifying
     @Transactional
     @Query("UPDATE User u SET u.resetPasswordToken=:token WHERE u.userID=:userId")
-    public void updateResetToken(int userId, String token);
+    void updateResetToken(int userId, String token);
+
     @Query(
             value = "SELECT u.user_id as userId, u.avatar, u.date_created as created, u.date_modified as modified,\n" +
                     "       u.email, u.name, u.role_id as roleId, r.role_name as roleName, (SELECT COUNT(*) FROM trip t WHERE t.user_id = u.user_id) as trips\n" +
@@ -62,11 +64,13 @@ public interface UserRepository extends JpaRepository<User,Integer> {
                     "LIMIT ?3, ?4",
             nativeQuery = true)
     ArrayList<UserListDTO> getUserList(String filter, String key, int page, int skip);
+
     @Query(
             value = "SELECT COUNT(*) FROM user u\n" +
                     "WHERE u.status <> 'DELETED' AND u.name LIKE CONCAT('%',?1,'%')",
             nativeQuery = true)
     int getUserListAdminCount(String nameKeyword);
+
     @Modifying
     @Transactional
     @Query(
@@ -75,6 +79,7 @@ public interface UserRepository extends JpaRepository<User,Integer> {
                     "WHERE user_id = ?1",
             nativeQuery = true)
     void activateUser(int userId);
+
     @Modifying
     @Transactional
     @Query(
@@ -83,6 +88,7 @@ public interface UserRepository extends JpaRepository<User,Integer> {
                     "WHERE user_id = ?1",
             nativeQuery = true)
     void deactivateUser(int userId);
+
     @Modifying
     @Transactional
     @Query(
@@ -91,6 +97,7 @@ public interface UserRepository extends JpaRepository<User,Integer> {
                     "WHERE user_id = ?1",
             nativeQuery = true)
     void deleteUser(int userId);
+
     @Query(value = "SELECT u.user_id FROM user u left join role r on u.role_id = r.role_id WHERE r.role_name = 'guest' limit 1", nativeQuery = true)
     Integer findGuestUser();
 }

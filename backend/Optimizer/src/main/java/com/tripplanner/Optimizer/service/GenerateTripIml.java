@@ -1,6 +1,8 @@
 package com.tripplanner.Optimizer.service;
 
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.tripplanner.Optimizer.DTO.*;
 import com.tripplanner.Optimizer.DTO.Response.ComplexResponse;
 import com.tripplanner.Optimizer.DTO.Response.DesDetailsDTO;
@@ -10,14 +12,10 @@ import com.tripplanner.Optimizer.DTO.request.TripDetailsGenerateDTO;
 import com.tripplanner.Optimizer.DTO.request.TripGenerateDTO;
 import com.tripplanner.Optimizer.algorithms.GeneticAlgorithmImplementer;
 import com.tripplanner.Optimizer.config.RestTemplateClient;
-
-
 import com.tripplanner.Optimizer.entity.OptimizerRequest;
 import com.tripplanner.Optimizer.entity.RequestStatus;
-import com.tripplanner.Optimizer.service.interfaces.GenerateTrip;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import com.tripplanner.Optimizer.repository.RequestRepository;
+import com.tripplanner.Optimizer.service.interfaces.GenerateTrip;
 import com.tripplanner.Optimizer.utils.MailSenderManager;
 import javassist.NotFoundException;
 import org.apache.catalina.User;
@@ -26,7 +24,6 @@ import org.springframework.cloud.client.ServiceInstance;
 import org.springframework.cloud.client.discovery.DiscoveryClient;
 import org.springframework.core.env.Environment;
 import org.springframework.http.*;
-
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
@@ -52,26 +49,23 @@ public class GenerateTripIml implements GenerateTrip {
 
     @Autowired
     AsyncJobsManager asyncJobsManager;
-
+    @Autowired
+    RequestRepository repository;
     @Autowired
     private Environment environment;
-
     @Autowired
     private DiscoveryClient discoveryClient;
 
-    @Autowired
-    RequestRepository repository;
-
     @Override
     @Async("asyncTaskExecutor")
-    public CompletableFuture<ComplexResponse> generateTrip(GenerateTripUserInput input, String baseUrl,String token) throws ExecutionException, InterruptedException {
+    public CompletableFuture<ComplexResponse> generateTrip(GenerateTripUserInput input, String baseUrl, String token) throws ExecutionException, InterruptedException {
         CompletableFuture<ComplexResponse> task = new CompletableFuture<>();
         OptimizerRequest r = new OptimizerRequest();
         r.setTrip(null);
         r.setUser(input.getUserId());
         r.setUri(baseUrl);
         r.setStatus(RequestStatus.IN_PROGRESS);
-        OptimizerRequest saved= repository.save(r);
+        OptimizerRequest saved = repository.save(r);
         repository.changeInProgress(saved.getRequestId(), input.getUserId());
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
         //java.util.Date parsed = format.parse(input.getStartDate());
@@ -128,21 +122,20 @@ public class GenerateTripIml implements GenerateTrip {
         Solution s = ga.implementGA(data);
 
 
-
-
-        task.complete(new ComplexResponse(s,data,input,saved,token));
+        task.complete(new ComplexResponse(s, data, input, saved, token));
 //        repository.insert(RequestStatus.IN_PROGRESS.name(), baseUrl, input.getUserId());
 
         return task;
 
 
-        }
-@Override
+    }
+
+    @Override
     public CompletableFuture<ComplexResponse> insertToDB(ComplexResponse response) throws ExecutionException, InterruptedException {
 
-        Solution s =response.getS();
+        Solution s = response.getS();
         Data data = response.getData();
-        GenerateTripUserInput input =response.getInput();
+        GenerateTripUserInput input = response.getInput();
         repository.changeSuccess(input.getUserId());
         OptimizerRequest optimizerRequest = response.getRequest();
         optimizerRequest.setStatus(RequestStatus.COMPLETE);
@@ -157,7 +150,7 @@ public class GenerateTripIml implements GenerateTrip {
         HttpHeaders headers = new HttpHeaders();
         List<ServiceInstance> instances = discoveryClient.getInstances("trip-service");
 
-        ServiceInstance     instance = instances.get(0);
+        ServiceInstance instance = instances.get(0);
         headers.setContentType(MediaType.APPLICATION_JSON);
         Gson gson = new GsonBuilder()
                 .setDateFormat("yyyy-MM-dd").create();
@@ -173,7 +166,7 @@ public class GenerateTripIml implements GenerateTrip {
                 new HttpEntity<String>(personJsonObject, headers);
         System.out.println(request);
 
-        int id= restTemplateClient.restTemplate().postForObject(instance.getUri()+"/trip/insert", request, Integer.class);
+        int id = restTemplateClient.restTemplate().postForObject(instance.getUri() + "/trip/insert", request, Integer.class);
         optimizerRequest.setTrip(id);
         optimizerRequest = repository.save(optimizerRequest);
         Trip tour = s.toTrip(data);
@@ -196,7 +189,7 @@ public class GenerateTripIml implements GenerateTrip {
             String nodeObject = gson.toJson(detailsGenerateDTO);
             HttpEntity<String> request1 =
                     new HttpEntity<String>(nodeObject, headers);
-            int poiId= restTemplateClient.restTemplate().postForObject(instance.getUri()+"/trip/add-detail-generated", request1, Integer.class);
+            int poiId = restTemplateClient.restTemplate().postForObject(instance.getUri() + "/trip/add-detail-generated", request1, Integer.class);
             headers = new HttpHeaders();
             headers.setContentType(MediaType.APPLICATION_JSON);
             ExpenseDTO expenseDTO = new ExpenseDTO();
@@ -208,8 +201,8 @@ public class GenerateTripIml implements GenerateTrip {
             String nodeObject2 = gson.toJson(expenseDTO);
             HttpEntity<String> request2 =
                     new HttpEntity<String>(nodeObject2, headers);
-            restTemplateClient.restTemplate().postForObject(instance.getUri()+"/trip/api/insertGenerated", request2, String.class);
-        response.setRequest(optimizerRequest);
+            restTemplateClient.restTemplate().postForObject(instance.getUri() + "/trip/api/insertGenerated", request2, String.class);
+            response.setRequest(optimizerRequest);
 
         }
         task.complete(response);
@@ -233,9 +226,9 @@ public class GenerateTripIml implements GenerateTrip {
 
             }
         });
-        return  task;
+        return task;
 
     }
 
 
-    }
+}

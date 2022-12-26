@@ -146,7 +146,7 @@ public class BlogController {
         try{
             java.sql.Timestamp date = new java.sql.Timestamp(Calendar.getInstance().getTime().getTime());
             blogRepo.addBlog(date, date, userId);
-            return new ResponseEntity<>(blogRepo.getLastestBlog(), HttpStatus.OK);
+            return new ResponseEntity<>(blogRepo.getLatestBlog(), HttpStatus.OK);
         }
         catch (Exception e){
             return  new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);

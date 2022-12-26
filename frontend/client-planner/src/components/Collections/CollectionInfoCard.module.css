@@ -15,13 +15,13 @@
 }
 
 .deleteBtn {
-  color: rgb(255, 45, 50);
+  color: rgb(50, 50, 50);
   background-color: transparent;
   border: 0;
 }
 
 .deleteBtn :hover {
-  color: rgb(255, 110, 110);
+  color: rgb(104, 104, 104);
 }
 
 .link {

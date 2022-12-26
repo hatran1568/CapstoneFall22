@@ -8,7 +8,6 @@ import java.util.Date;
 
 @Data
 public class TripGeneralDTO {
-
     private String image;
     private int tripId;
     private double budget;
