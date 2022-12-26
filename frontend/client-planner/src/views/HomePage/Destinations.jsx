@@ -40,33 +40,37 @@ function Destinations() {
             </div>
             <div className="row">
               {destinations.map((destination) => (
-                <div
-                  className={`col-lg-4 col-md-6 ${style.visit} mb-4`}
-                  key={destination.destinationId}
-                >
-                  <a href={"../Destination?id=" + destination.destinationId}>
-                    <img
-                      src={
-                        destination.thumbnail
-                          ? destination.thumbnail.includes("img/", 0)
-                            ? `../${destination.thumbnail}`
-                            : destination.thumbnail
-                          : "../img/homepage/blog_1.jpg"
-                      }
-                      alt="Image placeholder"
-                      className="img-fluid"
-                    />{" "}
-                  </a>
-                  <div className={style.text}>
-                    <h3 className={`${style.h3} mb-1`}>
-                      <a
-                        href={"../Destination?id=" + destination.destinationId}
-                      >
-                        {destination.name}
-                      </a>
-                    </h3>
-                    <div className={`${style.description}`}>
-                      {destination.description}
+                <div className={`col-lg-4 col-md-6 ${style.visit} mb-4`}>
+                  <div
+                    className={style.visitWrapper}
+                    key={destination.destinationId}
+                  >
+                    <a href={"../Destination?id=" + destination.destinationId}>
+                      <img
+                        src={
+                          destination.thumbnail
+                            ? destination.thumbnail.includes("img/", 0)
+                              ? `../${destination.thumbnail}`
+                              : destination.thumbnail
+                            : "../img/homepage/blog_1.jpg"
+                        }
+                        alt="Image placeholder"
+                        className="img-fluid"
+                      />{" "}
+                    </a>
+                    <div className={style.text}>
+                      <h3 className={`${style.h3} mb-1`}>
+                        <a
+                          href={
+                            "../Destination?id=" + destination.destinationId
+                          }
+                        >
+                          {destination.name}
+                        </a>
+                      </h3>
+                      <div className={`${style.description}`}>
+                        {destination.description}
+                      </div>
                     </div>
                   </div>
                 </div>

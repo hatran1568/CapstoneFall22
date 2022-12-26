@@ -10,7 +10,6 @@ import com.tripplanner.LocationService.repository.DestinationRepository;
 
 import com.tripplanner.LocationService.service.interfaces.DestinationService;
 import com.tripplanner.LocationService.utils.GoogleDriveManager;
-import com.tripplanner.LocationService.dto.response.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

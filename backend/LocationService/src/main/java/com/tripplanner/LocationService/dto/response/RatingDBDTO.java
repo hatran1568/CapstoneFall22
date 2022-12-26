@@ -8,15 +8,19 @@ import java.util.Date;
 
 public interface RatingDBDTO {
     int getRateId();
-     String getComment();
-     Date getCreated();
-     Date getModified();
-     boolean getDeleted();
-     int getRate();
-     int getPoiId();
 
+    String getComment();
+
+    Date getCreated();
+
+    Date getModified();
+
+    boolean getDeleted();
+
+    int getRate();
+
+    int getPoiId();
 
     int getUserId();
-
 }
 

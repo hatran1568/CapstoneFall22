@@ -1,5 +1,6 @@
 package com.tripplanner.LocationService.controller;
 
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.tripplanner.LocationService.dto.request.DeletePOIFromCollectionDTO;
 import com.tripplanner.LocationService.dto.response.CollectionDTO;
 import com.tripplanner.LocationService.dto.response.POIOfCollectionDTO;
@@ -7,7 +8,6 @@ import com.tripplanner.LocationService.entity.Collection;
 import com.tripplanner.LocationService.repository.CollectionRepository;
 import com.tripplanner.LocationService.service.interfaces.CollectionService;
 import com.tripplanner.LocationService.service.interfaces.POIService;
-import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -43,16 +43,18 @@ public class CollectionController {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+
     @Transactional(rollbackFor = {Exception.class, Throwable.class})
     @GetMapping("/list/{uid}")
     public ResponseEntity<ArrayList<CollectionDTO>> getCollections(@PathVariable int uid) {
-            ArrayList<CollectionDTO> collections = collectionService.getCollectionListByUid(uid);
-            if (collections.isEmpty()) {
-                return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-            }
-            return new ResponseEntity<>(collections, HttpStatus.OK);
+        ArrayList<CollectionDTO> collections = collectionService.getCollectionListByUid(uid);
+        if (collections.isEmpty()) {
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
+        return new ResponseEntity<>(collections, HttpStatus.OK);
 
     }
+
     @Transactional(rollbackFor = {Exception.class, Throwable.class})
     @GetMapping("/get/{colId}")
     public ResponseEntity<CollectionDTO> getCollection(@PathVariable int colId) {
@@ -111,6 +113,7 @@ public class CollectionController {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+
     @Transactional(rollbackFor = {Exception.class, Throwable.class})
     @PutMapping("/edit")
     public ResponseEntity<CollectionDTO> updateCollection(@RequestBody ObjectNode objectNode) {
@@ -126,8 +129,9 @@ public class CollectionController {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
-    @Transactional(rollbackFor = {Exception.class, Throwable.class})
+
     // modifying POI list here
+    @Transactional(rollbackFor = {Exception.class, Throwable.class})
     @PostMapping("/addPoi")
     public ResponseEntity<CollectionDTO> addPOI(@RequestBody ObjectNode objectNode) {
         try {
@@ -140,8 +144,8 @@ public class CollectionController {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
-    @Transactional(rollbackFor = {Exception.class, Throwable.class})
 
+    @Transactional(rollbackFor = {Exception.class, Throwable.class})
     @DeleteMapping("/deletePoi")
     public ResponseEntity<CollectionDTO> deletePOI(@RequestBody DeletePOIFromCollectionDTO dto) {
         try {
@@ -154,6 +158,7 @@ public class CollectionController {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+
     @Transactional(rollbackFor = {Exception.class, Throwable.class})
     @PostMapping("/addPoi2")
     public ResponseEntity<ArrayList<CollectionDTO>> addPOI2(@RequestBody ObjectNode objectNode) {
@@ -168,6 +173,7 @@ public class CollectionController {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+
     @Transactional(rollbackFor = {Exception.class, Throwable.class})
     @DeleteMapping("/deletePoi2")
     public ResponseEntity<ArrayList<CollectionDTO>> deletePOI2(@RequestBody DeletePOIFromCollectionDTO dto) {
