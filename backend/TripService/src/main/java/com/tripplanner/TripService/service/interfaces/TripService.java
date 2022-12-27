@@ -1,10 +1,7 @@
 package com.tripplanner.TripService.service.interfaces;
 
 
-import com.tripplanner.TripService.dto.response.DetailedTripDTO;
-import com.tripplanner.TripService.dto.response.PublicTripDTO;
-import com.tripplanner.TripService.dto.response.TripDetailDTO;
-import com.tripplanner.TripService.dto.response.TripGeneralDTO;
+import com.tripplanner.TripService.dto.response.*;
 import org.springframework.stereotype.Service;
 
 import java.sql.Date;
@@ -22,7 +19,7 @@ public interface TripService {
     public TripDetailDTO getTripDetailById(int id);
     public TripDetailDTO editTripDetailById(TripDetailDTO detail, int id);
     public TripDetailDTO editCustomTripDetailById(TripDetailDTO detail, int detailId, int tripId);
-    public List<TripGeneralDTO> getTripsByUser(int userId);
+    public TripListDTO getTripsByUser(int userId, int page, int size);
     public void deleteTripById(int id);
     public List<TripGeneralDTO> getLast3TripsByUser(int userId);
     public int countTripByUser(int userId);
@@ -40,4 +37,5 @@ public interface TripService {
     TripGeneralDTO createEmptyTrip(Double budget, String name, int userId, Date startDate, Date endDate);
 
     List<TripGeneralDTO> getLast3TripsByGuest(int [] array);
+    public void editTripBudget(int tripId, Double budget);
 }

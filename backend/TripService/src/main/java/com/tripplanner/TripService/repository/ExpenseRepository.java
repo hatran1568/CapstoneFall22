@@ -51,7 +51,7 @@ public interface ExpenseRepository extends JpaRepository<ExpenseCategory, Double
     @Query(
             value = "SELECT SUM(te.amount) FROM trip_expense te WHERE te.trip_id = ?1",
             nativeQuery = true)
-    double getTotalExpense(int tripId);
+    Double getTotalExpense(int tripId);
 
     @Modifying
     @Transactional

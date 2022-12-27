@@ -50,12 +50,14 @@ function AddExpenseModal(props) {
       document.getElementById("modalDesc").value = " ";
     if (
       document.getElementById("modalAmount").value == "" ||
-      document.getElementById("modalAmount").value == null
+      document.getElementById("modalAmount").value == null ||
+      document.getElementById("modalAmount").value <= 0
     ) {
+      document.getElementById("modalAmount").value = "";
       document.getElementById("errorMessage").innerHTML = "Hãy nhập giá tiền.";
-    } else if (currentCat == 0)
+    } else if (currentCat == 0) {
       document.getElementById("errorMessage").innerHTML = "Hãy chọn danh mục.";
-    else
+    } else
       axios({
         method: "post",
         url: "http://localhost:8080/trip/api/expense/new",
@@ -87,7 +89,11 @@ function AddExpenseModal(props) {
   };
   return (
     <span>
-      <MDBBtn color="info" onClick={toggleShow}>
+      <MDBBtn
+        color="info"
+        onClick={toggleShow}
+        className={`${style.budgetBtn}`}
+      >
         Thêm chi tiêu
       </MDBBtn>
       <MDBModal show={basicModal} setShow={setBasicModal} tabIndex="-1">
@@ -110,6 +116,7 @@ function AddExpenseModal(props) {
                   type="number"
                   className="form-control"
                   id="modalAmount"
+                  min={0}
                   label="Amount"
                   placeholder="Số tiền"
                 />
@@ -307,7 +314,12 @@ function AddExpenseModal(props) {
               <div id="errorMessage" className={style.errorMessage}></div>
               <br />
               <div className={style.modalBtn}>
-                <MDBBtn color="info" onClick={addExpense}>
+                <MDBBtn
+                  color="info"
+                  onClick={(event) => {
+                    addExpense(event);
+                  }}
+                >
                   Lưu chi tiêu
                 </MDBBtn>
               </div>

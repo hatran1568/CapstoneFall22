@@ -1,32 +1,32 @@
-.mainContainer{
+.mainContainer {
   width: 100vw;
   align-content: center;
   text-align: center;
-  position:relative;
+  position: relative;
 }
-.tripImage{
+.tripImage {
   width: 100%;
   height: 500px;
-  background-image:url('https://twimg0-a.akamaihd.net/a/1350072692/t1/img/front_page/jp-mountain@2x.jpg');
+  background-image: url("https://twimg0-a.akamaihd.net/a/1350072692/t1/img/front_page/jp-mountain@2x.jpg");
   background-size: cover;
-  background-attachment:fixed;
+  background-attachment: fixed;
   margin: 0;
   padding: 0;
   position: relative;
 }
 .tripImage:after {
-  background-image: linear-gradient(to top,rgba(0,0,0,0),#000);
-  opacity: .6;
+  background-image: linear-gradient(to top, rgba(0, 0, 0, 0), #000);
+  opacity: 0.6;
 }
-.infoBox{
+.infoBox {
   margin: 0;
   position: absolute;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
 }
-.planTitle{
-  color: #FFFAB0;
+.planTitle {
+  color: #fffab0;
   margin: 0 auto 13px;
   overflow: visible;
   max-height: 207px;
@@ -34,16 +34,16 @@
   border-bottom: 1px dashed transparent;
   -webkit-font-smoothing: antialiased;
   text-shadow: 0 15px 40px rgb(0 0 0 / 20%);
-  font-family: Klarna Display,Helvetica Neue,Arial,Helvetica,sans-serif;
+  font-family: Klarna Display, Helvetica Neue, Arial, Helvetica, sans-serif;
   font-size: 66px;
   font-weight: 700;
   line-height: 1.05;
-  letter-spacing: .1px;
+  letter-spacing: 0.1px;
   margin-bottom: 16px;
   text-align: center;
 }
-.dates{
-  color: #FFFAB0;
+.dates {
+  color: #fffab0;
   margin: 0 auto 13px;
   overflow: visible;
   max-height: 207px;
@@ -51,37 +51,37 @@
   border-bottom: 1px dashed transparent;
   -webkit-font-smoothing: antialiased;
   text-shadow: 0 15px 40px rgb(0 0 0 / 20%);
-  font-family: Klarna Display,Helvetica Neue,Arial,Helvetica,sans-serif;
+  font-family: Klarna Display, Helvetica Neue, Arial, Helvetica, sans-serif;
   font-size: 20px;
   font-weight: 700;
   line-height: 1.05;
-  letter-spacing: .1px;
+  letter-spacing: 0.1px;
   margin-bottom: 16px;
   text-align: center;
 }
-.budgetContainer{
+.budgetContainer {
   width: 60vw;
   text-align: left;
-  margin:auto;
+  margin: auto;
   padding: 10px;
 }
-.expenseText{
+.expenseText {
   font-size: 20px;
 }
-.budgetText{
-  float:right;
+.budgetText {
+  float: right;
   font-size: 20px;
 }
-.budgetExceed{
+.budgetExceed {
   color: red;
 }
-.budgetWarning{
+.budgetWarning {
   color: rgb(255, 153, 0);
 }
-.budgetNormal{
+.budgetNormal {
   color: rgb(0, 174, 0);
 }
-.expenseBox{
+.expenseBox {
   width: 50vw;
   height: 10vh;
   margin: auto;
@@ -93,74 +93,74 @@
   border-left: none;
   border-right: none;
 }
-.expenseBox:hover{
+.expenseBox:hover {
   background-color: rgb(235, 234, 234);
 }
-.expenseBoxMid{
+.expenseBoxMid {
   text-align: left;
   margin: auto;
 }
-.expenseBoxAmount{
+.expenseBoxAmount {
   text-align: right;
 }
-.expenseBoxRow{
+.expenseBoxRow {
   padding: 20px;
 }
-.expenseFilter{
+.expenseFilter {
   width: 45vw !important;
   text-align: right !important;
 }
-.expenseBoxDelete{
+.expenseBoxDelete {
   color: rgb(134, 134, 134);
 }
-.expenseBoxDelete:hover{
+.expenseBoxDelete:hover {
   cursor: pointer;
   color: rgb(0, 0, 0);
 }
-.expenseAdd{
+.expenseAdd {
   align-items: left;
   width: 15vw !important;
 }
-.expenseAdd:hover{
+.expenseAdd:hover {
   cursor: pointer;
 }
-.btnGroup{
+.btnGroup {
   width: 60vw !important;
-  margin:auto !important;
+  margin: auto !important;
 }
-.progressBar{
+.progressBar {
   margin-top: 10px;
   margin-bottom: 5px;
   border-radius: 2px !important;
 }
-.errorText{
+.errorText {
   width: 100%;
   text-align: center;
   margin-top: 30px;
 }
-.tripImageDiv{
-  width: 100%; 
+.tripImageDiv {
+  width: 100%;
   height: 500px;
   background-size: cover;
   margin: 0;
   padding: 0;
-  position: relative; 
+  position: relative;
 }
-.tripImage{
-height: 500px;
-width: 100%;
-object-fit: cover;
-filter: brightness(60%) opacity(80%);
+.tripImage {
+  height: 500px;
+  width: 100%;
+  object-fit: cover;
+  filter: brightness(60%) opacity(80%);
 }
-.infoBox{
+.infoBox {
   margin: 0;
   position: absolute;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
 }
-.planTitle{
-  color: #FFFAB0;
+.planTitle {
+  color: #fffab0;
   margin: 0 auto 13px;
   overflow: visible;
   max-height: 207px;
@@ -168,16 +168,16 @@ filter: brightness(60%) opacity(80%);
   border-bottom: 1px dashed transparent;
   -webkit-font-smoothing: antialiased;
   text-shadow: 0 15px 40px rgb(0 0 0 / 20%);
-  font-family: Klarna Display,Helvetica Neue,Arial,Helvetica,sans-serif;
+  font-family: Klarna Display, Helvetica Neue, Arial, Helvetica, sans-serif;
   font-size: 66px;
   font-weight: 700;
   line-height: 1.05;
-  letter-spacing: .1px;
+  letter-spacing: 0.1px;
   margin-bottom: 16px;
   text-align: center;
 }
-.dates{
-  color: #FFFAB0;
+.dates {
+  color: #fffab0;
   margin: 0 auto 13px;
   overflow: visible;
   max-height: 207px;
@@ -185,11 +185,11 @@ filter: brightness(60%) opacity(80%);
   border-bottom: 1px dashed transparent;
   -webkit-font-smoothing: antialiased;
   text-shadow: 0 15px 40px rgb(0 0 0 / 20%);
-  font-family: Klarna Display,Helvetica Neue,Arial,Helvetica,sans-serif;
+  font-family: Klarna Display, Helvetica Neue, Arial, Helvetica, sans-serif;
   font-size: 20px;
   font-weight: 700;
   line-height: 1.05;
-  letter-spacing: .1px;
+  letter-spacing: 0.1px;
   margin-bottom: 16px;
   text-align: center;
 }
@@ -203,13 +203,13 @@ filter: brightness(60%) opacity(80%);
   top: 0;
   z-index: 900;
 }
-.dropdownContent{
+.dropdownContent {
   display: none;
-position: absolute;
-background-color: #fff;
-min-width: 160px;
-box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
-z-index: 1;
+  position: absolute;
+  background-color: #fff;
+  min-width: 160px;
+  box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+  z-index: 1;
 }
 .dropDown:hover .dropdownContent {
   display: block;
@@ -225,45 +225,58 @@ z-index: 1;
   display: block;
   font-size: 15px;
 }
-.icons{
+.icons {
   width: 20px;
   margin-left: 0;
   margin-right: 10px;
 }
-.dropDownIcon{
+.dropDownIcon {
   margin: 0;
   margin-left: 5px;
   font-size: 15px;
 }
-.active{
-  background-color: #f1f1f1
+.active {
+  background-color: #f1f1f1;
 }
-.checkIcons{
+.checkIcons {
   float: right;
   color: green;
 }
-.navItem{
+.navItem {
   border: none !important;
   color: #5f6163 !important;
   background-color: #fff !important;
-  font-family: Klarna Text,Helvetica Neue,Arial,Helvetica,sans-serif;
+  font-family: Klarna Text, Helvetica Neue, Arial, Helvetica, sans-serif;
   font-size: 16px !important;
   font-weight: 500 !important;
   text-transform: none !important;
 }
-.navItem:hover{
+.navItem:hover {
   color: #000 !important;
   background-color: rgb(255, 255, 255) !important;
   font-weight: 600 !important;
 }
-.navItemActive{
+.navItemActive {
   color: #000 !important;
   background-color: rgb(255, 255, 255) !important;
   border: none !important;
-  border-bottom: 3px solid #0E0E0F !important;
+  border-bottom: 3px solid #0e0e0f !important;
   font-weight: 600 !important;
 }
-.navTabs{
+.navTabs {
   border: none !important;
   box-shadow: 0 4px 12px 0 rgb(0 0 0 / 5%), 0 2px 12px rgb(0 0 0 / 7%) !important;
+}
+.budgetBtn {
+  border: solid 1px #34a9d9 !important;
+  background-color: #34a9d9 !important;
+  color: #fff !important;
+}
+.budgetBtn:hover {
+  color: #fff !important;
+  background-color: #267a9c !important;
+  border-color: #267a9c !important;
+}
+.amountNumber {
+  font-weight: 500;
 }

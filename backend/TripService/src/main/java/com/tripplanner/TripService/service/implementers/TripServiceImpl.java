@@ -18,6 +18,10 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.client.ServiceInstance;
 import org.springframework.cloud.client.discovery.DiscoveryClient;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
@@ -367,9 +371,10 @@ public class TripServiceImpl implements TripService {
     }
 
     @Override
-    public List<TripGeneralDTO> getTripsByUser(int userId) {
+    public TripListDTO getTripsByUser(int userId, int page, int size) {
         ArrayList<Trip> trips = tripRepository.getTripsByUser(userId);
-        return trips.stream().map(trip -> {
+
+        Page<TripGeneralDTO> paging = listToPage(trips.stream().map(trip -> {
             TripGeneralDTO tripDTO = new TripGeneralDTO();
             tripDTO.setTripId(trip.getTripId());
             tripDTO.setName(trip.getName());
@@ -379,8 +384,21 @@ public class TripServiceImpl implements TripService {
             tripDTO.setImage(getFirstPOIImage(trip.getTripId()));
             tripDTO.setDateModified(trip.getDateModified());
             return tripDTO;
-        }).collect(Collectors.toList());
+        }).collect(Collectors.toList()), page, size);
+        TripListDTO tripListDTO = new TripListDTO();
+        tripListDTO.setList(paging.getContent());
+        tripListDTO.setTotalPage((int) Math.ceil(trips.size() / 10.0));
+        tripListDTO.setCurrentPage(page);
+        return tripListDTO;
     }
+
+    private Page<TripGeneralDTO> listToPage(List<TripGeneralDTO> list, int page, int size) {
+        Pageable paging = PageRequest.of(page, size);
+        int start = Math.min((int) paging.getOffset(), list.size());
+        int end = Math.min((start + paging.getPageSize()), list.size());
+        return new PageImpl<>(list.subList(start, end), PageRequest.of(page, size), list.size());
+    }
+
 
     @Override
     public void deleteTripById(int id) {
@@ -412,7 +430,10 @@ public class TripServiceImpl implements TripService {
     public void editTripName(int tripId, String name) {
         tripRepository.updateTripName(tripId, name);
     }
-
+    @Override
+    public void editTripBudget(int tripId, Double budget) {
+        tripRepository.updateTripBudget(tripId, budget);
+    }
     @Override
     public void editStartAndEndDates(int tripId, Date startDate, Date endDate) {
         int numberOfDays = getDayNumberByFromStartDate(startDate, endDate);

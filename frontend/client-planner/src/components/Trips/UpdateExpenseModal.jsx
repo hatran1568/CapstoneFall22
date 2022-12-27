@@ -51,7 +51,12 @@ function UpdateExpenseModal(props) {
     const id = window.location.href.split("/")[4];
     if (document.getElementById(modalDescName).value == null)
       document.getElementById(modalDescName).value = " ";
-    if (document.getElementById(modalAmountName).value == "") {
+    if (
+      document.getElementById(modalAmountName).value == "" ||
+      document.getElementById(modalAmountName).value == null ||
+      document.getElementById(modalAmountName).value <= 0
+    ) {
+      document.getElementById(modalAmountName).value = "";
       document.getElementById(modalErrorName).innerHTML = "Hãy nhập giá tiền.";
     } else if (currentCat == 0)
       document.getElementById(modalErrorName).innerHTML = "Hãy chọn danh mục.";
@@ -108,6 +113,7 @@ function UpdateExpenseModal(props) {
                   className="form-control"
                   id={"modalAmount" + data.expenseId}
                   label="Amount"
+                  min={0}
                   placeholder="Số tiền"
                   defaultValue={data.amount}
                 />

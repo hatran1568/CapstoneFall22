@@ -2,10 +2,7 @@ package com.tripplanner.TripService.controller;
 
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.tripplanner.TripService.dto.request.TripGenerateDTO;
-import com.tripplanner.TripService.dto.response.DetailedTripDTO;
-import com.tripplanner.TripService.dto.response.TripDTO;
-import com.tripplanner.TripService.dto.response.TripDetailDTO;
-import com.tripplanner.TripService.dto.response.TripGeneralDTO;
+import com.tripplanner.TripService.dto.response.*;
 import com.tripplanner.TripService.entity.TripDetails;
 import com.tripplanner.TripService.entity.TripStatus;
 import com.tripplanner.TripService.repository.TripRepository;
@@ -13,6 +10,10 @@ import com.tripplanner.TripService.service.interfaces.TripService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.client.discovery.DiscoveryClient;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
@@ -94,7 +95,22 @@ public class TripController {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+    @Transactional(rollbackFor = {Exception.class, Throwable.class})
+    @PostMapping("/edit-budget")
+    public ResponseEntity<?> updateTripBudget(@RequestBody ObjectNode request) {
+        try {
+            int tripId = request.get("tripId").asInt();
+            Double newBudget = request.get("budget").asDouble();
+            if (!tripService.tripExists(tripId)) {
+                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            }
+            tripService.editTripBudget(tripId, newBudget);
+            return new ResponseEntity<>(HttpStatus.OK);
 
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
     @Transactional(rollbackFor = {Exception.class, Throwable.class})
     @PostMapping("/edit-dates")
     public ResponseEntity<?> updateStartAndEndDates(@RequestBody ObjectNode requestBody) {
@@ -262,11 +278,11 @@ public class TripController {
     }
 
 //    @Transactional(rollbackFor = {Exception.class, Throwable.class})
-    @GetMapping("/getTripsByUser/{userId}")
-    public ResponseEntity<?> getTripsByUser(@PathVariable int userId) {
+    @GetMapping("/getTripsByUser/{userId}/{page}")
+    public ResponseEntity<?> getTripsByUser(@PathVariable int userId, @PathVariable int page) {
 //        try {
 
-            return new ResponseEntity<>(tripService.getTripsByUser(userId), HttpStatus.OK);
+            return new ResponseEntity<>(tripService.getTripsByUser(userId, page, 10), HttpStatus.OK);
 
 //        } catch (Exception e) {
 //            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
