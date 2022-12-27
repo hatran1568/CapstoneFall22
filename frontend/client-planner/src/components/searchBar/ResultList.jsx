@@ -38,7 +38,7 @@ function ResultList(props) {
               item.type == "DESTINATION"
                 ? "http://localhost:3000/Destination?id=" + item.id
                 : item.type == "BLOG"
-                ? "#"
+                ? "http://localhost:3000/blog?id=" + item.id
                 : "http://localhost:3000/poi?id=" + item.id
             }
             key={item.id}
@@ -57,10 +57,10 @@ function ResultList(props) {
                 <FontAwesomeIcon
                   icon={
                     item.type == "DESTINATION"
-                      ? faLocationDot
-                      : item.type == "POI"
                       ? faMapLocationDot
-                      : faBlog
+                      : item.type == "BLOG"
+                      ? faBlog
+                      : faLocationDot
                   }
                 />
               </div>{" "}

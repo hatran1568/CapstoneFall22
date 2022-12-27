@@ -455,7 +455,7 @@ class POIAddUpdate extends Component {
           }
         });
         await this.delay(3000);
-        window.location.href = "../poi/update?id=" + id;
+        window.location.href = "../poi/adminlist";
       }
     }
   };

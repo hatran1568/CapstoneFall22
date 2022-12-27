@@ -41,17 +41,17 @@ function RequestResetPassword() {
       className={`${style.customContainer} mt-4 item-align-center text-center`}
     >
       <Stepper activeStep={current} alternativeLabel>
-        <Step key="Step 1">
-          <StepLabel>Step 1</StepLabel>
+        <Step key="Bước 1">
+          <StepLabel>Bước 1</StepLabel>
         </Step>
-        <Step key="Step 2">
-          <StepLabel>Step 2</StepLabel>
+        <Step key="Bước 2">
+          <StepLabel>Bước 2</StepLabel>
         </Step>
-        <Step key="Step 3">
-          <StepLabel>Step 3</StepLabel>
+        <Step key="Bước 3">
+          <StepLabel>Bước 3</StepLabel>
         </Step>
-        <Step key="Step 4">
-          <StepLabel>Step 4</StepLabel>
+        <Step key="Bước 4">
+          <StepLabel>Bước 4</StepLabel>
         </Step>
       </Stepper>
 
@@ -63,18 +63,18 @@ function RequestResetPassword() {
             icon="key"
             size="3x"
           />{" "}
-          <h4>Forgot password?</h4>
+          <h4>Quên mật khẩu?</h4>
           <p style={{ margin: "0px 10% " }}>
             {" "}
-            Enter the email address that you are using for your account below
-            and we will send you an email with the link to reset your password
+            Điền tài khoản email mà bạn đang dùng cho tài khoản của bạn, chúng tôi
+            sẽ gửi email với link để đổi mật khẩu
           </p>
           <div style={{ margin: "0px 20% " }}>
             <p
               style={{ textAlign: "left", fontWeight: "bold" }}
               className="text-left mt-2 mx-5"
             >
-              Email address
+              Tài khoản Email
             </p>
             <MDBInput
               wrapperClass="mb-0 mx-5"
@@ -96,7 +96,7 @@ function RequestResetPassword() {
               color="dark"
               onClick={handleRequestEmail}
             >
-              Reset password
+              GỬI EMAIL
             </MDBBtn>
           )}
         </div>
@@ -108,11 +108,11 @@ function RequestResetPassword() {
             icon="envelope"
             size="3x"
           />
-          <h4>Check your mail</h4>
+          <h4>Kiểm tra email của bạn</h4>
 
           <p style={{ margin: "0px 10% " }}>
             {" "}
-            We sent a password reset link to {email}
+            Chúng tôi đã gửi link đổi mật khẩu đến {email}
           </p>
         </div>
       )}

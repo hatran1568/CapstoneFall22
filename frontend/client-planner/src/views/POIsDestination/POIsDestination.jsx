@@ -35,7 +35,7 @@ function POIsDestination() {
         .then((response) => {
           let res = response.data;
           let url = res
-            ? res.includes("img\\", 0)
+            ? res.includes("img/", 0)
               ? `../${res}`
               : res
             : "../img/default/beach.jpeg";

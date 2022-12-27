@@ -408,7 +408,7 @@ const POIDetails = () => {
               </MDBCol>
               <MDBCol size="auto" className="pt-md-2 px-lg-0">
                 <p>
-                  {ratings.length} {ratings.length > 1 ? "reviews" : "review"}
+                  {ratings.length} {ratings.length > 1 ? "đánh giá" : "đánh giá"}
                 </p>
               </MDBCol>
             </MDBRow>

@@ -18,6 +18,7 @@ function SearchResults(props) {
   const handleUpdateType = (child) => {
     console.log(child);
     setType(child);
+    setPage(0);
   };
   const handlePageClick = (event) => {
     setPage(event.selected);
