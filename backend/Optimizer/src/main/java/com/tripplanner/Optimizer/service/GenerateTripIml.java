@@ -37,6 +37,8 @@ import java.util.function.BiConsumer;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.client.HttpStatusCodeException;
 
+import javax.mail.MessagingException;
+
 @Slf4j
 @Service
 public class GenerateTripIml implements GenerateTrip {
@@ -58,7 +60,7 @@ public class GenerateTripIml implements GenerateTrip {
 
     @Override
     @Async("asyncTaskExecutor")
-    public CompletableFuture<ComplexResponse> generateTrip(GenerateTripUserInput input, String baseUrl, String token) throws ExecutionException, InterruptedException {
+    public CompletableFuture<ComplexResponse> generateTrip(GenerateTripUserInput input, String baseUrl, String token) throws ExecutionException, InterruptedException, MessagingException {
         CompletableFuture<ComplexResponse> task = new CompletableFuture<>();
         OptimizerRequest r = new OptimizerRequest();
         r.setTrip(null);
@@ -95,7 +97,7 @@ public class GenerateTripIml implements GenerateTrip {
             ResponseEntity<UserDetailResponseDTO> user = restTemplateClient.restTemplate().exchange(userInstance.getUri()+"/user/api/user/findById/"+input.getUserId(), HttpMethod.GET,request2, UserDetailResponseDTO.class);
             String emailContent = "Xin chào "+ user.getBody().getName()+",\n \n"
                     + "Đã có lỗi xảy ra trong quá trình khởi tạo chuyến đi của bạn!"+"\n"+"Xin hãy thử lại sau" ;
-            mailSender.sendSimpleMessage(user.getBody().getEmail(), "Chuyến đi của bạn đã bị lỗi.", emailContent);
+            mailSender.sendSimpleMessageError(user.getBody().getEmail(), "Chuyến đi của bạn đã bị lỗi.", emailContent);
             return null;
         }
         int numberOfPOI = listPoi.getList().size();
@@ -219,9 +221,12 @@ public class GenerateTripIml implements GenerateTrip {
                         new HttpEntity<String>(headers);
                 ResponseEntity<UserDetailResponseDTO> user = restTemplateClient.restTemplate().exchange(userInstance.getUri()+"/user/api/user/findById/"+input.getUserId(), HttpMethod.GET,request2, UserDetailResponseDTO.class);
 
-                String emailContent = "Xin chào "+user.getBody().getName()+",\n \n"
-                        + "Hãy xem chuyến đi phù hợp với bạn tại http://localhost:3000/timeline/"+id ;
-                mailSender.sendSimpleMessage(user.getBody().getEmail(), "Chuyến đi của bạn đã sẵn sàng", emailContent);
+                String emailContent = "http://localhost:3000/timeline/"+id;
+                try {
+                    mailSender.sendSimpleMessage(user.getBody().getEmail(), "Chuyến đi của bạn đã sẵn sàng", emailContent);
+                } catch (MessagingException e) {
+                    throw new RuntimeException(e);
+                }
 
 
             }

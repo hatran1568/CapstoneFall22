@@ -1,20 +1,20 @@
 import React from "react";
-import "./style.css";
+import style from "./for.module.css";
 function NotFound() {
   return (
     <div>
-      <div class="text-wrapper">
-        <div class="title" data-content="404">
+      <div className={style.wrapper}>
+        <div className={style.title} data-content="404">
           404 - NOT FOUND
         </div>
 
-        <div class="subtitle">
-          Oops, Chúng tôi không tìm thấy trang bạn muốn đến.
+        <div className={style.subtitle}>
+          Oops, Chúng tôi không tìm thấy trang này.
         </div>
 
-        <div class="buttons">
-          <a class="button" href="http://www.localhost:3000">
-            Về trang chủ
+        <div className={style.buttons}>
+          <a className={style.link} href="http://www.localhost:3000">
+            Về Trang chủ
           </a>
         </div>
       </div>

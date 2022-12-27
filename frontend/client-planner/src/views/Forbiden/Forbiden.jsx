@@ -1,19 +1,19 @@
 import React from "react";
-import "./style.css";
+import style from "./for.module.css";
 function Forbiden() {
   return (
     <div>
-      <div class="text-wrapper">
-        <div class="title" data-content="404">
+      <div className={style.wrapper}>
+        <div className={style.title} data-content="404">
           403 - ACCESS DENIED
         </div>
 
-        <div class="subtitle">
+        <div className={style.subtitle}>
           Oops, Bạn không có quyền truy cập vào trang này.
         </div>
 
-        <div class="buttons">
-          <a class="button" href="http://www.localhost:3000">
+        <div className={style.buttons}>
+          <a className={style.link} href="http://www.localhost:3000">
             Về Trang chủ
           </a>
         </div>

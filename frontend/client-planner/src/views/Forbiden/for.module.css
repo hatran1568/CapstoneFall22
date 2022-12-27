@@ -9,12 +9,12 @@ html {
     height: 100%;
 }
 
-a {
+link {
     color: #EE4B5E !important;
     text-decoration: none;
 }
 
-.text-wrapper {
+.wrapper {
     margin-top: 200px;
     height: 100%;
     display: flex;
