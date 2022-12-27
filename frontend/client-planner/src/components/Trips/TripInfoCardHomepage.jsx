@@ -39,7 +39,7 @@ function TripInfoCardHomepage(props) {
           })
           .then(() => {
             setIsDeleted(true);
-            onDeleted();
+            onDeleted(e, trip.tripId);
           });
       },
       onCancel() {},

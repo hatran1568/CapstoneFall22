@@ -1,6 +1,8 @@
 package com.tripplanner.TripService.controller;
 
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import com.tripplanner.TripService.dto.request.SetTripsDTO;
 import com.tripplanner.TripService.dto.request.TripGenerateDTO;
 import com.tripplanner.TripService.dto.response.*;
 import com.tripplanner.TripService.entity.TripDetails;
@@ -20,6 +22,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import java.sql.Date;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 import java.util.Optional;
@@ -492,6 +495,18 @@ public class TripController {
     public ResponseEntity<?> getTripsForHomepageGuest(@RequestBody int[] array) {
 //        try{
         return new ResponseEntity<>(tripService.getLast3TripsByGuest(array), HttpStatus.OK);
+//        } catch(Exception e){
+//            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+//        }
+    }
+    @Transactional(rollbackFor = {Exception.class, Throwable.class})
+    @PostMapping("/set-trips-postlogin")
+    public ResponseEntity<?> setTripsPostLogin(@RequestBody SetTripsDTO dto) {
+//        try{
+        int[] array = dto.getTripIds();
+        int user = dto.getUser();
+        tripService.setTripsPostLogin(array, user);
+        return new ResponseEntity<>(HttpStatus.OK);
 //        } catch(Exception e){
 //            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
 //        }

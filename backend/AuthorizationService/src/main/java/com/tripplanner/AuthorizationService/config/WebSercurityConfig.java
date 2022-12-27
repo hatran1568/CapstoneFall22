@@ -98,7 +98,7 @@ public class WebSercurityConfig extends WebSecurityConfigurerAdapter {
                     @Override
                     public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response,
                                                         AuthenticationException exception) throws IOException, ServletException {
-                        response.sendRedirect("/api/wrongUser");
+                        response.setStatus(404);
                     }
                 })
                 .permitAll();

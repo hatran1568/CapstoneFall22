@@ -137,6 +137,7 @@ function AddExpenseModal(props) {
                   id="modalDesc"
                   label="Description"
                   placeholder="Mô tả"
+                  maxLength={500}
                 />
               </div>
               <div className="input-group mb-3">
