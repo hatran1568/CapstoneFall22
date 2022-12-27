@@ -115,6 +115,7 @@ function EditActivityModal(props) {
                       onChange={(e) => {
                         inputField.masterActivity.name = e.target.value;
                       }}
+                      maxLength={200}
                       spellCheck="false"
                     />
                   </label>
@@ -205,6 +206,7 @@ function EditActivityModal(props) {
                     inputField.note = e.target.value;
                   }}
                   spellCheck="false"
+                  maxLength={500}
                 ></textarea>
               </div>
             </form>

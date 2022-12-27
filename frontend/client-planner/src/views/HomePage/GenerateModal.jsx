@@ -77,8 +77,14 @@ function GenerateModal(props) {
   const clearFields = () => {
     document.getElementById("budgetGenerateInput").value = "";
     setDestination(-1);
-    document.getElementById("startDateGenerateInput").value = null;
-    document.getElementById("endDateGenerateInput").value = null;
+    // document.getElementById("startDateGenerateInput").value = null;
+    // document.getElementById("endDateGenerateInput").value = null;
+    setStartDate();
+    setEndDate();
+  };
+  const close = () => {
+    clearFields();
+    toggleShowGenerate();
   };
   return (
     <div>
@@ -92,7 +98,7 @@ function GenerateModal(props) {
           <Modal.Body>
             <button
               className={`btn-close ${style.closeBtn}`}
-              onClick={toggleShowGenerate}
+              onClick={close}
             ></button>
             <div className={style.notiBody}>
               Chuyến đi của bạn đang được chuẩn bị <br />
@@ -115,11 +121,7 @@ function GenerateModal(props) {
             <MDBModalTitle className={style.modalTitle}>
               Gợi ý chuyến đi
             </MDBModalTitle>
-            <MDBBtn
-              className="btn-close"
-              color="none"
-              onClick={toggleShowGenerate}
-            ></MDBBtn>
+            <MDBBtn className="btn-close" color="none" onClick={close}></MDBBtn>
           </MDBModalHeader>
 
           <MDBModalBody className={style.modalBody}>
@@ -177,6 +179,7 @@ function GenerateModal(props) {
                     var newMaxDate = new Date();
                     newMaxDate.setTime(date.getTime() + 13 * 1000 * 3600 * 24);
                     setMaxEndDate(newMaxDate);
+                    if (endDate > newMaxDate) setEndDate(newMaxDate);
                   }}
                   selectsStart
                   startDate={startDate}
@@ -306,7 +309,7 @@ function GenerateModal(props) {
           </MDBModalBody>
 
           <MDBModalFooter>
-            <MDBBtn color="secondary" outline onClick={toggleShowGenerate}>
+            <MDBBtn color="secondary" outline onClick={close}>
               Đóng
             </MDBBtn>
             {!isGenerating ? (

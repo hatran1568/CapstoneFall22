@@ -80,6 +80,7 @@ function CreateModal(props) {
               type="text"
               id="tripNameInput"
               className={style.modalInput}
+              maxLength={200}
             />
           </div>
         </MDBRow>
@@ -124,6 +125,7 @@ function CreateModal(props) {
               endDate={endDate}
               dateFormat="dd/MM/yyyy"
               popperPlacement="bottom-start"
+              placeholderText="Chọn ngày bắt đầu"
             />
           </MDBCol>
           <MDBCol className={style.formgroup}>
@@ -145,6 +147,7 @@ function CreateModal(props) {
               minDate={startDate}
               dateFormat="dd/MM/yyyy"
               popperPlacement="bottom-start"
+              placeholderText="Chọn ngày kết thúc"
             />
           </MDBCol>
           <div id="errorEmptyPlan1" className={style.errorEmptyPlan}></div>

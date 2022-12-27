@@ -15,10 +15,10 @@ import java.util.Optional;
 @Repository
 @Transactional
 public interface TripRepository extends JpaRepository<Trip, Integer> {
-    @Query("select t from Trip t where t.tripId = :id")
+    @Query("select t from Trip t where t.tripId = :id and t.status  <>'DELETED'")
     Optional<Trip> getTripById(int id);
 
-    @Query("select t from Trip t where t.tripId = :id")
+    @Query("select t from Trip t where t.tripId = :id ")
     Trip findById(int id);
 
     @Query("select t from Trip t where t.user = :id and t.status <>'DELETED' order by t.dateModified desc")
@@ -114,4 +114,8 @@ public interface TripRepository extends JpaRepository<Trip, Integer> {
     @org.springframework.transaction.annotation.Transactional
     @Query("UPDATE Trip t SET t.budget=:budget WHERE t.tripId=:tripId")
     void updateTripBudget(int tripId, Double budget);
+    @Modifying
+    @org.springframework.transaction.annotation.Transactional
+    @Query("UPDATE Trip t SET t.user=:userId WHERE t.tripId=:tripId")
+    void updateTripUser(int tripId, int userId);
 }

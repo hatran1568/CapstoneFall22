@@ -110,6 +110,7 @@ function AddActivityModal(props) {
                           inputField.name = e.target.value;
                         }}
                         spellCheck="false"
+                        maxLength={200}
                       />
                     </label>
                     <label className={style.customLabel}>
@@ -208,6 +209,7 @@ function AddActivityModal(props) {
                 onChange={(e) => {
                   inputField.note = e.target.value;
                 }}
+                maxLength={500}
                 spellCheck="false"
               ></textarea>
             </div>

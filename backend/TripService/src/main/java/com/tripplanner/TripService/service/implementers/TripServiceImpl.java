@@ -536,11 +536,22 @@ public class TripServiceImpl implements TripService {
 
     public List<TripGeneralDTO> getLast3TripsByGuest(int[] array) {
         List<TripGeneralDTO> tripGeneralDTOS = new ArrayList<>();
+        int count = 0;
         for (int j : array) {
-            TripGeneralDTO dto = mapper.map(tripRepository.findById(j), TripGeneralDTO.class);
-            dto.setImage(getFirstPOIImage(dto.getTripId()));
-            tripGeneralDTOS.add(dto);
+            if(count >=3) break;
+            Optional<Trip> trip = tripRepository.getTripById(j);
+            if(!trip.isEmpty()) {
+                TripGeneralDTO dto = mapper.map(trip.get(), TripGeneralDTO.class);
+                dto.setImage(getFirstPOIImage(dto.getTripId()));
+                tripGeneralDTOS.add(dto);
+                count ++;
+            }
         }
         return tripGeneralDTOS;
+    }
+    public void setTripsPostLogin(int [] tripIds, int user){
+        for (int j : tripIds) {
+            tripRepository.updateTripUser(j, user);
+        }
     }
 }
