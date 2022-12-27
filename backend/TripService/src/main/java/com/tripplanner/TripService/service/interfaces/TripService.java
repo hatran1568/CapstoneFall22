@@ -38,4 +38,5 @@ public interface TripService {
 
     List<TripGeneralDTO> getLast3TripsByGuest(int [] array);
     public void editTripBudget(int tripId, Double budget);
+    void setTripsPostLogin(int [] tripIds, int user);
 }

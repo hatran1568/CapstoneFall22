@@ -77,7 +77,9 @@ class Timetable extends Component {
           (new Date(array[i].start) <= new Date(event.end) &&
             new Date(array[i].start) >= new Date(event.start)) ||
           (new Date(array[i].end) >= new Date(event.start) &&
-            new Date(array[i].end) <= new Date(event.end))
+            new Date(array[i].end) <= new Date(event.end)) ||
+          (new Date(array[i].start) <= new Date(event.start) &&
+            new Date(array[i].end) >= new Date(event.end))
         ) {
           console.log(event);
           console.log(array[i].start);
@@ -131,7 +133,10 @@ class Timetable extends Component {
                   new Date(tempEvents[i].start) >=
                     new Date(tempEvents[j].start)) ||
                 (new Date(tempEvents[i].end) >= new Date(tempEvents[j].start) &&
-                  new Date(tempEvents[i].end) <= new Date(tempEvents[j].end))
+                  new Date(tempEvents[i].end) <= new Date(tempEvents[j].end)) ||
+                (new Date(tempEvents[i].start) <=
+                  new Date(tempEvents[j].start) &&
+                  new Date(tempEvents[i].end) >= new Date(tempEvents[j].end))
               ) {
                 tempEvents[i].overLap = "true";
                 tempEvents[j].overLap = "true";
@@ -951,7 +956,9 @@ class Timetable extends Component {
               (events[i].start <= events[j].end &&
                 events[i].start >= events[j].start) ||
               (events[i].end >= events[j].start &&
-                events[i].end <= events[j].end)
+                events[i].end <= events[j].end) ||
+              (events[i].start <= events[j].start &&
+                events[i].end >= events[j].end)
             ) {
               console.log(i + " overlap");
               console.log(events[i].start);
