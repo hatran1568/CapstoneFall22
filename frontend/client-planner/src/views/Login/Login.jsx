@@ -24,37 +24,60 @@ function Login() {
   const from = location.state?.from?.pathname || "/";
 
   const [user, setUser] = useState({ username: "", password: "" });
+  const setTripsPostLogin = (userId) => {
+    console.log("setting trips");
+    let trips = localStorage.getItem("trips");
+    if (trips) {
+      trips = JSON.parse(trips);
+      axios({
+        method: "post",
+        url: "http://localhost:8080/trip/set-trips-postlogin",
+        data: { tripIds: trips, user: userId },
+        headers: {
+          "Content-Type": "application/json",
+        },
+      })
+        .catch((error) => console.log(error))
+        .then((response) => {
+          console.log("response setting trips: ", response.status);
 
-  const handleLogin = async (e) => {
+          localStorage.removeItem("trips");
+        });
+    }
+  };
+  const handleLogin = (e) => {
     e.preventDefault();
     if (!validator.isEmail(user.username) || user.password.length < 8)
       document.getElementById("invalidWarning").style.display = "block";
     else
-      try {
-        const response = await axios.post(LOGIN_URL, user, {
+      axios
+        .post(LOGIN_URL, user, {
           headers: { "Content-Type": "application/json" },
-        });
-        const accessToken = response?.data?.accessToken;
-        const role = response?.data?.role;
-        const id = response?.data?.id;
-        if (accessToken) {
-          setAuth({ user, role, accessToken });
-          localStorage.setItem("token", accessToken);
-          localStorage.setItem("role", role);
-          localStorage.setItem("id", id);
-          if (role != "Admin") {
-            window.location.href = "http://localhost:3000/";
-          } else {
-            window.location.href = "http://localhost:3000/admin/dashboard";
+        })
+        .catch((error) => {
+          if (error.response.status == 403) {
+            document.getElementById("invalidWarning").style.display = "block";
           }
-          localStorage.removeItem("trips");
-        }
-        setUser({ ...user, username: "", password: "" });
-      } catch (error) {
-        if (error.response.status === 403) {
-          document.getElementById("invalidWarning").style.display = "block";
-        }
-      }
+        })
+        .then((response) => {
+          const accessToken = response?.data?.accessToken;
+          const role = response?.data?.role;
+          const id = response?.data?.id;
+          if (accessToken) {
+            setAuth({ user, role, accessToken });
+            localStorage.setItem("token", accessToken);
+            localStorage.setItem("role", role);
+            localStorage.setItem("id", id);
+            console.log("about to set trip");
+            setTripsPostLogin(id);
+            if (role != "Admin") {
+              window.location.href = "http://localhost:3000/";
+            } else {
+              window.location.href = "http://localhost:3000/admin/dashboard";
+            }
+          }
+          setUser({ ...user, username: "", password: "" });
+        });
   };
 
   useEffect(() => {
@@ -77,7 +100,8 @@ function Login() {
         <MDBRow className="g-0">
           <MDBCol md="6">
             <div className={`d-flex flex-column justify-content-center h-100`}>
-              <img src="../img/default/loginimage.png"
+              <img
+                src="../img/default/loginimage.png"
                 className={`${style.customGradient}`}
               ></img>
             </div>
@@ -88,7 +112,7 @@ function Login() {
               <h3 className="fw-normal my-4 pb-3 text-center">Đăng Nhập</h3>
               <div className={style.inputDiv}>
                 <MDBInput
-                  autocomplete="new-password"
+                  autoComplete="new-password"
                   wrapperClass="mb-4 mx-5"
                   label="Địa chỉ email"
                   id="loginEmail"

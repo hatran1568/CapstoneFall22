@@ -58,7 +58,6 @@ function MyTrips() {
       if (trips) {
         trips = JSON.parse(trips);
         setTripCount(trips.length);
-        if (trips.length > 3) trips = trips.slice(0, 3);
         await axios({
           method: "post",
           url: "http://localhost:8080/trip/get-trip-3-guest",
@@ -78,8 +77,21 @@ function MyTrips() {
     getGuestId();
     getExistingTrips();
   }, []);
-  const onTripDeleted = () => {
+  const onTripDeleted = (event, tripId) => {
+    deleteFromStorage(tripId);
     getExistingTrips();
+  };
+  const deleteFromStorage = (tripId) => {
+    let trips = localStorage.getItem("trips");
+    if (trips) {
+      trips = JSON.parse(trips);
+      const index = trips.indexOf(tripId);
+      if (index > -1) {
+        trips.splice(index, 1);
+      }
+      localStorage.setItem("trips", JSON.stringify(trips));
+      setTripCount(trips.length);
+    }
   };
   return (
     <>
@@ -99,7 +111,9 @@ function MyTrips() {
                     <TripInfoCardHomepage
                       trip={trip}
                       key={trip.tripId}
-                      onDeleted={onTripDeleted}
+                      onDeleted={(event, tripId) => {
+                        onTripDeleted(event, tripId);
+                      }}
                     ></TripInfoCardHomepage>
                   </div>
                 ))}

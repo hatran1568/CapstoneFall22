@@ -124,12 +124,12 @@ public class ExpenseController {
     @Transactional(rollbackFor = {Exception.class, Throwable.class})
     @RequestMapping(value = "/expense/new", consumes = "application/json", produces = {"*/*"}, method = RequestMethod.POST)
     public ResponseEntity<?> addExpense(@RequestBody TripExpenseAddDTO expense) {
-        try {
+//        try {
             expenseRepo.addExpense(expense.getAmount(), expense.getDescription(), expense.getExpenseCategoryId(), expense.getTripId());
             return new ResponseEntity<>(HttpStatus.OK);
-        } catch (Exception e) {
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-        }
+//        } catch (Exception e) {
+//            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+//        }
     }
 
     @Transactional(rollbackFor = {Exception.class, Throwable.class})

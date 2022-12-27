@@ -43,6 +43,7 @@ function AddExpenseModal(props) {
   //Add Expense
   const addExpense = (event) => {
     const id = window.location.href.split("/")[4];
+
     if (
       document.getElementById("modalDesc").value == null ||
       document.getElementById("modalDesc").value == ""
@@ -53,6 +54,7 @@ function AddExpenseModal(props) {
       document.getElementById("modalAmount").value == null ||
       document.getElementById("modalAmount").value <= 0
     ) {
+      console.log("click");
       document.getElementById("modalAmount").value = "";
       document.getElementById("errorMessage").innerHTML = "Hãy nhập giá tiền.";
     } else if (currentCat == 0) {
@@ -71,11 +73,15 @@ function AddExpenseModal(props) {
         headers: {
           "Content-Type": "application/json",
         },
-      }).then(function (response) {
-        //window.location.reload();
-        refreshHandler();
-        toggleShow();
-      });
+      })
+        .then(function (response) {
+          //window.location.reload();
+          refreshHandler();
+          toggleShow();
+        })
+        .catch(function (err) {
+          console.log(err);
+        });
   };
   //Add Expense Modal
   const [basicModal, setBasicModal] = useState(false);
@@ -131,6 +137,7 @@ function AddExpenseModal(props) {
                   id="modalDesc"
                   label="Description"
                   placeholder="Mô tả"
+                  maxLength={500}
                 />
               </div>
               <div className="input-group mb-3">

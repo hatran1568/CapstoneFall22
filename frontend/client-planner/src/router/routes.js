@@ -36,9 +36,10 @@ import UserRequestList from "../views/Admin/UserRequestList";
 import DestinationAddUpdate from "../views/Admin/DestinationAddUpdate";
 import Map from "../views/Map/Map";
 import Dashboard from "../views/Admin/Dashboard";
-
+import Forbiden from "../views/Forbiden/Forbiden";
 import Hotel from "../views/Hotel/Hotel";
 import NewHomePage from "../views/HomePage/NewHomePage";
+import NotFound from "../views/Forbiden/NotFound";
 export default function RootRoutes() {
   return (
     <Router>
@@ -161,6 +162,9 @@ export default function RootRoutes() {
             }
           />
         </Route>
+        <Route path="/unauthorized" element={<Forbiden />} />
+        <Route path="*" element={<NotFound />}></Route>
+
         {/*Routes that don't need a nav bar go out here.*/}
       </Routes>
     </Router>

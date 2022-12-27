@@ -48,9 +48,9 @@ public class MailSenderManager {
                 "            <table border=\"0\" cellpadding=\"0\" cellspacing=\"0\" style=\"background:#ffffff;padding:45px 70px;margin-top:15px;width:600px!important\">\n" +
                 "                <tbody><tr>\n" +
                 "                    <td align=\"center\" valign=\"top\" style=\"padding-bottom:10px\">\n" +
-                "                        <div style=\"color:#333;font-size:1.28em;letter-spacing:-0.02em;font-weight:bold\">Reset your TPS password</div>\n" +
+                "                        <div style=\"color:#333;font-size:1.28em;letter-spacing:-0.02em;font-weight:bold\">Lấy lại mật khẩu mới</div>\n" +
                 "                        <div style=\"color:#999;font-size:1.24em;letter-spacing:-0.02em;max-width:370px;margin-top:15px\">\n" +
-                "                             A request has been sent to reset your password. You may do so by clicking the link below.<br> If this request was sent in error, you may simply ignore this message.\n" +
+                "                             Yêu cầu đổi mật khẩu đã được gửi. Bạn có thể đổi mật khẩu bằng cách bấm vào nút bên dưới.<br> Nếu bạn không tạo ra yêu cầu này, bạn có thể bỏ qua email này.\n" +
                 "                        </div>\n" +
                 "                    </td>\n" +
                 "                </tr>\n" +
@@ -61,7 +61,7 @@ public class MailSenderManager {
                 "    <td align=\"center\">\n" +
                 "      <table border=\"0\" cellspacing=\"0\" cellpadding=\"0\">\n" +
                 "        <tbody><tr>\n" +
-                "          <td align=\"center\" style=\"border-radius:100px\" bgcolor=\"#fa8c00\"><a href=\"" + text + "\" style=\"font-size:14px;font-weight:600;color:#ffffff;text-decoration:none;border-radius:100px;padding:12px 40px;border:1px solid #fa8c00;display:inline-block\" target=\"_blank\">Reset your password</a></td>\n" +
+                "          <td align=\"center\" style=\"border-radius:100px\" bgcolor=\"#fa8c00\"><a href=\"" + text + "\" style=\"font-size:14px;font-weight:600;color:#ffffff;text-decoration:none;border-radius:100px;padding:12px 40px;border:1px solid #fa8c00;display:inline-block\" target=\"_blank\">Thay đổi mật khẩu</a></td>\n" +
                 "        </tr>\n" +
                 "      </tbody></table>\n" +
                 "    </td>\n" +
