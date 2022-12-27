@@ -220,7 +220,7 @@ public class GenerateTripIml implements GenerateTrip {
                 ResponseEntity<UserDetailResponseDTO> user = restTemplateClient.restTemplate().exchange(userInstance.getUri()+"/user/api/user/findById/"+input.getUserId(), HttpMethod.GET,request2, UserDetailResponseDTO.class);
 
                 String emailContent = "Xin chào "+user.getBody().getName()+",\n \n"
-                        + "Hãy xem chuyến đi phù hợp với bạn tại http://localhost:3000/timeline/"+response.getRequest().getTrip() ;
+                        + "Hãy xem chuyến đi phù hợp với bạn tại http://localhost:3000/timeline/"+id ;
                 mailSender.sendSimpleMessage(user.getBody().getEmail(), "Chuyến đi của bạn đã sẵn sàng", emailContent);
 
 

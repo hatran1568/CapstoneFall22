@@ -65,22 +65,25 @@ public class GeneticAlgorithmImplementer {
             ArrayList<Integer> dayTrip = new ArrayList<>();
             double time = Double.max(data.getDailyStartTime()[i], data.getPOIs()[fullTrip.get(0)].getOpenTime()) + data.getPOIs()[fullTrip.get(0)].getDuration();
             double cost = data.getPOIs()[fullTrip.get(0)].getTypicalPrice();
-            dayTrip.add(fullTrip.get(0));
-            int current = fullTrip.get(0);
-            fullTrip.remove(0);
+            if(cost<=data.getDailyBudget()[i]) {
 
-            while (true) {
+                dayTrip.add(fullTrip.get(0));
+                int current = fullTrip.get(0);
+                fullTrip.remove(0);
 
-                if (Double.max(time + data.getDistanceOfPOI()[current][fullTrip.get(0)] * 90, data.getPOIs()[fullTrip.get(0)].getOpenTime()) + data.getPOIs()[fullTrip.get(0)].getDuration() < data.getDailyEndTime()[i]
-                        && cost + data.getPOIs()[fullTrip.get(0)].getTypicalPrice() < data.getDailyBudget()[i]) {
-                    time = Double.max(time + data.getDistanceOfPOI()[current][fullTrip.get(0)] * 90, data.getPOIs()[fullTrip.get(0)].getOpenTime()) + data.getPOIs()[fullTrip.get(0)].getDuration();
-                    cost += data.getPOIs()[fullTrip.get(0)].getTypicalPrice();
-                    current = fullTrip.get(0);
-                    dayTrip.add(fullTrip.get(0));
-                    fullTrip.remove(0);
+                while (true) {
 
-                } else {
-                    break;
+                    if (Double.max(time + data.getDistanceOfPOI()[current][fullTrip.get(0)] * 90, data.getPOIs()[fullTrip.get(0)].getOpenTime()) + data.getPOIs()[fullTrip.get(0)].getDuration() < data.getDailyEndTime()[i]
+                            && cost + data.getPOIs()[fullTrip.get(0)].getTypicalPrice() < data.getDailyBudget()[i]) {
+                        time = Double.max(time + data.getDistanceOfPOI()[current][fullTrip.get(0)] * 90, data.getPOIs()[fullTrip.get(0)].getOpenTime()) + data.getPOIs()[fullTrip.get(0)].getDuration();
+                        cost += data.getPOIs()[fullTrip.get(0)].getTypicalPrice();
+                        current = fullTrip.get(0);
+                        dayTrip.add(fullTrip.get(0));
+                        fullTrip.remove(0);
+
+                    } else {
+                        break;
+                    }
                 }
             }
             s.gene.add(dayTrip);
@@ -144,6 +147,9 @@ public class GeneticAlgorithmImplementer {
         // random trip number and cutoff point
         Random rand = new Random();
         int tripNumber = rand.nextInt(data.getDayOfTrip());
+        if (s.gene.get(tripNumber).size() > 0) {
+
+
         int cutoffPoint = rand.nextInt(s.gene.get(tripNumber).size());
         //  System.out.println(tripNumber + "|" + cutoffPoint);
         Solution newS = new Solution(data);
@@ -162,7 +168,7 @@ public class GeneticAlgorithmImplementer {
             int currentPOI = s.gene.get(tripNumber).get(i);
             newTrip.add(currentPOI);
             poiList.remove(poiList.indexOf(currentPOI));
-            time = Double.max(time + Double.max(data.getDistanceOfPOI()[currentPOI][s.gene.get(tripNumber).get(i + 1)] * 150,600), data.getPOIs()[s.gene.get(tripNumber).get(i + 1)].getOpenTime()) + data.getPOIs()[s.gene.get(tripNumber).get(i + 1)].getDuration();
+            time = Double.max(time + Double.max(data.getDistanceOfPOI()[currentPOI][s.gene.get(tripNumber).get(i + 1)] * 150, 600), data.getPOIs()[s.gene.get(tripNumber).get(i + 1)].getOpenTime()) + data.getPOIs()[s.gene.get(tripNumber).get(i + 1)].getDuration();
             cost += data.getPOIs()[s.gene.get(tripNumber).get(i)].getTypicalPrice();
         }
 
@@ -215,7 +221,9 @@ public class GeneticAlgorithmImplementer {
             }
             newS.gene.add(dayTrip);
         }
-        return newS;
+        return  newS;
+    }
+        return s;
     }
 
     public Solution mutation2(Solution s, Data data) {
@@ -227,15 +235,17 @@ public class GeneticAlgorithmImplementer {
     public Solution implementGA(Data data) {
         ArrayList<Solution> results = new ArrayList<>();
         ArrayList<Solution> population = new ArrayList<>();
+        log.info("Generate");
         //Generation
         for (int i = 0; i < 6000; i++) {
 
             population.add(generatePopulation(data));
         }
+        log.info("Sort 1st");
         Collections.sort(population, new Comparator<Solution>() {
             @Override
             public int compare(Solution o1, Solution o2) {
-
+                log.info(String.valueOf(o1.cal_fitness()));
                 return Double.compare(o1.cal_fitness(), o2.cal_fitness());
             }
         });
@@ -244,11 +254,12 @@ public class GeneticAlgorithmImplementer {
 
 
             //Selection
-
+            log.info("Selection");
             ArrayList<Solution> nextPopulation = new ArrayList<>();
             for (int i = 0; i < 100; i++) {
                 nextPopulation.add(population.get(i));
             }
+            log.info("Crossover");
             //Crossover
             for (int i = 0; i < 5900; i++) {
                 Random rand = new Random();
