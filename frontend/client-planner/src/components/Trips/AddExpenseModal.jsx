@@ -55,9 +55,9 @@ function AddExpenseModal(props) {
     ) {
       document.getElementById("modalAmount").value = "";
       document.getElementById("errorMessage").innerHTML = "Hãy nhập giá tiền.";
-    } else if (currentCat == 0)
+    } else if (currentCat == 0) {
       document.getElementById("errorMessage").innerHTML = "Hãy chọn danh mục.";
-    else
+    } else
       axios({
         method: "post",
         url: "http://localhost:8080/trip/api/expense/new",
@@ -314,7 +314,12 @@ function AddExpenseModal(props) {
               <div id="errorMessage" className={style.errorMessage}></div>
               <br />
               <div className={style.modalBtn}>
-                <MDBBtn color="info" onClick={addExpense}>
+                <MDBBtn
+                  color="info"
+                  onClick={(event) => {
+                    addExpense(event);
+                  }}
+                >
                   Lưu chi tiêu
                 </MDBBtn>
               </div>

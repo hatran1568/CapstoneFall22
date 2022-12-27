@@ -21,7 +21,7 @@ function Map(props) {
   const [allMonths, setAllMonths] = useState([]);
   const [daySelected, setDaySelected] = useState();
   const markerRef = useRef(null);
-
+  const [own, setOwn] = useState(false);
   useEffect(() => {
     console.log(id);
     const userId = localStorage.getItem("id") ? localStorage.getItem("id") : -1;
@@ -34,6 +34,12 @@ function Map(props) {
         setAllMonths(
           getAllMonths(getAllDates(res.data.startDate, res.data.endDate))
         );
+        var owned = false;
+        if (res.data.user && res.data.user == localStorage.getItem("id")) {
+          owned = true;
+        }
+        setOwn(owned);
+        console.log("owned: ", own, "trip: ", trip);
       })
       .catch((error) => {
         if (error.response) {
@@ -140,7 +146,12 @@ function Map(props) {
   return (
     <div>
       <TripGeneralInfo />
-      <TripDetailTabs />
+      <TripDetailTabs
+        own={own}
+        status={trip.status}
+        tripId={trip.tripId}
+        key={trip.tripId}
+      />
       <div className="container ">
         <div className="timeline-container row ">
           <div className="col-2">
