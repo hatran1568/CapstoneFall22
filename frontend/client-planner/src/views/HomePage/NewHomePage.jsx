@@ -12,7 +12,7 @@ import RecentTrips from "./RecentTrips";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 function NewHomePage() {
-  document.title = "🌏 Trip Planner";
+  document.title = " Trip Planner";
   const navigate = useNavigate();
   const [generateModal, setGenerateModal] = useState(false);
   const [showCreateModal, setShowCreateModal] = useState(false);
