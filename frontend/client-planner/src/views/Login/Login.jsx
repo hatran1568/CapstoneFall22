@@ -55,7 +55,7 @@ function Login() {
           headers: { "Content-Type": "application/json" },
         })
         .catch((error) => {
-          if (error.response.status == 403) {
+          if (error.response.status == 404) {
             document.getElementById("invalidWarning").style.display = "block";
           }
         })
