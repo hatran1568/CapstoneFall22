@@ -21,11 +21,12 @@ import style from "./POIDetails.module.css";
 import AddPOIToCollectionModal from "../../components/POIs/AddPOIToCollectionModal";
 
 const POIDetails = () => {
-  const [curPOI, setCurPOI] = useState();
+  const [curPOI, setCurPOI] = useState(false);
   const [ratings, setRatings] = useState([]);
   const [images, setImages] = useState([]);
   const [comment, setComment] = useState("");
   const [rate, setRate] = useState(0);
+  const [isDeleted, setIsDeleted] = useState(false);
 
   const { TextArea } = Input;
   const { error } = Modal;
@@ -37,6 +38,10 @@ const POIDetails = () => {
     const getPOI = async () => {
       await axios
         .get("/location/api/pois/" + poiId)
+        .catch((err) => {
+          console.log("abc");
+          window.location.href = "http://localhost:3000/notfound";
+        })
         .then((res) => setCurPOI(res.data));
     };
 
@@ -54,7 +59,7 @@ const POIDetails = () => {
     getPOI();
     getRatings();
     getImages();
-  }, [poiId]);
+  }, []);
 
   const timeConverter = (seconds, format) => {
     var dateObj = new Date(seconds * 1000);
@@ -300,13 +305,9 @@ const POIDetails = () => {
     );
   }
 
-  if (
-    curPOI !== undefined &&
-    curPOI.category !== undefined &&
-    !curPOI.deleted
-  ) {
-    document.title = curPOI.name + " | Tripplanner";
-    return (
+  document.title = curPOI.name + " | Tripplanner";
+  return (
+    curPOI && (
       <MDBContainer className={style.container}>
         <MDBRow className="pb-3 pt-5">
           <MDBRow>
@@ -408,7 +409,8 @@ const POIDetails = () => {
               </MDBCol>
               <MDBCol size="auto" className="pt-md-2 px-lg-0">
                 <p>
-                  {ratings.length} {ratings.length > 1 ? "đánh giá" : "đánh giá"}
+                  {ratings.length}{" "}
+                  {ratings.length > 1 ? "đánh giá" : "đánh giá"}
                 </p>
               </MDBCol>
             </MDBRow>
@@ -434,14 +436,8 @@ const POIDetails = () => {
           </MDBCol>
         </MDBRow>
       </MDBContainer>
-    );
-  } else {
-    return (
-      <MDBContainer>
-        <h2>Địa điểm này không tồn tại.</h2>
-      </MDBContainer>
-    );
-  }
+    )
+  );
 };
 
 export default POIDetails;
