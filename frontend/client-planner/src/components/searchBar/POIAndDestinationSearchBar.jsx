@@ -33,7 +33,7 @@ function POIAndDestinationSearchBar(Children) {
             style: {
               paddingLeft: 25,
             },
-            maxLength: 32,
+            maxLength: 200,
           }}
           startAdornment={
             <InputAdornment className={style.icon} position="start">
