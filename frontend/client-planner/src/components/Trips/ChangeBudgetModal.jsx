@@ -73,6 +73,7 @@ function ModalGraph(props) {
         },
       })
         .then(function (response) {
+          // eslint-disable-next-line no-restricted-globals
           onBudgetEdited(event, newBudget);
         })
         .catch((err) => {

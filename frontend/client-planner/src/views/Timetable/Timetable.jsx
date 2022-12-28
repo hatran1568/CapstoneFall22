@@ -107,6 +107,7 @@ class Timetable extends Component {
     axios
       .get(`/trip/` + id + "?userId=" + userId)
       .then((res) => {
+        console.log(res);
         const tripData = res.data;
         var tempEvents = [];
         tripData.listTripDetails.forEach((detail) => {

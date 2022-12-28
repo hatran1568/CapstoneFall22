@@ -46,9 +46,12 @@ public class Solution {
     public double cal_distance_obj() {
         double distance = 0;
         for (int i = 0; i < data.getDayOfTrip(); i++) {
-            for (int j = 0; j < this.gene.get(i).size() - 1; j++) {
-                distance += data.getDistanceOfPOI()[this.gene.get(i).get(j)][this.gene.get(i).get(j + 1)];
+            if(this.gene.get(i).size()>1){
+                for (int j = 0; j < this.gene.get(i).size() - 1; j++) {
+                    distance += data.getDistanceOfPOI()[this.gene.get(i).get(j)][this.gene.get(i).get(j + 1)];
+                }
             }
+
         }
         return distance;
     }
@@ -64,14 +67,17 @@ public class Solution {
     public double cal_waiting_time_obj() {
         double waiting_time = 0;
         for (int i = 0; i < data.getDayOfTrip(); i++) {
-            double current_time = data.getDailyStartTime()[i] + data.getPOIs()[this.gene.get(i).get(0)].getDuration();
-            for (int j = 1; j < this.gene.get(i).size(); j++) {
-                if (current_time + data.getDistanceOfPOI()[this.gene.get(i).get(j - 1)][this.gene.get(i).get(j)] * 90 < data.getPOIs()[this.gene.get(i).get(j)].getOpenTime()) {
-                    waiting_time += data.getPOIs()[this.gene.get(i).get(j)].getOpenTime() - current_time + data.getDistanceOfPOI()[this.gene.get(i).get(j - 1)][this.gene.get(i).get(j)] * 90;
+            if(this.gene.get(i).size()>0){
+                double current_time = data.getDailyStartTime()[i] + data.getPOIs()[this.gene.get(i).get(0)].getDuration();
+                for (int j = 1; j < this.gene.get(i).size(); j++) {
+                    if (current_time + data.getDistanceOfPOI()[this.gene.get(i).get(j - 1)][this.gene.get(i).get(j)] * 90 < data.getPOIs()[this.gene.get(i).get(j)].getOpenTime()) {
+                        waiting_time += data.getPOIs()[this.gene.get(i).get(j)].getOpenTime() - current_time + data.getDistanceOfPOI()[this.gene.get(i).get(j - 1)][this.gene.get(i).get(j)] * 90;
 
+                    }
+                    current_time = Double.max(current_time + data.getDistanceOfPOI()[this.gene.get(i).get(j - 1)][this.gene.get(i).get(j)] * 90, data.getPOIs()[this.gene.get(i).get(j)].getOpenTime()) + data.getPOIs()[this.gene.get(i).get(j)].getDuration();
                 }
-                current_time = Double.max(current_time + data.getDistanceOfPOI()[this.gene.get(i).get(j - 1)][this.gene.get(i).get(j)] * 90, data.getPOIs()[this.gene.get(i).get(j)].getOpenTime()) + data.getPOIs()[this.gene.get(i).get(j)].getDuration();
             }
+
         }
         return waiting_time;
     }

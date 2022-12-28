@@ -16,8 +16,10 @@ function SearchResults(props) {
   const keyword = url.searchParams.get("search");
 
   const handleUpdateType = (child) => {
+    setPage(0);
     console.log(child);
     setType(child);
+    setPage(0);
   };
   const handlePageClick = (event) => {
     setPage(event.selected);

@@ -48,7 +48,7 @@ public interface POIRepository extends JpaRepository<POI, Integer> {
     @Query("select d.distance from Distance d where d.startStation.activityId = :from and d.endStation.activityId =:to")
     Optional<Double> getDistanceBetweenTwoPOIs(int from, int to);
 
-    @Query("SELECT p from POI p where p.name like  CONCAT('%',:keyword,'%')")
+    @Query("SELECT p from POI p where p.name like  CONCAT('%',:keyword,'%') and p.isDeleted=false")
     ArrayList<POI> findPOISByKeyword(String keyword);
 
 
@@ -212,13 +212,13 @@ public interface POIRepository extends JpaRepository<POI, Integer> {
 
 
 
-    @Query("Select p from POI p join POIDest pd on p.activityId = pd.poi.activityId where pd.destination.destinationId=:id and pd.poi.category.categoryID <>10 and pd.poi.category.categoryID <>11")
+    @Query("Select p from POI p join POIDest pd on p.activityId = pd.poi.activityId where pd.destination.destinationId=:id and pd.poi.category.categoryID <>10 and pd.poi.category.categoryID <>11 and pd.poi.isDeleted=false")
     public ArrayList<POI> getPOIsByDestinationId(int id);
 
     @Query("Select p from POI p join POIDest pd on p.activityId = pd.poi.activityId where  pd.poi.category.categoryID <>10 and pd.poi.category.categoryID <>11 and pd.poi.isDeleted = false")
     public ArrayList<POI> getPOIsByButHotel();
-    @Query("Select p from POI p join POIDest pd on p.activityId = pd.poi.activityId where pd.poi.category.categoryID <>11")
+    @Query("Select p from POI p join POIDest pd on p.activityId = pd.poi.activityId where pd.poi.category.categoryID <>11 and pd.poi.isDeleted = false")
     public ArrayList<POI> getPOIs();
-    @Query("Select p from POI p join POIDest pd on p.activityId = pd.poi.activityId where  pd.poi.category.categoryID =10 ")
+    @Query("Select p from POI p join POIDest pd on p.activityId = pd.poi.activityId where  pd.poi.category.categoryID =10 and pd.poi.isDeleted = false")
     public ArrayList<POI> getHotels();
 }

@@ -38,7 +38,7 @@ import java.util.Date;
 @RestController
 @RequestMapping("/location/api/pois")
 public class POIController {
-    private final String distanceToken = "xK5OoRaQkivXBSQ1XO1FSmUlgSJbu";
+    private final String distanceToken = "RPu8KqnYRyDjwyklv2TNsL0AiH6yE";
 
     @Autowired
     private DistanceRepository distanceRepository;

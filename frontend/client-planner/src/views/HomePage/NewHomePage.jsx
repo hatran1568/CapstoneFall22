@@ -18,8 +18,12 @@ function NewHomePage() {
   const [showCreateModal, setShowCreateModal] = useState(false);
   const [isGenerating, setIsGenerating] = useState(false);
   const toggleShowGenerate = () => {
-    checkGenerating();
-    setGenerateModal(!generateModal);
+    if (localStorage.getItem("token")) {
+      checkGenerating();
+      setGenerateModal(!generateModal);
+    } else {
+      window.location.href = "http://localhost:3000/login";
+    }
   };
   const toggleShowCreateModal = () => {
     setShowCreateModal(!showCreateModal);

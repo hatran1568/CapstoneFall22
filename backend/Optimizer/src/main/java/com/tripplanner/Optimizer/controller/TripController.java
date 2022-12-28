@@ -15,6 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import javax.mail.MessagingException;
 import javax.servlet.http.HttpServletRequest;
 import java.text.SimpleDateFormat;
 import java.util.concurrent.ExecutionException;
@@ -34,7 +35,7 @@ public class TripController {
     @Transactional(rollbackFor = {Exception.class, Throwable.class})
     @CrossOrigin(origins = "*", allowedHeaders = "*")
     @PostMapping("/generate")
-    public ResponseEntity<?> generateTrip(HttpServletRequest request, @RequestBody GenerateTripUserInput input) throws ExecutionException, InterruptedException {
+    public ResponseEntity<?> generateTrip(HttpServletRequest request, @RequestBody GenerateTripUserInput input) throws ExecutionException, InterruptedException, MessagingException {
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
         log.info("----------");
         System.out.println(input.getStartDate());

@@ -69,27 +69,26 @@ public class POI extends MasterActivity {
 
     public static SearchType mapFromPOICategory(POI poi) {
         switch (poi.getCategory().getCategoryName()) {
-            case "Art and Culture":
+            case "Văn hóa, nghệ thuật":
                 return SearchType.ART_AND_CULTURE;
-            case "Outdoors":
+            case "Hoạt động ngoài trời":
                 return SearchType.OUTDOORS;
-            case "Religion":
+            case "Tôn giáo":
                 return SearchType.RELIGION;
-            case "Historic sights":
+            case "Lịch sử":
                 return SearchType.HISTORIC_SIGHTS;
-            case "Museums":
+            case "Bảo tàng":
                 return SearchType.MUSEUMS;
-            case "Spas & Wellness":
+            case "Spa & Sức khỏe":
                 return SearchType.SPAS_AND_WELLNESS;
-            case "Beaches":
+            case "Bãi biển":
                 return SearchType.BEACHES;
-            case "Hotels":
+            case "Khách sạn":
                 return SearchType.HOTELS;
-            case "Restaurants":
-                return SearchType.RESTAURANTS;
-            case "Shopping":
+            case "Mua sắm":
                 return SearchType.SHOPPING;
-
+            case "Hoạt động đêm":
+                return SearchType.NIGHTLIFE;
             default:
                 return SearchType.ENTERTAINMENTS;
         }
