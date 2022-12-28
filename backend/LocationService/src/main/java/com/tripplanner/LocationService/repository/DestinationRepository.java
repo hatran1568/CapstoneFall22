@@ -34,7 +34,7 @@ public interface DestinationRepository extends JpaRepository<Destination, Intege
             nativeQuery = true)
     ArrayList<GalleryImages> getDestinationImagesURL(int destinationId);
 
-    @Query("SELECT d from Destination d where d.name like CONCAT('%',:keyword,'%')")
+    @Query("SELECT d from Destination d where d.name like CONCAT('%',:keyword,'%') and d.isDeleted=false")
     ArrayList<Destination> getDestinationsByKeyword(String keyword);
 
     @Query(value = "SELECT i.url from destination  d join destination_image  i on d.destination_id=i.destination_id where d.destination_id=:id Limit 1", nativeQuery = true)

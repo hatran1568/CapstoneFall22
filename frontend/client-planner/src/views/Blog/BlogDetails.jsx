@@ -111,7 +111,7 @@ function BlogDetails() {
             <MDBRow>
               <MDBCol className={style.arrowIconsBox}>
                 <a
-                  href={"blog?id=" + nearbyBlogs[0].blogId}
+                  href={"../blog?id=" + nearbyBlogs[0].blogId}
                   className={style.nearbyBlogBtn}
                 >
                   <FontAwesomeIcon
@@ -122,7 +122,7 @@ function BlogDetails() {
               </MDBCol>
               <MDBCol className={style.lastBlogBox}>
                 <a
-                  href={"blog?id=" + nearbyBlogs[0].blogId}
+                  href={"../blog?id=" + nearbyBlogs[0].blogId}
                   className={style.nearbyBlogBtn}
                 >
                   <div className={style.nearbyTitle}>
@@ -132,7 +132,7 @@ function BlogDetails() {
               </MDBCol>
               <MDBCol className={style.nextBlogBox}>
                 <a
-                  href={"blog?id=" + nearbyBlogs[1].blogId}
+                  href={"../blog?id=" + nearbyBlogs[1].blogId}
                   className={style.nearbyBlogBtn}
                 >
                   <div className={style.nearbyTitle}>
@@ -142,7 +142,7 @@ function BlogDetails() {
               </MDBCol>
               <MDBCol className={style.arrowIconsBox}>
                 <a
-                  href={"blog?id=" + nearbyBlogs[1].blogId}
+                  href={"../blog?id=" + nearbyBlogs[1].blogId}
                   className={style.nearbyBlogBtn}
                 >
                   <FontAwesomeIcon

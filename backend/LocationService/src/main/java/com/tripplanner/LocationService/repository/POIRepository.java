@@ -48,7 +48,7 @@ public interface POIRepository extends JpaRepository<POI, Integer> {
     @Query("select d.distance from Distance d where d.startStation.activityId = :from and d.endStation.activityId =:to")
     Optional<Double> getDistanceBetweenTwoPOIs(int from, int to);
 
-    @Query("SELECT p from POI p where p.name like  CONCAT('%',:keyword,'%')")
+    @Query("SELECT p from POI p where p.name like  CONCAT('%',:keyword,'%') and p.isDeleted=false")
     ArrayList<POI> findPOISByKeyword(String keyword);
 
 

@@ -37,23 +37,30 @@ public class LoginController {
 
     @Transactional(rollbackFor = {Exception.class, Throwable.class})
     @RequestMapping(value = "/login", produces = {"*/*"}, method = RequestMethod.POST)
-    public String authenticateUser(@RequestBody LoginRequestDTO loginRequest) {
+    public ResponseEntity<String> authenticateUser(@RequestBody LoginRequestDTO loginRequest) {
         // Xác thực thông tin người dùng Request lên
-        Authentication authentication = authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(
-                        loginRequest.getUsername(),
-                        loginRequest.getPassword()
-                )
-        );
+        Authentication authentication;
+        try{
+            authentication = authenticationManager.authenticate(
+                    new UsernamePasswordAuthenticationToken(
+                            loginRequest.getUsername(),
+                            loginRequest.getPassword()
+                    )
+            );
+        }
+        catch (Exception e){
+            return new ResponseEntity<String>(HttpStatus.NOT_FOUND);
+        }
+
         SecurityContextHolder.getContext().setAuthentication(authentication);
         String jwt = tokenProvider.generateToken((UserDTO) authentication.getPrincipal());
         UserDTO userDTO = (UserDTO) authentication.getPrincipal();
         User user = userRepository.findByUserID(userDTO.getUser().getUserID());
         LoginResponseDTO responseDTO = new LoginResponseDTO(jwt, user.getRole().getRoleName(), user.getUserID());
         try {
-            return new ObjectMapper().writeValueAsString(
-                    new LoginResponseDTO(jwt, user.getRole().getRoleName(), user.getUserID())
-            );
+            return new ResponseEntity<>(new  ObjectMapper().writeValueAsString(
+                    new LoginResponseDTO(jwt, user.getRole().getRoleName(), user.getUserID())), HttpStatus.OK);
+
         } catch (JsonProcessingException e) {
             throw new RuntimeException(e);
         }

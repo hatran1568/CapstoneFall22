@@ -75,7 +75,8 @@ function GenerateModal(props) {
     }
   };
   const clearFields = () => {
-    document.getElementById("budgetGenerateInput").value = "";
+    if (document.getElementById("budgetGenerateInput"))
+      document.getElementById("budgetGenerateInput").value = "";
     setDestination(-1);
     // document.getElementById("startDateGenerateInput").value = null;
     // document.getElementById("endDateGenerateInput").value = null;

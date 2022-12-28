@@ -69,7 +69,7 @@ class RecentTrips extends Component {
         <div className="mt-4 d-flex justify-content-center">
           <MDBBtn
             onClick={() => {
-              window.location.href = "http://localhost:3000/profile";
+              window.location.href = "/recent-plans";
             }}
             style={{
               backgroundColor: "black",

@@ -33,6 +33,7 @@ function POIAndDestinationSearchBar(Children) {
             style: {
               paddingLeft: 25,
             },
+            maxLength: 200,
           }}
           startAdornment={
             <InputAdornment className={style.icon} position="start">
@@ -46,9 +47,6 @@ function POIAndDestinationSearchBar(Children) {
           }}
           placeholder="Tìm kiếm"
           label="Search"
-          inputProps={{
-            maxLength: 32,
-          }}
           id="form1"
           type="text"
           className={style.searchBar}
