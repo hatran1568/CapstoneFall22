@@ -67,23 +67,27 @@ function NewHomePage() {
       headers: {
         "Content-Type": "application/json",
       },
-    }).then(function (response) {
-      //   toggleOffGenerate();
-      toast(
-        "Chuyến đi của bạn sẽ sẵn sàng trong ít phút. Kết quả sẽ được gửi đến mail của bạn.",
-        {
-          position: "top-center",
-          autoClose: 5000,
-          hideProgressBar: true,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          theme: "light",
-        }
-      );
-      setIsGenerating(true);
-    });
+    })
+      .catch((error) => {
+        console.log("error submitting generating request");
+      })
+      .then(function (response) {
+        //   toggleOffGenerate();
+        toast(
+          "Chuyến đi của bạn sẽ sẵn sàng trong ít phút. Kết quả sẽ được gửi đến mail của bạn.",
+          {
+            position: "top-center",
+            autoClose: 5000,
+            hideProgressBar: true,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "light",
+          }
+        );
+        setIsGenerating(true);
+      });
   };
   const submitCreateTrip = (createData) => {
     var userId = -1;
@@ -209,8 +213,8 @@ function NewHomePage() {
                 Tận hưởng những trải nghiệm tuyệt vời
               </h2>
               <p className="lead" data-aos="fade-up" data-aos-delay="100">
-                TPS cung cấp thông tin, blog và đánh giá về các địa điểm yêu thích để giúp
-                bạn lựa chọn địa điểm để đi cho chuyến đi của bạn
+                TPS cung cấp thông tin, blog và đánh giá về các địa điểm yêu
+                thích để giúp bạn lựa chọn địa điểm để đi cho chuyến đi của bạn
               </p>
             </div>
           </div>
@@ -225,8 +229,9 @@ function NewHomePage() {
                 />
                 <h3 className={style.h3}>Gợi ý chuyến đi</h3>
                 <p>
-                  Thuật toán đề xuất của chúng tôi dựa trên thông tin nhập vào để về điểm đến 
-                  du lịch, thời gian, ngân sách và sở thích của bạn để tự động tạo một chuyến đi{" "}
+                  Thuật toán đề xuất của chúng tôi dựa trên thông tin nhập vào
+                  để về điểm đến du lịch, thời gian, ngân sách và sở thích của
+                  bạn để tự động tạo một chuyến đi{" "}
                 </p>
               </div>
             </div>
@@ -243,8 +248,9 @@ function NewHomePage() {
                 />
                 <h3 className={style.h3}>Tùy chỉnh chuyến đi</h3>
                 <p>
-                  Tạo và chỉnh sửa chi tiết chuyến đi của bạn trên thời gian biểu và mốc thời gian, 
-                  quản lí chi phí và danh sách việc cần làm{" "}
+                  Tạo và chỉnh sửa chi tiết chuyến đi của bạn trên thời gian
+                  biểu và mốc thời gian, quản lí chi phí và danh sách việc cần
+                  làm{" "}
                 </p>
               </div>
             </div>
@@ -261,7 +267,8 @@ function NewHomePage() {
                 />
                 <h3 className={style.h3}>Nhà nghỉ & Khách sạn</h3>
                 <p>
-                  Tìm nhà nghỉ hoặc khách sạn gần nhất so với các địa điểm trong chuyến đi của bạn{" "}
+                  Tìm nhà nghỉ hoặc khách sạn gần nhất so với các địa điểm trong
+                  chuyến đi của bạn{" "}
                 </p>
               </div>
             </div>
