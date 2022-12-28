@@ -71,23 +71,27 @@ function NewHomePage() {
       headers: {
         "Content-Type": "application/json",
       },
-    }).then(function (response) {
-      //   toggleOffGenerate();
-      toast(
-        "Chuyến đi của bạn sẽ sẵn sàng trong ít phút. Kết quả sẽ được gửi đến mail của bạn.",
-        {
-          position: "top-center",
-          autoClose: 5000,
-          hideProgressBar: true,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          theme: "light",
-        }
-      );
-      setIsGenerating(true);
-    });
+    })
+      .catch((error) => {
+        console.log("error submitting generating request");
+      })
+      .then(function (response) {
+        //   toggleOffGenerate();
+        toast(
+          "Chuyến đi của bạn sẽ sẵn sàng trong ít phút. Kết quả sẽ được gửi đến mail của bạn.",
+          {
+            position: "top-center",
+            autoClose: 5000,
+            hideProgressBar: true,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "light",
+          }
+        );
+        setIsGenerating(true);
+      });
   };
   const submitCreateTrip = (createData) => {
     var userId = -1;
