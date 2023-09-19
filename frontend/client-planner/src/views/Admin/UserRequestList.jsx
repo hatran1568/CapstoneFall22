@@ -58,7 +58,7 @@ class UserRequestList extends Component {
           this.state.currentPage,
         {
           headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
-        }
+        },
       )
       .then((res) => {
         const data = res.data;
@@ -77,7 +77,7 @@ class UserRequestList extends Component {
           this.state.currentNameKey,
         {
           headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
-        }
+        },
       )
       .then((res) => {
         const data = res.data;
@@ -126,7 +126,7 @@ class UserRequestList extends Component {
             headers: {
               Authorization: `Bearer ${localStorage.getItem("token")}`,
             },
-          }
+          },
         );
         this.componentDidMount();
       },
@@ -199,7 +199,7 @@ class UserRequestList extends Component {
               />
               {/* <a className={style.tableIcons} id={entry.userId} name={name} onClick={this.deleteUser}><FontAwesomeIcon icon={faTrash}/></a> */}
             </th>
-          </tr>
+          </tr>,
         );
       else
         poiTableData.push(
@@ -230,7 +230,7 @@ class UserRequestList extends Component {
               />
               {/* <a className={style.tableIcons} id={entry.userId} name={name} onClick={this.deleteDes}><FontAwesomeIcon icon={faTrash}/></a> */}
             </th>
-          </tr>
+          </tr>,
         );
     });
     const tableId = [];
@@ -239,7 +239,7 @@ class UserRequestList extends Component {
         <th scope="col" className={style.tableId}>
           ID
           <FontAwesomeIcon className={style.sortIcon} icon={faSortUp} />
-        </th>
+        </th>,
       );
     else
       tableId.push(
@@ -251,7 +251,7 @@ class UserRequestList extends Component {
         >
           ID
           <FontAwesomeIcon className={style.sortIcon} icon={faSort} />
-        </th>
+        </th>,
       );
 
     const tablePOI = [];
@@ -265,7 +265,7 @@ class UserRequestList extends Component {
         >
           ĐỊA ĐIỂM
           <FontAwesomeIcon className={style.sortIcon} icon={faSortUp} />
-        </th>
+        </th>,
       );
     else if (this.state.currentFilter == "poiDESC")
       tablePOI.push(
@@ -277,7 +277,7 @@ class UserRequestList extends Component {
         >
           ĐỊA ĐIỂM
           <FontAwesomeIcon className={style.sortIcon} icon={faSortDown} />
-        </th>
+        </th>,
       );
     else
       tablePOI.push(
@@ -289,7 +289,7 @@ class UserRequestList extends Component {
         >
           ĐỊA ĐIỂM
           <FontAwesomeIcon className={style.sortIcon} icon={faSort} />
-        </th>
+        </th>,
       );
 
     const tableDate = [];
@@ -303,7 +303,7 @@ class UserRequestList extends Component {
         >
           NGÀY SỬA
           <FontAwesomeIcon className={style.sortIcon} icon={faSortUp} />
-        </th>
+        </th>,
       );
     else if (this.state.currentFilter == "dateDESC")
       tableDate.push(
@@ -315,7 +315,7 @@ class UserRequestList extends Component {
         >
           NGÀY SỬA
           <FontAwesomeIcon className={style.sortIcon} icon={faSortDown} />
-        </th>
+        </th>,
       );
     else
       tableDate.push(
@@ -327,7 +327,7 @@ class UserRequestList extends Component {
         >
           NGÀY SỬA
           <FontAwesomeIcon className={style.sortIcon} icon={faSort} />
-        </th>
+        </th>,
       );
 
     return (

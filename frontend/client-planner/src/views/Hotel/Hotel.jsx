@@ -45,7 +45,7 @@ import StarRatings from "react-star-ratings";
 import styledEngine from "@mui/styled-engine";
 function Hotel() {
   const [trip, setTrip] = useState({});
-  document.title = "Thêm khách sạn | Tripplanner"
+  document.title = "Thêm khách sạn | Tripplanner";
   const PrettoSlider = memo(
     styled(Slider)({
       color: "#52af77",
@@ -84,7 +84,7 @@ function Hotel() {
           transform: "rotate(45deg)",
         },
       },
-    })
+    }),
   );
   const markerRef = useRef(null);
   const options = [

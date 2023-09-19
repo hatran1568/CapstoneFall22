@@ -1,30 +1,24 @@
 package com.tripplanner.LocationService.dto.response;
 
+import java.util.Date;
 import lombok.Data;
 
-import java.util.Date;
-
 @Data
-
 public class Blog {
 
-    private int blogId;
+  private int blogId;
 
+  private Integer user;
 
-    private Integer user;
+  private String title;
 
-    private  String title;
+  private String content;
 
-    private  String content;
+  private String thumbnail;
 
-    private  String thumbnail;
+  private Date dateCreated;
 
+  private Date dateModified;
 
-    private Date dateCreated;
-
-
-    private Date dateModified;
-
-
-    private BlogStatus status;
+  private BlogStatus status;
 }

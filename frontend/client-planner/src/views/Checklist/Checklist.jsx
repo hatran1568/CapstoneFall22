@@ -132,7 +132,7 @@ class Checklist extends Component {
     })
       .then((response) => {
         var curItem = this.state.checklistItems.find(
-          (el) => el.itemId == item.itemId
+          (el) => el.itemId == item.itemId,
         );
         var index = -1;
         if (curItem) index = this.state.checklistItems.indexOf(curItem);

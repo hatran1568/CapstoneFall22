@@ -140,7 +140,7 @@ class HotelDetails extends Component {
                       this.props.deleteEvent(
                         event,
                         this.state.tripDetail.tripDetailsId,
-                        this.state.tripDetail.masterActivity.name
+                        this.state.tripDetail.masterActivity.name,
                       )
                     }
                   >
@@ -164,7 +164,7 @@ class HotelDetails extends Component {
                         this.state.tripDetail.masterActivity.website.length > 0
                       )
                         window.open(
-                          this.state.tripDetail.masterActivity.website
+                          this.state.tripDetail.masterActivity.website,
                         );
                     }}
                   >

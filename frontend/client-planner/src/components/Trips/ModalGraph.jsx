@@ -29,7 +29,7 @@ ChartJS.register(
   BarElement,
   Title,
   Tooltip,
-  Legend
+  Legend,
 );
 function ModalGraph({ props }) {
   //Graph data

@@ -1,34 +1,34 @@
-.checklistContainer{
-    width: 60vw;
-    margin: auto;
+.checklistContainer {
+  width: 60vw;
+  margin: auto;
 }
-.card{
+.card {
   margin-top: 2em;
   padding: 0.5em;
 }
-.cardBody:hover .deleteBtn{
-    display: block;
+.cardBody:hover .deleteBtn {
+  display: block;
 }
-.itemCheckbox{
-    accent-color: orange;
-    width: 1.5em;
-    height: 1.5em;
-    /* transform : scale(2); */
-    display: inline-block;
-    margin: 0;
-    margin-right: 1em;
+.itemCheckbox {
+  accent-color: orange;
+  width: 1.5em;
+  height: 1.5em;
+  /* transform : scale(2); */
+  display: inline-block;
+  margin: 0;
+  margin-right: 1em;
 }
-.itemContent{
-    min-height: 100%;
-    vertical-align: top;
-    display: inline-block;
-    margin: 0;
+.itemContent {
+  min-height: 100%;
+  vertical-align: top;
+  display: inline-block;
+  margin: 0;
 }
-.itemTitle{
-    font-size: large;
-    font-weight: 500;
+.itemTitle {
+  font-size: large;
+  font-weight: 500;
 }
-.addTitle{
+.addTitle {
   min-height: 100%;
   vertical-align: top;
   display: inline-block;
@@ -38,15 +38,15 @@
   min-width: 50%;
   /* padding: 0 1em; */
 }
-.addTitle:focus{
+.addTitle:focus {
   /* background-color: #fffab091; */
   outline: 0;
   border-bottom: 1px dashed orange;
 }
-.addTitle:empty{
+.addTitle:empty {
   border-bottom: 1px dashed orange;
 }
-.addTitle:hover{
+.addTitle:hover {
   background: #f7f7f7;
 }
 .addTitle[placeholder]:empty:before {
@@ -55,23 +55,23 @@
   color: gray;
   background-color: transparent;
 }
-.addNote{
+.addNote {
   min-height: 100%;
   display: block;
   margin: 0;
   min-width: 90%;
   font-weight: normal;
 }
-.addNote:empty{
+.addNote:empty {
   border-bottom: 1px dashed orange;
-  padding: 0.5em 1em ;
+  padding: 0.5em 1em;
 }
-.addNote:hover{
+.addNote:hover {
   background: #f7f7f7;
 }
-.addNote:focus{
+.addNote:focus {
   /* background-color: #fffab091; */
-  padding: 0.5em 1em ;
+  padding: 0.5em 1em;
   outline: 0;
   border-bottom: 1px dashed orange;
 }
@@ -81,196 +81,207 @@
   color: gray;
   background-color: transparent;
 }
-.dropdown{
-    /* display: none; */
-      position: absolute;
-      right: 0;
-      top: 0;
-  }
-  .dropdownMenu{
-    display: none;
-    position: absolute;
-    top: 1.5em;
-    left: 0;
-    transform: translateX(-30%);
-    background-color: #fff;
-    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
-    padding: 0;
-    border-radius: 5px;
-    z-index: 1;
-    }
-    .dropdown:hover .dropdownMenu {
-      display: block;
-    }
-    .dropdownMenu a:hover {
-      background-color: #f1f1f1;
-    }
-    .dropdownMenu a {
-      color: black;
-      padding: 0.5em 1em;
-      text-decoration: none;
-      display: block;
-      font-size: medium;
-      text-align: left;
-      padding: none;
-    }
-.deleteBtn{
-    /* display: none; */
-    position: absolute;
-    right: 5px;
-    top: 5px;
-    background-color:transparent;
-    border: none;
+.dropdown {
+  /* display: none; */
+  position: absolute;
+  right: 0;
+  top: 0;
+}
+.dropdownMenu {
+  display: none;
+  position: absolute;
+  top: 1.5em;
+  left: 0;
+  transform: translateX(-30%);
+  background-color: #fff;
+  box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+  padding: 0;
+  border-radius: 5px;
+  z-index: 1;
+}
+.dropdown:hover .dropdownMenu {
+  display: block;
+}
+.dropdownMenu a:hover {
+  background-color: #f1f1f1;
+}
+.dropdownMenu a {
+  color: black;
+  padding: 0.5em 1em;
+  text-decoration: none;
+  display: block;
+  font-size: medium;
+  text-align: left;
+  padding: none;
+}
+.deleteBtn {
+  /* display: none; */
+  position: absolute;
+  right: 5px;
+  top: 5px;
+  background-color: transparent;
+  border: none;
 }
 .btnAdd {
-    text-decoration: none;
-    background: #0e0e0f;
-    text-align: center;
-    display: inline-flex;
-    flex-direction: row;
-    justify-content: center;
-    align-items: center;
-    font-size: large;
-    color: white;
-    font-weight: 500;
-    z-index: 10;
-    cursor: pointer;
-    padding: 0.3em 0.5em;
-    border-radius: 5px;
-    margin-top: 1.5em;
-  }
-  .btnAdd:hover{
-    color: wheat;
-  }
-  .addIcon {
-    display: inline;
-    vertical-align: middle;
-    padding: 0;
-    margin: 0;
-    font-size: medium;
-    margin-right: 0.5em;
-  }
-  .noteDiv{
-    margin-top: 0.5em;
-  }
-  .noteDiv span{
-    font-size: medium;
-    font-weight: 500;
-  }
-  .hide{
-    display: none !important;
-  }
-  .warningMessage{
-    color: red;
-    font-size: small;
-    height: auto;
-    margin-left: 3em;
-  }
-  .cardAddBtn{
-    float: right;
-    text-decoration: none;
-    background: wheat;
-    text-align: center;
-    display: inline-flex;
-    flex-direction: row;
-    justify-content: center;
-    align-items: center;
-    font-size: large;
-    color: #0e0e0f;
-    font-weight: 500;
-    z-index: 10;
-    cursor: pointer;
-    padding: 0.3em 0.5em;
-    border-radius: 5px;
-    margin-top: 1.5em;
-  }
-  .cardAddBtn:hover{
-    background-color: orange;
-    color: #0e0e0f;
-  }
-  .progressDiv{
-    position: sticky;
-    top: 50px;
-    height: 5em;
-    z-index: 100;
-    background-color: white;
-    padding-top: 1em;
-    padding-bottom: 1em;
-  }
-  .progressBar{
-    width: 100%;
-    /* position: absolute; */
-    height: 8px !important;
-    /* margin-top: 1em; */
-    /* top: 50%;
+  text-decoration: none;
+  background: #0e0e0f;
+  text-align: center;
+  display: inline-flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  font-size: large;
+  color: white;
+  font-weight: 500;
+  z-index: 10;
+  cursor: pointer;
+  padding: 0.3em 0.5em;
+  border-radius: 5px;
+  margin-top: 1.5em;
+}
+.btnAdd:hover {
+  color: wheat;
+}
+.addIcon {
+  display: inline;
+  vertical-align: middle;
+  padding: 0;
+  margin: 0;
+  font-size: medium;
+  margin-right: 0.5em;
+}
+.noteDiv {
+  margin-top: 0.5em;
+}
+.noteDiv span {
+  font-size: medium;
+  font-weight: 500;
+}
+.hide {
+  display: none !important;
+}
+.warningMessage {
+  color: red;
+  font-size: small;
+  height: auto;
+  margin-left: 3em;
+}
+.cardAddBtn {
+  float: right;
+  text-decoration: none;
+  background: wheat;
+  text-align: center;
+  display: inline-flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  font-size: large;
+  color: #0e0e0f;
+  font-weight: 500;
+  z-index: 10;
+  cursor: pointer;
+  padding: 0.3em 0.5em;
+  border-radius: 5px;
+  margin-top: 1.5em;
+}
+.cardAddBtn:hover {
+  background-color: orange;
+  color: #0e0e0f;
+}
+.progressDiv {
+  position: sticky;
+  top: 50px;
+  height: 5em;
+  z-index: 100;
+  background-color: white;
+  padding-top: 1em;
+  padding-bottom: 1em;
+}
+.progressBar {
+  width: 100%;
+  /* position: absolute; */
+  height: 8px !important;
+  /* margin-top: 1em; */
+  /* top: 50%;
     transform: translateY(-50%); */
-  }
-  .progressDiv a{
-    float: right;
-    text-decoration: none;
-    background: #0e0e0f;
-    text-align: center;
-    display: inline-flex;
-    flex-direction: row;
-    justify-content: center;
-    align-items: center;
-    font-size: medium;
-    color: white !important;
-    font-weight: 500;
-    /* z-index: 10; */
-    cursor: pointer;
-    padding: 0.2em 0.5em;
-    border-radius: 5px;
-  }
-  .progressDiv a:hover{
-    background-color: #0e0e0fb9;
-    color: #ffffff;
-  }
-  .rateDiv{
-    /* margin-top: 2em; */
-    font-weight: 500;
-  }
-  .notOwned{
-    font-size: large;
-    width: 60vw;
-    margin: auto;
-  }
-  .btnGroup{
-    margin-top: 2em;
-  }
-  .createBtn {
-    text-decoration: none;
-    background: #0e0e0f;
-    text-align: center;
-    justify-content: center;
-    align-items: center;
-    font-size: medium;
-    color: white;
-    font-weight: 500;
-    z-index: 10;
-    cursor: pointer;
-    padding: 0.5em 0.5em;
-    border-radius: 5px;
-    margin-top: 1.5em;
-  }
-  .createBtn:hover{
-    background-color: #0e0e0fb2;
-    color: white;
-  }
-  .cloneBtn{
-    background-color: #34a9d9 !important;
-    color: #fff !important;
-    margin-right: 2em;
 }
-.cloneBtn:hover{
-    color: #fff !important;
-    background-color: #267A9C !important;
+.progressDiv a {
+  float: right;
+  text-decoration: none;
+  background: #0e0e0f;
+  text-align: center;
+  display: inline-flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  font-size: medium;
+  color: white !important;
+  font-weight: 500;
+  /* z-index: 10; */
+  cursor: pointer;
+  padding: 0.2em 0.5em;
+  border-radius: 5px;
 }
-  /* background: */
-progress::-webkit-progress-bar {background-color: rgb(193, 192, 192); width: 100%;}
-progress {background-color: rgb(193, 192, 192);}
+.progressDiv a:hover {
+  background-color: #0e0e0fb9;
+  color: #ffffff;
+}
+.rateDiv {
+  /* margin-top: 2em; */
+  font-weight: 500;
+}
+.notOwned {
+  font-size: large;
+  width: 60vw;
+  margin: auto;
+}
+.btnGroup {
+  margin-top: 2em;
+}
+.createBtn {
+  text-decoration: none;
+  background: #0e0e0f;
+  text-align: center;
+  justify-content: center;
+  align-items: center;
+  font-size: medium;
+  color: white;
+  font-weight: 500;
+  z-index: 10;
+  cursor: pointer;
+  padding: 0.5em 0.5em;
+  border-radius: 5px;
+  margin-top: 1.5em;
+}
+.createBtn:hover {
+  background-color: #0e0e0fb2;
+  color: white;
+}
+.cloneBtn {
+  background-color: #34a9d9 !important;
+  color: #fff !important;
+  margin-right: 2em;
+}
+.cloneBtn:hover {
+  color: #fff !important;
+  background-color: #267a9c !important;
+}
+/* background: */
+progress::-webkit-progress-bar {
+  background-color: rgb(193, 192, 192);
+  width: 100%;
+}
+progress {
+  background-color: rgb(193, 192, 192);
+}
 
 /* value: */
-progress::-webkit-progress-value {background-color: green !important;}
-progress::-moz-progress-bar {background-color: green !important;}
-progress {color: green;}
+progress::-webkit-progress-value {
+  background-color: green !important;
+}
+progress::-moz-progress-bar {
+  background-color: green !important;
+}
+progress {
+  color: green;
+}

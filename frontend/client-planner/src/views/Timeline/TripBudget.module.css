@@ -34,7 +34,12 @@
   border-bottom: 1px dashed transparent;
   -webkit-font-smoothing: antialiased;
   text-shadow: 0 15px 40px rgb(0 0 0 / 20%);
-  font-family: Klarna Display, Helvetica Neue, Arial, Helvetica, sans-serif;
+  font-family:
+    Klarna Display,
+    Helvetica Neue,
+    Arial,
+    Helvetica,
+    sans-serif;
   font-size: 66px;
   font-weight: 700;
   line-height: 1.05;
@@ -51,7 +56,12 @@
   border-bottom: 1px dashed transparent;
   -webkit-font-smoothing: antialiased;
   text-shadow: 0 15px 40px rgb(0 0 0 / 20%);
-  font-family: Klarna Display, Helvetica Neue, Arial, Helvetica, sans-serif;
+  font-family:
+    Klarna Display,
+    Helvetica Neue,
+    Arial,
+    Helvetica,
+    sans-serif;
   font-size: 20px;
   font-weight: 700;
   line-height: 1.05;
@@ -168,7 +178,12 @@
   border-bottom: 1px dashed transparent;
   -webkit-font-smoothing: antialiased;
   text-shadow: 0 15px 40px rgb(0 0 0 / 20%);
-  font-family: Klarna Display, Helvetica Neue, Arial, Helvetica, sans-serif;
+  font-family:
+    Klarna Display,
+    Helvetica Neue,
+    Arial,
+    Helvetica,
+    sans-serif;
   font-size: 66px;
   font-weight: 700;
   line-height: 1.05;
@@ -185,7 +200,12 @@
   border-bottom: 1px dashed transparent;
   -webkit-font-smoothing: antialiased;
   text-shadow: 0 15px 40px rgb(0 0 0 / 20%);
-  font-family: Klarna Display, Helvetica Neue, Arial, Helvetica, sans-serif;
+  font-family:
+    Klarna Display,
+    Helvetica Neue,
+    Arial,
+    Helvetica,
+    sans-serif;
   font-size: 20px;
   font-weight: 700;
   line-height: 1.05;
@@ -246,7 +266,12 @@
   border: none !important;
   color: #5f6163 !important;
   background-color: #fff !important;
-  font-family: Klarna Text, Helvetica Neue, Arial, Helvetica, sans-serif;
+  font-family:
+    Klarna Text,
+    Helvetica Neue,
+    Arial,
+    Helvetica,
+    sans-serif;
   font-size: 16px !important;
   font-weight: 500 !important;
   text-transform: none !important;
@@ -265,7 +290,9 @@
 }
 .navTabs {
   border: none !important;
-  box-shadow: 0 4px 12px 0 rgb(0 0 0 / 5%), 0 2px 12px rgb(0 0 0 / 7%) !important;
+  box-shadow:
+    0 4px 12px 0 rgb(0 0 0 / 5%),
+    0 2px 12px rgb(0 0 0 / 7%) !important;
 }
 .budgetBtn {
   border: solid 1px #34a9d9 !important;

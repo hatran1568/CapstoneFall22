@@ -40,7 +40,7 @@ class BlogAddUpdate extends Component {
     };
   }
   componentDidMount() {
-    document.title = "Chỉnh sửa blog | Tripplanner"
+    document.title = "Chỉnh sửa blog | Tripplanner";
     const queryParams = new URLSearchParams(window.location.search);
     const id = queryParams.get("id");
     axios
@@ -66,7 +66,7 @@ class BlogAddUpdate extends Component {
         this.state.dataChanged
       ) {
         const htmlPuri = draftToHtmlPuri(
-          convertToRaw(this.state.editorState.getCurrentContent())
+          convertToRaw(this.state.editorState.getCurrentContent()),
         );
         var titleValue = " ";
         if (
@@ -98,7 +98,7 @@ class BlogAddUpdate extends Component {
       });
     }, 60000);
   }
-  onEditorStateChange: Function = (editorState) => {
+  onEditorStateChange = (editorState) => {
     this.setState({
       editorState,
       dataChanged: true,
@@ -113,9 +113,9 @@ class BlogAddUpdate extends Component {
         const formData = new FormData();
         formData.append("File", file);
         const newThumbnail = file;
-        if (newThumbnail.size/1024 > 10240)
+        if (newThumbnail.size / 1024 > 10240)
           alert("Ảnh không được nặng quá 10MB.");
-        else 
+        else
           axios
             .post("/blog/api/blog/uploadImg/", formData, {
               headers: {
@@ -127,7 +127,7 @@ class BlogAddUpdate extends Component {
       });
     };
     const htmlPuri = draftToHtmlPuri(
-      convertToRaw(this.state.editorState.getCurrentContent())
+      convertToRaw(this.state.editorState.getCurrentContent()),
     );
     const config = {
       image: { uploadCallback: uploadCallback },
@@ -142,21 +142,21 @@ class BlogAddUpdate extends Component {
       console.log(e.target.files[0]);
       formData.append("File", e.target.files[0]);
       const newThumbnail = e.target.files[0];
-      if (newThumbnail.size/1024 > 10240)
+      if (newThumbnail.size / 1024 > 10240)
         alert("Ảnh không được nặng quá 10MB.");
       else {
         axios
-        .post("/blog/api/blog/uploadImg/", formData, {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
-            "Content-Type": "multipart/form-data",
-          },
-        })
-        .then((response) =>
-          this.setState({
-            thumbnail: response.data,
+          .post("/blog/api/blog/uploadImg/", formData, {
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("token")}`,
+              "Content-Type": "multipart/form-data",
+            },
           })
-        );
+          .then((response) =>
+            this.setState({
+              thumbnail: response.data,
+            }),
+          );
       }
     };
 
@@ -237,7 +237,7 @@ class BlogAddUpdate extends Component {
           : null;
       if (contentBlock) {
         const contentState = ContentState.createFromBlockArray(
-            contentBlock.contentBlocks
+            contentBlock.contentBlocks,
           ),
           editorState = EditorState.createWithContent(contentState);
 

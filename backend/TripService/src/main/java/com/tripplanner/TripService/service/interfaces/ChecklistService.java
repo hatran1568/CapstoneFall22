@@ -6,15 +6,15 @@ import org.springframework.stereotype.Service;
 
 @Service
 public interface ChecklistService {
-    ChecklistDTO getChecklistItemsByTripId(int tripId, int userId);
+  ChecklistDTO getChecklistItemsByTripId(int tripId, int userId);
 
-    boolean itemExists(int itemId);
+  boolean itemExists(int itemId);
 
-    void updateCheckedState(int itemId, Boolean checked);
+  void updateCheckedState(int itemId, Boolean checked);
 
-    void deleteItemById(int id);
+  void deleteItemById(int id);
 
-    ChecklistItemDTO editItemById(ChecklistItemDTO newItem, int id);
+  ChecklistItemDTO editItemById(ChecklistItemDTO newItem, int id);
 
-    ChecklistItemDTO addItem(ChecklistItemDTO checklistItemDTO);
+  ChecklistItemDTO addItem(ChecklistItemDTO checklistItemDTO);
 }

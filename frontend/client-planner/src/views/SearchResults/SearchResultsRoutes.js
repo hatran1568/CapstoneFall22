@@ -7,8 +7,7 @@ export default function SearchRoutes() {
   return (
     <Routes>
       <Route path="/searchResults" element={<SearchResults />}></Route>
-      <Route path="/card" element={<CardItem/>}></Route>
-    
+      <Route path="/card" element={<CardItem />}></Route>
     </Routes>
   );
 }

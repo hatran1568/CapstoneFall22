@@ -5,6 +5,7 @@ import lombok.Setter;
 
 @Data
 public class RoleDTO {
-    private int roleID;
-    private String roleName;
+
+  private int roleID;
+  private String roleName;
 }

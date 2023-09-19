@@ -70,14 +70,19 @@ const AddCollectionModal = (prop) => {
 
   return (
     <>
-      <div className='d-flex justify-content-end'>
+      <div className="d-flex justify-content-end">
         <a className={`${style.btnAdd} btn btn-success`} onClick={handleCreate}>
-          <FontAwesomeIcon icon={faPlus} className={style.addIcon} size='lg' />
+          <FontAwesomeIcon icon={faPlus} className={style.addIcon} size="lg" />
           Tạo mới
         </a>
       </div>
-      <Modal title='Bộ sưu tập mới' open={open} onOk={handleOk} onCancel={handleCancel}>
-        <MDBInputGroup className='px-2 mb-3'>
+      <Modal
+        title="Bộ sưu tập mới"
+        open={open}
+        onOk={handleOk}
+        onCancel={handleCancel}
+      >
+        <MDBInputGroup className="px-2 mb-3">
           <h5>Tiêu đề</h5>
           <Input
             showCount
@@ -85,11 +90,11 @@ const AddCollectionModal = (prop) => {
             onChange={(e) => {
               setTitleInput(e.target.value);
             }}
-            size='large'
-            spellCheck='false'
+            size="large"
+            spellCheck="false"
           />
         </MDBInputGroup>
-        <MDBInputGroup className='px-2'>
+        <MDBInputGroup className="px-2">
           <h5>Mô tả</h5>
           <TextArea
             showCount
@@ -99,7 +104,7 @@ const AddCollectionModal = (prop) => {
             }}
             maxLength={100}
             style={{ width: 1000, resize: "none" }}
-            spellCheck='false'
+            spellCheck="false"
           />
         </MDBInputGroup>
       </Modal>

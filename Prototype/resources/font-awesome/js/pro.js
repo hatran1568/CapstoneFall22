@@ -29,9 +29,16 @@
             _defineProperty(target, key, source[key]);
           })
         : Object.getOwnPropertyDescriptors
-        ? Object.defineProperties(target, Object.getOwnPropertyDescriptors(source))
+        ? Object.defineProperties(
+            target,
+            Object.getOwnPropertyDescriptors(source),
+          )
         : ownKeys(Object(source)).forEach(function (key) {
-            Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key));
+            Object.defineProperty(
+              target,
+              key,
+              Object.getOwnPropertyDescriptor(source, key),
+            );
           });
     }
 
@@ -48,7 +55,10 @@
               return typeof obj;
             }
           : function (obj) {
-              return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype
+              return obj &&
+                "function" == typeof Symbol &&
+                obj.constructor === Symbol &&
+                obj !== Symbol.prototype
                 ? "symbol"
                 : typeof obj;
             }),
@@ -67,7 +77,10 @@
     function BabelRegExp(re, flags, groups) {
       var _this = new RegExp(re, flags);
 
-      return _groups.set(_this, groups || _groups.get(re)), _setPrototypeOf(_this, BabelRegExp.prototype);
+      return (
+        _groups.set(_this, groups || _groups.get(re)),
+        _setPrototypeOf(_this, BabelRegExp.prototype)
+      );
     }
 
     function buildGroups(result, re) {
@@ -104,7 +117,8 @@
           return _super[Symbol.replace].call(this, str, function () {
             var args = arguments;
             return (
-              "object" != typeof args[args.length - 1] && (args = [].slice.call(args)).push(buildGroups(args, _this)),
+              "object" != typeof args[args.length - 1] &&
+                (args = [].slice.call(args)).push(buildGroups(args, _this)),
               substitution.apply(this, args)
             );
           });
@@ -187,12 +201,20 @@
 
   function _slicedToArray(arr, i) {
     return (
-      _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest()
+      _arrayWithHoles(arr) ||
+      _iterableToArrayLimit(arr, i) ||
+      _unsupportedIterableToArray(arr, i) ||
+      _nonIterableRest()
     );
   }
 
   function _toConsumableArray(arr) {
-    return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread();
+    return (
+      _arrayWithoutHoles(arr) ||
+      _iterableToArray(arr) ||
+      _unsupportedIterableToArray(arr) ||
+      _nonIterableSpread()
+    );
   }
 
   function _arrayWithoutHoles(arr) {
@@ -204,12 +226,19 @@
   }
 
   function _iterableToArray(iter) {
-    if ((typeof Symbol !== "undefined" && iter[Symbol.iterator] != null) || iter["@@iterator"] != null)
+    if (
+      (typeof Symbol !== "undefined" && iter[Symbol.iterator] != null) ||
+      iter["@@iterator"] != null
+    )
       return Array.from(iter);
   }
 
   function _iterableToArrayLimit(arr, i) {
-    var _i = arr == null ? null : (typeof Symbol !== "undefined" && arr[Symbol.iterator]) || arr["@@iterator"];
+    var _i =
+      arr == null
+        ? null
+        : (typeof Symbol !== "undefined" && arr[Symbol.iterator]) ||
+          arr["@@iterator"];
 
     if (_i == null) return;
     var _arr = [];
@@ -244,7 +273,8 @@
     var n = Object.prototype.toString.call(o).slice(8, -1);
     if (n === "Object" && o.constructor) n = o.constructor.name;
     if (n === "Map" || n === "Set") return Array.from(o);
-    if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen);
+    if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n))
+      return _arrayLikeToArray(o, minLen);
   }
 
   function _arrayLikeToArray(arr, len) {
@@ -280,7 +310,8 @@
   try {
     if (typeof window !== "undefined") _WINDOW = window;
     if (typeof document !== "undefined") _DOCUMENT = document;
-    if (typeof MutationObserver !== "undefined") _MUTATION_OBSERVER = MutationObserver;
+    if (typeof MutationObserver !== "undefined")
+      _MUTATION_OBSERVER = MutationObserver;
     if (typeof performance !== "undefined") _PERFORMANCE = performance;
   } catch (e) {}
 
@@ -419,7 +450,8 @@
   var ICON_SELECTION_SYNTAX_PATTERN = /fa(s|r|l|t|d|b|k|ss)?[\-\ ]/; // eslint-disable-line no-useless-escape
 
   var LAYERS_TEXT_CLASSNAME = "fa-layers-text";
-  var FONT_FAMILY_PATTERN = /Font ?Awesome ?([56 ]*)(Solid|Regular|Light|Thin|Duotone|Brands|Free|Pro|Sharp|Kit)?.*/i; // TODO: this needs to support fass
+  var FONT_FAMILY_PATTERN =
+    /Font ?Awesome ?([56 ]*)(Solid|Regular|Light|Thin|Duotone|Brands|Free|Pro|Sharp|Kit)?.*/i; // TODO: this needs to support fass
   // TODO: do we need to handle font-weight for kit SVG pseudo-elements?
 
   var FONT_WEIGHT_TO_PREFIX = familyProxy(
@@ -438,7 +470,13 @@
   );
   var oneToTen = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
   var oneToTwenty = oneToTen.concat([11, 12, 13, 14, 15, 16, 17, 18, 19, 20]);
-  var ATTRIBUTES_WATCHED_FOR_MUTATION = ["class", "data-prefix", "data-icon", "data-fa-transform", "data-fa-mask"];
+  var ATTRIBUTES_WATCHED_FOR_MUTATION = [
+    "class",
+    "data-prefix",
+    "data-icon",
+    "data-fa-transform",
+    "data-fa-mask",
+  ];
   var DUOTONE_CLASSES = {
     GROUP: "duotone-group",
     SWAP_OPACITY: "swap-opacity",
@@ -596,7 +634,12 @@
   var manuallyConfigureMessage =
     'Manually set config.fetchSvgFrom = "URL" or use <script data-fetch-svg-from="URL" ...> to explicitly configure.'; // TODO: figure out all of this error scenario handling for the fetchCustomSvg url as well.
 
-  if (_config.autoFetchSvg && !_config.fetchSvgFrom && DOCUMENT && DOCUMENT.currentScript) {
+  if (
+    _config.autoFetchSvg &&
+    !_config.fetchSvgFrom &&
+    DOCUMENT &&
+    DOCUMENT.currentScript
+  ) {
     var src = DOCUMENT.currentScript.getAttribute("src");
 
     if (src.search(fromJsDirectory) > -1) {
@@ -679,7 +722,13 @@
   };
   function bunker(fn) {
     try {
-      for (var _len = arguments.length, args = new Array(_len > 1 ? _len - 1 : 0), _key = 1; _key < _len; _key++) {
+      for (
+        var _len = arguments.length,
+          args = new Array(_len > 1 ? _len - 1 : 0),
+          _key = 1;
+        _key < _len;
+        _key++
+      ) {
         args[_key - 1] = arguments[_key];
       }
 
@@ -754,13 +803,20 @@
   function joinAttributes(attributes) {
     return Object.keys(attributes || {})
       .reduce(function (acc, attributeName) {
-        return acc + "".concat(attributeName, '="').concat(htmlEscape(attributes[attributeName]), '" ');
+        return (
+          acc +
+          ""
+            .concat(attributeName, '="')
+            .concat(htmlEscape(attributes[attributeName]), '" ')
+        );
       }, "")
       .trim();
   }
   function joinStyles(styles) {
     return Object.keys(styles || {}).reduce(function (acc, styleName) {
-      return acc + "".concat(styleName, ": ").concat(styles[styleName].trim(), ";");
+      return (
+        acc + "".concat(styleName, ": ").concat(styles[styleName].trim(), ";")
+      );
     }, "");
   }
   function transformIsMeaningful(transform) {
@@ -780,13 +836,18 @@
     var outer = {
       transform: "translate(".concat(containerWidth / 2, " 256)"),
     };
-    var innerTranslate = "translate(".concat(transform.x * 32, ", ").concat(transform.y * 32, ") ");
+    var innerTranslate = "translate("
+      .concat(transform.x * 32, ", ")
+      .concat(transform.y * 32, ") ");
     var innerScale = "scale("
       .concat((transform.size / 16) * (transform.flipX ? -1 : 1), ", ")
       .concat((transform.size / 16) * (transform.flipY ? -1 : 1), ") ");
     var innerRotate = "rotate(".concat(transform.rotate, " 0 0)");
     var inner = {
-      transform: "".concat(innerTranslate, " ").concat(innerScale, " ").concat(innerRotate),
+      transform: ""
+        .concat(innerTranslate, " ")
+        .concat(innerScale, " ")
+        .concat(innerRotate),
     };
     var path = {
       transform: "translate(".concat((iconWidth / 2) * -1, " -256)"),
@@ -804,15 +865,22 @@
       _ref2$height = _ref2.height,
       height = _ref2$height === void 0 ? UNITS_IN_GRID : _ref2$height,
       _ref2$startCentered = _ref2.startCentered,
-      startCentered = _ref2$startCentered === void 0 ? false : _ref2$startCentered;
+      startCentered =
+        _ref2$startCentered === void 0 ? false : _ref2$startCentered;
     var val = "";
 
     if (startCentered && IS_IE) {
-      val += "translate(".concat(transform.x / d - width / 2, "em, ").concat(transform.y / d - height / 2, "em) ");
+      val += "translate("
+        .concat(transform.x / d - width / 2, "em, ")
+        .concat(transform.y / d - height / 2, "em) ");
     } else if (startCentered) {
-      val += "translate(calc(-50% + ".concat(transform.x / d, "em), calc(-50% + ").concat(transform.y / d, "em)) ");
+      val += "translate(calc(-50% + "
+        .concat(transform.x / d, "em), calc(-50% + ")
+        .concat(transform.y / d, "em)) ");
     } else {
-      val += "translate(".concat(transform.x / d, "em, ").concat(transform.y / d, "em) ");
+      val += "translate("
+        .concat(transform.x / d, "em, ")
+        .concat(transform.y / d, "em) ");
     }
 
     val += "scale("
@@ -895,7 +963,9 @@
   var loaded = false;
 
   if (IS_DOM) {
-    loaded = (DOCUMENT.documentElement.doScroll ? /^loaded|^c/ : /^loaded|^i|^c/).test(DOCUMENT.readyState);
+    loaded = (
+      DOCUMENT.documentElement.doScroll ? /^loaded|^c/ : /^loaded|^i|^c/
+    ).test(DOCUMENT.readyState);
     if (!loaded) DOCUMENT.addEventListener("DOMContentLoaded", listener);
   }
 
@@ -907,7 +977,8 @@
   function toHtml(abstractNodes) {
     var tag = abstractNodes.tag,
       _abstractNodes$attrib = abstractNodes.attributes,
-      attributes = _abstractNodes$attrib === void 0 ? {} : _abstractNodes$attrib,
+      attributes =
+        _abstractNodes$attrib === void 0 ? {} : _abstractNodes$attrib,
       _abstractNodes$childr = abstractNodes.children,
       children = _abstractNodes$childr === void 0 ? [] : _abstractNodes$childr;
 
@@ -955,10 +1026,16 @@
    * @return {mixed}                 The final result.
    */
 
-  var reduce = function fastReduceObject(subject, fn, initialValue, thisContext) {
+  var reduce = function fastReduceObject(
+    subject,
+    fn,
+    initialValue,
+    thisContext,
+  ) {
     var keys = Object.keys(subject),
       length = keys.length,
-      iterator = thisContext !== undefined ? bindInternal4(fn, thisContext) : fn,
+      iterator =
+        thisContext !== undefined ? bindInternal4(fn, thisContext) : fn,
       i,
       key,
       result;
@@ -1078,7 +1155,8 @@
   }
 
   function defineIcons(prefix, icons) {
-    var params = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
+    var params =
+      arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
     var _params$skipHooks = params.skipHooks,
       skipHooks = _params$skipHooks === void 0 ? false : _params$skipHooks;
     var normalized = normalizeIcons(icons);
@@ -1086,7 +1164,10 @@
     if (typeof namespace.hooks.addPack === "function" && !skipHooks) {
       namespace.hooks.addPack(prefix, normalizeIcons(icons));
     } else {
-      namespace.styles[prefix] = _objectSpread2(_objectSpread2({}, namespace.styles[prefix] || {}), normalized);
+      namespace.styles[prefix] = _objectSpread2(
+        _objectSpread2({}, namespace.styles[prefix] || {}),
+        normalized,
+      );
     }
     /**
      * Font Awesome 4 used the prefix of `fa` for all icons. With the introduction
@@ -1103,10 +1184,13 @@
   var viewBoxRe = /viewBox="0 0 ([0-9]+) ([0-9]+)"/;
   var singlePathRe = /path d="([^"]+)"/;
   var duotonePathRe = [
-    /*#__PURE__*/ _wrapRegExp(/path d="((?:(?!")[\s\S])+)".*path d="((?:(?!")[\s\S])+)"/, {
-      d1: 1,
-      d2: 2,
-    }),
+    /*#__PURE__*/ _wrapRegExp(
+      /path d="((?:(?!")[\s\S])+)".*path d="((?:(?!")[\s\S])+)"/,
+      {
+        d1: 1,
+        d2: 2,
+      },
+    ),
     /*#__PURE__*/ _wrapRegExp(
       /path class="((?:(?!")[\s\S])+)".*d="((?:(?!")[\s\S])+)".*path class="((?:(?!")[\s\S])+)".*d="((?:(?!")[\s\S])+)"/,
       {
@@ -1116,10 +1200,13 @@
         d2: 4,
       },
     ),
-    /*#__PURE__*/ _wrapRegExp(/path class="((?:(?!")[\s\S])+)".*d="((?:(?!")[\s\S])+)"/, {
-      cls1: 1,
-      d1: 2,
-    }),
+    /*#__PURE__*/ _wrapRegExp(
+      /path class="((?:(?!")[\s\S])+)".*d="((?:(?!")[\s\S])+)"/,
+      {
+        cls1: 1,
+        d1: 2,
+      },
+    ),
   ];
   /**
    * Takes an SVG as a string of text and attempts to parse the:
@@ -1138,7 +1225,9 @@
     var viewBox = svgText.match(viewBoxRe);
     var singlePath = svgText.match(singlePathRe);
     var duotonePath =
-      svgText.match(duotonePathRe[0]) || svgText.match(duotonePathRe[1]) || svgText.match(duotonePathRe[2]);
+      svgText.match(duotonePathRe[0]) ||
+      svgText.match(duotonePathRe[1]) ||
+      svgText.match(duotonePathRe[2]);
 
     if (duotonePath) {
       var _duotonePath$groups = duotonePath.groups,
@@ -1159,7 +1248,13 @@
     }
 
     if (viewBox && path) {
-      val = [parseInt(viewBox[1], 10), parseInt(viewBox[2], 10), [], null, path];
+      val = [
+        parseInt(viewBox[1], 10),
+        parseInt(viewBox[2], 10),
+        [],
+        null,
+        path,
+      ];
     }
 
     return val;
@@ -1170,8 +1265,16 @@
     shims = namespace.shims;
   var LONG_STYLE =
     ((_LONG_STYLE = {}),
-    _defineProperty(_LONG_STYLE, FAMILY_CLASSIC, Object.values(PREFIX_TO_LONG_STYLE[FAMILY_CLASSIC])),
-    _defineProperty(_LONG_STYLE, FAMILY_SHARP, Object.values(PREFIX_TO_LONG_STYLE[FAMILY_SHARP])),
+    _defineProperty(
+      _LONG_STYLE,
+      FAMILY_CLASSIC,
+      Object.values(PREFIX_TO_LONG_STYLE[FAMILY_CLASSIC]),
+    ),
+    _defineProperty(
+      _LONG_STYLE,
+      FAMILY_SHARP,
+      Object.values(PREFIX_TO_LONG_STYLE[FAMILY_SHARP]),
+    ),
     _LONG_STYLE);
   var _defaultUsablePrefix = null;
   var _byUnicode = {};
@@ -1181,8 +1284,16 @@
   var _byAlias = {};
   var PREFIXES =
     ((_PREFIXES = {}),
-    _defineProperty(_PREFIXES, FAMILY_CLASSIC, Object.keys(PREFIX_TO_STYLE[FAMILY_CLASSIC])),
-    _defineProperty(_PREFIXES, FAMILY_SHARP, Object.keys(PREFIX_TO_STYLE[FAMILY_SHARP])),
+    _defineProperty(
+      _PREFIXES,
+      FAMILY_CLASSIC,
+      Object.keys(PREFIX_TO_STYLE[FAMILY_CLASSIC]),
+    ),
+    _defineProperty(
+      _PREFIXES,
+      FAMILY_SHARP,
+      Object.keys(PREFIX_TO_STYLE[FAMILY_SHARP]),
+    ),
     _PREFIXES);
 
   function handle(prefix, iconName, svgText) {
@@ -1208,9 +1319,17 @@
     if (isPrivateUnicode(iconName)) {
       return "unicode/"
         .concat(toHex(iconName))
-        .concat(typeof version === "undefined" ? "" : "-".concat(version), ".svg");
+        .concat(
+          typeof version === "undefined" ? "" : "-".concat(version),
+          ".svg",
+        );
     } else {
-      return "".concat(iconName).concat(typeof version === "undefined" ? "" : "-".concat(version), ".svg");
+      return ""
+        .concat(iconName)
+        .concat(
+          typeof version === "undefined" ? "" : "-".concat(version),
+          ".svg",
+        );
     }
   }
 
@@ -1230,12 +1349,16 @@
     }
   }
   var fetchSvg = function fetchSvg(prefix, iconName) {
-    var params = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
+    var params =
+      arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
     var isUploadedIcon = prefix === "fak";
     var _params$url = params.url,
       url = _params$url === void 0 ? config.fetchSvgFrom : _params$url,
       _params$uploadedSvgUr = params.uploadedSvgUrl,
-      uploadedSvgUrl = _params$uploadedSvgUr === void 0 ? config.fetchUploadedSvgFrom : _params$uploadedSvgUr,
+      uploadedSvgUrl =
+        _params$uploadedSvgUr === void 0
+          ? config.fetchUploadedSvgFrom
+          : _params$uploadedSvgUr,
       token = params.token,
       version = params.version;
 
@@ -1249,19 +1372,29 @@
     return new Promise(function (resolve, reject) {
       if (!url) {
         return reject(
-          new Error("No URL available to fetch SVGs from. Specify in params or by setting config.fetchSvgFrom"),
+          new Error(
+            "No URL available to fetch SVGs from. Specify in params or by setting config.fetchSvgFrom",
+          ),
         );
       }
 
       if (isUploadedIcon && !uploadedSvgUrl) {
         return reject(
-          new Error("No URL available to fetch kit SVGs from. Specify in params or by setting config.fetchKitSvgFrom"),
+          new Error(
+            "No URL available to fetch kit SVGs from. Specify in params or by setting config.fetchKitSvgFrom",
+          ),
         );
       } // TODO this needs to get a director for a prefix
 
       var fullUrl = isUploadedIcon
-        ? "".concat(uploadedSvgUrl, "/").concat(token, "/icons/").concat(iconPath(iconName, version))
-        : "".concat(url, "/").concat(PREFIX_TO_DIRECTORY[prefix], "/").concat(iconPath(iconName));
+        ? ""
+            .concat(uploadedSvgUrl, "/")
+            .concat(token, "/icons/")
+            .concat(iconPath(iconName, version))
+        : ""
+            .concat(url, "/")
+            .concat(PREFIX_TO_DIRECTORY[prefix], "/")
+            .concat(iconPath(iconName));
 
       if (token) {
         fullUrl = "".concat(fullUrl, "?token=").concat(token);
@@ -1436,29 +1569,49 @@
     };
   };
   function getCanonicalPrefix(styleOrPrefix) {
-    var params = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
+    var params =
+      arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
     var _params$family = params.family,
       family = _params$family === void 0 ? FAMILY_CLASSIC : _params$family;
     var style = PREFIX_TO_STYLE[family][styleOrPrefix];
-    var prefix = STYLE_TO_PREFIX[family][styleOrPrefix] || STYLE_TO_PREFIX[family][style];
+    var prefix =
+      STYLE_TO_PREFIX[family][styleOrPrefix] || STYLE_TO_PREFIX[family][style];
     var defined = styleOrPrefix in namespace.styles ? styleOrPrefix : null;
     return prefix || defined || null;
   }
   var PREFIXES_FOR_FAMILY =
     ((_PREFIXES_FOR_FAMILY = {}),
-    _defineProperty(_PREFIXES_FOR_FAMILY, FAMILY_CLASSIC, Object.keys(PREFIX_TO_LONG_STYLE[FAMILY_CLASSIC])),
-    _defineProperty(_PREFIXES_FOR_FAMILY, FAMILY_SHARP, Object.keys(PREFIX_TO_LONG_STYLE[FAMILY_SHARP])),
+    _defineProperty(
+      _PREFIXES_FOR_FAMILY,
+      FAMILY_CLASSIC,
+      Object.keys(PREFIX_TO_LONG_STYLE[FAMILY_CLASSIC]),
+    ),
+    _defineProperty(
+      _PREFIXES_FOR_FAMILY,
+      FAMILY_SHARP,
+      Object.keys(PREFIX_TO_LONG_STYLE[FAMILY_SHARP]),
+    ),
     _PREFIXES_FOR_FAMILY);
   function getCanonicalIcon(values) {
     var _famProps;
 
-    var params = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
+    var params =
+      arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
     var _params$skipLookups = params.skipLookups,
-      skipLookups = _params$skipLookups === void 0 ? false : _params$skipLookups;
+      skipLookups =
+        _params$skipLookups === void 0 ? false : _params$skipLookups;
     var famProps =
       ((_famProps = {}),
-      _defineProperty(_famProps, FAMILY_CLASSIC, "".concat(config.cssPrefix, "-").concat(FAMILY_CLASSIC)),
-      _defineProperty(_famProps, FAMILY_SHARP, "".concat(config.cssPrefix, "-").concat(FAMILY_SHARP)),
+      _defineProperty(
+        _famProps,
+        FAMILY_CLASSIC,
+        "".concat(config.cssPrefix, "-").concat(FAMILY_CLASSIC),
+      ),
+      _defineProperty(
+        _famProps,
+        FAMILY_SHARP,
+        "".concat(config.cssPrefix, "-").concat(FAMILY_SHARP),
+      ),
       _famProps);
     var givenPrefix = null;
     var family = FAMILY_CLASSIC;
@@ -1485,7 +1638,9 @@
       var iconName = getIconName(config.cssPrefix, cls);
 
       if (styles[cls]) {
-        cls = LONG_STYLE[family].includes(cls) ? LONG_STYLE_TO_PREFIX[family][cls] : cls;
+        cls = LONG_STYLE[family].includes(cls)
+          ? LONG_STYLE_TO_PREFIX[family][cls]
+          : cls;
         givenPrefix = cls;
         acc.prefix = cls;
       } else if (PREFIXES[family].indexOf(cls) > -1) {
@@ -1514,7 +1669,12 @@
         acc.iconName = shim.iconName || aliasIconName || acc.iconName;
         acc.prefix = shim.prefix || acc.prefix;
 
-        if (acc.prefix === "far" && !styles["far"] && styles["fas"] && !config.autoFetchSvg) {
+        if (
+          acc.prefix === "far" &&
+          !styles["far"] &&
+          styles["fas"] &&
+          !config.autoFetchSvg
+        ) {
           // Allow a fallback from the regular style to solid if regular is not available
           // but only if we aren't auto-fetching SVGs
           acc.prefix = "fas";
@@ -1532,9 +1692,14 @@
       canonical.prefix = "fad";
     }
 
-    if (!canonical.prefix && family === FAMILY_SHARP && (styles["fass"] || config.autoFetchSvg)) {
+    if (
+      !canonical.prefix &&
+      family === FAMILY_SHARP &&
+      (styles["fass"] || config.autoFetchSvg)
+    ) {
       canonical.prefix = "fass";
-      canonical.iconName = byAlias(canonical.prefix, canonical.iconName) || canonical.iconName;
+      canonical.iconName =
+        byAlias(canonical.prefix, canonical.iconName) || canonical.iconName;
     }
 
     if (canonical.prefix === "fa" || givenPrefix === "fa") {
@@ -1559,13 +1724,22 @@
         value: function add() {
           var _this = this;
 
-          for (var _len = arguments.length, definitions = new Array(_len), _key = 0; _key < _len; _key++) {
+          for (
+            var _len = arguments.length,
+              definitions = new Array(_len),
+              _key = 0;
+            _key < _len;
+            _key++
+          ) {
             definitions[_key] = arguments[_key];
           }
 
           var additions = definitions.reduce(this._pullDefinitions, {});
           Object.keys(additions).forEach(function (key) {
-            _this.definitions[key] = _objectSpread2(_objectSpread2({}, _this.definitions[key] || {}), additions[key]);
+            _this.definitions[key] = _objectSpread2(
+              _objectSpread2({}, _this.definitions[key] || {}),
+              additions[key],
+            );
             defineIcons(key, additions[key]); // TODO can we stop doing this? We can't get the icons by 'fa-solid' any longer so this probably needs to change
 
             var longPrefix = PREFIX_TO_LONG_STYLE[FAMILY_CLASSIC][key];
@@ -1666,7 +1840,13 @@
     return obj;
   }
   function chainHooks(hook, accumulator) {
-    for (var _len = arguments.length, args = new Array(_len > 2 ? _len - 2 : 0), _key = 2; _key < _len; _key++) {
+    for (
+      var _len = arguments.length,
+        args = new Array(_len > 2 ? _len - 2 : 0),
+        _key = 2;
+      _key < _len;
+      _key++
+    ) {
       args[_key - 2] = arguments[_key];
     }
 
@@ -1677,7 +1857,13 @@
     return accumulator;
   }
   function callHooks(hook) {
-    for (var _len2 = arguments.length, args = new Array(_len2 > 1 ? _len2 - 1 : 0), _key2 = 1; _key2 < _len2; _key2++) {
+    for (
+      var _len2 = arguments.length,
+        args = new Array(_len2 > 1 ? _len2 - 1 : 0),
+        _key2 = 1;
+      _key2 < _len2;
+      _key2++
+    ) {
       args[_key2 - 1] = arguments[_key2];
     }
 
@@ -1703,7 +1889,8 @@
     if (!iconName) return;
     iconName = byAlias(prefix, iconName) || iconName;
     return (
-      iconFromMapping(library.definitions, prefix, iconName) || iconFromMapping(namespace.styles, prefix, iconName)
+      iconFromMapping(library.definitions, prefix, iconName) ||
+      iconFromMapping(namespace.styles, prefix, iconName)
     );
   }
   var library = new Library();
@@ -1714,7 +1901,8 @@
   };
   var dom = {
     i2svg: function i2svg() {
-      var params = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+      var params =
+        arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
 
       if (IS_DOM) {
         callHooks("beforeI2svg", params);
@@ -1725,7 +1913,8 @@
       }
     },
     watch: function watch() {
-      var params = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+      var params =
+        arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
       var autoReplaceSvgRoot = params.autoReplaceSvgRoot;
 
       if (config.autoReplaceSvg === false) {
@@ -1755,7 +1944,8 @@
       }
 
       if (Array.isArray(_icon) && _icon.length === 2) {
-        var iconName = _icon[1].indexOf("fa-") === 0 ? _icon[1].slice(3) : _icon[1];
+        var iconName =
+          _icon[1].indexOf("fa-") === 0 ? _icon[1].slice(3) : _icon[1];
         var prefix = getCanonicalPrefix(_icon[0]);
         return {
           prefix: prefix,
@@ -1765,14 +1955,17 @@
 
       if (
         typeof _icon === "string" &&
-        (_icon.indexOf("".concat(config.cssPrefix, "-")) > -1 || _icon.match(ICON_SELECTION_SYNTAX_PATTERN))
+        (_icon.indexOf("".concat(config.cssPrefix, "-")) > -1 ||
+          _icon.match(ICON_SELECTION_SYNTAX_PATTERN))
       ) {
         var canonicalIcon = getCanonicalIcon(_icon.split(" "), {
           skipLookups: true,
         });
         return {
           prefix: canonicalIcon.prefix || getDefaultUsablePrefix(),
-          iconName: byAlias(canonicalIcon.prefix, canonicalIcon.iconName) || canonicalIcon.iconName,
+          iconName:
+            byAlias(canonicalIcon.prefix, canonicalIcon.iconName) ||
+            canonicalIcon.iconName,
         };
       }
 
@@ -1797,10 +1990,16 @@
   };
 
   var autoReplace = function autoReplace() {
-    var params = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+    var params =
+      arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
     var _params$autoReplaceSv = params.autoReplaceSvgRoot,
-      autoReplaceSvgRoot = _params$autoReplaceSv === void 0 ? DOCUMENT : _params$autoReplaceSv;
-    if ((Object.keys(namespace.styles).length > 0 || config.autoFetchSvg) && IS_DOM && config.autoReplaceSvg)
+      autoReplaceSvgRoot =
+        _params$autoReplaceSv === void 0 ? DOCUMENT : _params$autoReplaceSv;
+    if (
+      (Object.keys(namespace.styles).length > 0 || config.autoFetchSvg) &&
+      IS_DOM &&
+      config.autoReplaceSvg
+    )
       api.dom.i2svg({
         node: autoReplaceSvgRoot,
       });
@@ -1823,7 +2022,10 @@
       {},
       {
         addPack: function addPack(prefix, icons) {
-          namespace.styles[prefix] = _objectSpread2(_objectSpread2({}, namespace.styles[prefix] || {}), icons);
+          namespace.styles[prefix] = _objectSpread2(
+            _objectSpread2({}, namespace.styles[prefix] || {}),
+            icons,
+          );
           build();
           autoReplace();
         },
@@ -1833,7 +2035,10 @@
               prefix = _ref2[0],
               icons = _ref2[1];
 
-            namespace.styles[prefix] = _objectSpread2(_objectSpread2({}, namespace.styles[prefix] || {}), icons);
+            namespace.styles[prefix] = _objectSpread2(
+              _objectSpread2({}, namespace.styles[prefix] || {}),
+              icons,
+            );
           });
           build();
           autoReplace();
@@ -1841,7 +2046,10 @@
         addShims: function addShims(shims) {
           var _namespace$shims;
 
-          (_namespace$shims = namespace.shims).push.apply(_namespace$shims, _toConsumableArray(shims));
+          (_namespace$shims = namespace.shims).push.apply(
+            _namespace$shims,
+            _toConsumableArray(shims),
+          );
 
           build();
           autoReplace();
@@ -1892,7 +2100,9 @@
           _objectSpread2({}, styles),
           {},
           {
-            "transform-origin": "".concat(offset.x + transform.x / 16, "em ").concat(offset.y + transform.y / 16, "em"),
+            "transform-origin": ""
+              .concat(offset.x + transform.x / 16, "em ")
+              .concat(offset.y + transform.y / 16, "em"),
           },
         ),
       );
@@ -1913,7 +2123,10 @@
       children = _ref.children,
       attributes = _ref.attributes,
       symbol = _ref.symbol;
-    var id = symbol === true ? "".concat(prefix, "-").concat(config.cssPrefix, "-").concat(iconName) : symbol;
+    var id =
+      symbol === true
+        ? "".concat(prefix, "-").concat(config.cssPrefix, "-").concat(iconName)
+        : symbol;
     return [
       {
         tag: "svg",
@@ -1957,7 +2170,10 @@
       height = _ref.height;
 
     var isUploadedIcon = prefix === "fak";
-    var attrClass = [config.replacementClass, iconName ? "".concat(config.cssPrefix, "-").concat(iconName) : ""]
+    var attrClass = [
+      config.replacementClass,
+      iconName ? "".concat(config.cssPrefix, "-").concat(iconName) : "",
+    ]
       .filter(function (c) {
         return extra.classes.indexOf(c) === -1;
       })
@@ -1996,7 +2212,9 @@
       content.children.push({
         tag: "title",
         attributes: {
-          id: content.attributes["aria-labelledby"] || "title-".concat(titleId || nextUniqueId()),
+          id:
+            content.attributes["aria-labelledby"] ||
+            "title-".concat(titleId || nextUniqueId()),
         },
         children: [title],
       });
@@ -2014,7 +2232,10 @@
         maskId: maskId,
         transform: transform,
         symbol: symbol,
-        styles: _objectSpread2(_objectSpread2({}, uploadedIconWidthStyle), extra.styles),
+        styles: _objectSpread2(
+          _objectSpread2({}, uploadedIconWidthStyle),
+          extra.styles,
+        ),
       },
     );
 
@@ -2154,14 +2375,19 @@
 
   var styles$1 = namespace.styles;
   function resolveCustomIconVersion() {
-    var kitConfig = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+    var kitConfig =
+      arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
     var iconName = arguments.length > 1 ? arguments[1] : undefined;
 
     if (iconName && isPrivateUnicode(iconName)) {
       if (kitConfig && kitConfig.iconUploads) {
         var iconUploads = kitConfig.iconUploads;
         var descriptiveIconName = Object.keys(iconUploads).find(function (key) {
-          return iconUploads[key] && iconUploads[key].u && iconUploads[key].u === toHex(iconName);
+          return (
+            iconUploads[key] &&
+            iconUploads[key].u &&
+            iconUploads[key].u === toHex(iconName)
+          );
         });
 
         if (descriptiveIconName) {
@@ -2169,7 +2395,12 @@
         }
       }
     } else {
-      if (kitConfig && kitConfig.iconUploads && kitConfig.iconUploads[iconName] && kitConfig.iconUploads[iconName].v) {
+      if (
+        kitConfig &&
+        kitConfig.iconUploads &&
+        kitConfig.iconUploads[iconName] &&
+        kitConfig.iconUploads[iconName].v
+      ) {
         return kitConfig.iconUploads[iconName].v;
       }
     }
@@ -2194,7 +2425,9 @@
           {
             tag: "path",
             attributes: {
-              class: "".concat(config.cssPrefix, "-").concat(DUOTONE_CLASSES.SECONDARY),
+              class: ""
+                .concat(config.cssPrefix, "-")
+                .concat(DUOTONE_CLASSES.SECONDARY),
               fill: "currentColor",
               d: vectorData[0],
             },
@@ -2202,7 +2435,9 @@
           {
             tag: "path",
             attributes: {
-              class: "".concat(config.cssPrefix, "-").concat(DUOTONE_CLASSES.PRIMARY),
+              class: ""
+                .concat(config.cssPrefix, "-")
+                .concat(DUOTONE_CLASSES.PRIMARY),
               fill: "currentColor",
               d: vectorData[1],
             },
@@ -2234,7 +2469,11 @@
 
   function maybeNotifyMissing(iconName, prefix) {
     if (!PRODUCTION && !config.showMissingIcons && iconName) {
-      console.error('Icon with name "'.concat(iconName, '" and prefix "').concat(prefix, '" is missing.'));
+      console.error(
+        'Icon with name "'
+          .concat(iconName, '" and prefix "')
+          .concat(prefix, '" is missing.'),
+      );
     }
   }
 
@@ -2259,14 +2498,22 @@
         prefix = shim.prefix || prefix;
       }
 
-      if (iconName && prefix && styles$1[prefix] && styles$1[prefix][iconName]) {
+      if (
+        iconName &&
+        prefix &&
+        styles$1[prefix] &&
+        styles$1[prefix][iconName]
+      ) {
         var icon = styles$1[prefix][iconName];
         return resolve(asFoundIcon(icon));
       }
       /* BEGIN.FEATURE.AF */
 
       var customIconParams = {};
-      var iconVersion = resolveCustomIconVersion(WINDOW.FontAwesomeKitConfig, iconName);
+      var iconVersion = resolveCustomIconVersion(
+        WINDOW.FontAwesomeKitConfig,
+        iconName,
+      );
 
       if (WINDOW.FontAwesomeKitConfig && WINDOW.FontAwesomeKitConfig.token) {
         customIconParams.token = WINDOW.FontAwesomeKitConfig.token;
@@ -2288,7 +2535,10 @@
                   _objectSpread2({}, missingIconResolutionMixin),
                   {},
                   {
-                    icon: config.showMissingIcons && iconName ? callProvided("missingIconAbstract") || {} : {},
+                    icon:
+                      config.showMissingIcons && iconName
+                        ? callProvided("missingIconAbstract") || {}
+                        : {},
                   },
                 ),
               );
@@ -2304,7 +2554,10 @@
           _objectSpread2({}, missingIconResolutionMixin),
           {},
           {
-            icon: config.showMissingIcons && iconName ? callProvided("missingIconAbstract") || {} : {},
+            icon:
+              config.showMissingIcons && iconName
+                ? callProvided("missingIconAbstract") || {}
+                : {},
           },
         ),
       );
@@ -2314,7 +2567,10 @@
   var noop$1 = function noop() {};
 
   var p =
-    config.measurePerformance && PERFORMANCE && PERFORMANCE.mark && PERFORMANCE.measure
+    config.measurePerformance &&
+    PERFORMANCE &&
+    PERFORMANCE.mark &&
+    PERFORMANCE.measure
       ? PERFORMANCE
       : {
           mark: noop$1,
@@ -2357,7 +2613,12 @@
   }
 
   function hasBeenReplaced(node) {
-    return node && node.classList && node.classList.contains && node.classList.contains(config.replacementClass);
+    return (
+      node &&
+      node.classList &&
+      node.classList.contains &&
+      node.classList.contains(config.replacementClass)
+    );
   }
 
   function getMutator() {
@@ -2378,9 +2639,15 @@
   }
 
   function convertSVG(abstractObj) {
-    var params = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
+    var params =
+      arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
     var _params$ceFn = params.ceFn,
-      ceFn = _params$ceFn === void 0 ? (abstractObj.tag === "svg" ? createElementNS : createElement) : _params$ceFn;
+      ceFn =
+        _params$ceFn === void 0
+          ? abstractObj.tag === "svg"
+            ? createElementNS
+            : createElement
+          : _params$ceFn;
 
     if (typeof abstractObj === "string") {
       return DOCUMENT.createTextNode(abstractObj);
@@ -2415,7 +2682,10 @@
           node.parentNode.insertBefore(convertSVG(abstract), node);
         });
 
-        if (node.getAttribute(DATA_FA_I2SVG) === null && config.keepOriginalSource) {
+        if (
+          node.getAttribute(DATA_FA_I2SVG) === null &&
+          config.keepOriginalSource
+        ) {
           var comment = DOCUMENT.createComment(nodeAsComment(node));
           node.parentNode.replaceChild(comment, node);
         } else {
@@ -2513,13 +2783,17 @@
     }
 
     var _options$treeCallback = options.treeCallback,
-      treeCallback = _options$treeCallback === void 0 ? noop$2 : _options$treeCallback,
+      treeCallback =
+        _options$treeCallback === void 0 ? noop$2 : _options$treeCallback,
       _options$nodeCallback = options.nodeCallback,
-      nodeCallback = _options$nodeCallback === void 0 ? noop$2 : _options$nodeCallback,
+      nodeCallback =
+        _options$nodeCallback === void 0 ? noop$2 : _options$nodeCallback,
       _options$pseudoElemen = options.pseudoElementsCallback,
-      pseudoElementsCallback = _options$pseudoElemen === void 0 ? noop$2 : _options$pseudoElemen,
+      pseudoElementsCallback =
+        _options$pseudoElemen === void 0 ? noop$2 : _options$pseudoElemen,
       _options$observeMutat = options.observeMutationsRoot,
-      observeMutationsRoot = _options$observeMutat === void 0 ? DOCUMENT : _options$observeMutat;
+      observeMutationsRoot =
+        _options$observeMutat === void 0 ? DOCUMENT : _options$observeMutat;
     mo = new MUTATION_OBSERVER(function (objects) {
       if (disabled) return;
       var defaultPrefix = getDefaultUsablePrefix();
@@ -2536,7 +2810,11 @@
           treeCallback(mutationRecord.target);
         }
 
-        if (mutationRecord.type === "attributes" && mutationRecord.target.parentNode && config.searchPseudoElements) {
+        if (
+          mutationRecord.type === "attributes" &&
+          mutationRecord.target.parentNode &&
+          config.searchPseudoElements
+        ) {
           pseudoElementsCallback(mutationRecord.target.parentNode);
         }
 
@@ -2545,13 +2823,22 @@
           isWatched(mutationRecord.target) &&
           ~ATTRIBUTES_WATCHED_FOR_MUTATION.indexOf(mutationRecord.attributeName)
         ) {
-          if (mutationRecord.attributeName === "class" && hasPrefixAndIcon(mutationRecord.target)) {
-            var _getCanonicalIcon = getCanonicalIcon(classArray(mutationRecord.target)),
+          if (
+            mutationRecord.attributeName === "class" &&
+            hasPrefixAndIcon(mutationRecord.target)
+          ) {
+            var _getCanonicalIcon = getCanonicalIcon(
+                classArray(mutationRecord.target),
+              ),
               prefix = _getCanonicalIcon.prefix,
               iconName = _getCanonicalIcon.iconName;
 
-            mutationRecord.target.setAttribute(DATA_PREFIX, prefix || defaultPrefix);
-            if (iconName) mutationRecord.target.setAttribute(DATA_ICON, iconName);
+            mutationRecord.target.setAttribute(
+              DATA_PREFIX,
+              prefix || defaultPrefix,
+            );
+            if (iconName)
+              mutationRecord.target.setAttribute(DATA_ICON, iconName);
           } else if (hasBeenReplaced(mutationRecord.target)) {
             nodeCallback(mutationRecord.target);
           }
@@ -2612,10 +2899,17 @@
     }
 
     if (val.prefix && innerText.length > 0) {
-      val.iconName = byLigature(val.prefix, node.innerText) || byUnicode(val.prefix, toHex(node.innerText));
+      val.iconName =
+        byLigature(val.prefix, node.innerText) ||
+        byUnicode(val.prefix, toHex(node.innerText));
     }
 
-    if (!val.iconName && config.autoFetchSvg && node.firstChild && node.firstChild.nodeType === Node.TEXT_NODE) {
+    if (
+      !val.iconName &&
+      config.autoFetchSvg &&
+      node.firstChild &&
+      node.firstChild.nodeType === Node.TEXT_NODE
+    ) {
       val.iconName = node.firstChild.data;
     }
 
@@ -2729,21 +3023,30 @@
   FAMILIES.map(function (family) {
     knownPrefixes.add("fa-".concat(family));
   });
-  Object.keys(PREFIX_TO_STYLE[FAMILY_CLASSIC]).map(knownPrefixes.add.bind(knownPrefixes));
-  Object.keys(PREFIX_TO_STYLE[FAMILY_SHARP]).map(knownPrefixes.add.bind(knownPrefixes));
+  Object.keys(PREFIX_TO_STYLE[FAMILY_CLASSIC]).map(
+    knownPrefixes.add.bind(knownPrefixes),
+  );
+  Object.keys(PREFIX_TO_STYLE[FAMILY_SHARP]).map(
+    knownPrefixes.add.bind(knownPrefixes),
+  );
   knownPrefixes = _toConsumableArray(knownPrefixes);
 
   function onTree(root) {
-    var callback = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : null;
+    var callback =
+      arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : null;
     if (!IS_DOM) return Promise.resolve();
     var htmlClassList = DOCUMENT.documentElement.classList;
 
     var hclAdd = function hclAdd(suffix) {
-      return htmlClassList.add("".concat(HTML_CLASS_I2SVG_BASE_CLASS, "-").concat(suffix));
+      return htmlClassList.add(
+        "".concat(HTML_CLASS_I2SVG_BASE_CLASS, "-").concat(suffix),
+      );
     };
 
     var hclRemove = function hclRemove(suffix) {
-      return htmlClassList.remove("".concat(HTML_CLASS_I2SVG_BASE_CLASS, "-").concat(suffix));
+      return htmlClassList.remove(
+        "".concat(HTML_CLASS_I2SVG_BASE_CLASS, "-").concat(suffix),
+      );
     };
 
     var prefixes = config.autoFetchSvg
@@ -2756,7 +3059,9 @@
       prefixes.push("fa");
     }
 
-    var prefixesDomQuery = [".".concat(LAYERS_TEXT_CLASSNAME, ":not([").concat(DATA_FA_I2SVG, "])")]
+    var prefixesDomQuery = [
+      ".".concat(LAYERS_TEXT_CLASSNAME, ":not([").concat(DATA_FA_I2SVG, "])"),
+    ]
       .concat(
         prefixes.map(function (p) {
           return ".".concat(p, ":not([").concat(DATA_FA_I2SVG, "])");
@@ -2821,7 +3126,8 @@
   }
 
   function onNode(node) {
-    var callback = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : null;
+    var callback =
+      arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : null;
     generateMutation(node).then(function (mutation) {
       if (mutation) {
         perform([mutation], callback);
@@ -2831,7 +3137,8 @@
 
   function resolveIcons(next) {
     return function (maybeIconDefinition) {
-      var params = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
+      var params =
+        arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
       var iconDefinition = (maybeIconDefinition || {}).icon
         ? maybeIconDefinition
         : findIconDefinition(maybeIconDefinition || {});
@@ -2855,9 +3162,11 @@
   }
 
   var render = function render(iconDefinition) {
-    var params = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
+    var params =
+      arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
     var _params$transform = params.transform,
-      transform = _params$transform === void 0 ? meaninglessTransform : _params$transform,
+      transform =
+        _params$transform === void 0 ? meaninglessTransform : _params$transform,
       _params$symbol = params.symbol,
       symbol = _params$symbol === void 0 ? false : _params$symbol,
       _params$mask = params.mask,
@@ -2916,7 +3225,10 @@
           },
           prefix: prefix,
           iconName: iconName,
-          transform: _objectSpread2(_objectSpread2({}, meaninglessTransform), transform),
+          transform: _objectSpread2(
+            _objectSpread2({}, meaninglessTransform),
+            transform,
+          ),
           symbol: symbol,
           title: title,
           maskId: maskId,
@@ -2938,7 +3250,9 @@
     },
     hooks: function hooks() {
       return {
-        mutationObserverCallbacks: function mutationObserverCallbacks(accumulator) {
+        mutationObserverCallbacks: function mutationObserverCallbacks(
+          accumulator,
+        ) {
           accumulator.treeCallback = onTree;
           accumulator.nodeCallback = onNode;
           return accumulator;
@@ -2950,7 +3264,8 @@
         var _params$node = params.node,
           node = _params$node === void 0 ? DOCUMENT : _params$node,
           _params$callback = params.callback,
-          callback = _params$callback === void 0 ? function () {} : _params$callback;
+          callback =
+            _params$callback === void 0 ? function () {} : _params$callback;
         return onTree(node, callback);
       };
 
@@ -3040,7 +3355,10 @@
     mixout: function mixout() {
       return {
         layer: function layer(assembler) {
-          var params = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
+          var params =
+            arguments.length > 1 && arguments[1] !== undefined
+              ? arguments[1]
+              : {};
           var _params$classes = params.classes,
             classes = _params$classes === void 0 ? [] : _params$classes;
           return domVariants(
@@ -3064,7 +3382,9 @@
                 {
                   tag: "span",
                   attributes: {
-                    class: ["".concat(config.cssPrefix, "-layers")].concat(_toConsumableArray(classes)).join(" "),
+                    class: ["".concat(config.cssPrefix, "-layers")]
+                      .concat(_toConsumableArray(classes))
+                      .join(" "),
                   },
                   children: children,
                 },
@@ -3080,13 +3400,17 @@
     mixout: function mixout() {
       return {
         counter: function counter(content) {
-          var params = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
+          var params =
+            arguments.length > 1 && arguments[1] !== undefined
+              ? arguments[1]
+              : {};
           var _params$title = params.title,
             title = _params$title === void 0 ? null : _params$title,
             _params$classes = params.classes,
             classes = _params$classes === void 0 ? [] : _params$classes,
             _params$attributes = params.attributes,
-            attributes = _params$attributes === void 0 ? {} : _params$attributes,
+            attributes =
+              _params$attributes === void 0 ? {} : _params$attributes,
             _params$styles = params.styles,
             styles = _params$styles === void 0 ? {} : _params$styles;
           return domVariants(
@@ -3105,7 +3429,9 @@
                 extra: {
                   attributes: attributes,
                   styles: styles,
-                  classes: ["".concat(config.cssPrefix, "-layers-counter")].concat(_toConsumableArray(classes)),
+                  classes: [
+                    "".concat(config.cssPrefix, "-layers-counter"),
+                  ].concat(_toConsumableArray(classes)),
                 },
               });
             },
@@ -3119,15 +3445,22 @@
     mixout: function mixout() {
       return {
         text: function text(content) {
-          var params = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
+          var params =
+            arguments.length > 1 && arguments[1] !== undefined
+              ? arguments[1]
+              : {};
           var _params$transform = params.transform,
-            transform = _params$transform === void 0 ? meaninglessTransform : _params$transform,
+            transform =
+              _params$transform === void 0
+                ? meaninglessTransform
+                : _params$transform,
             _params$title = params.title,
             title = _params$title === void 0 ? null : _params$title,
             _params$classes = params.classes,
             classes = _params$classes === void 0 ? [] : _params$classes,
             _params$attributes = params.attributes,
-            attributes = _params$attributes === void 0 ? {} : _params$attributes,
+            attributes =
+              _params$attributes === void 0 ? {} : _params$attributes,
             _params$styles = params.styles,
             styles = _params$styles === void 0 ? {} : _params$styles;
           return domVariants(
@@ -3142,12 +3475,17 @@
               });
               return makeLayersTextAbstract({
                 content: content,
-                transform: _objectSpread2(_objectSpread2({}, meaninglessTransform), transform),
+                transform: _objectSpread2(
+                  _objectSpread2({}, meaninglessTransform),
+                  transform,
+                ),
                 title: title,
                 extra: {
                   attributes: attributes,
                   styles: styles,
-                  classes: ["".concat(config.cssPrefix, "-layers-text")].concat(_toConsumableArray(classes)),
+                  classes: ["".concat(config.cssPrefix, "-layers-text")].concat(
+                    _toConsumableArray(classes),
+                  ),
                 },
               });
             },
@@ -3195,7 +3533,9 @@
   function hexValueFromContent(content) {
     var cleaned = content.replace(CLEAN_CONTENT_PATTERN, "");
     var codePoint = codePointAt(cleaned, 0);
-    var isPrependTen = codePoint >= SECONDARY_UNICODE_RANGE[0] && codePoint <= SECONDARY_UNICODE_RANGE[1];
+    var isPrependTen =
+      codePoint >= SECONDARY_UNICODE_RANGE[0] &&
+      codePoint <= SECONDARY_UNICODE_RANGE[1];
     var isDoubled = cleaned.length === 2 ? cleaned[0] === cleaned[1] : false;
     return {
       value: isDoubled ? toHex(cleaned[0]) : toHex(cleaned),
@@ -3204,7 +3544,9 @@
   }
 
   function replaceForPosition(node, position) {
-    var pendingAttribute = "".concat(DATA_FA_PSEUDO_ELEMENT_PENDING).concat(position.replace(":", "-"));
+    var pendingAttribute = ""
+      .concat(DATA_FA_PSEUDO_ELEMENT_PENDING)
+      .concat(position.replace(":", "-"));
     return new Promise(function (resolve, reject) {
       if (node.getAttribute(pendingAttribute) !== null) {
         // This node is already being processed
@@ -3216,7 +3558,9 @@
         return c.getAttribute(DATA_FA_PSEUDO_ELEMENT) === position;
       })[0];
       var styles = WINDOW.getComputedStyle(node, position);
-      var fontFamily = styles.getPropertyValue("font-family").match(FONT_FAMILY_PATTERN);
+      var fontFamily = styles
+        .getPropertyValue("font-family")
+        .match(FONT_FAMILY_PATTERN);
       var fontWeight = styles.getPropertyValue("font-weight");
       var content = styles.getPropertyValue("content");
 
@@ -3229,8 +3573,18 @@
       } else if (fontFamily && content !== "none" && content !== "") {
         var _content = styles.getPropertyValue("content");
 
-        var family = ~["Sharp"].indexOf(fontFamily[2]) ? FAMILY_SHARP : FAMILY_CLASSIC;
-        var prefix = ~["Solid", "Regular", "Light", "Thin", "Duotone", "Brands", "Kit"].indexOf(fontFamily[2])
+        var family = ~["Sharp"].indexOf(fontFamily[2])
+          ? FAMILY_SHARP
+          : FAMILY_CLASSIC;
+        var prefix = ~[
+          "Solid",
+          "Regular",
+          "Light",
+          "Thin",
+          "Duotone",
+          "Brands",
+          "Kit",
+        ].indexOf(fontFamily[2])
           ? STYLE_TO_PREFIX[family][fontFamily[2].toLowerCase()]
           : FONT_WEIGHT_TO_PREFIX[family][fontWeight];
 
@@ -3267,8 +3621,10 @@
           iconName &&
           !isSecondary &&
           (!alreadyProcessedPseudoElement ||
-            alreadyProcessedPseudoElement.getAttribute(DATA_PREFIX) !== prefix ||
-            alreadyProcessedPseudoElement.getAttribute(DATA_ICON) !== iconIdentifier)
+            alreadyProcessedPseudoElement.getAttribute(DATA_PREFIX) !==
+              prefix ||
+            alreadyProcessedPseudoElement.getAttribute(DATA_ICON) !==
+              iconIdentifier)
         ) {
           node.setAttribute(pendingAttribute, iconIdentifier);
 
@@ -3325,13 +3681,18 @@
   }
 
   function replace(node) {
-    return Promise.all([replaceForPosition(node, "::before"), replaceForPosition(node, "::after")]);
+    return Promise.all([
+      replaceForPosition(node, "::before"),
+      replaceForPosition(node, "::after"),
+    ]);
   }
 
   function processable(node) {
     return (
       node.parentNode !== document.head &&
-      !~TAGNAMES_TO_SKIP_FOR_PSEUDOELEMENTS.indexOf(node.tagName.toUpperCase()) &&
+      !~TAGNAMES_TO_SKIP_FOR_PSEUDOELEMENTS.indexOf(
+        node.tagName.toUpperCase(),
+      ) &&
       !node.getAttribute(DATA_FA_PSEUDO_ELEMENT) &&
       (!node.parentNode || node.parentNode.tagName !== "svg")
     );
@@ -3340,7 +3701,9 @@
   function searchPseudoElements(root) {
     if (!IS_DOM) return;
     return new Promise(function (resolve, reject) {
-      var operations = toArray(root.querySelectorAll("*")).filter(processable).map(replace);
+      var operations = toArray(root.querySelectorAll("*"))
+        .filter(processable)
+        .map(replace);
       var end = perf.begin("searchPseudoElements");
       disableObservation();
       Promise.all(operations)
@@ -3360,7 +3723,9 @@
   var PseudoElements = {
     hooks: function hooks() {
       return {
-        mutationObserverCallbacks: function mutationObserverCallbacks(accumulator) {
+        mutationObserverCallbacks: function mutationObserverCallbacks(
+          accumulator,
+        ) {
           accumulator.pseudoElementsCallback = searchPseudoElements;
           return accumulator;
         },
@@ -3513,13 +3878,18 @@
         var outer = {
           transform: "translate(".concat(containerWidth / 2, " 256)"),
         };
-        var innerTranslate = "translate(".concat(transform.x * 32, ", ").concat(transform.y * 32, ") ");
+        var innerTranslate = "translate("
+          .concat(transform.x * 32, ", ")
+          .concat(transform.y * 32, ") ");
         var innerScale = "scale("
           .concat((transform.size / 16) * (transform.flipX ? -1 : 1), ", ")
           .concat((transform.size / 16) * (transform.flipY ? -1 : 1), ") ");
         var innerRotate = "rotate(".concat(transform.rotate, " 0 0)");
         var inner = {
-          transform: "".concat(innerTranslate, " ").concat(innerScale, " ").concat(innerRotate),
+          transform: ""
+            .concat(innerTranslate, " ")
+            .concat(innerScale, " ")
+            .concat(innerRotate),
         };
         var path = {
           transform: "translate(".concat((iconWidth / 2) * -1, " -256)"),
@@ -3540,7 +3910,10 @@
                 {
                   tag: main.icon.tag,
                   children: main.icon.children,
-                  attributes: _objectSpread2(_objectSpread2({}, main.icon.attributes), operations.path),
+                  attributes: _objectSpread2(
+                    _objectSpread2({}, main.icon.attributes),
+                    operations.path,
+                  ),
                 },
               ],
             },
@@ -3558,7 +3931,8 @@
   };
 
   function fillBlack(abstract) {
-    var force = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : true;
+    var force =
+      arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : true;
 
     if (abstract.attributes && (abstract.attributes.fill || force)) {
       abstract.attributes.fill = "black";
@@ -3638,7 +4012,10 @@
               _objectSpread2(
                 {
                   tag: mainPath.tag,
-                  attributes: _objectSpread2(_objectSpread2({}, mainPath.attributes), trans.path),
+                  attributes: _objectSpread2(
+                    _objectSpread2({}, mainPath.attributes),
+                    trans.path,
+                  ),
                 },
                 maskInnerGroupChildrenMixin,
               ),
@@ -3702,7 +4079,9 @@
       var reduceMotion = false;
 
       if (WINDOW.matchMedia) {
-        reduceMotion = WINDOW.matchMedia("(prefers-reduced-motion: reduce)").matches;
+        reduceMotion = WINDOW.matchMedia(
+          "(prefers-reduced-motion: reduce)",
+        ).matches;
       }
 
       providers.missingIconAbstract = function () {
@@ -3845,7 +4224,8 @@
       return {
         parseNodeAttributes: function parseNodeAttributes(accumulator, node) {
           var symbolData = node.getAttribute("data-fa-symbol");
-          var symbol = symbolData === null ? false : symbolData === "" ? true : symbolData;
+          var symbol =
+            symbolData === null ? false : symbolData === "" ? true : symbolData;
           accumulator["symbol"] = symbol;
           return accumulator;
         },

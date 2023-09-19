@@ -56,7 +56,7 @@ function ConfirmEditModal(props) {
                               detail.masterActivity.images[0]
                                 ? detail.masterActivity.images[0].url.includes(
                                     "img/",
-                                    0
+                                    0,
                                   )
                                   ? `../${detail.masterActivity.images[0].url}`
                                   : detail.masterActivity.images[0].url
@@ -81,7 +81,7 @@ function ConfirmEditModal(props) {
                         {moment(detail.date).locale("vi").format("L")}
                       </span>
                     </div>
-                  )
+                  ),
                 )}
               </div>
             ) : null}

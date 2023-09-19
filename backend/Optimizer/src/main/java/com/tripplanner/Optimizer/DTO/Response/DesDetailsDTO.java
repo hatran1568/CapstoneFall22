@@ -4,8 +4,9 @@ import lombok.Data;
 
 @Data
 public class DesDetailsDTO {
-    int desId;
-    String description;
-    boolean deleted;
-    String name;
+
+  int desId;
+  String description;
+  boolean deleted;
+  String name;
 }

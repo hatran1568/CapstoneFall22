@@ -1,6 +1,5 @@
 package com.planner.backendserver.controller;
 
-
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.planner.backendserver.DTO.UserDTO;
@@ -21,45 +20,73 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/api"  )
+@RequestMapping("/api")
 public class LoginController {
-    @Autowired
-    UserRepository userRepository;
-    @Autowired
-    AuthenticationManager authenticationManager;
-    @Autowired
-    private JwtTokenProvider tokenProvider;
-    @RequestMapping(value = "/login", produces = { "*/*" }, method = RequestMethod.POST)
-    public String authenticateUser(@RequestBody com.planner.backendserver.dto.request.LoginRequestDTO loginRequest) {
 
-        // Xác thực thông tin người dùng Request lên
-        Authentication authentication = authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(
-                        loginRequest.getUsername(),
-                        loginRequest.getPassword()
-                )
+  @Autowired
+  UserRepository userRepository;
+
+  @Autowired
+  AuthenticationManager authenticationManager;
+
+  @Autowired
+  private JwtTokenProvider tokenProvider;
+
+  @RequestMapping(
+    value = "/login",
+    produces = { "*/*" },
+    method = RequestMethod.POST
+  )
+  public String authenticateUser(
+    @RequestBody com.planner.backendserver.dto.request.LoginRequestDTO loginRequest
+  ) {
+    // Xác thực thông tin người dùng Request lên
+    Authentication authentication = authenticationManager.authenticate(
+      new UsernamePasswordAuthenticationToken(
+        loginRequest.getUsername(),
+        loginRequest.getPassword()
+      )
+    );
+    SecurityContextHolder.getContext().setAuthentication(authentication);
+    String jwt = tokenProvider.generateToken(
+      (UserDTO) authentication.getPrincipal()
+    );
+    UserDTO userDTO = (UserDTO) authentication.getPrincipal();
+    User user = userRepository.findByUserID(userDTO.getUser().getUserID());
+    LoginResponseDTO responseDTO = new LoginResponseDTO(
+      jwt,
+      user.getRole().getRoleName(),
+      user.getUserID()
+    );
+    try {
+      return new ObjectMapper()
+        .writeValueAsString(
+          new LoginResponseDTO(
+            jwt,
+            user.getRole().getRoleName(),
+            user.getUserID()
+          )
         );
-        SecurityContextHolder.getContext().setAuthentication(authentication);
-        String jwt = tokenProvider.generateToken((UserDTO) authentication.getPrincipal());
-        UserDTO userDTO = (UserDTO) authentication.getPrincipal();
-        User user = userRepository.findByUserID(userDTO.getUser().getUserID());
-        LoginResponseDTO responseDTO = new LoginResponseDTO(jwt,user.getRole().getRoleName(),user.getUserID());
-        try {
-            return new ObjectMapper().writeValueAsString(new LoginResponseDTO(jwt,user.getRole().getRoleName(), user.getUserID()));
-        } catch (JsonProcessingException e) {
-            throw new RuntimeException(e);
-        }
-
+    } catch (JsonProcessingException e) {
+      throw new RuntimeException(e);
     }
-    @RequestMapping(value = "/api/loginByOAuth", produces = { "*/*" }, method = RequestMethod.POST)
-    public String authenticateUserOAuth(String jwt) {
-        return jwt;
-    }
+  }
 
-    @RequestMapping(value = "/wrongUser",produces = {"*/*"},method = RequestMethod.GET)
-    public ResponseEntity returnWrongUser(){
-        return new ResponseEntity( HttpStatus.FORBIDDEN);
-    }
+  @RequestMapping(
+    value = "/api/loginByOAuth",
+    produces = { "*/*" },
+    method = RequestMethod.POST
+  )
+  public String authenticateUserOAuth(String jwt) {
+    return jwt;
+  }
 
-
+  @RequestMapping(
+    value = "/wrongUser",
+    produces = { "*/*" },
+    method = RequestMethod.GET
+  )
+  public ResponseEntity returnWrongUser() {
+    return new ResponseEntity(HttpStatus.FORBIDDEN);
+  }
 }

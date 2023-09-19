@@ -1,39 +1,50 @@
 [
-    {
-        "categoryId": 1,
-        "categoryName": "Văn hóa, nghệ thuật"
-    },{
-        "categoryId": 2,
-        "categoryName": "Hoạt động ngoài trời"
-    },{
-        "categoryId": 3,
-        "categoryName": "Tôn giáo"
-    },{
-        "categoryId": 4,
-        "categoryName": "Lịch sử"
-    },{
-        "categoryId": 5,
-        "categoryName": "Bảo tàng"
-    },{
-        "categoryId": 6,
-        "categoryName": "Spa & Sức khỏe"
-    },{
-        "categoryId": 7,
-        "categoryName": "Mua sắm"
-    },{
-        "categoryId": 8,
-        "categoryName": "Bãi biển"
-    },{
-        "categoryId": 9,
-        "categoryName": "Hoạt động đêm"
-    },{
-        "categoryId": 10,
-        "categoryName": "Khách sạn"
-    },{
-        "categoryId": 11,
-        "categoryName": "Nhà hàng"
-    },{
-        "categoryId": 12,
-        "categoryName": "Vui chơi giải trí"
-    }
+  {
+    "categoryId": 1,
+    "categoryName": "Văn hóa, nghệ thuật"
+  },
+  {
+    "categoryId": 2,
+    "categoryName": "Hoạt động ngoài trời"
+  },
+  {
+    "categoryId": 3,
+    "categoryName": "Tôn giáo"
+  },
+  {
+    "categoryId": 4,
+    "categoryName": "Lịch sử"
+  },
+  {
+    "categoryId": 5,
+    "categoryName": "Bảo tàng"
+  },
+  {
+    "categoryId": 6,
+    "categoryName": "Spa & Sức khỏe"
+  },
+  {
+    "categoryId": 7,
+    "categoryName": "Mua sắm"
+  },
+  {
+    "categoryId": 8,
+    "categoryName": "Bãi biển"
+  },
+  {
+    "categoryId": 9,
+    "categoryName": "Hoạt động đêm"
+  },
+  {
+    "categoryId": 10,
+    "categoryName": "Khách sạn"
+  },
+  {
+    "categoryId": 11,
+    "categoryName": "Nhà hàng"
+  },
+  {
+    "categoryId": 12,
+    "categoryName": "Vui chơi giải trí"
+  }
 ]

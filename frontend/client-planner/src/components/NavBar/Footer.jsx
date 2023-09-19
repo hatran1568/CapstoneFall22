@@ -18,9 +18,11 @@ function Footer() {
             </h6>
 
             <p style={{ fontSize: "14px", marginRight: "20%" }}>
-              Trip Planner System, được làm bởi nhóm SEP490_G2 cho dự án Final Capstone ngành Công nghệ phần mềm
-              của Đại học FPT học kỳ Fall 2022, là một ứng dụng web được phát triển với mục đích cung cấp nền tảng
-              để người sử dụng lên kế hoạch trước và chia sẻ chuyến đi du lịch của họ với người dùng khác.
+              Trip Planner System, được làm bởi nhóm SEP490_G2 cho dự án Final
+              Capstone ngành Công nghệ phần mềm của Đại học FPT học kỳ Fall
+              2022, là một ứng dụng web được phát triển với mục đích cung cấp
+              nền tảng để người sử dụng lên kế hoạch trước và chia sẻ chuyến đi
+              du lịch của họ với người dùng khác.
             </p>
           </MDBCol>
 

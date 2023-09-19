@@ -66,8 +66,8 @@ function RequestResetPassword() {
           <h4>Quên mật khẩu?</h4>
           <p style={{ margin: "0px 10% " }}>
             {" "}
-            Điền tài khoản email mà bạn đang dùng cho tài khoản của bạn, chúng tôi
-            sẽ gửi email với link để đổi mật khẩu
+            Điền tài khoản email mà bạn đang dùng cho tài khoản của bạn, chúng
+            tôi sẽ gửi email với link để đổi mật khẩu
           </p>
           <div style={{ margin: "0px 20% " }}>
             <p

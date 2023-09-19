@@ -1,35 +1,35 @@
 .icon {
-    display: inline-block;
-    width: 20px;
+  display: inline-block;
+  width: 20px;
 }
 
 .container {
-    position: relative;
-    width: 100%;
+  position: relative;
+  width: 100%;
 }
 
 .list {
-    position: absolute;
-    top: 100%;
-    left: 0%;
-    width: 100%;
-    z-index: 10;
+  position: absolute;
+  top: 100%;
+  left: 0%;
+  width: 100%;
+  z-index: 10;
 }
 
 .listItem {
-    cursor: pointer;
+  cursor: pointer;
 }
 
 .input ::placeholder {
-    font-weight: 700;
-    color: black;
+  font-weight: 700;
+  color: black;
 }
 
 .clear {
-    position: absolute;
-    right: 5px;
-    top: 5px;
-    border: none;
-    background: transparent;
-    /* Change it to transparent */
+  position: absolute;
+  right: 5px;
+  top: 5px;
+  border: none;
+  background: transparent;
+  /* Change it to transparent */
 }

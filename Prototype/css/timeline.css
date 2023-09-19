@@ -1,20 +1,23 @@
 .timeline {
-    border-left: 1px solid hsl(0, 0%, 90%);
-    position: relative;
-    list-style: none;
+  border-left: 1px solid hsl(0, 0%, 90%);
+  position: relative;
+  list-style: none;
 }
 
-.timeline .timeline-item, .timeline-transport {
+.timeline .timeline-item,
+.timeline-transport {
   position: relative;
 }
 
-.timeline .timeline-item:after, .timeline-transport:after {
+.timeline .timeline-item:after,
+.timeline-transport:after {
   position: absolute;
   display: block;
   top: 0;
 }
 
-.timeline .timeline-item:after, .timeline-transport:after{
+.timeline .timeline-item:after,
+.timeline-transport:after {
   background-color: hsl(0, 0%, 90%);
   left: -38px;
   border-radius: 50%;
@@ -24,42 +27,42 @@
 }
 
 .timeline .timeline-item {
-    flex-direction: row;
+  flex-direction: row;
 }
 
 .page {
-    z-index: -1;
+  z-index: -1;
 }
 
-.timeline .btn-delete{
-  margin:auto
+.timeline .btn-delete {
+  margin: auto;
 }
 
-.timeline .timeline-transport{
+.timeline .timeline-transport {
   margin: 10px 0px;
 }
-.edit-form, .add-form {
-    z-index: 1;
-    position: fixed;
-    width: 100%;
-    height: 100%;
-    top: 0;
-    left: 0;
-    background-color: rgba(0, 0, 0, 0.2);
-    display: none;
-    transition: 1s;
+.edit-form,
+.add-form {
+  z-index: 1;
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  background-color: rgba(0, 0, 0, 0.2);
+  display: none;
+  transition: 1s;
 }
 
 .form-group {
-    margin: 10px;
+  margin: 10px;
 }
 
 #btnAdd {
   border-radius: 50%;
   height: 65px;
   width: 65px;
-  background-color: #FF8005;
+  background-color: #ff8005;
   border: none;
   font-size: 30px;
-  
 }

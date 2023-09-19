@@ -1,278 +1,367 @@
-<!DOCTYPE html>
+<!doctype html>
 <html>
+  <head>
+    <meta charset="utf-8" />
+    <link href="css/timetable.css" rel="stylesheet" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css"
+      integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
+      crossorigin="anonymous"
+    />
+    <script
+      src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+      integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/popper.js@1.14.7/dist/umd/popper.min.js"
+      integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/js/bootstrap.min.js"
+      integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+      crossorigin="anonymous"
+    ></script>
+    <script src="js/timetable.js"></script>
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        var calendarEl = document.getElementById("calendar");
 
-<head>
-  <meta charset='utf-8' />
-  <link href='css/timetable.css' rel='stylesheet' />
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css">
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css"
-    integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-  <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
-    integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
-    crossorigin="anonymous"></script>
-  <script src="https://cdn.jsdelivr.net/npm/popper.js@1.14.7/dist/umd/popper.min.js"
-    integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
-    crossorigin="anonymous"></script>
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/js/bootstrap.min.js"
-    integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
-    crossorigin="anonymous"></script>
-  <script src='js/timetable.js'></script>
-  <script>
+        var calendar = new FullCalendar.Calendar(calendarEl, {
+          initialView: "timeGridFourDay",
+          height: 700,
+          views: {
+            timeGridFourDay: {
+              type: "timeGrid",
+              duration: { days: 4 },
+              buttonText: "4 day",
+            },
+          },
+          slotDuration: "00:30:00",
+          slotLabelInterval: "01:00:00",
+          initialDate: "2022-09-21",
+          navLinks: false, // can click day/week names to navigate views
+          nowIndicator: true,
+          allDaySlot: false,
+          weekNumbers: true,
+          weekNumberCalculation: "ISO",
 
-    document.addEventListener('DOMContentLoaded', function () {
-      var calendarEl = document.getElementById('calendar');
-
-      var calendar = new FullCalendar.Calendar(calendarEl, {
-        initialView: 'timeGridFourDay',
-        height: 700,
-        views: {
-          timeGridFourDay: {
-            type: 'timeGrid',
-            duration: { days: 4 },
-            buttonText: '4 day'
-          }
-        },
-        slotDuration: '00:30:00',
-        slotLabelInterval: '01:00:00',
-        initialDate: '2022-09-21',
-        navLinks: false, // can click day/week names to navigate views
-        nowIndicator: true,
-        allDaySlot: false,
-        weekNumbers: true,
-        weekNumberCalculation: 'ISO',
-
-        editable: true,
-        selectable: true,
-        dayMaxEvents: true, // allow "more" link when too many events
-        eventContent: function (arg) {
-          let timeDiv = document.createElement('div')
-          if (arg.event.start) {
-            timeDiv.appendChild(document.createTextNode(arg.event.start.getHours().toString().padStart(2, '0') + ':' + arg.event.start.getMinutes().toString().padStart(2, '0')))
-          }
-          if (!arg.event.end) {
-            arg.event.setEnd(arg.event.start)
-            arg.event.moveEnd('01:00')
-          }
-          timeDiv.appendChild(document.createTextNode('-' + arg.event.end.getHours().toString().padStart(2, '0') + ':' + arg.event.end.getMinutes().toString().padStart(2, '0')))
-
-          let titleDiv = document.createElement('div')
-          titleDiv.innerHTML = arg.event.title
-
-          let moreDiv = document.createElement('div')
-          moreDiv.classList = 'dropdown'
-          let moreBtn = document.createElement('button')
-          moreBtn.setAttribute('data-toggle', 'dropdown')
-          moreBtn.classList = 'close'
-          let moreBtnIcon = document.createElement('i')
-          moreBtnIcon.classList = 'fa-solid fa-ellipsis-vertical'
-          moreBtn.appendChild(moreBtnIcon)
-          moreDiv.appendChild(moreBtn)
-          let moreMenu = document.createElement('div')
-          moreMenu.classList = 'dropdown-menu'
-          let deleteBtn = document.createElement('a')
-          deleteBtn.classList = 'dropdown-item'
-          deleteBtn.innerHTML = 'Remove'
-          deleteBtn.onclick = function () {
-            if (confirm("Do you really want to delete this activity?") == true) {
-              console.log(arg.event.id)
-              calendar.getEventById(arg.event.id).remove()
+          editable: true,
+          selectable: true,
+          dayMaxEvents: true, // allow "more" link when too many events
+          eventContent: function (arg) {
+            let timeDiv = document.createElement("div");
+            if (arg.event.start) {
+              timeDiv.appendChild(
+                document.createTextNode(
+                  arg.event.start.getHours().toString().padStart(2, "0") +
+                    ":" +
+                    arg.event.start.getMinutes().toString().padStart(2, "0"),
+                ),
+              );
             }
-          }
-          let detailBtn = document.createElement('a')
-          detailBtn.classList = 'dropdown-item'
-          detailBtn.innerHTML = 'Details'
-          detailBtn.onclick = function () {
-              window.location.href = "LocationDetails.html"
-          }
+            if (!arg.event.end) {
+              arg.event.setEnd(arg.event.start);
+              arg.event.moveEnd("01:00");
+            }
+            timeDiv.appendChild(
+              document.createTextNode(
+                "-" +
+                  arg.event.end.getHours().toString().padStart(2, "0") +
+                  ":" +
+                  arg.event.end.getMinutes().toString().padStart(2, "0"),
+              ),
+            );
 
-          moreMenu.appendChild(detailBtn)
-          moreMenu.appendChild(deleteBtn)
-          moreDiv.appendChild(moreMenu)
+            let titleDiv = document.createElement("div");
+            titleDiv.innerHTML = arg.event.title;
 
-          let costDiv = document.createElement('div')
-          if(arg.event.extendedProps.cost){
-              costDiv.innerHTML = 'Cost: ' + arg.event.extendedProps.cost + ' VND'
-          }
+            let moreDiv = document.createElement("div");
+            moreDiv.classList = "dropdown";
+            let moreBtn = document.createElement("button");
+            moreBtn.setAttribute("data-toggle", "dropdown");
+            moreBtn.classList = "close";
+            let moreBtnIcon = document.createElement("i");
+            moreBtnIcon.classList = "fa-solid fa-ellipsis-vertical";
+            moreBtn.appendChild(moreBtnIcon);
+            moreDiv.appendChild(moreBtn);
+            let moreMenu = document.createElement("div");
+            moreMenu.classList = "dropdown-menu";
+            let deleteBtn = document.createElement("a");
+            deleteBtn.classList = "dropdown-item";
+            deleteBtn.innerHTML = "Remove";
+            deleteBtn.onclick = function () {
+              if (
+                confirm("Do you really want to delete this activity?") == true
+              ) {
+                console.log(arg.event.id);
+                calendar.getEventById(arg.event.id).remove();
+              }
+            };
+            let detailBtn = document.createElement("a");
+            detailBtn.classList = "dropdown-item";
+            detailBtn.innerHTML = "Details";
+            detailBtn.onclick = function () {
+              window.location.href = "LocationDetails.html";
+            };
 
-          let arrayOfDomNodes = [timeDiv, titleDiv, moreDiv, costDiv]
-          return { domNodes: arrayOfDomNodes }
-        },
-        events: [
-          {
-            id: 1,
-            title: 'Ho Chi Minh Mausoleum',
-            start: '2022-09-21T16:00:00',
-            cost: 0
+            moreMenu.appendChild(detailBtn);
+            moreMenu.appendChild(deleteBtn);
+            moreDiv.appendChild(moreMenu);
+
+            let costDiv = document.createElement("div");
+            if (arg.event.extendedProps.cost) {
+              costDiv.innerHTML =
+                "Cost: " + arg.event.extendedProps.cost + " VND";
+            }
+
+            let arrayOfDomNodes = [timeDiv, titleDiv, moreDiv, costDiv];
+            return { domNodes: arrayOfDomNodes };
           },
-          {
-            id: 2,
-            title: 'Temple Of Literature',
-            start: '2022-09-22T16:00:00',
-            cost: 30000
+          events: [
+            {
+              id: 1,
+              title: "Ho Chi Minh Mausoleum",
+              start: "2022-09-21T16:00:00",
+              cost: 0,
+            },
+            {
+              id: 2,
+              title: "Temple Of Literature",
+              start: "2022-09-22T16:00:00",
+              cost: 30000,
+            },
+            {
+              id: 3,
+              title: "Thang Long Water Puppet Theatre",
+              start: "2022-09-21T10:30:00",
+              end: "2022-09-21T12:30:00",
+              cost: 200000,
+            },
+            {
+              id: 4,
+              title: "Old Quarter",
+              start: "2022-09-21T12:00:00",
+              cost: 0,
+            },
+            {
+              id: 5,
+              title: "Hoan Kiem Lake",
+              start: "2022-09-22T14:30:00",
+              cost: 0,
+            },
+            {
+              id: 6,
+              title: "West Lake",
+              start: "2022-09-23T17:30:00",
+              cost: 0,
+            },
+            {
+              id: 7,
+              title: "Hoa Lo Prison",
+              start: "2022-09-24T20:00:00",
+              cost: 30000,
+            },
+            {
+              id: 8,
+              title: "Fine Arts Museum",
+              start: "2022-09-24T07:00:00",
+              cost: 150000,
+            },
+          ],
+          eventAdd: function (arg) {
+            console.log(arg.event.extendedProps.cost);
+            getTotalCost();
           },
-          {
-            id: 3,
-            title: 'Thang Long Water Puppet Theatre',
-            start: '2022-09-21T10:30:00',
-            end: '2022-09-21T12:30:00',
-            cost: 200000
-          },
-          {
-            id: 4,
-            title: 'Old Quarter',
-            start: '2022-09-21T12:00:00',
-            cost: 0
-          },
-          {
-            id: 5,
-            title: 'Hoan Kiem Lake',
-            start: '2022-09-22T14:30:00',
-            cost: 0
-          },
-          {
-            id: 6,
-            title: 'West Lake',
-            start: '2022-09-23T17:30:00',
-            cost: 0
-          },
-          {
-            id: 7,
-            title: 'Hoa Lo Prison',
-            start: '2022-09-24T20:00:00',
-            cost: 30000
-          },
-          {
-            id: 8,
-            title: 'Fine Arts Museum',
-            start: '2022-09-24T07:00:00',
-            cost: 150000
-          }
-        ], 
-        eventAdd: function(arg){
-          console.log(arg.event.extendedProps.cost)
-          getTotalCost()
+        });
+
+        calendar.render();
+        getTotalCost();
+        $("#addEventBtn").on("click", function () {
+          let dateStart = new Date(
+            $("#newDate").val().toString() +
+              "T" +
+              $("#newStartTime").val().toString(),
+          );
+          let dateEnd = new Date(dateStart.valueOf());
+          dateEnd.setTime(
+            dateEnd.getTime() + $("#newDuration").val() * 60 * 60 * 1000,
+          );
+          calendar.addEvent({
+            title: $("#newTitle").val(),
+            start: dateStart,
+            end: dateEnd,
+            cost: Number($("#newCost").val()),
+          });
+          $("#myModal").modal("hide");
+        });
+        function getTotalCost() {
+          let totalEvents = calendar.getEvents();
+          let totalCost = 0;
+          totalEvents.forEach((event) => {
+            if (event.extendedProps.cost) {
+              totalCost += event.extendedProps.cost;
+            }
+          });
+          document.getElementById("totalCost").innerHTML = totalCost;
         }
       });
 
-      calendar.render();
-      getTotalCost()
-      $("#addEventBtn").on("click", function () {
-        let dateStart = new Date($('#newDate').val().toString()+'T'+ $('#newStartTime').val().toString())
-        let dateEnd = new Date(dateStart.valueOf())
-        dateEnd.setTime(dateEnd.getTime() + ($('#newDuration').val()*60*60*1000));
-        calendar.addEvent({
-          title: $('#newTitle').val(),
-          start: dateStart,
-          end: dateEnd,
-          cost: Number($('#newCost').val())
-        });
-        $('#myModal').modal('hide')
-      });
-      function getTotalCost(){
-        let totalEvents = calendar.getEvents()
-        let totalCost = 0
-        totalEvents.forEach(event => {
-          if(event.extendedProps.cost){
-            totalCost += event.extendedProps.cost
-          }
-        });
-        document.getElementById('totalCost').innerHTML = totalCost
+      function goToTimeline() {
+        window.location.href = "Timeline.html";
+      }
+    </script>
+    <style>
+      body {
+        padding: 40px;
+        font-family:
+          Arial,
+          Helvetica Neue,
+          Helvetica,
+          sans-serif;
+        font-size: 14px;
       }
 
-    });
-
-    function goToTimeline(){
-        window.location.href = "Timeline.html"
+      #calendar {
+        /* max-width: 80vw; */
       }
-  </script>
-  <style>
-    body {
-      padding: 40px;
-      font-family: Arial, Helvetica Neue, Helvetica, sans-serif;
-      font-size: 14px;
-    }
 
-    #calendar {
-      /* max-width: 80vw; */
-    }
+      #btnAdd {
+        border-radius: 50%;
+        height: 65px;
+        width: 65px;
+        background-color: #ff8005;
+        border: none;
+        font-size: 30px;
+      }
+      #calendar-container {
+        /* display: inline-block; */
+      }
+    </style>
+  </head>
 
-    #btnAdd {
-      border-radius: 50%;
-      height: 65px;
-      width: 65px;
-      background-color: #FF8005;
-      border: none;
-      font-size: 30px;
-    }
-    #calendar-container{
-      /* display: inline-block; */
-    }
-  </style>
-</head>
-
-<body>
-
-  <div>
-    <button id="timelineBtn" onclick="goToTimeline()">Back to Timeline</button>
-  </div>
-  <div class="row">
-    <div id="calendar-container" class="col-9">
-      <div id='calendar'></div>
+  <body>
+    <div>
+      <button id="timelineBtn" onclick="goToTimeline()">
+        Back to Timeline
+      </button>
     </div>
-    <div id="dashboard" class="col-3">
-      <span>Total Cost:</span>
-      <span id="totalCost"></span>
+    <div class="row">
+      <div id="calendar-container" class="col-9">
+        <div id="calendar"></div>
+      </div>
+      <div id="dashboard" class="col-3">
+        <span>Total Cost:</span>
+        <span id="totalCost"></span>
+      </div>
     </div>
-  </div>
-  <div class="form-group" style="position: fixed;bottom:0; right: 20px;">
-    <button type="button" class="btn btn-primary btn-md" id="btnAdd" data-toggle="modal"
-      data-target="#myModal">+</button>
-  </div>
+    <div class="form-group" style="position: fixed; bottom: 0; right: 20px">
+      <button
+        type="button"
+        class="btn btn-primary btn-md"
+        id="btnAdd"
+        data-toggle="modal"
+        data-target="#myModal"
+      >
+        +
+      </button>
+    </div>
 
-  <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
-    aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered" role="document">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="exampleModalLongTitle">Create a new activity</h5>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-          </button>
-        </div>
-        <div class="modal-body">
-          <form>
-            <div class="form-group">
-              <label class="col-form-label">Place:</label>
-              <input type="text" class="form-control" id="newTitle" value="Hoan Kiem Lake">
-            </div>
-            <div class="form-group">
-              <label class="col-form-label">Pick a date:</label>
-              <input class="form-control" type="date" value="2022-09-22"  id="newDate"/>
-            </div>
-            <div class="form-group">
-              <label class="col-form-label">Start Time:</label>
-              <input class="form-control" type="time" value="08:00:00" id="newStartTime"></textarea>
-            </div>
-            <div class="form-group">
-              <label class="col-form-label">Duration:</label>
-              <input class="form-control" type="number" min="0" value="1" id="newDuration"/>
-            </div>
-            <div class="form-group">
-              <label class="col-form-label">Cost:</label>
-              <input class="form-control" type="number" min="0" value="0" id="newCost"/>
-            </div>
-          </form>
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-          <button type="submit" class="btn btn-primary" id="addEventBtn">Save changes</button>
+    <div
+      class="modal fade"
+      id="myModal"
+      tabindex="-1"
+      role="dialog"
+      aria-labelledby="exampleModalCenterTitle"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLongTitle">
+              Create a new activity
+            </h5>
+            <button
+              type="button"
+              class="close"
+              data-dismiss="modal"
+              aria-label="Close"
+            >
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <form>
+              <div class="form-group">
+                <label class="col-form-label">Place:</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="newTitle"
+                  value="Hoan Kiem Lake"
+                />
+              </div>
+              <div class="form-group">
+                <label class="col-form-label">Pick a date:</label>
+                <input
+                  class="form-control"
+                  type="date"
+                  value="2022-09-22"
+                  id="newDate"
+                />
+              </div>
+              <div class="form-group">
+                <label class="col-form-label">Start Time:</label>
+                <input
+                  class="form-control"
+                  type="time"
+                  value="08:00:00"
+                  id="newStartTime"
+                />
+              </div>
+              <div class="form-group">
+                <label class="col-form-label">Duration:</label>
+                <input
+                  class="form-control"
+                  type="number"
+                  min="0"
+                  value="1"
+                  id="newDuration"
+                />
+              </div>
+              <div class="form-group">
+                <label class="col-form-label">Cost:</label>
+                <input
+                  class="form-control"
+                  type="number"
+                  min="0"
+                  value="0"
+                  id="newCost"
+                />
+              </div>
+            </form>
+          </div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-secondary"
+              data-dismiss="modal"
+            >
+              Close
+            </button>
+            <button type="submit" class="btn btn-primary" id="addEventBtn">
+              Save changes
+            </button>
+          </div>
         </div>
       </div>
     </div>
-  </div>
-</body>
-<script>
-
-</script>
-
+  </body>
+  <script></script>
 </html>

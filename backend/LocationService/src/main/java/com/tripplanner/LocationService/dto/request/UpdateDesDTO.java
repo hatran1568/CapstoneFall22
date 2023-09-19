@@ -1,24 +1,25 @@
 package com.tripplanner.LocationService.dto.request;
 
 public class UpdateDesDTO {
-    int desId;
-    String name;
-    String description;
-    int belongTo;
 
-    public int getDesId() {
-        return desId;
-    }
+  int desId;
+  String name;
+  String description;
+  int belongTo;
 
-    public String getName() {
-        return name;
-    }
+  public int getDesId() {
+    return desId;
+  }
 
-    public String getDescription() {
-        return description;
-    }
+  public String getName() {
+    return name;
+  }
 
-    public int getBelongTo() {
-        return belongTo;
-    }
+  public String getDescription() {
+    return description;
+  }
+
+  public int getBelongTo() {
+    return belongTo;
+  }
 }

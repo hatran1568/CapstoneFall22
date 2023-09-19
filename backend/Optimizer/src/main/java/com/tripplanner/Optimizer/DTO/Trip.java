@@ -1,37 +1,28 @@
 package com.tripplanner.Optimizer.DTO;
 
-
-import lombok.Data;
-
 import java.util.Date;
 import java.util.List;
+import lombok.Data;
 
 @Data
-
 public class Trip {
 
-    private int tripId;
+  private int tripId;
 
+  private Integer user;
 
-    private Integer user;
+  private double budget;
 
+  private Date startDate;
 
-    private double budget;
+  private Date endDate;
 
-    private Date startDate;
+  private String name;
 
+  private Date dateCreated;
 
-    private Date endDate;
+  private Date dateModified;
 
-
-    private String name;
-
-    private Date dateCreated;
-
-    private Date dateModified;
-
-
-    private TripStatus status;
-    private List<TripDetails> listTripDetails;
-
+  private TripStatus status;
+  private List<TripDetails> listTripDetails;
 }

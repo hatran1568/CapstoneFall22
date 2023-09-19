@@ -56,7 +56,7 @@ const AddPOIToCollectionModal = (prop) => {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("token")}`,
           },
-        }
+        },
       )
       .then((res) => {
         setColList(res.data);
@@ -122,7 +122,7 @@ const AddPOIToCollectionModal = (prop) => {
                 </MDBCardBody>
               </MDBCard>
             </div>
-          </MDBCol>
+          </MDBCol>,
         );
       } else {
         cols.push(
@@ -158,7 +158,7 @@ const AddPOIToCollectionModal = (prop) => {
                 </MDBCardBody>
               </MDBCard>
             </div>
-          </MDBCol>
+          </MDBCol>,
         );
       }
     });

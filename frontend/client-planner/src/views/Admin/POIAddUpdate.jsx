@@ -6,7 +6,7 @@ import { useParams } from "react-router-dom";
 import { Editor } from "react-draft-wysiwyg";
 import Rating from "../../components/POIs/Rating";
 import { Component } from "react";
-import validator from 'validator'
+import validator from "validator";
 import {
   convertToRaw,
   EditorState,
@@ -68,10 +68,8 @@ class POIAddUpdate extends Component {
   componentDidMount() {
     const queryParams = new URLSearchParams(window.location.search);
     const id = queryParams.get("id");
-    if (id > 0)
-      document.title = "Chỉnh sửa địa điểm | Tripplanner"
-    else
-      document.title = "Thêm địa điểm";
+    if (id > 0) document.title = "Chỉnh sửa địa điểm | Tripplanner";
+    else document.title = "Thêm địa điểm";
     axios
       .get(`http://localhost:8080/location/api/destination/select/all`, {
         headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
@@ -109,7 +107,7 @@ class POIAddUpdate extends Component {
             headers: {
               Authorization: `Bearer ${localStorage.getItem("token")}`,
             },
-          }
+          },
         )
         .then((res) => {
           const data = res.data;
@@ -129,7 +127,7 @@ class POIAddUpdate extends Component {
             headers: {
               Authorization: `Bearer ${localStorage.getItem("token")}`,
             },
-          }
+          },
         )
         .then((res) => {
           const data = res.data;
@@ -160,7 +158,7 @@ class POIAddUpdate extends Component {
             headers: {
               Authorization: `Bearer ${localStorage.getItem("token")}`,
             },
-          }
+          },
         )
         .then((res) => {
           const data = res.data;
@@ -199,96 +197,107 @@ class POIAddUpdate extends Component {
     var validated = true;
     if (
       document.getElementById("nameInput").value == null ||
-      document.getElementById("nameInput").value == "") {
-        validated = false;
-        document.getElementById("errorMessage").innerHTML =
-          "Hãy nhập tên của địa điểm.";
-      }
+      document.getElementById("nameInput").value == ""
+    ) {
+      validated = false;
+      document.getElementById("errorMessage").innerHTML =
+        "Hãy nhập tên của địa điểm.";
+    }
     if (
       document.getElementById("addressInput").value == null ||
-      document.getElementById("addressInput").value == "") {
-        validated = false;
-        document.getElementById("errorMessage").innerHTML =
-          "Hãy nhập địa chỉ của địa điểm.";
-      }
+      document.getElementById("addressInput").value == ""
+    ) {
+      validated = false;
+      document.getElementById("errorMessage").innerHTML =
+        "Hãy nhập địa chỉ của địa điểm.";
+    }
     if (
       document.getElementById("descInput").value == null ||
-      document.getElementById("descInput").value == "") {
-        validated = false;
-        document.getElementById("errorMessage").innerHTML =
-          "Hãy nhập mô tả của địa điểm.";
-      }
+      document.getElementById("descInput").value == ""
+    ) {
+      validated = false;
+      document.getElementById("errorMessage").innerHTML =
+        "Hãy nhập mô tả của địa điểm.";
+    }
     if (
       document.getElementById("durationInput").value == null ||
-      document.getElementById("durationInput").value == "") {
-        validated = false;
-        document.getElementById("errorMessage").innerHTML =
-          "Hãy nhập khoảng thời gian của địa điểm.";
-      }
+      document.getElementById("durationInput").value == ""
+    ) {
+      validated = false;
+      document.getElementById("errorMessage").innerHTML =
+        "Hãy nhập khoảng thời gian của địa điểm.";
+    }
     if (
       document.getElementById("priceInput").value == null ||
-      document.getElementById("priceInput").value == "") {
-        validated = false;
-        document.getElementById("errorMessage").innerHTML =
-          "Hãy nhập giá trung bình của địa điểm.";
-      }
+      document.getElementById("priceInput").value == ""
+    ) {
+      validated = false;
+      document.getElementById("errorMessage").innerHTML =
+        "Hãy nhập giá trung bình của địa điểm.";
+    }
     if (
       document.getElementById("closeInput").value == null ||
-      document.getElementById("closeInput").value == "") {
-        validated = false;
-        document.getElementById("errorMessage").innerHTML =
-          "Hãy nhập thời gian đóng cửa của địa điểm.";
-      }
+      document.getElementById("closeInput").value == ""
+    ) {
+      validated = false;
+      document.getElementById("errorMessage").innerHTML =
+        "Hãy nhập thời gian đóng cửa của địa điểm.";
+    }
     if (
       document.getElementById("openInput").value == null ||
-      document.getElementById("openInput").value == "") {
-        validated = false;
-        document.getElementById("errorMessage").innerHTML =
-          "Hãy nhập thời gian mở cửa của địa điểm.";
-      }
+      document.getElementById("openInput").value == ""
+    ) {
+      validated = false;
+      document.getElementById("errorMessage").innerHTML =
+        "Hãy nhập thời gian mở cửa của địa điểm.";
+    }
     if (
       document.getElementById("rateInput").value == null ||
       document.getElementById("rateInput").value == "" ||
-      parseFloat(document.getElementById("rateInput").value) > 5) {
-        validated = false;
-        document.getElementById("errorMessage").innerHTML =
-          "Hãy nhập đánh giá của địa điểm(Trong khoảng từ 0 đến 5).";
-      }
+      parseFloat(document.getElementById("rateInput").value) > 5
+    ) {
+      validated = false;
+      document.getElementById("errorMessage").innerHTML =
+        "Hãy nhập đánh giá của địa điểm(Trong khoảng từ 0 đến 5).";
+    }
     if (
       document.getElementById("latInput").value == null ||
-      document.getElementById("latInput").value == "") {
-        validated = false;
-        document.getElementById("errorMessage").innerHTML =
-          "Hãy nhập vĩ độ của địa điểm.";
-      }
+      document.getElementById("latInput").value == ""
+    ) {
+      validated = false;
+      document.getElementById("errorMessage").innerHTML =
+        "Hãy nhập vĩ độ của địa điểm.";
+    }
     if (
       document.getElementById("lonInput").value == null ||
-      document.getElementById("lonInput").value == "") {
-        validated = false;
-        document.getElementById("errorMessage").innerHTML =
-          "Hãy nhập kinh độ của địa điểm.";
-      }
+      document.getElementById("lonInput").value == ""
+    ) {
+      validated = false;
+      document.getElementById("errorMessage").innerHTML =
+        "Hãy nhập kinh độ của địa điểm.";
+    }
+    if (document.getElementById("filterDropdown").name == null) {
+      validated = false;
+      document.getElementById("errorMessage").innerHTML =
+        "Hãy chọn danh mục của địa điểm.";
+    }
     if (
-      document.getElementById("filterDropdown").name == null) {
-        validated = false;
-        document.getElementById("errorMessage").innerHTML =
-          "Hãy chọn danh mục của địa điểm.";
-      }
-    if (
-      document.getElementById("emailInput").value != null && !validator.isEmail(document.getElementById("emailInput").value)) {
-        validated = false;
-        document.getElementById("errorMessage").innerHTML =
-          "Hãy nhập đúng email.";
-      }
+      document.getElementById("emailInput").value != null &&
+      !validator.isEmail(document.getElementById("emailInput").value)
+    ) {
+      validated = false;
+      document.getElementById("errorMessage").innerHTML =
+        "Hãy nhập đúng email.";
+    }
     if (id != 0 && curDes == null && this.state.destinationChanged == true) {
       validated = false;
       document.getElementById("errorMessage").innerHTML =
-      "Hãy chọn các điểm đến.";
+        "Hãy chọn các điểm đến.";
     }
     if (id == 0 && curDes == null) {
       validated = false;
       document.getElementById("errorMessage").innerHTML =
-      "Hãy chọn các điểm đến.";
+        "Hãy chọn các điểm đến.";
     }
     // console.log(document.getElementById("nameInput").value);
     // console.log(document.getElementById("addressInput").value);
@@ -340,7 +349,7 @@ class POIAddUpdate extends Component {
         });
         await this.state.deletedImages.forEach((entry, index) => {
           axios.post(
-            `http://localhost:8080/location/api/pois/deleteImg/` + entry
+            `http://localhost:8080/location/api/pois/deleteImg/` + entry,
           );
         });
         await this.state.newImages.forEach((entry, index) => {
@@ -359,7 +368,7 @@ class POIAddUpdate extends Component {
                   Authorization: `Bearer ${localStorage.getItem("token")}`,
                   "Content-Type": "multipart/form-data",
                 },
-              }
+              },
             )
             .then(function (response) {});
         });
@@ -435,7 +444,7 @@ class POIAddUpdate extends Component {
                     Authorization: `Bearer ${localStorage.getItem("token")}`,
                     "Content-Type": "multipart/form-data",
                   },
-                }
+                },
               )
               .then(function (response) {});
           });
@@ -512,13 +521,13 @@ class POIAddUpdate extends Component {
       const imgs = Array.from(files);
       var sizeValidator = false;
       imgs.forEach((entry, index) => {
-        if (entry.size/1024 > 10240)
-          sizeValidator = true;
-        else
-          currentNewImgs.push(entry);
+        if (entry.size / 1024 > 10240) sizeValidator = true;
+        else currentNewImgs.push(entry);
       });
       if (sizeValidator)
-        alert("Một hoặc nhiều ảnh nặng quá mức cho phép và đã không được thêm vào.")
+        alert(
+          "Một hoặc nhiều ảnh nặng quá mức cho phép và đã không được thêm vào.",
+        );
       this.setState({
         newImages: currentNewImgs,
       });
@@ -553,7 +562,7 @@ class POIAddUpdate extends Component {
           <MDBBtn className={style.updateBtn} onClick={this.updateClick}>
             Cập nhật thông tin
           </MDBBtn>
-        </div>
+        </div>,
       );
     else
       submitBtn.push(
@@ -567,7 +576,7 @@ class POIAddUpdate extends Component {
           <MDBBtn className={style.updateBtn} onClick={this.updateClick}>
             Thêm địa điểm
           </MDBBtn>
-        </div>
+        </div>,
       );
     const navItem = [];
     if (id > 0) navItem.push(<b>Chỉnh sửa địa điểm</b>);
@@ -575,7 +584,7 @@ class POIAddUpdate extends Component {
     const headerText = [];
     if (id > 0)
       headerText.push(
-        <h2 style={{ textAlign: "center" }}>Cập nhật Địa điểm</h2>
+        <h2 style={{ textAlign: "center" }}>Cập nhật Địa điểm</h2>,
       );
     else
       headerText.push(<h2 style={{ textAlign: "center" }}>Thêm Địa điểm</h2>);
@@ -593,7 +602,7 @@ class POIAddUpdate extends Component {
           multiple
           hidden
         />
-      </MDBContainer>
+      </MDBContainer>,
     );
     //Set initial content
     const selectDestination = [];
@@ -614,7 +623,7 @@ class POIAddUpdate extends Component {
           className="basic-multi-select"
           classNamePrefix="select"
           placeholder="Chọn điểm đến"
-        />
+        />,
       );
       if (id > 0) {
         document.getElementById("nameInput").value = this.state.poi.name;
@@ -704,7 +713,7 @@ class POIAddUpdate extends Component {
                     <FontAwesomeIcon icon={faClose} />
                   </a>
                 </div>
-              </MDBCard>
+              </MDBCard>,
             );
           });
         }
@@ -732,12 +741,12 @@ class POIAddUpdate extends Component {
                 <FontAwesomeIcon icon={faClose} />
               </a>
             </div>
-          </MDBCard>
+          </MDBCard>,
         );
       });
     }
     const requiredStar = [];
-    requiredStar.push(<b className={style.requiredStar}>*</b>)
+    requiredStar.push(<b className={style.requiredStar}>*</b>);
 
     return (
       <MDBContainer className={style.mainContainer}>
@@ -752,7 +761,8 @@ class POIAddUpdate extends Component {
         {submitBtn}
         <div id="errorMessage" className={style.errorMessage}></div>
         <label>
-          <b>Tên</b>{requiredStar}
+          <b>Tên</b>
+          {requiredStar}
         </label>
         <MDBTextArea
           id="nameInput"
@@ -764,7 +774,8 @@ class POIAddUpdate extends Component {
           rows={1}
         />
         <label>
-          <b>Địa chỉ</b>{requiredStar}
+          <b>Địa chỉ</b>
+          {requiredStar}
         </label>
         <MDBTextArea
           id="addressInput"
@@ -776,7 +787,8 @@ class POIAddUpdate extends Component {
           rows={1}
         />
         <label>
-          <b>Mô tả</b>{requiredStar}
+          <b>Mô tả</b>
+          {requiredStar}
         </label>
         <MDBTextArea
           id="descInput"
@@ -843,7 +855,8 @@ class POIAddUpdate extends Component {
         <MDBRow>
           <MDBCol>
             <label>
-              <b>Khoảng thời gian</b>{requiredStar}
+              <b>Khoảng thời gian</b>
+              {requiredStar}
             </label>
             <div className="input-group mb-3">
               <span className="input-group-text">
@@ -862,7 +875,8 @@ class POIAddUpdate extends Component {
           </MDBCol>
           <MDBCol>
             <label>
-              <b>Giờ mở cửa</b>{requiredStar}
+              <b>Giờ mở cửa</b>
+              {requiredStar}
             </label>
             <div className="input-group mb-3">
               <span className="input-group-text">
@@ -873,7 +887,8 @@ class POIAddUpdate extends Component {
           </MDBCol>
           <MDBCol>
             <label>
-              <b>Giờ đóng cửa</b>{requiredStar}
+              <b>Giờ đóng cửa</b>
+              {requiredStar}
             </label>
             <div className="input-group mb-3">
               <span className="input-group-text">
@@ -886,7 +901,8 @@ class POIAddUpdate extends Component {
         <MDBRow>
           <MDBCol>
             <label>
-              <b>Giá trung bình</b>{requiredStar}
+              <b>Giá trung bình</b>
+              {requiredStar}
             </label>
             <div className="input-group mb-3">
               <span className="input-group-text">
@@ -905,7 +921,8 @@ class POIAddUpdate extends Component {
           </MDBCol>
           <MDBCol>
             <label>
-              <b>Danh mục</b>{requiredStar}
+              <b>Danh mục</b>
+              {requiredStar}
             </label>
             <Dropdown>
               <Dropdown.Toggle variant="info">
@@ -1004,7 +1021,8 @@ class POIAddUpdate extends Component {
           </MDBCol>
           <MDBCol>
             <label>
-              <b>Đánh giá từ Google</b>{requiredStar}
+              <b>Đánh giá từ Google</b>
+              {requiredStar}
             </label>
             <br />
             <div className="input-group mb-3">
@@ -1025,7 +1043,8 @@ class POIAddUpdate extends Component {
         <MDBRow>
           <MDBCol md={4}>
             <label>
-              <b>Vĩ độ</b>{requiredStar}
+              <b>Vĩ độ</b>
+              {requiredStar}
             </label>
             <div className="input-group mb-3">
               <span className="input-group-text">
@@ -1043,7 +1062,8 @@ class POIAddUpdate extends Component {
           </MDBCol>
           <MDBCol md={4}>
             <label>
-              <b>Kinh độ</b>{requiredStar}
+              <b>Kinh độ</b>
+              {requiredStar}
             </label>
             <div className="input-group mb-3">
               <span className="input-group-text">
@@ -1062,7 +1082,8 @@ class POIAddUpdate extends Component {
         </MDBRow>
         <MDBRow>
           <label>
-            <b>Thuộc điểm đến</b>{requiredStar}
+            <b>Thuộc điểm đến</b>
+            {requiredStar}
           </label>
           {selectDestination}
         </MDBRow>

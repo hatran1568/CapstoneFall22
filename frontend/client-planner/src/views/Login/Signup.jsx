@@ -10,7 +10,7 @@ import {
   MDBInput,
 } from "mdb-react-ui-kit";
 import axios from "../../api/axios";
-import validator from 'validator'
+import validator from "validator";
 import { useState } from "react";
 import style from "./Login.module.css";
 
@@ -62,40 +62,44 @@ function Signup() {
     e.preventDefault();
     if (handleValidation()) {
       try {
-        await axios.post(
-          REGISTER_URL,
-          {
-            username: user.username,
-            email: user.email,
-            password: user.password,
-          },
-          {
-            headers: { "Content-Type": "application/json" },
-          }
-        ).then((res) => {
-          if (res.status == 200) {
-            const response = axios.post(
-              LOGIN_URL,
-              {
-                username: user.email,
-                password: user.password,
-              },
-              {
-                headers: { "Content-Type": "application/json" },
-              }
-            ).then((resLogin) => {
-              const accessToken = resLogin?.data?.accessToken;
-              const role = resLogin?.data?.role;
-              const id = resLogin?.data?.id;
-              if (accessToken) {
-                localStorage.setItem("token", accessToken);
-                localStorage.setItem("role", role);
-                localStorage.setItem("id", id);
-              }
-              window.location.href = "http://localhost:3000/";
-            });
-          }
-        });
+        await axios
+          .post(
+            REGISTER_URL,
+            {
+              username: user.username,
+              email: user.email,
+              password: user.password,
+            },
+            {
+              headers: { "Content-Type": "application/json" },
+            },
+          )
+          .then((res) => {
+            if (res.status == 200) {
+              const response = axios
+                .post(
+                  LOGIN_URL,
+                  {
+                    username: user.email,
+                    password: user.password,
+                  },
+                  {
+                    headers: { "Content-Type": "application/json" },
+                  },
+                )
+                .then((resLogin) => {
+                  const accessToken = resLogin?.data?.accessToken;
+                  const role = resLogin?.data?.role;
+                  const id = resLogin?.data?.id;
+                  if (accessToken) {
+                    localStorage.setItem("token", accessToken);
+                    localStorage.setItem("role", role);
+                    localStorage.setItem("id", id);
+                  }
+                  window.location.href = "http://localhost:3000/";
+                });
+            }
+          });
       } catch (error) {
         if (error.response.status === 400) {
           document.getElementById("invalidWarning").style.display = "block";
@@ -114,7 +118,8 @@ function Signup() {
         <MDBRow className="g-0">
           <MDBCol md="6">
             <div className={`d-flex flex-column justify-content-center h-100`}>
-              <img src="../img/default/loginimage.png"
+              <img
+                src="../img/default/loginimage.png"
                 className={`${style.customGradient}`}
               ></img>
             </div>

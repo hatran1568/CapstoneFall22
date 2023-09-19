@@ -1,12 +1,12 @@
 package com.tripplanner.LocationService.dto.response;
 
-import lombok.Data;
-
 import java.util.List;
+import lombok.Data;
 
 @Data
 public class SearchRespondeDTO {
-    List<SearchPOIAndDestinationDTO> list;
-    int totalPage;
-    int currentPage;
+
+  List<SearchPOIAndDestinationDTO> list;
+  int totalPage;
+  int currentPage;
 }

@@ -5,6 +5,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 @Data
 public class uploadDTO {
-    private MultipartFile File;
-    private String Path;
+
+  private MultipartFile File;
+  private String Path;
 }

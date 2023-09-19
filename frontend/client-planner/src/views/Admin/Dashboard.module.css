@@ -1,106 +1,106 @@
-.bodyContainer{
+.bodyContainer {
   margin: 0px;
   margin-top: 10vh;
   font-family: "Monaco", Consolas, "Lucida Console", monospace;
 }
-.allCountBox{
+.allCountBox {
   text-align: center;
   padding-top: 15px;
   width: 98%;
   padding-bottom: 15px;
   border-style: none;
 }
-.countItem{
+.countItem {
   margin-top: 10px;
   margin-bottom: 10px;
   font-size: 20px;
 }
-.countItemIcon{
+.countItemIcon {
   font-size: 30px;
   padding: 10px;
 }
-.countItemIconBox1{
+.countItemIconBox1 {
   color: rgb(195, 0, 13);
   background-color: rgb(254, 172, 184);
   border-radius: 50%;
   width: 50px;
   height: 50px;
 }
-.countItemIconBox2{
+.countItemIconBox2 {
   color: rgb(0, 199, 60);
   background-color: rgb(205, 255, 226);
   border-radius: 50%;
   width: 50px;
   height: 50px;
 }
-.countItemIconBox3{
+.countItemIconBox3 {
   color: rgb(0, 117, 201);
   background-color: rgb(208, 234, 255);
   border-radius: 50%;
   width: 50px;
   height: 50px;
 }
-.countItemIconBox4{
+.countItemIconBox4 {
   color: rgb(204, 207, 0);
   background-color: rgb(253, 255, 202);
   border-radius: 50%;
   width: 50px;
   height: 50px;
 }
-.countItemIconBox5{
+.countItemIconBox5 {
   color: rgb(144, 0, 173);
   background-color: rgb(254, 208, 255);
   border-radius: 50%;
   width: 50px;
   height: 50px;
 }
-.countItemIconBox6{
+.countItemIconBox6 {
   color: rgb(184, 83, 0);
   background-color: rgb(255, 223, 201);
   border-radius: 50%;
   width: 50px;
   height: 50px;
 }
-.countItemIconBox7{
+.countItemIconBox7 {
   color: rgb(255, 99, 132);
   background-color: rgba(255, 99, 132, 0.2);
   border-radius: 50%;
   width: 50px;
   height: 50px;
 }
-.countItemIconBox8{
+.countItemIconBox8 {
   color: rgb(54, 162, 235);
   background-color: rgba(54, 162, 235, 0.2);
   border-radius: 50%;
   width: 50px;
   height: 50px;
 }
-.countItemText1{
+.countItemText1 {
   color: rgb(195, 0, 13);
 }
-.countItemText2{
+.countItemText2 {
   color: rgb(0, 199, 60);
 }
-.countItemText3{
+.countItemText3 {
   color: rgb(0, 117, 201);
 }
-.countItemText4{
+.countItemText4 {
   color: rgb(204, 207, 0);
 }
-.countItemText5{
+.countItemText5 {
   color: rgb(144, 0, 173);
 }
-.countItemText6{
+.countItemText6 {
   color: rgb(184, 83, 0);
 }
-.countItemText7{
+.countItemText7 {
   color: rgb(255, 99, 132);
 }
-.countItemText8{
+.countItemText8 {
   color: rgb(54, 162, 235);
 }
 
-.byDateBox{
+.byDateBox {
   text-align: center;
   width: 100%;
   padding-top: 15px;
@@ -108,24 +108,24 @@
   border-style: none;
   margin-top: 25px;
 }
-.ratingBox{
+.ratingBox {
   width: 90% !important;
   padding-top: 15px !important;
   padding-bottom: 15px !important;
   border-style: none !important;
   margin-top: 25px !important;
 }
-.ratingBox{
+.ratingBox {
   text-align: center;
   margin: auto;
 }
-.ratingStar{
+.ratingStar {
   color: rgb(255, 238, 0);
 }
-.ratingBoxItem{
-  margin:auto; 
+.ratingBoxItem {
+  margin: auto;
 }
-.poiImage{
+.poiImage {
   width: 150px;
   height: 150px;
   border-radius: 20%;

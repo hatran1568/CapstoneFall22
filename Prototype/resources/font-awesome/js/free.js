@@ -50,9 +50,16 @@
             _defineProperty(target, key, source[key]);
           })
         : Object.getOwnPropertyDescriptors
-        ? Object.defineProperties(target, Object.getOwnPropertyDescriptors(source))
+        ? Object.defineProperties(
+            target,
+            Object.getOwnPropertyDescriptors(source),
+          )
         : ownKeys(Object(source)).forEach(function (key) {
-            Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key));
+            Object.defineProperty(
+              target,
+              key,
+              Object.getOwnPropertyDescriptor(source, key),
+            );
           });
     }
 
@@ -75,7 +82,12 @@
   }
 
   function _toConsumableArray(arr) {
-    return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread();
+    return (
+      _arrayWithoutHoles(arr) ||
+      _iterableToArray(arr) ||
+      _unsupportedIterableToArray(arr) ||
+      _nonIterableSpread()
+    );
   }
 
   function _arrayWithoutHoles(arr) {
@@ -83,7 +95,10 @@
   }
 
   function _iterableToArray(iter) {
-    if ((typeof Symbol !== "undefined" && iter[Symbol.iterator] != null) || iter["@@iterator"] != null)
+    if (
+      (typeof Symbol !== "undefined" && iter[Symbol.iterator] != null) ||
+      iter["@@iterator"] != null
+    )
       return Array.from(iter);
   }
 
@@ -93,7 +108,8 @@
     var n = Object.prototype.toString.call(o).slice(8, -1);
     if (n === "Object" && o.constructor) n = o.constructor.name;
     if (n === "Map" || n === "Set") return Array.from(o);
-    if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen);
+    if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n))
+      return _arrayLikeToArray(o, minLen);
   }
 
   function _arrayLikeToArray(arr, len) {
@@ -289,7 +305,13 @@
 
   function bunker(fn) {
     try {
-      for (var _len = arguments.length, args = new Array(_len > 1 ? _len - 1 : 0), _key = 1; _key < _len; _key++) {
+      for (
+        var _len = arguments.length,
+          args = new Array(_len > 1 ? _len - 1 : 0),
+          _key = 1;
+        _key < _len;
+        _key++
+      ) {
         args[_key - 1] = arguments[_key];
       }
 
@@ -324,7 +346,8 @@
   }
 
   function defineIcons(prefix, icons) {
-    var params = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
+    var params =
+      arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
     var _params$skipHooks = params.skipHooks,
       skipHooks = _params$skipHooks === void 0 ? false : _params$skipHooks;
     var normalized = normalizeIcons(icons);
@@ -332,7 +355,10 @@
     if (typeof namespace.hooks.addPack === "function" && !skipHooks) {
       namespace.hooks.addPack(prefix, normalizeIcons(icons));
     } else {
-      namespace.styles[prefix] = _objectSpread2(_objectSpread2({}, namespace.styles[prefix] || {}), normalized);
+      namespace.styles[prefix] = _objectSpread2(
+        _objectSpread2({}, namespace.styles[prefix] || {}),
+        normalized,
+      );
     }
     /**
      * Font Awesome 4 used the prefix of `fa` for all icons. With the introduction
@@ -1831,7 +1857,13 @@
       "f429",
       "M165 144.7l-43.3 9.2-.2 142.4c0 26.3 19.8 43.3 46.1 43.3 14.6 0 25.3-2.7 31.2-5.9v-33.8c-5.7 2.3-33.7 10.5-33.7-15.7V221h33.7v-37.8h-33.7zm89.1 51.6l-2.7-13.1H213v153.2h44.3V233.3c10.5-13.8 28.2-11.1 33.9-9.3v-40.8c-6-2.1-26.7-6-37.1 13.1zm92.3-72.3l-44.6 9.5v36.2l44.6-9.5zM44.9 228.3c0-6.9 5.8-9.6 15.1-9.7 13.5 0 30.7 4.1 44.2 11.4v-41.8c-14.7-5.8-29.4-8.1-44.1-8.1-36 0-60 18.8-60 50.2 0 49.2 67.5 41.2 67.5 62.4 0 8.2-7.1 10.9-17 10.9-14.7 0-33.7-6.1-48.6-14.2v40c16.5 7.1 33.2 10.1 48.5 10.1 36.9 0 62.3-15.8 62.3-47.8 0-52.9-67.9-43.4-67.9-63.4zM640 261.6c0-45.5-22-81.4-64.2-81.4s-67.9 35.9-67.9 81.1c0 53.5 30.3 78.2 73.5 78.2 21.2 0 37.1-4.8 49.2-11.5v-33.4c-12.1 6.1-26 9.8-43.6 9.8-17.3 0-32.5-6.1-34.5-26.9h86.9c.2-2.3.6-11.6.6-15.9zm-87.9-16.8c0-20 12.3-28.4 23.4-28.4 10.9 0 22.5 8.4 22.5 28.4zm-112.9-64.6c-17.4 0-28.6 8.2-34.8 13.9l-2.3-11H363v204.8l44.4-9.4.1-50.2c6.4 4.7 15.9 11.2 31.4 11.2 31.8 0 60.8-23.2 60.8-79.6.1-51.6-29.3-79.7-60.5-79.7zm-10.6 122.5c-10.4 0-16.6-3.8-20.9-8.4l-.3-66c4.6-5.1 11-8.8 21.2-8.8 16.2 0 27.4 18.2 27.4 41.4.1 23.9-10.9 41.8-27.4 41.8zm-126.7 33.7h44.6V183.2h-44.6z",
     ],
-    houzz: [448, 512, [], "f27c", "M275.9 330.7H171.3V480H17V32h109.5v104.5l305.1 85.6V480H275.9z"],
+    houzz: [
+      448,
+      512,
+      [],
+      "f27c",
+      "M275.9 330.7H171.3V480H17V32h109.5v104.5l305.1 85.6V480H275.9z",
+    ],
     gg: [
       512,
       512,
@@ -3414,7 +3446,13 @@
       "f289",
       "M212.98 346.566H179.789V195.114L185.973 173.47H175.262L137.127 346.566H76.1069L37.7323 173.47H27.276L33.1913 195.114V346.566H0V165H65.6506L102.248 338.096H110.747L147.329 165H212.98L212.98 346.566ZM544.459 283.589L458.434 345.655V307.534L531.329 255.776L458.434 204.017V165.896L544.459 228.231H553.721L640 165.896V204.017L566.866 255.776L640 307.549V345.655L553.721 283.589H544.459ZM430.157 272.311H248.113V239.255H430.157V272.311Z",
     ],
-    flipboard: [448, 512, [], "f44d", "M0 32v448h448V32H0zm358.4 179.2h-89.6v89.6h-89.6v89.6H89.6V121.6h268.8v89.6z"],
+    flipboard: [
+      448,
+      512,
+      [],
+      "f44d",
+      "M0 32v448h448V32H0zm358.4 179.2h-89.6v89.6h-89.6v89.6H89.6V121.6h268.8v89.6z",
+    ],
     viacoin: [
       384,
       512,
@@ -3644,9 +3682,16 @@
             _defineProperty(target, key, source[key]);
           })
         : Object.getOwnPropertyDescriptors
-        ? Object.defineProperties(target, Object.getOwnPropertyDescriptors(source))
+        ? Object.defineProperties(
+            target,
+            Object.getOwnPropertyDescriptors(source),
+          )
         : ownKeys(Object(source)).forEach(function (key) {
-            Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key));
+            Object.defineProperty(
+              target,
+              key,
+              Object.getOwnPropertyDescriptor(source, key),
+            );
           });
     }
 
@@ -3669,7 +3714,12 @@
   }
 
   function _toConsumableArray(arr) {
-    return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread();
+    return (
+      _arrayWithoutHoles(arr) ||
+      _iterableToArray(arr) ||
+      _unsupportedIterableToArray(arr) ||
+      _nonIterableSpread()
+    );
   }
 
   function _arrayWithoutHoles(arr) {
@@ -3677,7 +3727,10 @@
   }
 
   function _iterableToArray(iter) {
-    if ((typeof Symbol !== "undefined" && iter[Symbol.iterator] != null) || iter["@@iterator"] != null)
+    if (
+      (typeof Symbol !== "undefined" && iter[Symbol.iterator] != null) ||
+      iter["@@iterator"] != null
+    )
       return Array.from(iter);
   }
 
@@ -3687,7 +3740,8 @@
     var n = Object.prototype.toString.call(o).slice(8, -1);
     if (n === "Object" && o.constructor) n = o.constructor.name;
     if (n === "Map" || n === "Set") return Array.from(o);
-    if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen);
+    if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n))
+      return _arrayLikeToArray(o, minLen);
   }
 
   function _arrayLikeToArray(arr, len) {
@@ -3883,7 +3937,13 @@
 
   function bunker(fn) {
     try {
-      for (var _len = arguments.length, args = new Array(_len > 1 ? _len - 1 : 0), _key = 1; _key < _len; _key++) {
+      for (
+        var _len = arguments.length,
+          args = new Array(_len > 1 ? _len - 1 : 0),
+          _key = 1;
+        _key < _len;
+        _key++
+      ) {
         args[_key - 1] = arguments[_key];
       }
 
@@ -3918,7 +3978,8 @@
   }
 
   function defineIcons(prefix, icons) {
-    var params = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
+    var params =
+      arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
     var _params$skipHooks = params.skipHooks,
       skipHooks = _params$skipHooks === void 0 ? false : _params$skipHooks;
     var normalized = normalizeIcons(icons);
@@ -3926,7 +3987,10 @@
     if (typeof namespace.hooks.addPack === "function" && !skipHooks) {
       namespace.hooks.addPack(prefix, normalizeIcons(icons));
     } else {
-      namespace.styles[prefix] = _objectSpread2(_objectSpread2({}, namespace.styles[prefix] || {}), normalized);
+      namespace.styles[prefix] = _objectSpread2(
+        _objectSpread2({}, namespace.styles[prefix] || {}),
+        normalized,
+      );
     }
     /**
      * Font Awesome 4 used the prefix of `fa` for all icons. With the introduction
@@ -4518,7 +4582,10 @@
     heart: [
       512,
       512,
-      [128153, 128154, 128155, 128156, 128420, 129293, 129294, 129505, 9829, 10084, 61578],
+      [
+        128153, 128154, 128155, 128156, 128420, 129293, 129294, 129505, 9829,
+        10084, 61578,
+      ],
       "f004",
       "M244 84L255.1 96L267.1 84.02C300.6 51.37 347 36.51 392.6 44.1C461.5 55.58 512 115.2 512 185.1V190.9C512 232.4 494.8 272.1 464.4 300.4L283.7 469.1C276.2 476.1 266.3 480 256 480C245.7 480 235.8 476.1 228.3 469.1L47.59 300.4C17.23 272.1 0 232.4 0 190.9V185.1C0 115.2 50.52 55.58 119.4 44.1C164.1 36.51 211.4 51.37 244 84C243.1 84 244 84.01 244 84L244 84zM255.1 163.9L210.1 117.1C188.4 96.28 157.6 86.4 127.3 91.44C81.55 99.07 48 138.7 48 185.1V190.9C48 219.1 59.71 246.1 80.34 265.3L256 429.3L431.7 265.3C452.3 246.1 464 219.1 464 190.9V185.1C464 138.7 430.4 99.07 384.7 91.44C354.4 86.4 323.6 96.28 301.9 117.1L255.1 163.9z",
     ],
@@ -4539,7 +4606,10 @@
     circle: [
       512,
       512,
-      [128308, 128309, 128992, 128993, 128994, 128995, 128996, 9679, 9898, 9899, 11044, 61708, 61915],
+      [
+        128308, 128309, 128992, 128993, 128994, 128995, 128996, 9679, 9898,
+        9899, 11044, 61708, 61915,
+      ],
       "f111",
       "M512 256C512 397.4 397.4 512 256 512C114.6 512 0 397.4 0 256C0 114.6 114.6 0 256 0C397.4 0 512 114.6 512 256zM256 48C141.1 48 48 141.1 48 256C48 370.9 141.1 464 256 464C370.9 464 464 370.9 464 256C464 141.1 370.9 48 256 48z",
     ],
@@ -5136,9 +5206,16 @@
             _defineProperty(target, key, source[key]);
           })
         : Object.getOwnPropertyDescriptors
-        ? Object.defineProperties(target, Object.getOwnPropertyDescriptors(source))
+        ? Object.defineProperties(
+            target,
+            Object.getOwnPropertyDescriptors(source),
+          )
         : ownKeys(Object(source)).forEach(function (key) {
-            Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key));
+            Object.defineProperty(
+              target,
+              key,
+              Object.getOwnPropertyDescriptor(source, key),
+            );
           });
     }
 
@@ -5161,7 +5238,12 @@
   }
 
   function _toConsumableArray(arr) {
-    return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread();
+    return (
+      _arrayWithoutHoles(arr) ||
+      _iterableToArray(arr) ||
+      _unsupportedIterableToArray(arr) ||
+      _nonIterableSpread()
+    );
   }
 
   function _arrayWithoutHoles(arr) {
@@ -5169,7 +5251,10 @@
   }
 
   function _iterableToArray(iter) {
-    if ((typeof Symbol !== "undefined" && iter[Symbol.iterator] != null) || iter["@@iterator"] != null)
+    if (
+      (typeof Symbol !== "undefined" && iter[Symbol.iterator] != null) ||
+      iter["@@iterator"] != null
+    )
       return Array.from(iter);
   }
 
@@ -5179,7 +5264,8 @@
     var n = Object.prototype.toString.call(o).slice(8, -1);
     if (n === "Object" && o.constructor) n = o.constructor.name;
     if (n === "Map" || n === "Set") return Array.from(o);
-    if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen);
+    if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n))
+      return _arrayLikeToArray(o, minLen);
   }
 
   function _arrayLikeToArray(arr, len) {
@@ -5375,7 +5461,13 @@
 
   function bunker(fn) {
     try {
-      for (var _len = arguments.length, args = new Array(_len > 1 ? _len - 1 : 0), _key = 1; _key < _len; _key++) {
+      for (
+        var _len = arguments.length,
+          args = new Array(_len > 1 ? _len - 1 : 0),
+          _key = 1;
+        _key < _len;
+        _key++
+      ) {
         args[_key - 1] = arguments[_key];
       }
 
@@ -5410,7 +5502,8 @@
   }
 
   function defineIcons(prefix, icons) {
-    var params = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
+    var params =
+      arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
     var _params$skipHooks = params.skipHooks,
       skipHooks = _params$skipHooks === void 0 ? false : _params$skipHooks;
     var normalized = normalizeIcons(icons);
@@ -5418,7 +5511,10 @@
     if (typeof namespace.hooks.addPack === "function" && !skipHooks) {
       namespace.hooks.addPack(prefix, normalizeIcons(icons));
     } else {
-      namespace.styles[prefix] = _objectSpread2(_objectSpread2({}, namespace.styles[prefix] || {}), normalized);
+      namespace.styles[prefix] = _objectSpread2(
+        _objectSpread2({}, namespace.styles[prefix] || {}),
+        normalized,
+      );
     }
     /**
      * Font Awesome 4 used the prefix of `fa` for all icons. With the introduction
@@ -9811,7 +9907,10 @@
     heart: [
       512,
       512,
-      [128153, 128154, 128155, 128156, 128420, 129293, 129294, 129505, 9829, 10084, 61578],
+      [
+        128153, 128154, 128155, 128156, 128420, 129293, 129294, 129505, 9829,
+        10084, 61578,
+      ],
       "f004",
       "M47.6 300.4L228.3 469.1c7.5 7 17.4 10.9 27.7 10.9s20.2-3.9 27.7-10.9L464.4 300.4c30.4-28.3 47.6-68 47.6-109.5v-5.8c0-69.9-50.5-129.5-119.4-141C347 36.5 300.6 51.4 268 84L256 96 244 84c-32.6-32.6-79-47.5-124.6-39.9C50.5 55.6 0 115.2 0 185.1v5.8c0 41.5 17.2 81.2 47.6 109.5z",
     ],
@@ -9979,7 +10078,10 @@
     circle: [
       512,
       512,
-      [128308, 128309, 128992, 128993, 128994, 128995, 128996, 9679, 9898, 9899, 11044, 61708, 61915],
+      [
+        128308, 128309, 128992, 128993, 128994, 128995, 128996, 9679, 9898,
+        9899, 11044, 61708, 61915,
+      ],
       "f111",
       "M256 512c141.4 0 256-114.6 256-256S397.4 0 256 0S0 114.6 0 256S114.6 512 256 512z",
     ],
@@ -11330,7 +11432,13 @@
     "arrow-rotate-left": [
       512,
       512,
-      [8634, "arrow-left-rotate", "arrow-rotate-back", "arrow-rotate-backward", "undo"],
+      [
+        8634,
+        "arrow-left-rotate",
+        "arrow-rotate-back",
+        "arrow-rotate-backward",
+        "undo",
+      ],
       "f0e2",
       "M125.7 160H176c17.7 0 32 14.3 32 32s-14.3 32-32 32H48c-17.7 0-32-14.3-32-32V64c0-17.7 14.3-32 32-32s32 14.3 32 32v51.2L97.6 97.6c87.5-87.5 229.3-87.5 316.8 0s87.5 229.3 0 316.8s-229.3 87.5-316.8 0c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0c62.5 62.5 163.8 62.5 226.3 0s62.5-163.8 0-226.3s-163.8-62.5-226.3 0L125.7 160z",
     ],
@@ -11519,7 +11627,11 @@
     "hands-asl-interpreting": [
       640,
       512,
-      ["american-sign-language-interpreting", "asl-interpreting", "hands-american-sign-language-interpreting"],
+      [
+        "american-sign-language-interpreting",
+        "asl-interpreting",
+        "hands-american-sign-language-interpreting",
+      ],
       "f2a3",
       "M156.6 46.3c7.9-15.8 1.5-35-14.3-42.9s-35-1.5-42.9 14.3L13.5 189.4C4.6 207.2 0 226.8 0 246.7V256c0 70.7 57.3 128 128 128h72 8v-.3c35.2-2.7 65.4-22.8 82.1-51.7c8.8-15.3 3.6-34.9-11.7-43.7s-34.9-3.6-43.7 11.7c-7 12-19.9 20-34.7 20c-22.1 0-40-17.9-40-40s17.9-40 40-40c14.8 0 27.7 8 34.7 20c8.8 15.3 28.4 20.5 43.7 11.7s20.5-28.4 11.7-43.7c-12.8-22.1-33.6-39.1-58.4-47.1l80.8-22c17-4.6 27.1-22.2 22.5-39.3s-22.2-27.1-39.3-22.5L194.9 124.6l81.6-68c13.6-11.3 15.4-31.5 4.1-45.1S249.1-3.9 235.5 7.4L133.6 92.3l23-46zM483.4 465.7c-7.9 15.8-1.5 35 14.3 42.9s35 1.5 42.9-14.3l85.9-171.7c8.9-17.8 13.5-37.4 13.5-57.2V256c0-70.7-57.3-128-128-128H440h-8v.3c-35.2 2.7-65.4 22.8-82.1 51.7c-8.9 15.3-3.6 34.9 11.7 43.7s34.9 3.6 43.7-11.7c7-12 19.9-20 34.7-20c22.1 0 40 17.9 40 40s-17.9 40-40 40c-14.8 0-27.7-8-34.7-20c-8.9-15.3-28.4-20.5-43.7-11.7s-20.5 28.4-11.7 43.7c12.8 22.1 33.6 39.1 58.4 47.1l-80.8 22c-17.1 4.7-27.1 22.2-22.5 39.3s22.2 27.1 39.3 22.5l100.7-27.5-81.6 68c-13.6 11.3-15.4 31.5-4.1 45.1s31.5 15.4 45.1 4.1l101.9-84.9-23 46z",
     ],
@@ -13290,7 +13402,17 @@
     xmark: [
       320,
       512,
-      [128473, 10005, 10006, 10060, 215, "close", "multiply", "remove", "times"],
+      [
+        128473,
+        10005,
+        10006,
+        10060,
+        215,
+        "close",
+        "multiply",
+        "remove",
+        "times",
+      ],
       "f00d",
       "M310.6 150.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L160 210.7 54.6 105.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3L114.7 256 9.4 361.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0L160 301.3 265.4 406.6c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L205.3 256 310.6 150.6z",
     ],
@@ -15182,9 +15304,16 @@
             _defineProperty(target, key, source[key]);
           })
         : Object.getOwnPropertyDescriptors
-        ? Object.defineProperties(target, Object.getOwnPropertyDescriptors(source))
+        ? Object.defineProperties(
+            target,
+            Object.getOwnPropertyDescriptors(source),
+          )
         : ownKeys(Object(source)).forEach(function (key) {
-            Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key));
+            Object.defineProperty(
+              target,
+              key,
+              Object.getOwnPropertyDescriptor(source, key),
+            );
           });
     }
 
@@ -15201,7 +15330,10 @@
               return typeof obj;
             }
           : function (obj) {
-              return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype
+              return obj &&
+                "function" == typeof Symbol &&
+                obj.constructor === Symbol &&
+                obj !== Symbol.prototype
                 ? "symbol"
                 : typeof obj;
             }),
@@ -15220,7 +15352,10 @@
     function BabelRegExp(re, flags, groups) {
       var _this = new RegExp(re, flags);
 
-      return _groups.set(_this, groups || _groups.get(re)), _setPrototypeOf(_this, BabelRegExp.prototype);
+      return (
+        _groups.set(_this, groups || _groups.get(re)),
+        _setPrototypeOf(_this, BabelRegExp.prototype)
+      );
     }
 
     function buildGroups(result, re) {
@@ -15257,7 +15392,8 @@
           return _super[Symbol.replace].call(this, str, function () {
             var args = arguments;
             return (
-              "object" != typeof args[args.length - 1] && (args = [].slice.call(args)).push(buildGroups(args, _this)),
+              "object" != typeof args[args.length - 1] &&
+                (args = [].slice.call(args)).push(buildGroups(args, _this)),
               substitution.apply(this, args)
             );
           });
@@ -15340,12 +15476,20 @@
 
   function _slicedToArray(arr, i) {
     return (
-      _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest()
+      _arrayWithHoles(arr) ||
+      _iterableToArrayLimit(arr, i) ||
+      _unsupportedIterableToArray(arr, i) ||
+      _nonIterableRest()
     );
   }
 
   function _toConsumableArray(arr) {
-    return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread();
+    return (
+      _arrayWithoutHoles(arr) ||
+      _iterableToArray(arr) ||
+      _unsupportedIterableToArray(arr) ||
+      _nonIterableSpread()
+    );
   }
 
   function _arrayWithoutHoles(arr) {
@@ -15357,12 +15501,19 @@
   }
 
   function _iterableToArray(iter) {
-    if ((typeof Symbol !== "undefined" && iter[Symbol.iterator] != null) || iter["@@iterator"] != null)
+    if (
+      (typeof Symbol !== "undefined" && iter[Symbol.iterator] != null) ||
+      iter["@@iterator"] != null
+    )
       return Array.from(iter);
   }
 
   function _iterableToArrayLimit(arr, i) {
-    var _i = arr == null ? null : (typeof Symbol !== "undefined" && arr[Symbol.iterator]) || arr["@@iterator"];
+    var _i =
+      arr == null
+        ? null
+        : (typeof Symbol !== "undefined" && arr[Symbol.iterator]) ||
+          arr["@@iterator"];
 
     if (_i == null) return;
     var _arr = [];
@@ -15397,7 +15548,8 @@
     var n = Object.prototype.toString.call(o).slice(8, -1);
     if (n === "Object" && o.constructor) n = o.constructor.name;
     if (n === "Map" || n === "Set") return Array.from(o);
-    if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen);
+    if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n))
+      return _arrayLikeToArray(o, minLen);
   }
 
   function _arrayLikeToArray(arr, len) {
@@ -15433,7 +15585,8 @@
   try {
     if (typeof window !== "undefined") _WINDOW = window;
     if (typeof document !== "undefined") _DOCUMENT = document;
-    if (typeof MutationObserver !== "undefined") _MUTATION_OBSERVER = MutationObserver;
+    if (typeof MutationObserver !== "undefined")
+      _MUTATION_OBSERVER = MutationObserver;
     if (typeof performance !== "undefined") _PERFORMANCE = performance;
   } catch (e) {}
 
@@ -15562,7 +15715,8 @@
   var ICON_SELECTION_SYNTAX_PATTERN = /fa(s|r|l|t|d|b|k|ss)?[\-\ ]/; // eslint-disable-line no-useless-escape
 
   var LAYERS_TEXT_CLASSNAME = "fa-layers-text";
-  var FONT_FAMILY_PATTERN = /Font ?Awesome ?([56 ]*)(Solid|Regular|Light|Thin|Duotone|Brands|Free|Pro|Sharp|Kit)?.*/i; // TODO: this needs to support fass
+  var FONT_FAMILY_PATTERN =
+    /Font ?Awesome ?([56 ]*)(Solid|Regular|Light|Thin|Duotone|Brands|Free|Pro|Sharp|Kit)?.*/i; // TODO: this needs to support fass
   // TODO: do we need to handle font-weight for kit SVG pseudo-elements?
 
   var FONT_WEIGHT_TO_PREFIX = familyProxy(
@@ -15581,7 +15735,13 @@
   );
   var oneToTen = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
   var oneToTwenty = oneToTen.concat([11, 12, 13, 14, 15, 16, 17, 18, 19, 20]);
-  var ATTRIBUTES_WATCHED_FOR_MUTATION = ["class", "data-prefix", "data-icon", "data-fa-transform", "data-fa-mask"];
+  var ATTRIBUTES_WATCHED_FOR_MUTATION = [
+    "class",
+    "data-prefix",
+    "data-icon",
+    "data-fa-transform",
+    "data-fa-mask",
+  ];
   var DUOTONE_CLASSES = {
     GROUP: "duotone-group",
     SWAP_OPACITY: "swap-opacity",
@@ -15768,7 +15928,13 @@
   };
   function bunker(fn) {
     try {
-      for (var _len = arguments.length, args = new Array(_len > 1 ? _len - 1 : 0), _key = 1; _key < _len; _key++) {
+      for (
+        var _len = arguments.length,
+          args = new Array(_len > 1 ? _len - 1 : 0),
+          _key = 1;
+        _key < _len;
+        _key++
+      ) {
         args[_key - 1] = arguments[_key];
       }
 
@@ -15843,13 +16009,20 @@
   function joinAttributes(attributes) {
     return Object.keys(attributes || {})
       .reduce(function (acc, attributeName) {
-        return acc + "".concat(attributeName, '="').concat(htmlEscape(attributes[attributeName]), '" ');
+        return (
+          acc +
+          ""
+            .concat(attributeName, '="')
+            .concat(htmlEscape(attributes[attributeName]), '" ')
+        );
       }, "")
       .trim();
   }
   function joinStyles(styles) {
     return Object.keys(styles || {}).reduce(function (acc, styleName) {
-      return acc + "".concat(styleName, ": ").concat(styles[styleName].trim(), ";");
+      return (
+        acc + "".concat(styleName, ": ").concat(styles[styleName].trim(), ";")
+      );
     }, "");
   }
   function transformIsMeaningful(transform) {
@@ -15869,13 +16042,18 @@
     var outer = {
       transform: "translate(".concat(containerWidth / 2, " 256)"),
     };
-    var innerTranslate = "translate(".concat(transform.x * 32, ", ").concat(transform.y * 32, ") ");
+    var innerTranslate = "translate("
+      .concat(transform.x * 32, ", ")
+      .concat(transform.y * 32, ") ");
     var innerScale = "scale("
       .concat((transform.size / 16) * (transform.flipX ? -1 : 1), ", ")
       .concat((transform.size / 16) * (transform.flipY ? -1 : 1), ") ");
     var innerRotate = "rotate(".concat(transform.rotate, " 0 0)");
     var inner = {
-      transform: "".concat(innerTranslate, " ").concat(innerScale, " ").concat(innerRotate),
+      transform: ""
+        .concat(innerTranslate, " ")
+        .concat(innerScale, " ")
+        .concat(innerRotate),
     };
     var path = {
       transform: "translate(".concat((iconWidth / 2) * -1, " -256)"),
@@ -15893,15 +16071,22 @@
       _ref2$height = _ref2.height,
       height = _ref2$height === void 0 ? UNITS_IN_GRID : _ref2$height,
       _ref2$startCentered = _ref2.startCentered,
-      startCentered = _ref2$startCentered === void 0 ? false : _ref2$startCentered;
+      startCentered =
+        _ref2$startCentered === void 0 ? false : _ref2$startCentered;
     var val = "";
 
     if (startCentered && IS_IE) {
-      val += "translate(".concat(transform.x / d - width / 2, "em, ").concat(transform.y / d - height / 2, "em) ");
+      val += "translate("
+        .concat(transform.x / d - width / 2, "em, ")
+        .concat(transform.y / d - height / 2, "em) ");
     } else if (startCentered) {
-      val += "translate(calc(-50% + ".concat(transform.x / d, "em), calc(-50% + ").concat(transform.y / d, "em)) ");
+      val += "translate(calc(-50% + "
+        .concat(transform.x / d, "em), calc(-50% + ")
+        .concat(transform.y / d, "em)) ");
     } else {
-      val += "translate(".concat(transform.x / d, "em, ").concat(transform.y / d, "em) ");
+      val += "translate("
+        .concat(transform.x / d, "em, ")
+        .concat(transform.y / d, "em) ");
     }
 
     val += "scale("
@@ -15984,7 +16169,9 @@
   var loaded = false;
 
   if (IS_DOM) {
-    loaded = (DOCUMENT.documentElement.doScroll ? /^loaded|^c/ : /^loaded|^i|^c/).test(DOCUMENT.readyState);
+    loaded = (
+      DOCUMENT.documentElement.doScroll ? /^loaded|^c/ : /^loaded|^i|^c/
+    ).test(DOCUMENT.readyState);
     if (!loaded) DOCUMENT.addEventListener("DOMContentLoaded", listener);
   }
 
@@ -15996,7 +16183,8 @@
   function toHtml(abstractNodes) {
     var tag = abstractNodes.tag,
       _abstractNodes$attrib = abstractNodes.attributes,
-      attributes = _abstractNodes$attrib === void 0 ? {} : _abstractNodes$attrib,
+      attributes =
+        _abstractNodes$attrib === void 0 ? {} : _abstractNodes$attrib,
       _abstractNodes$childr = abstractNodes.children,
       children = _abstractNodes$childr === void 0 ? [] : _abstractNodes$childr;
 
@@ -16044,10 +16232,16 @@
    * @return {mixed}                 The final result.
    */
 
-  var reduce = function fastReduceObject(subject, fn, initialValue, thisContext) {
+  var reduce = function fastReduceObject(
+    subject,
+    fn,
+    initialValue,
+    thisContext,
+  ) {
     var keys = Object.keys(subject),
       length = keys.length,
-      iterator = thisContext !== undefined ? bindInternal4(fn, thisContext) : fn,
+      iterator =
+        thisContext !== undefined ? bindInternal4(fn, thisContext) : fn,
       i,
       key,
       result;
@@ -16154,7 +16348,8 @@
   }
 
   function defineIcons(prefix, icons) {
-    var params = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
+    var params =
+      arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
     var _params$skipHooks = params.skipHooks,
       skipHooks = _params$skipHooks === void 0 ? false : _params$skipHooks;
     var normalized = normalizeIcons(icons);
@@ -16162,7 +16357,10 @@
     if (typeof namespace.hooks.addPack === "function" && !skipHooks) {
       namespace.hooks.addPack(prefix, normalizeIcons(icons));
     } else {
-      namespace.styles[prefix] = _objectSpread2(_objectSpread2({}, namespace.styles[prefix] || {}), normalized);
+      namespace.styles[prefix] = _objectSpread2(
+        _objectSpread2({}, namespace.styles[prefix] || {}),
+        normalized,
+      );
     }
     /**
      * Font Awesome 4 used the prefix of `fa` for all icons. With the introduction
@@ -16177,10 +16375,13 @@
   }
 
   var duotonePathRe = [
-    /*#__PURE__*/ _wrapRegExp(/path d="((?:(?!")[\s\S])+)".*path d="((?:(?!")[\s\S])+)"/, {
-      d1: 1,
-      d2: 2,
-    }),
+    /*#__PURE__*/ _wrapRegExp(
+      /path d="((?:(?!")[\s\S])+)".*path d="((?:(?!")[\s\S])+)"/,
+      {
+        d1: 1,
+        d2: 2,
+      },
+    ),
     /*#__PURE__*/ _wrapRegExp(
       /path class="((?:(?!")[\s\S])+)".*d="((?:(?!")[\s\S])+)".*path class="((?:(?!")[\s\S])+)".*d="((?:(?!")[\s\S])+)"/,
       {
@@ -16190,10 +16391,13 @@
         d2: 4,
       },
     ),
-    /*#__PURE__*/ _wrapRegExp(/path class="((?:(?!")[\s\S])+)".*d="((?:(?!")[\s\S])+)"/, {
-      cls1: 1,
-      d1: 2,
-    }),
+    /*#__PURE__*/ _wrapRegExp(
+      /path class="((?:(?!")[\s\S])+)".*d="((?:(?!")[\s\S])+)"/,
+      {
+        cls1: 1,
+        d1: 2,
+      },
+    ),
   ];
 
   var _LONG_STYLE, _PREFIXES, _PREFIXES_FOR_FAMILY;
@@ -16201,8 +16405,16 @@
     shims = namespace.shims;
   var LONG_STYLE =
     ((_LONG_STYLE = {}),
-    _defineProperty(_LONG_STYLE, FAMILY_CLASSIC, Object.values(PREFIX_TO_LONG_STYLE[FAMILY_CLASSIC])),
-    _defineProperty(_LONG_STYLE, FAMILY_SHARP, Object.values(PREFIX_TO_LONG_STYLE[FAMILY_SHARP])),
+    _defineProperty(
+      _LONG_STYLE,
+      FAMILY_CLASSIC,
+      Object.values(PREFIX_TO_LONG_STYLE[FAMILY_CLASSIC]),
+    ),
+    _defineProperty(
+      _LONG_STYLE,
+      FAMILY_SHARP,
+      Object.values(PREFIX_TO_LONG_STYLE[FAMILY_SHARP]),
+    ),
     _LONG_STYLE);
   var _defaultUsablePrefix = null;
   var _byUnicode = {};
@@ -16212,8 +16424,16 @@
   var _byAlias = {};
   var PREFIXES =
     ((_PREFIXES = {}),
-    _defineProperty(_PREFIXES, FAMILY_CLASSIC, Object.keys(PREFIX_TO_STYLE[FAMILY_CLASSIC])),
-    _defineProperty(_PREFIXES, FAMILY_SHARP, Object.keys(PREFIX_TO_STYLE[FAMILY_SHARP])),
+    _defineProperty(
+      _PREFIXES,
+      FAMILY_CLASSIC,
+      Object.keys(PREFIX_TO_STYLE[FAMILY_CLASSIC]),
+    ),
+    _defineProperty(
+      _PREFIXES,
+      FAMILY_SHARP,
+      Object.keys(PREFIX_TO_STYLE[FAMILY_SHARP]),
+    ),
     _PREFIXES);
 
   function isReserved(name) {
@@ -16372,29 +16592,49 @@
     };
   };
   function getCanonicalPrefix(styleOrPrefix) {
-    var params = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
+    var params =
+      arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
     var _params$family = params.family,
       family = _params$family === void 0 ? FAMILY_CLASSIC : _params$family;
     var style = PREFIX_TO_STYLE[family][styleOrPrefix];
-    var prefix = STYLE_TO_PREFIX[family][styleOrPrefix] || STYLE_TO_PREFIX[family][style];
+    var prefix =
+      STYLE_TO_PREFIX[family][styleOrPrefix] || STYLE_TO_PREFIX[family][style];
     var defined = styleOrPrefix in namespace.styles ? styleOrPrefix : null;
     return prefix || defined || null;
   }
   var PREFIXES_FOR_FAMILY =
     ((_PREFIXES_FOR_FAMILY = {}),
-    _defineProperty(_PREFIXES_FOR_FAMILY, FAMILY_CLASSIC, Object.keys(PREFIX_TO_LONG_STYLE[FAMILY_CLASSIC])),
-    _defineProperty(_PREFIXES_FOR_FAMILY, FAMILY_SHARP, Object.keys(PREFIX_TO_LONG_STYLE[FAMILY_SHARP])),
+    _defineProperty(
+      _PREFIXES_FOR_FAMILY,
+      FAMILY_CLASSIC,
+      Object.keys(PREFIX_TO_LONG_STYLE[FAMILY_CLASSIC]),
+    ),
+    _defineProperty(
+      _PREFIXES_FOR_FAMILY,
+      FAMILY_SHARP,
+      Object.keys(PREFIX_TO_LONG_STYLE[FAMILY_SHARP]),
+    ),
     _PREFIXES_FOR_FAMILY);
   function getCanonicalIcon(values) {
     var _famProps;
 
-    var params = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
+    var params =
+      arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
     var _params$skipLookups = params.skipLookups,
-      skipLookups = _params$skipLookups === void 0 ? false : _params$skipLookups;
+      skipLookups =
+        _params$skipLookups === void 0 ? false : _params$skipLookups;
     var famProps =
       ((_famProps = {}),
-      _defineProperty(_famProps, FAMILY_CLASSIC, "".concat(config.cssPrefix, "-").concat(FAMILY_CLASSIC)),
-      _defineProperty(_famProps, FAMILY_SHARP, "".concat(config.cssPrefix, "-").concat(FAMILY_SHARP)),
+      _defineProperty(
+        _famProps,
+        FAMILY_CLASSIC,
+        "".concat(config.cssPrefix, "-").concat(FAMILY_CLASSIC),
+      ),
+      _defineProperty(
+        _famProps,
+        FAMILY_SHARP,
+        "".concat(config.cssPrefix, "-").concat(FAMILY_SHARP),
+      ),
       _famProps);
     var givenPrefix = null;
     var family = FAMILY_CLASSIC;
@@ -16421,7 +16661,9 @@
       var iconName = getIconName(config.cssPrefix, cls);
 
       if (styles[cls]) {
-        cls = LONG_STYLE[family].includes(cls) ? LONG_STYLE_TO_PREFIX[family][cls] : cls;
+        cls = LONG_STYLE[family].includes(cls)
+          ? LONG_STYLE_TO_PREFIX[family][cls]
+          : cls;
         givenPrefix = cls;
         acc.prefix = cls;
       } else if (PREFIXES[family].indexOf(cls) > -1) {
@@ -16450,7 +16692,12 @@
         acc.iconName = shim.iconName || aliasIconName || acc.iconName;
         acc.prefix = shim.prefix || acc.prefix;
 
-        if (acc.prefix === "far" && !styles["far"] && styles["fas"] && !config.autoFetchSvg) {
+        if (
+          acc.prefix === "far" &&
+          !styles["far"] &&
+          styles["fas"] &&
+          !config.autoFetchSvg
+        ) {
           // Allow a fallback from the regular style to solid if regular is not available
           // but only if we aren't auto-fetching SVGs
           acc.prefix = "fas";
@@ -16468,9 +16715,14 @@
       canonical.prefix = "fad";
     }
 
-    if (!canonical.prefix && family === FAMILY_SHARP && (styles["fass"] || config.autoFetchSvg)) {
+    if (
+      !canonical.prefix &&
+      family === FAMILY_SHARP &&
+      (styles["fass"] || config.autoFetchSvg)
+    ) {
       canonical.prefix = "fass";
-      canonical.iconName = byAlias(canonical.prefix, canonical.iconName) || canonical.iconName;
+      canonical.iconName =
+        byAlias(canonical.prefix, canonical.iconName) || canonical.iconName;
     }
 
     if (canonical.prefix === "fa" || givenPrefix === "fa") {
@@ -16495,13 +16747,22 @@
         value: function add() {
           var _this = this;
 
-          for (var _len = arguments.length, definitions = new Array(_len), _key = 0; _key < _len; _key++) {
+          for (
+            var _len = arguments.length,
+              definitions = new Array(_len),
+              _key = 0;
+            _key < _len;
+            _key++
+          ) {
             definitions[_key] = arguments[_key];
           }
 
           var additions = definitions.reduce(this._pullDefinitions, {});
           Object.keys(additions).forEach(function (key) {
-            _this.definitions[key] = _objectSpread2(_objectSpread2({}, _this.definitions[key] || {}), additions[key]);
+            _this.definitions[key] = _objectSpread2(
+              _objectSpread2({}, _this.definitions[key] || {}),
+              additions[key],
+            );
             defineIcons(key, additions[key]); // TODO can we stop doing this? We can't get the icons by 'fa-solid' any longer so this probably needs to change
 
             var longPrefix = PREFIX_TO_LONG_STYLE[FAMILY_CLASSIC][key];
@@ -16602,7 +16863,13 @@
     return obj;
   }
   function chainHooks(hook, accumulator) {
-    for (var _len = arguments.length, args = new Array(_len > 2 ? _len - 2 : 0), _key = 2; _key < _len; _key++) {
+    for (
+      var _len = arguments.length,
+        args = new Array(_len > 2 ? _len - 2 : 0),
+        _key = 2;
+      _key < _len;
+      _key++
+    ) {
       args[_key - 2] = arguments[_key];
     }
 
@@ -16613,7 +16880,13 @@
     return accumulator;
   }
   function callHooks(hook) {
-    for (var _len2 = arguments.length, args = new Array(_len2 > 1 ? _len2 - 1 : 0), _key2 = 1; _key2 < _len2; _key2++) {
+    for (
+      var _len2 = arguments.length,
+        args = new Array(_len2 > 1 ? _len2 - 1 : 0),
+        _key2 = 1;
+      _key2 < _len2;
+      _key2++
+    ) {
       args[_key2 - 1] = arguments[_key2];
     }
 
@@ -16639,7 +16912,8 @@
     if (!iconName) return;
     iconName = byAlias(prefix, iconName) || iconName;
     return (
-      iconFromMapping(library.definitions, prefix, iconName) || iconFromMapping(namespace.styles, prefix, iconName)
+      iconFromMapping(library.definitions, prefix, iconName) ||
+      iconFromMapping(namespace.styles, prefix, iconName)
     );
   }
   var library = new Library();
@@ -16650,7 +16924,8 @@
   };
   var dom = {
     i2svg: function i2svg() {
-      var params = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+      var params =
+        arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
 
       if (IS_DOM) {
         callHooks("beforeI2svg", params);
@@ -16661,7 +16936,8 @@
       }
     },
     watch: function watch() {
-      var params = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+      var params =
+        arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
       var autoReplaceSvgRoot = params.autoReplaceSvgRoot;
 
       if (config.autoReplaceSvg === false) {
@@ -16691,7 +16967,8 @@
       }
 
       if (Array.isArray(_icon) && _icon.length === 2) {
-        var iconName = _icon[1].indexOf("fa-") === 0 ? _icon[1].slice(3) : _icon[1];
+        var iconName =
+          _icon[1].indexOf("fa-") === 0 ? _icon[1].slice(3) : _icon[1];
         var prefix = getCanonicalPrefix(_icon[0]);
         return {
           prefix: prefix,
@@ -16701,14 +16978,17 @@
 
       if (
         typeof _icon === "string" &&
-        (_icon.indexOf("".concat(config.cssPrefix, "-")) > -1 || _icon.match(ICON_SELECTION_SYNTAX_PATTERN))
+        (_icon.indexOf("".concat(config.cssPrefix, "-")) > -1 ||
+          _icon.match(ICON_SELECTION_SYNTAX_PATTERN))
       ) {
         var canonicalIcon = getCanonicalIcon(_icon.split(" "), {
           skipLookups: true,
         });
         return {
           prefix: canonicalIcon.prefix || getDefaultUsablePrefix(),
-          iconName: byAlias(canonicalIcon.prefix, canonicalIcon.iconName) || canonicalIcon.iconName,
+          iconName:
+            byAlias(canonicalIcon.prefix, canonicalIcon.iconName) ||
+            canonicalIcon.iconName,
         };
       }
 
@@ -16733,10 +17013,16 @@
   };
 
   var autoReplace = function autoReplace() {
-    var params = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+    var params =
+      arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
     var _params$autoReplaceSv = params.autoReplaceSvgRoot,
-      autoReplaceSvgRoot = _params$autoReplaceSv === void 0 ? DOCUMENT : _params$autoReplaceSv;
-    if ((Object.keys(namespace.styles).length > 0 || config.autoFetchSvg) && IS_DOM && config.autoReplaceSvg)
+      autoReplaceSvgRoot =
+        _params$autoReplaceSv === void 0 ? DOCUMENT : _params$autoReplaceSv;
+    if (
+      (Object.keys(namespace.styles).length > 0 || config.autoFetchSvg) &&
+      IS_DOM &&
+      config.autoReplaceSvg
+    )
       api.dom.i2svg({
         node: autoReplaceSvgRoot,
       });
@@ -16759,7 +17045,10 @@
       {},
       {
         addPack: function addPack(prefix, icons) {
-          namespace.styles[prefix] = _objectSpread2(_objectSpread2({}, namespace.styles[prefix] || {}), icons);
+          namespace.styles[prefix] = _objectSpread2(
+            _objectSpread2({}, namespace.styles[prefix] || {}),
+            icons,
+          );
           build();
           autoReplace();
         },
@@ -16769,7 +17058,10 @@
               prefix = _ref2[0],
               icons = _ref2[1];
 
-            namespace.styles[prefix] = _objectSpread2(_objectSpread2({}, namespace.styles[prefix] || {}), icons);
+            namespace.styles[prefix] = _objectSpread2(
+              _objectSpread2({}, namespace.styles[prefix] || {}),
+              icons,
+            );
           });
           build();
           autoReplace();
@@ -16777,7 +17069,10 @@
         addShims: function addShims(shims) {
           var _namespace$shims;
 
-          (_namespace$shims = namespace.shims).push.apply(_namespace$shims, _toConsumableArray(shims));
+          (_namespace$shims = namespace.shims).push.apply(
+            _namespace$shims,
+            _toConsumableArray(shims),
+          );
 
           build();
           autoReplace();
@@ -16828,7 +17123,9 @@
           _objectSpread2({}, styles),
           {},
           {
-            "transform-origin": "".concat(offset.x + transform.x / 16, "em ").concat(offset.y + transform.y / 16, "em"),
+            "transform-origin": ""
+              .concat(offset.x + transform.x / 16, "em ")
+              .concat(offset.y + transform.y / 16, "em"),
           },
         ),
       );
@@ -16849,7 +17146,10 @@
       children = _ref.children,
       attributes = _ref.attributes,
       symbol = _ref.symbol;
-    var id = symbol === true ? "".concat(prefix, "-").concat(config.cssPrefix, "-").concat(iconName) : symbol;
+    var id =
+      symbol === true
+        ? "".concat(prefix, "-").concat(config.cssPrefix, "-").concat(iconName)
+        : symbol;
     return [
       {
         tag: "svg",
@@ -16893,7 +17193,10 @@
       height = _ref.height;
 
     var isUploadedIcon = prefix === "fak";
-    var attrClass = [config.replacementClass, iconName ? "".concat(config.cssPrefix, "-").concat(iconName) : ""]
+    var attrClass = [
+      config.replacementClass,
+      iconName ? "".concat(config.cssPrefix, "-").concat(iconName) : "",
+    ]
       .filter(function (c) {
         return extra.classes.indexOf(c) === -1;
       })
@@ -16932,7 +17235,9 @@
       content.children.push({
         tag: "title",
         attributes: {
-          id: content.attributes["aria-labelledby"] || "title-".concat(titleId || nextUniqueId()),
+          id:
+            content.attributes["aria-labelledby"] ||
+            "title-".concat(titleId || nextUniqueId()),
         },
         children: [title],
       });
@@ -16950,7 +17255,10 @@
         maskId: maskId,
         transform: transform,
         symbol: symbol,
-        styles: _objectSpread2(_objectSpread2({}, uploadedIconWidthStyle), extra.styles),
+        styles: _objectSpread2(
+          _objectSpread2({}, uploadedIconWidthStyle),
+          extra.styles,
+        ),
       },
     );
 
@@ -17109,7 +17417,9 @@
           {
             tag: "path",
             attributes: {
-              class: "".concat(config.cssPrefix, "-").concat(DUOTONE_CLASSES.SECONDARY),
+              class: ""
+                .concat(config.cssPrefix, "-")
+                .concat(DUOTONE_CLASSES.SECONDARY),
               fill: "currentColor",
               d: vectorData[0],
             },
@@ -17117,7 +17427,9 @@
           {
             tag: "path",
             attributes: {
-              class: "".concat(config.cssPrefix, "-").concat(DUOTONE_CLASSES.PRIMARY),
+              class: ""
+                .concat(config.cssPrefix, "-")
+                .concat(DUOTONE_CLASSES.PRIMARY),
               fill: "currentColor",
               d: vectorData[1],
             },
@@ -17149,7 +17461,11 @@
 
   function maybeNotifyMissing(iconName, prefix) {
     if (!PRODUCTION && !config.showMissingIcons && iconName) {
-      console.error('Icon with name "'.concat(iconName, '" and prefix "').concat(prefix, '" is missing.'));
+      console.error(
+        'Icon with name "'
+          .concat(iconName, '" and prefix "')
+          .concat(prefix, '" is missing.'),
+      );
     }
   }
 
@@ -17174,7 +17490,12 @@
         prefix = shim.prefix || prefix;
       }
 
-      if (iconName && prefix && styles$1[prefix] && styles$1[prefix][iconName]) {
+      if (
+        iconName &&
+        prefix &&
+        styles$1[prefix] &&
+        styles$1[prefix][iconName]
+      ) {
         var icon = styles$1[prefix][iconName];
         return resolve(asFoundIcon(icon));
       }
@@ -17185,7 +17506,10 @@
           _objectSpread2({}, missingIconResolutionMixin),
           {},
           {
-            icon: config.showMissingIcons && iconName ? callProvided("missingIconAbstract") || {} : {},
+            icon:
+              config.showMissingIcons && iconName
+                ? callProvided("missingIconAbstract") || {}
+                : {},
           },
         ),
       );
@@ -17195,7 +17519,10 @@
   var noop$1 = function noop() {};
 
   var p =
-    config.measurePerformance && PERFORMANCE && PERFORMANCE.mark && PERFORMANCE.measure
+    config.measurePerformance &&
+    PERFORMANCE &&
+    PERFORMANCE.mark &&
+    PERFORMANCE.measure
       ? PERFORMANCE
       : {
           mark: noop$1,
@@ -17238,7 +17565,12 @@
   }
 
   function hasBeenReplaced(node) {
-    return node && node.classList && node.classList.contains && node.classList.contains(config.replacementClass);
+    return (
+      node &&
+      node.classList &&
+      node.classList.contains &&
+      node.classList.contains(config.replacementClass)
+    );
   }
 
   function getMutator() {
@@ -17259,9 +17591,15 @@
   }
 
   function convertSVG(abstractObj) {
-    var params = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
+    var params =
+      arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
     var _params$ceFn = params.ceFn,
-      ceFn = _params$ceFn === void 0 ? (abstractObj.tag === "svg" ? createElementNS : createElement) : _params$ceFn;
+      ceFn =
+        _params$ceFn === void 0
+          ? abstractObj.tag === "svg"
+            ? createElementNS
+            : createElement
+          : _params$ceFn;
 
     if (typeof abstractObj === "string") {
       return DOCUMENT.createTextNode(abstractObj);
@@ -17301,7 +17639,10 @@
           node.parentNode.insertBefore(convertSVG(abstract), node);
         });
 
-        if (node.getAttribute(DATA_FA_I2SVG) === null && config.keepOriginalSource) {
+        if (
+          node.getAttribute(DATA_FA_I2SVG) === null &&
+          config.keepOriginalSource
+        ) {
           var comment = DOCUMENT.createComment(nodeAsComment(node));
           node.parentNode.replaceChild(comment, node);
         } else {
@@ -17399,13 +17740,17 @@
     }
 
     var _options$treeCallback = options.treeCallback,
-      treeCallback = _options$treeCallback === void 0 ? noop$2 : _options$treeCallback,
+      treeCallback =
+        _options$treeCallback === void 0 ? noop$2 : _options$treeCallback,
       _options$nodeCallback = options.nodeCallback,
-      nodeCallback = _options$nodeCallback === void 0 ? noop$2 : _options$nodeCallback,
+      nodeCallback =
+        _options$nodeCallback === void 0 ? noop$2 : _options$nodeCallback,
       _options$pseudoElemen = options.pseudoElementsCallback,
-      pseudoElementsCallback = _options$pseudoElemen === void 0 ? noop$2 : _options$pseudoElemen,
+      pseudoElementsCallback =
+        _options$pseudoElemen === void 0 ? noop$2 : _options$pseudoElemen,
       _options$observeMutat = options.observeMutationsRoot,
-      observeMutationsRoot = _options$observeMutat === void 0 ? DOCUMENT : _options$observeMutat;
+      observeMutationsRoot =
+        _options$observeMutat === void 0 ? DOCUMENT : _options$observeMutat;
     mo = new MUTATION_OBSERVER(function (objects) {
       if (disabled) return;
       var defaultPrefix = getDefaultUsablePrefix();
@@ -17422,7 +17767,11 @@
           treeCallback(mutationRecord.target);
         }
 
-        if (mutationRecord.type === "attributes" && mutationRecord.target.parentNode && config.searchPseudoElements) {
+        if (
+          mutationRecord.type === "attributes" &&
+          mutationRecord.target.parentNode &&
+          config.searchPseudoElements
+        ) {
           pseudoElementsCallback(mutationRecord.target.parentNode);
         }
 
@@ -17431,13 +17780,22 @@
           isWatched(mutationRecord.target) &&
           ~ATTRIBUTES_WATCHED_FOR_MUTATION.indexOf(mutationRecord.attributeName)
         ) {
-          if (mutationRecord.attributeName === "class" && hasPrefixAndIcon(mutationRecord.target)) {
-            var _getCanonicalIcon = getCanonicalIcon(classArray(mutationRecord.target)),
+          if (
+            mutationRecord.attributeName === "class" &&
+            hasPrefixAndIcon(mutationRecord.target)
+          ) {
+            var _getCanonicalIcon = getCanonicalIcon(
+                classArray(mutationRecord.target),
+              ),
               prefix = _getCanonicalIcon.prefix,
               iconName = _getCanonicalIcon.iconName;
 
-            mutationRecord.target.setAttribute(DATA_PREFIX, prefix || defaultPrefix);
-            if (iconName) mutationRecord.target.setAttribute(DATA_ICON, iconName);
+            mutationRecord.target.setAttribute(
+              DATA_PREFIX,
+              prefix || defaultPrefix,
+            );
+            if (iconName)
+              mutationRecord.target.setAttribute(DATA_ICON, iconName);
           } else if (hasBeenReplaced(mutationRecord.target)) {
             nodeCallback(mutationRecord.target);
           }
@@ -17498,10 +17856,17 @@
     }
 
     if (val.prefix && innerText.length > 0) {
-      val.iconName = byLigature(val.prefix, node.innerText) || byUnicode(val.prefix, toHex(node.innerText));
+      val.iconName =
+        byLigature(val.prefix, node.innerText) ||
+        byUnicode(val.prefix, toHex(node.innerText));
     }
 
-    if (!val.iconName && config.autoFetchSvg && node.firstChild && node.firstChild.nodeType === Node.TEXT_NODE) {
+    if (
+      !val.iconName &&
+      config.autoFetchSvg &&
+      node.firstChild &&
+      node.firstChild.nodeType === Node.TEXT_NODE
+    ) {
       val.iconName = node.firstChild.data;
     }
 
@@ -17615,21 +17980,30 @@
   FAMILIES.map(function (family) {
     knownPrefixes.add("fa-".concat(family));
   });
-  Object.keys(PREFIX_TO_STYLE[FAMILY_CLASSIC]).map(knownPrefixes.add.bind(knownPrefixes));
-  Object.keys(PREFIX_TO_STYLE[FAMILY_SHARP]).map(knownPrefixes.add.bind(knownPrefixes));
+  Object.keys(PREFIX_TO_STYLE[FAMILY_CLASSIC]).map(
+    knownPrefixes.add.bind(knownPrefixes),
+  );
+  Object.keys(PREFIX_TO_STYLE[FAMILY_SHARP]).map(
+    knownPrefixes.add.bind(knownPrefixes),
+  );
   knownPrefixes = _toConsumableArray(knownPrefixes);
 
   function onTree(root) {
-    var callback = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : null;
+    var callback =
+      arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : null;
     if (!IS_DOM) return Promise.resolve();
     var htmlClassList = DOCUMENT.documentElement.classList;
 
     var hclAdd = function hclAdd(suffix) {
-      return htmlClassList.add("".concat(HTML_CLASS_I2SVG_BASE_CLASS, "-").concat(suffix));
+      return htmlClassList.add(
+        "".concat(HTML_CLASS_I2SVG_BASE_CLASS, "-").concat(suffix),
+      );
     };
 
     var hclRemove = function hclRemove(suffix) {
-      return htmlClassList.remove("".concat(HTML_CLASS_I2SVG_BASE_CLASS, "-").concat(suffix));
+      return htmlClassList.remove(
+        "".concat(HTML_CLASS_I2SVG_BASE_CLASS, "-").concat(suffix),
+      );
     };
 
     var prefixes = config.autoFetchSvg
@@ -17642,7 +18016,9 @@
       prefixes.push("fa");
     }
 
-    var prefixesDomQuery = [".".concat(LAYERS_TEXT_CLASSNAME, ":not([").concat(DATA_FA_I2SVG, "])")]
+    var prefixesDomQuery = [
+      ".".concat(LAYERS_TEXT_CLASSNAME, ":not([").concat(DATA_FA_I2SVG, "])"),
+    ]
       .concat(
         prefixes.map(function (p) {
           return ".".concat(p, ":not([").concat(DATA_FA_I2SVG, "])");
@@ -17707,7 +18083,8 @@
   }
 
   function onNode(node) {
-    var callback = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : null;
+    var callback =
+      arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : null;
     generateMutation(node).then(function (mutation) {
       if (mutation) {
         perform([mutation], callback);
@@ -17717,7 +18094,8 @@
 
   function resolveIcons(next) {
     return function (maybeIconDefinition) {
-      var params = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
+      var params =
+        arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
       var iconDefinition = (maybeIconDefinition || {}).icon
         ? maybeIconDefinition
         : findIconDefinition(maybeIconDefinition || {});
@@ -17741,9 +18119,11 @@
   }
 
   var render = function render(iconDefinition) {
-    var params = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
+    var params =
+      arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
     var _params$transform = params.transform,
-      transform = _params$transform === void 0 ? meaninglessTransform : _params$transform,
+      transform =
+        _params$transform === void 0 ? meaninglessTransform : _params$transform,
       _params$symbol = params.symbol,
       symbol = _params$symbol === void 0 ? false : _params$symbol,
       _params$mask = params.mask,
@@ -17802,7 +18182,10 @@
           },
           prefix: prefix,
           iconName: iconName,
-          transform: _objectSpread2(_objectSpread2({}, meaninglessTransform), transform),
+          transform: _objectSpread2(
+            _objectSpread2({}, meaninglessTransform),
+            transform,
+          ),
           symbol: symbol,
           title: title,
           maskId: maskId,
@@ -17824,7 +18207,9 @@
     },
     hooks: function hooks() {
       return {
-        mutationObserverCallbacks: function mutationObserverCallbacks(accumulator) {
+        mutationObserverCallbacks: function mutationObserverCallbacks(
+          accumulator,
+        ) {
           accumulator.treeCallback = onTree;
           accumulator.nodeCallback = onNode;
           return accumulator;
@@ -17836,7 +18221,8 @@
         var _params$node = params.node,
           node = _params$node === void 0 ? DOCUMENT : _params$node,
           _params$callback = params.callback,
-          callback = _params$callback === void 0 ? function () {} : _params$callback;
+          callback =
+            _params$callback === void 0 ? function () {} : _params$callback;
         return onTree(node, callback);
       };
 
@@ -17926,7 +18312,10 @@
     mixout: function mixout() {
       return {
         layer: function layer(assembler) {
-          var params = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
+          var params =
+            arguments.length > 1 && arguments[1] !== undefined
+              ? arguments[1]
+              : {};
           var _params$classes = params.classes,
             classes = _params$classes === void 0 ? [] : _params$classes;
           return domVariants(
@@ -17950,7 +18339,9 @@
                 {
                   tag: "span",
                   attributes: {
-                    class: ["".concat(config.cssPrefix, "-layers")].concat(_toConsumableArray(classes)).join(" "),
+                    class: ["".concat(config.cssPrefix, "-layers")]
+                      .concat(_toConsumableArray(classes))
+                      .join(" "),
                   },
                   children: children,
                 },
@@ -17966,13 +18357,17 @@
     mixout: function mixout() {
       return {
         counter: function counter(content) {
-          var params = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
+          var params =
+            arguments.length > 1 && arguments[1] !== undefined
+              ? arguments[1]
+              : {};
           var _params$title = params.title,
             title = _params$title === void 0 ? null : _params$title,
             _params$classes = params.classes,
             classes = _params$classes === void 0 ? [] : _params$classes,
             _params$attributes = params.attributes,
-            attributes = _params$attributes === void 0 ? {} : _params$attributes,
+            attributes =
+              _params$attributes === void 0 ? {} : _params$attributes,
             _params$styles = params.styles,
             styles = _params$styles === void 0 ? {} : _params$styles;
           return domVariants(
@@ -17991,7 +18386,9 @@
                 extra: {
                   attributes: attributes,
                   styles: styles,
-                  classes: ["".concat(config.cssPrefix, "-layers-counter")].concat(_toConsumableArray(classes)),
+                  classes: [
+                    "".concat(config.cssPrefix, "-layers-counter"),
+                  ].concat(_toConsumableArray(classes)),
                 },
               });
             },
@@ -18005,15 +18402,22 @@
     mixout: function mixout() {
       return {
         text: function text(content) {
-          var params = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
+          var params =
+            arguments.length > 1 && arguments[1] !== undefined
+              ? arguments[1]
+              : {};
           var _params$transform = params.transform,
-            transform = _params$transform === void 0 ? meaninglessTransform : _params$transform,
+            transform =
+              _params$transform === void 0
+                ? meaninglessTransform
+                : _params$transform,
             _params$title = params.title,
             title = _params$title === void 0 ? null : _params$title,
             _params$classes = params.classes,
             classes = _params$classes === void 0 ? [] : _params$classes,
             _params$attributes = params.attributes,
-            attributes = _params$attributes === void 0 ? {} : _params$attributes,
+            attributes =
+              _params$attributes === void 0 ? {} : _params$attributes,
             _params$styles = params.styles,
             styles = _params$styles === void 0 ? {} : _params$styles;
           return domVariants(
@@ -18028,12 +18432,17 @@
               });
               return makeLayersTextAbstract({
                 content: content,
-                transform: _objectSpread2(_objectSpread2({}, meaninglessTransform), transform),
+                transform: _objectSpread2(
+                  _objectSpread2({}, meaninglessTransform),
+                  transform,
+                ),
                 title: title,
                 extra: {
                   attributes: attributes,
                   styles: styles,
-                  classes: ["".concat(config.cssPrefix, "-layers-text")].concat(_toConsumableArray(classes)),
+                  classes: ["".concat(config.cssPrefix, "-layers-text")].concat(
+                    _toConsumableArray(classes),
+                  ),
                 },
               });
             },
@@ -18081,7 +18490,9 @@
   function hexValueFromContent(content) {
     var cleaned = content.replace(CLEAN_CONTENT_PATTERN, "");
     var codePoint = codePointAt(cleaned, 0);
-    var isPrependTen = codePoint >= SECONDARY_UNICODE_RANGE[0] && codePoint <= SECONDARY_UNICODE_RANGE[1];
+    var isPrependTen =
+      codePoint >= SECONDARY_UNICODE_RANGE[0] &&
+      codePoint <= SECONDARY_UNICODE_RANGE[1];
     var isDoubled = cleaned.length === 2 ? cleaned[0] === cleaned[1] : false;
     return {
       value: isDoubled ? toHex(cleaned[0]) : toHex(cleaned),
@@ -18090,7 +18501,9 @@
   }
 
   function replaceForPosition(node, position) {
-    var pendingAttribute = "".concat(DATA_FA_PSEUDO_ELEMENT_PENDING).concat(position.replace(":", "-"));
+    var pendingAttribute = ""
+      .concat(DATA_FA_PSEUDO_ELEMENT_PENDING)
+      .concat(position.replace(":", "-"));
     return new Promise(function (resolve, reject) {
       if (node.getAttribute(pendingAttribute) !== null) {
         // This node is already being processed
@@ -18102,7 +18515,9 @@
         return c.getAttribute(DATA_FA_PSEUDO_ELEMENT) === position;
       })[0];
       var styles = WINDOW.getComputedStyle(node, position);
-      var fontFamily = styles.getPropertyValue("font-family").match(FONT_FAMILY_PATTERN);
+      var fontFamily = styles
+        .getPropertyValue("font-family")
+        .match(FONT_FAMILY_PATTERN);
       var fontWeight = styles.getPropertyValue("font-weight");
       var content = styles.getPropertyValue("content");
 
@@ -18115,8 +18530,18 @@
       } else if (fontFamily && content !== "none" && content !== "") {
         var _content = styles.getPropertyValue("content");
 
-        var family = ~["Sharp"].indexOf(fontFamily[2]) ? FAMILY_SHARP : FAMILY_CLASSIC;
-        var prefix = ~["Solid", "Regular", "Light", "Thin", "Duotone", "Brands", "Kit"].indexOf(fontFamily[2])
+        var family = ~["Sharp"].indexOf(fontFamily[2])
+          ? FAMILY_SHARP
+          : FAMILY_CLASSIC;
+        var prefix = ~[
+          "Solid",
+          "Regular",
+          "Light",
+          "Thin",
+          "Duotone",
+          "Brands",
+          "Kit",
+        ].indexOf(fontFamily[2])
           ? STYLE_TO_PREFIX[family][fontFamily[2].toLowerCase()]
           : FONT_WEIGHT_TO_PREFIX[family][fontWeight];
 
@@ -18142,8 +18567,10 @@
           iconName &&
           !isSecondary &&
           (!alreadyProcessedPseudoElement ||
-            alreadyProcessedPseudoElement.getAttribute(DATA_PREFIX) !== prefix ||
-            alreadyProcessedPseudoElement.getAttribute(DATA_ICON) !== iconIdentifier)
+            alreadyProcessedPseudoElement.getAttribute(DATA_PREFIX) !==
+              prefix ||
+            alreadyProcessedPseudoElement.getAttribute(DATA_ICON) !==
+              iconIdentifier)
         ) {
           node.setAttribute(pendingAttribute, iconIdentifier);
 
@@ -18200,13 +18627,18 @@
   }
 
   function replace(node) {
-    return Promise.all([replaceForPosition(node, "::before"), replaceForPosition(node, "::after")]);
+    return Promise.all([
+      replaceForPosition(node, "::before"),
+      replaceForPosition(node, "::after"),
+    ]);
   }
 
   function processable(node) {
     return (
       node.parentNode !== document.head &&
-      !~TAGNAMES_TO_SKIP_FOR_PSEUDOELEMENTS.indexOf(node.tagName.toUpperCase()) &&
+      !~TAGNAMES_TO_SKIP_FOR_PSEUDOELEMENTS.indexOf(
+        node.tagName.toUpperCase(),
+      ) &&
       !node.getAttribute(DATA_FA_PSEUDO_ELEMENT) &&
       (!node.parentNode || node.parentNode.tagName !== "svg")
     );
@@ -18215,7 +18647,9 @@
   function searchPseudoElements(root) {
     if (!IS_DOM) return;
     return new Promise(function (resolve, reject) {
-      var operations = toArray(root.querySelectorAll("*")).filter(processable).map(replace);
+      var operations = toArray(root.querySelectorAll("*"))
+        .filter(processable)
+        .map(replace);
       var end = perf.begin("searchPseudoElements");
       disableObservation();
       Promise.all(operations)
@@ -18235,7 +18669,9 @@
   var PseudoElements = {
     hooks: function hooks() {
       return {
-        mutationObserverCallbacks: function mutationObserverCallbacks(accumulator) {
+        mutationObserverCallbacks: function mutationObserverCallbacks(
+          accumulator,
+        ) {
           accumulator.pseudoElementsCallback = searchPseudoElements;
           return accumulator;
         },
@@ -18388,13 +18824,18 @@
         var outer = {
           transform: "translate(".concat(containerWidth / 2, " 256)"),
         };
-        var innerTranslate = "translate(".concat(transform.x * 32, ", ").concat(transform.y * 32, ") ");
+        var innerTranslate = "translate("
+          .concat(transform.x * 32, ", ")
+          .concat(transform.y * 32, ") ");
         var innerScale = "scale("
           .concat((transform.size / 16) * (transform.flipX ? -1 : 1), ", ")
           .concat((transform.size / 16) * (transform.flipY ? -1 : 1), ") ");
         var innerRotate = "rotate(".concat(transform.rotate, " 0 0)");
         var inner = {
-          transform: "".concat(innerTranslate, " ").concat(innerScale, " ").concat(innerRotate),
+          transform: ""
+            .concat(innerTranslate, " ")
+            .concat(innerScale, " ")
+            .concat(innerRotate),
         };
         var path = {
           transform: "translate(".concat((iconWidth / 2) * -1, " -256)"),
@@ -18415,7 +18856,10 @@
                 {
                   tag: main.icon.tag,
                   children: main.icon.children,
-                  attributes: _objectSpread2(_objectSpread2({}, main.icon.attributes), operations.path),
+                  attributes: _objectSpread2(
+                    _objectSpread2({}, main.icon.attributes),
+                    operations.path,
+                  ),
                 },
               ],
             },
@@ -18433,7 +18877,8 @@
   };
 
   function fillBlack(abstract) {
-    var force = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : true;
+    var force =
+      arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : true;
 
     if (abstract.attributes && (abstract.attributes.fill || force)) {
       abstract.attributes.fill = "black";
@@ -18513,7 +18958,10 @@
               _objectSpread2(
                 {
                   tag: mainPath.tag,
-                  attributes: _objectSpread2(_objectSpread2({}, mainPath.attributes), trans.path),
+                  attributes: _objectSpread2(
+                    _objectSpread2({}, mainPath.attributes),
+                    trans.path,
+                  ),
                 },
                 maskInnerGroupChildrenMixin,
               ),
@@ -18577,7 +19025,9 @@
       var reduceMotion = false;
 
       if (WINDOW.matchMedia) {
-        reduceMotion = WINDOW.matchMedia("(prefers-reduced-motion: reduce)").matches;
+        reduceMotion = WINDOW.matchMedia(
+          "(prefers-reduced-motion: reduce)",
+        ).matches;
       }
 
       providers.missingIconAbstract = function () {
@@ -18720,7 +19170,8 @@
       return {
         parseNodeAttributes: function parseNodeAttributes(accumulator, node) {
           var symbolData = node.getAttribute("data-fa-symbol");
-          var symbol = symbolData === null ? false : symbolData === "" ? true : symbolData;
+          var symbol =
+            symbolData === null ? false : symbolData === "" ? true : symbolData;
           accumulator["symbol"] = symbol;
           return accumulator;
         },

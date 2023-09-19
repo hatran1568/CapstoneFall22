@@ -113,7 +113,7 @@ class Timeline extends Component {
       }
     });
     var sortedArr = detailsArr.sort((a, b) =>
-      a.startTime > b.startTime ? 1 : b.startTime > a.startTime ? -1 : 0
+      a.startTime > b.startTime ? 1 : b.startTime > a.startTime ? -1 : 0,
     );
     return sortedArr;
   };
@@ -153,15 +153,15 @@ class Timeline extends Component {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("token")}`,
           },
-        }
+        },
       )
       .then((response) => {
         var newTrip = this.state.trip;
-        newTrip.listTripDetails = newTrip.listTripDetails.filter(function (
-          detail
-        ) {
-          return detail.tripDetailsId !== detailId;
-        });
+        newTrip.listTripDetails = newTrip.listTripDetails.filter(
+          function (detail) {
+            return detail.tripDetailsId !== detailId;
+          },
+        );
         this.setState({
           trip: newTrip,
           showAddModal: false,
@@ -258,7 +258,7 @@ class Timeline extends Component {
   //update an activity in the state
   updateDetail = (oldDetailId, newDetail) => {
     var oldDetail = this.state.trip.listTripDetails.find(
-      (el) => el.tripDetailsId == oldDetailId
+      (el) => el.tripDetailsId == oldDetailId,
     );
     var index = -1;
     if (oldDetail) index = this.state.trip.listTripDetails.indexOf(oldDetail);
@@ -288,7 +288,7 @@ class Timeline extends Component {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("token")}`,
           },
-        }
+        },
       )
       .then((response) => {
         var newDetail = response.data;
@@ -481,7 +481,7 @@ class Timeline extends Component {
     document.title = this.state.trip.name + " | Tripplanner";
     var allDates = this.getAllDates(
       this.state.trip.startDate,
-      this.state.trip.endDate
+      this.state.trip.endDate,
     );
     var allMonths = this.getAllMonths(allDates);
     const options = {
@@ -585,12 +585,12 @@ class Timeline extends Component {
                                 }}
                                 nextActivity={this.getNextTripDetail(
                                   this.getTripDetailsByDate(date),
-                                  tripDetail
+                                  tripDetail,
                                 )}
                                 allDates={allDates}
                                 isConflicting={this.isConflicting(
                                   this.getTripDetailsByDate(date),
-                                  tripDetail
+                                  tripDetail,
                                 )}
                                 tripId={this.state.trip.tripId}
                               />
@@ -606,15 +606,15 @@ class Timeline extends Component {
                                 }}
                                 nextActivity={this.getNextTripDetail(
                                   this.getTripDetailsByDate(date),
-                                  tripDetail
+                                  tripDetail,
                                 )}
                                 allDates={allDates}
                                 isConflicting={this.isConflicting(
                                   this.getTripDetailsByDate(date),
-                                  tripDetail
+                                  tripDetail,
                                 )}
                               ></TripDetail>
-                            )
+                            ),
                           )}
                           <div className={style.emptyDay}>
                             <a

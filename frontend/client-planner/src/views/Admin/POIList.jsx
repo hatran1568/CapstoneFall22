@@ -60,7 +60,7 @@ class POIList extends Component {
           this.state.currentPage,
         {
           headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
-        }
+        },
       )
       .then((res) => {
         const data = res.data;
@@ -81,7 +81,7 @@ class POIList extends Component {
           this.state.currentNameKey,
         {
           headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
-        }
+        },
       )
       .then((res) => {
         const data = res.data;
@@ -130,7 +130,7 @@ class POIList extends Component {
             headers: {
               Authorization: `Bearer ${localStorage.getItem("token")}`,
             },
-          }
+          },
         );
         this.componentDidMount();
       },
@@ -231,7 +231,7 @@ class POIList extends Component {
                 <FontAwesomeIcon icon={faTrash} />
               </a>
             </th>
-          </tr>
+          </tr>,
         );
       else
         poiTableData.push(
@@ -284,7 +284,7 @@ class POIList extends Component {
                 <FontAwesomeIcon icon={faTrash} />
               </a>
             </th>
-          </tr>
+          </tr>,
         );
     });
     const tableId = [];
@@ -293,7 +293,7 @@ class POIList extends Component {
         <th scope="col" className={style.tableId}>
           ID
           <FontAwesomeIcon className={style.sortIcon} icon={faSortUp} />
-        </th>
+        </th>,
       );
     else
       tableId.push(
@@ -305,7 +305,7 @@ class POIList extends Component {
         >
           ID
           <FontAwesomeIcon className={style.sortIcon} icon={faSort} />
-        </th>
+        </th>,
       );
 
     const tableRate = [];
@@ -319,7 +319,7 @@ class POIList extends Component {
         >
           ĐÁNH GIÁ
           <FontAwesomeIcon className={style.sortIcon} icon={faSortUp} />
-        </th>
+        </th>,
       );
     else if (this.state.currentFilter == "ratingDESC")
       tableRate.push(
@@ -331,7 +331,7 @@ class POIList extends Component {
         >
           ĐÁNH GIÁ
           <FontAwesomeIcon className={style.sortIcon} icon={faSortDown} />
-        </th>
+        </th>,
       );
     else
       tableRate.push(
@@ -343,7 +343,7 @@ class POIList extends Component {
         >
           ĐÁNH GIÁ
           <FontAwesomeIcon className={style.sortIcon} icon={faSort} />
-        </th>
+        </th>,
       );
 
     const tableName = [];
@@ -357,7 +357,7 @@ class POIList extends Component {
         >
           TÊN
           <FontAwesomeIcon className={style.sortIcon} icon={faSortUp} />
-        </th>
+        </th>,
       );
     else if (this.state.currentFilter == "nameDESC")
       tableName.push(
@@ -369,7 +369,7 @@ class POIList extends Component {
         >
           TÊN
           <FontAwesomeIcon className={style.sortIcon} icon={faSortDown} />
-        </th>
+        </th>,
       );
     else
       tableName.push(
@@ -381,7 +381,7 @@ class POIList extends Component {
         >
           TÊN
           <FontAwesomeIcon className={style.sortIcon} icon={faSort} />
-        </th>
+        </th>,
       );
 
     const tableDate = [];
@@ -395,7 +395,7 @@ class POIList extends Component {
         >
           NGÀY SỬA
           <FontAwesomeIcon className={style.sortIcon} icon={faSortUp} />
-        </th>
+        </th>,
       );
     else if (this.state.currentFilter == "dateDESC")
       tableName.push(
@@ -407,7 +407,7 @@ class POIList extends Component {
         >
           NGÀY SỬA
           <FontAwesomeIcon className={style.sortIcon} icon={faSortDown} />
-        </th>
+        </th>,
       );
     else
       tableName.push(
@@ -419,7 +419,7 @@ class POIList extends Component {
         >
           NGÀY SỬA
           <FontAwesomeIcon className={style.sortIcon} icon={faSort} />
-        </th>
+        </th>,
       );
 
     return (

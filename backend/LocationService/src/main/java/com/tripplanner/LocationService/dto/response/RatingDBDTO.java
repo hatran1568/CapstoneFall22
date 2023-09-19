@@ -1,26 +1,24 @@
 package com.tripplanner.LocationService.dto.response;
 
+import java.util.Date;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.Date;
-
 public interface RatingDBDTO {
-    int getRateId();
+  int getRateId();
 
-    String getComment();
+  String getComment();
 
-    Date getCreated();
+  Date getCreated();
 
-    Date getModified();
+  Date getModified();
 
-    boolean getDeleted();
+  boolean getDeleted();
 
-    int getRate();
+  int getRate();
 
-    int getPoiId();
+  int getPoiId();
 
-    int getUserId();
+  int getUserId();
 }
-

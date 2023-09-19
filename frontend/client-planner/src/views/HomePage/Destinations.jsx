@@ -15,7 +15,7 @@ function Destinations() {
             headers: {
               "Content-Type": "application/json",
             },
-          }
+          },
         )
         .then((response) => {
           setDestinations(response.data);

@@ -111,7 +111,7 @@ const POIDetails = () => {
             headers: {
               Authorization: `Bearer ${localStorage.getItem("token")}`,
             },
-          }
+          },
         )
         .then((res) => {
           setRatings(res.data);
@@ -141,7 +141,7 @@ const POIDetails = () => {
             headers: {
               Authorization: `Bearer ${localStorage.getItem("token")}`,
             },
-          }
+          },
         )
         .then((res) => {
           setRatings(res.data);
@@ -200,7 +200,7 @@ const POIDetails = () => {
             <MDBRow className="border-bottom">
               <p>Thời gian bình luận: {formattedDate}</p>
             </MDBRow>
-          </>
+          </>,
         );
       } else if (rating.userId == localStorage.getItem("id")) {
         userRating.push(
@@ -229,7 +229,7 @@ const POIDetails = () => {
             <MDBRow className="border-bottom">
               <p>Thời gian bình luận: {formattedDate}</p>
             </MDBRow>
-          </>
+          </>,
         );
       }
     });

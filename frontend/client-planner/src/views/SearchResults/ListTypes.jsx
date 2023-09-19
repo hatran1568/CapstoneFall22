@@ -50,7 +50,7 @@ function ListTypes(props) {
   };
   const callBack = (e) => {
     props.onTypeChange(
-      e.target.getAttribute("original-name").split(" ").join("_")
+      e.target.getAttribute("original-name").split(" ").join("_"),
     );
     setSelect(e.target.getAttribute("original-name").split(" ").join("_"));
     console.log(select);
@@ -103,7 +103,7 @@ function ListTypes(props) {
                   {vietCategories[item]}
                 </MDBListGroupItem>
               </MDBRipple>
-            )
+            ),
         )}
       <MDBRipple rippleTag="span">
         <MDBListGroupItem
@@ -133,7 +133,7 @@ function ListTypes(props) {
                 {vietCategories[item]}
               </MDBListGroupItem>
             </MDBRipple>
-          ) : null
+          ) : null,
         )}
     </MDBListGroup>
   );

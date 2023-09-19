@@ -1,11 +1,12 @@
 package com.tripplanner.BlogService.dto.response;
 
 import com.tripplanner.BlogService.entity.Blog;
+import java.util.List;
 import lombok.Data;
 
-import java.util.List;
 @Data
 public class ListBlogDTO {
-   private  String test;
-   private List<Blog> list;
+
+  private String test;
+  private List<Blog> list;
 }

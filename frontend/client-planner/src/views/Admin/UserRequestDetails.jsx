@@ -124,7 +124,7 @@ function UserRequestDetails(props) {
               <FontAwesomeIcon icon={faDownload} />
             </a>
           </div>
-        </MDBCard>
+        </MDBCard>,
       );
     });
   }

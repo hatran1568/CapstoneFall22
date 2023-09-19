@@ -8,7 +8,8 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class DeletePOIFromCollectionDTO {
-    int colId;
-    int poiId;
-    int uid;
+
+  int colId;
+  int poiId;
+  int uid;
 }

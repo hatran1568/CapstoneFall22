@@ -35,7 +35,7 @@ ChartJS.register(
   BarElement,
   Title,
   Tooltip,
-  Legend
+  Legend,
 );
 function ModalGraph(props) {
   const { tripId, oldBudget, onBudgetEdited } = props;

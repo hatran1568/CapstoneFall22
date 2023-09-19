@@ -1,64 +1,64 @@
-.bodyContainer{
+.bodyContainer {
   width: 100vw;
   margin: 0;
   padding: 0;
 }
-.mainContainer{
+.mainContainer {
   margin-bottom: 10vh;
   width: 70vw;
 }
-.thumbnail{
+.thumbnail {
   height: 70vh;
   width: 100vw;
   object-fit: cover;
 }
-.mainCard{
+.mainCard {
   width: 70vw;
   border-radius: 0;
   border-style: none;
 }
-.mainCardBody{
+.mainCardBody {
   margin: 5vh 5vw;
 }
-.avatar{
+.avatar {
   border-radius: 25px;
   width: 50px;
   height: 50px;
 }
-.authorBox{
+.authorBox {
   width: 100%;
   margin-bottom: 20px;
   margin-top: 5vh;
 }
-.contentContainer{
+.contentContainer {
   margin-left: 0;
   margin-right: 0;
   margin-top: 5vh;
   padding: 0;
   text-align: center;
 }
-.errorContainer{
+.errorContainer {
   margin: auto;
   margin-top: 30vh;
   margin-bottom: 10vh;
   width: 70vw;
 }
-.returnBlogBtn{
+.returnBlogBtn {
   color: rgb(146, 146, 146);
   text-decoration: none;
   font-size: 20px;
 }
-.returnBlogBtn:hover{
+.returnBlogBtn:hover {
   color: rgb(40, 40, 40);
 }
-.contentContainer img{
+.contentContainer img {
   width: 50%;
   height: 40%;
   object-fit: cover;
-  padding:auto;
+  padding: auto;
   margin-bottom: 20px;
 }
-.contentContainer p{
+.contentContainer p {
   text-align: justify;
 }
 /* .contentContainer span{
@@ -69,42 +69,41 @@
   margin-bottom: 10px;
   margin-top: -5px;
 } */
-.navContainer{
+.navContainer {
   margin-top: 30px;
   border-radius: 0;
   width: 70vw;
   border-style: none;
 }
-.lastBlogBox{
+.lastBlogBox {
   width: 30vw;
   display: flex;
   align-items: center;
   justify-content: center;
-  
 }
-.nextBlogBox{
+.nextBlogBox {
   width: 30vw;
   display: flex;
   align-items: right;
   justify-content: right;
   text-align: right;
 }
-.nearbyTitle{
-  display:inline;
+.nearbyTitle {
+  display: inline;
   margin-bottom: 30px;
 }
-.nearbyBlogBtn{
+.nearbyBlogBtn {
   color: rgb(127, 127, 127);
   font-size: 20px;
   text-decoration: none;
   padding: 10px;
   margin: auto;
 }
-.nearbyBlogBtn:hover{
+.nearbyBlogBtn:hover {
   cursor: pointer;
   color: rgb(44, 44, 44);
 }
-.arrowIcons{
+.arrowIcons {
   margin: auto;
   padding: 10px;
   font-size: 20px;
@@ -113,23 +112,23 @@
   width: 20px;
   height: 20px;
 }
-.arrowIconsBox{
+.arrowIconsBox {
   height: 20vh;
   display: flex;
   align-items: center;
   justify-content: center;
   width: 4vw !important;
 }
-.dateBox{
+.dateBox {
   font-size: 15px;
   color: rgb(95, 95, 95);
-  margin-left: 10px
+  margin-left: 10px;
 }
-.date{
+.date {
   margin-left: 10px;
   margin-right: 20px;
 }
-h1{
+h1 {
   margin: 0;
   padding: 0;
 }

@@ -37,7 +37,7 @@ spring:
         - AddResponseHeader=Access-Control-Allow-Origin, *
       globalcors:
         cors-configurations:
-          '[/**]':
+          "[/**]":
             allowedOrigins: "*"
             allowedMethods: "*"
             allowedHeaders: "*"
@@ -71,4 +71,3 @@ spring:
           uri: lb://authorization-service
           predicates:
             - Path=/auth/**
-

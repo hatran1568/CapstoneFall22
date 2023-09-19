@@ -1,20 +1,20 @@
 package com.tripplanner.UserService.dto.request;
 
-import lombok.Data;
-
 import javax.validation.constraints.NotBlank;
+import lombok.Data;
 
 @Data
 public class ChangePwdRequestDTO {
-    @NotBlank
-    private int id;
 
-    @NotBlank
-    private String oldPassword;
+  @NotBlank
+  private int id;
 
-    @NotBlank
-    private String newPassword;
+  @NotBlank
+  private String oldPassword;
 
-    @NotBlank
-    private String confirmPassword;
+  @NotBlank
+  private String newPassword;
+
+  @NotBlank
+  private String confirmPassword;
 }

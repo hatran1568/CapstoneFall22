@@ -36,7 +36,7 @@ function MyTrips() {
             headers: {
               "Content-Type": "application/json",
             },
-          }
+          },
         )
         .then((response) => {
           setTripCount(response.data);
@@ -48,7 +48,7 @@ function MyTrips() {
             headers: {
               "Content-Type": "application/json",
             },
-          }
+          },
         )
         .then((response) => {
           setTrips(response.data);

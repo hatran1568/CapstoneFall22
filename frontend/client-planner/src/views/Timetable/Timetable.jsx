@@ -178,7 +178,7 @@ class Timetable extends Component {
           },
           () => {
             window.scrollTo(0, 600);
-          }
+          },
         );
       })
       .catch((error) => {
@@ -392,7 +392,7 @@ class Timetable extends Component {
     }
     var allDates = this.getAllDates(
       this.state.trip.startDate,
-      this.state.trip.endDate
+      this.state.trip.endDate,
     );
     var allMonths = this.getAllMonths(allDates);
     document.title = this.state.trip.name + " | Tripplanner";
@@ -647,7 +647,7 @@ class Timetable extends Component {
                 this.openConfirmDelete(
                   event,
                   eventInfo.event.id,
-                  eventInfo.event.title
+                  eventInfo.event.title,
                 )
               }
             >
@@ -719,11 +719,11 @@ class Timetable extends Component {
       .then((response) => {
         if (response.status == 200) {
           var newTrip = this.state.trip;
-          newTrip.listTripDetails = newTrip.listTripDetails.filter(function (
-            detail
-          ) {
-            return detail.tripDetailsId !== detailId;
-          });
+          newTrip.listTripDetails = newTrip.listTripDetails.filter(
+            function (detail) {
+              return detail.tripDetailsId !== detailId;
+            },
+          );
           this.setState({
             trip: newTrip,
             currentEvents: newTrip.listTripDetails,
@@ -931,7 +931,7 @@ class Timetable extends Component {
   handleEventClick = (clickInfo) => {
     if (
       window.confirm(
-        `Are you sure you want to delete the event '${clickInfo.event.title}'`
+        `Are you sure you want to delete the event '${clickInfo.event.title}'`,
       )
     ) {
       clickInfo.event.remove();

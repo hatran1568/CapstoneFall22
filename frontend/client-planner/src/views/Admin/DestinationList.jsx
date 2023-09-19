@@ -58,7 +58,7 @@ class DestinationList extends Component {
           this.state.currentPage,
         {
           headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
-        }
+        },
       )
       .then((res) => {
         const data = res.data;
@@ -78,7 +78,7 @@ class DestinationList extends Component {
           "/count",
         {
           headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
-        }
+        },
       )
       .then((res) => {
         const data = res.data;
@@ -127,7 +127,7 @@ class DestinationList extends Component {
             headers: {
               Authorization: `Bearer ${localStorage.getItem("token")}`,
             },
-          }
+          },
         );
         this.componentDidMount();
       },
@@ -200,7 +200,7 @@ class DestinationList extends Component {
                 <FontAwesomeIcon icon={faTrash} />
               </a>
             </th>
-          </tr>
+          </tr>,
         );
       else
         poiTableData.push(
@@ -244,7 +244,7 @@ class DestinationList extends Component {
                 <FontAwesomeIcon icon={faTrash} />
               </a>
             </th>
-          </tr>
+          </tr>,
         );
     });
     const tableId = [];
@@ -253,7 +253,7 @@ class DestinationList extends Component {
         <th scope="col" className={style.tableId}>
           ID
           <FontAwesomeIcon className={style.sortIcon} icon={faSortUp} />
-        </th>
+        </th>,
       );
     else
       tableId.push(
@@ -265,7 +265,7 @@ class DestinationList extends Component {
         >
           ID
           <FontAwesomeIcon className={style.sortIcon} icon={faSort} />
-        </th>
+        </th>,
       );
 
     const tableBelongTo = [];
@@ -279,7 +279,7 @@ class DestinationList extends Component {
         >
           TRỰC THUỘC
           <FontAwesomeIcon className={style.sortIcon} icon={faSortUp} />
-        </th>
+        </th>,
       );
     else if (this.state.currentFilter == "belongDESC")
       tableBelongTo.push(
@@ -291,7 +291,7 @@ class DestinationList extends Component {
         >
           TRỰC THUỘC
           <FontAwesomeIcon className={style.sortIcon} icon={faSortDown} />
-        </th>
+        </th>,
       );
     else
       tableBelongTo.push(
@@ -303,7 +303,7 @@ class DestinationList extends Component {
         >
           TRỰC THUỘC
           <FontAwesomeIcon className={style.sortIcon} icon={faSort} />
-        </th>
+        </th>,
       );
 
     const tableName = [];
@@ -317,7 +317,7 @@ class DestinationList extends Component {
         >
           TÊN
           <FontAwesomeIcon className={style.sortIcon} icon={faSortUp} />
-        </th>
+        </th>,
       );
     else if (this.state.currentFilter == "nameDESC")
       tableName.push(
@@ -329,7 +329,7 @@ class DestinationList extends Component {
         >
           TÊN
           <FontAwesomeIcon className={style.sortIcon} icon={faSortDown} />
-        </th>
+        </th>,
       );
     else
       tableName.push(
@@ -341,7 +341,7 @@ class DestinationList extends Component {
         >
           TÊN
           <FontAwesomeIcon className={style.sortIcon} icon={faSort} />
-        </th>
+        </th>,
       );
 
     const tableDate = [];
@@ -355,7 +355,7 @@ class DestinationList extends Component {
         >
           NGÀY SỬA
           <FontAwesomeIcon className={style.sortIcon} icon={faSortUp} />
-        </th>
+        </th>,
       );
     else if (this.state.currentFilter == "dateDESC")
       tableName.push(
@@ -367,7 +367,7 @@ class DestinationList extends Component {
         >
           NGÀY SỬA
           <FontAwesomeIcon className={style.sortIcon} icon={faSortDown} />
-        </th>
+        </th>,
       );
     else
       tableName.push(
@@ -379,7 +379,7 @@ class DestinationList extends Component {
         >
           NGÀY SỬA
           <FontAwesomeIcon className={style.sortIcon} icon={faSort} />
-        </th>
+        </th>,
       );
 
     return (

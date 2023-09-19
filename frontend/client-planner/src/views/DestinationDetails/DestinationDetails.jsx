@@ -52,7 +52,7 @@ function DestinationDetails() {
       const listResp = async () => {
         await axios
           .get(
-            "http://localhost:8080/location/api/destination/first3POIs/" + id
+            "http://localhost:8080/location/api/destination/first3POIs/" + id,
           )
           .then((response) => setPOIs(response.data));
       };
@@ -70,7 +70,7 @@ function DestinationDetails() {
         rating={poi.googleRate}
         category={poi.categoryName}
         activityId={poi.activityId}
-      />
+      />,
     );
   });
   const poiLink = "./Destination/POIs?desid=" + id + "&catid=0&rating=0";

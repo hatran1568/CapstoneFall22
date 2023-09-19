@@ -57,7 +57,7 @@ ChartJS.register(
   Title,
   Tooltip,
   Legend,
-  ArcElement
+  ArcElement,
 );
 class Dashboard extends Component {
   constructor(props) {
@@ -78,7 +78,7 @@ class Dashboard extends Component {
     };
   }
   async componentDidMount() {
-    document.title = "Bảng điều khiển Admin | Tripplanner"
+    document.title = "Bảng điều khiển Admin | Tripplanner";
     axios
       .get("http://localhost:8080/blog/api/admin/countall", {
         headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
@@ -126,7 +126,7 @@ class Dashboard extends Component {
           today,
         {
           headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
-        }
+        },
       )
       .then((res) => {
         const data = res.data;
@@ -216,7 +216,7 @@ class Dashboard extends Component {
           today,
         {
           headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
-        }
+        },
       )
       .then((res) => {
         const data = res.data;
@@ -256,7 +256,7 @@ class Dashboard extends Component {
           today,
         {
           headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
-        }
+        },
       )
       .then((res) => {
         const data = res.data;
@@ -288,7 +288,7 @@ class Dashboard extends Component {
           today,
         {
           headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
-        }
+        },
       )
       .then((res) => {
         const data = res.data;
@@ -438,7 +438,7 @@ class Dashboard extends Component {
             </b>
           </MDBCol>
           <br />
-        </MDBRow>
+        </MDBRow>,
       );
       topCountRatingBox.push(
         <MDBRow className={style.ratingBox}>
@@ -473,7 +473,7 @@ class Dashboard extends Component {
             </b>
           </MDBCol>
           <br />
-        </MDBRow>
+        </MDBRow>,
       );
       var colors = [
         "rgba(255, 99, 132, 1)",
@@ -498,7 +498,7 @@ class Dashboard extends Component {
               <br />
             </b>{" "}
             trong các chuyến đi
-          </MDBCol>
+          </MDBCol>,
         );
       });
     }

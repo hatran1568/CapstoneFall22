@@ -8,7 +8,7 @@ import "react-datepicker/dist/react-datepicker.css";
 function EditActivityModal(props) {
   const { activityEdited, allDates, tripDetail, onHide, ...rest } = props;
   const [inputField, setInputField] = useState(
-    JSON.parse(JSON.stringify(tripDetail))
+    JSON.parse(JSON.stringify(tripDetail)),
   );
   const [showWarningTime, setShowWarningTime] = useState(false);
   const [showWarningName, setShowWarningName] = useState(false);

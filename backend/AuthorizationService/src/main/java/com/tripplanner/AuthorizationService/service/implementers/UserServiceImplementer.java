@@ -12,76 +12,77 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class UserServiceImplementer implements UserService {
-    @Autowired
-    UserRepository userRepository;
 
-//    @Autowired
-//    ModelMapper mapper;
-//
-//    @Autowired
-//    GoogleDriveManager driveManager;
+  @Autowired
+  UserRepository userRepository;
 
-    @Autowired
-    JwtTokenProvider tokenProvider;
+  //    @Autowired
+  //    ModelMapper mapper;
+  //
+  //    @Autowired
+  //    GoogleDriveManager driveManager;
 
-//    @Autowired
-//    MailSenderManager mailSender;
+  @Autowired
+  JwtTokenProvider tokenProvider;
 
-    @Override
-    public void processOAuthPostLoginGoogle(String email) {
-        User user = userRepository.findByEmail(email);
-        if (user == null) {
-            User newUser = new User();
-            newUser.setRole(new Role(2, "User"));
-            newUser.setName(email);
-            newUser.setEmail(email);
-            newUser.setProvider(Provider.GOOGLE);
-            newUser.setStatus(UserStatus.ACTIVE);
-            userRepository.save(newUser);
-        }
+  //    @Autowired
+  //    MailSenderManager mailSender;
+
+  @Override
+  public void processOAuthPostLoginGoogle(String email) {
+    User user = userRepository.findByEmail(email);
+    if (user == null) {
+      User newUser = new User();
+      newUser.setRole(new Role(2, "User"));
+      newUser.setName(email);
+      newUser.setEmail(email);
+      newUser.setProvider(Provider.GOOGLE);
+      newUser.setStatus(UserStatus.ACTIVE);
+      userRepository.save(newUser);
     }
+  }
 
-    @Override
-    public void processOAuthPostLoginFacebook(String email) {
-        User user = userRepository.findByEmail(email);
-        if (user == null) {
-            User newUser = new User();
-            newUser.setRole(new Role(2, "User"));
-            newUser.setName(email);
-            newUser.setEmail(email);
-            newUser.setProvider(Provider.FACEBOOK);
-            newUser.setStatus(UserStatus.ACTIVE);
-            userRepository.save(newUser);
-        }
+  @Override
+  public void processOAuthPostLoginFacebook(String email) {
+    User user = userRepository.findByEmail(email);
+    if (user == null) {
+      User newUser = new User();
+      newUser.setRole(new Role(2, "User"));
+      newUser.setName(email);
+      newUser.setEmail(email);
+      newUser.setProvider(Provider.FACEBOOK);
+      newUser.setStatus(UserStatus.ACTIVE);
+      userRepository.save(newUser);
     }
-//
-//    @Override
-//    public void updateProvider(int userID, Provider authType) {
-//
-//    }
-//
-//    @Override
-//    public void register(User user) {
-//
-//    }
-//
-//    @Override
-//    public boolean checkExistByEmail(String email) {
-//        return false;
-//    }
-//
-//    @Override
-//    public String editAvatar(int userId, MultipartFile file) {
-//        return null;
-//    }
-//
-//    @Override
-//    public void editUsername(int userId, String newUsername) {
-//
-//    }
-//
-//    @Override
-//    public boolean requestPasswordReset(String email) {
-//        return false;
-//    }
+  }
+  //
+  //    @Override
+  //    public void updateProvider(int userID, Provider authType) {
+  //
+  //    }
+  //
+  //    @Override
+  //    public void register(User user) {
+  //
+  //    }
+  //
+  //    @Override
+  //    public boolean checkExistByEmail(String email) {
+  //        return false;
+  //    }
+  //
+  //    @Override
+  //    public String editAvatar(int userId, MultipartFile file) {
+  //        return null;
+  //    }
+  //
+  //    @Override
+  //    public void editUsername(int userId, String newUsername) {
+  //
+  //    }
+  //
+  //    @Override
+  //    public boolean requestPasswordReset(String email) {
+  //        return false;
+  //    }
 }

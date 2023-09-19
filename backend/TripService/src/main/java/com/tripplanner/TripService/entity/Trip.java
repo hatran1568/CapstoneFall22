@@ -1,51 +1,50 @@
 package com.tripplanner.TripService.entity;
 
-
+import java.util.Date;
+import javax.persistence.*;
 import lombok.Data;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.Type;
 import org.hibernate.annotations.UpdateTimestamp;
 
-import javax.persistence.*;
-import java.util.Date;
-
 @Data
 @Entity
 @Table(name = "trip")
 public class Trip {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "trip_id", columnDefinition = "INT(1)")
-    private int tripId;
 
-    @Column(name = "user_id", nullable = false)
-    private int user;
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  @Column(name = "trip_id", columnDefinition = "INT(1)")
+  private int tripId;
 
-    @Column(name = "budget")
-    private Double budget;
+  @Column(name = "user_id", nullable = false)
+  private int user;
 
-    @Type(type = "date")
-    @Column(name = "start_date")
-    private Date startDate;
+  @Column(name = "budget")
+  private Double budget;
 
-    @Type(type = "date")
-    @Column(name = "end_date")
-    private Date endDate;
+  @Type(type = "date")
+  @Column(name = "start_date")
+  private Date startDate;
 
-    @Column(name = "name")
-    private String name;
+  @Type(type = "date")
+  @Column(name = "end_date")
+  private Date endDate;
 
-    @Column(name = "date_created")
-    @CreationTimestamp
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date dateCreated;
+  @Column(name = "name")
+  private String name;
 
-    @Column(name = "date_modified")
-    @UpdateTimestamp
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date dateModified;
+  @Column(name = "date_created")
+  @CreationTimestamp
+  @Temporal(TemporalType.TIMESTAMP)
+  private Date dateCreated;
 
-    @Enumerated(EnumType.STRING)
-    @Column(name = "status")
-    private TripStatus status;
+  @Column(name = "date_modified")
+  @UpdateTimestamp
+  @Temporal(TemporalType.TIMESTAMP)
+  private Date dateModified;
+
+  @Enumerated(EnumType.STRING)
+  @Column(name = "status")
+  private TripStatus status;
 }

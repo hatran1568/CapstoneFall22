@@ -17,7 +17,7 @@ spring:
   mail:
     host: smtp.gmail.com
     username: tripplannersystem@gmail.com
-    password:  ywvoybbjbecepwht
+    password: ywvoybbjbecepwht
     port: 587
     properties:
       mail:

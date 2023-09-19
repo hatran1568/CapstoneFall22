@@ -67,10 +67,8 @@ class DestinationAddUpdate extends Component {
   componentDidMount() {
     const queryParams = new URLSearchParams(window.location.search);
     const id = queryParams.get("id");
-    if (id > 0)
-      document.title = "Chỉnh sửa điểm đến | Tripplanner"
-    else
-      document.title = "Thêm điểm đến";
+    if (id > 0) document.title = "Chỉnh sửa điểm đến | Tripplanner";
+    else document.title = "Thêm điểm đến";
     axios
       .get(`http://localhost:8080/location/api/destination/select/all`, {
         headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
@@ -95,7 +93,7 @@ class DestinationAddUpdate extends Component {
             headers: {
               Authorization: `Bearer ${localStorage.getItem("token")}`,
             },
-          }
+          },
         )
         .then((res) => {
           const data = res.data;
@@ -115,7 +113,7 @@ class DestinationAddUpdate extends Component {
             headers: {
               Authorization: `Bearer ${localStorage.getItem("token")}`,
             },
-          }
+          },
         )
         .then((res) => {
           const data = res.data;
@@ -146,7 +144,7 @@ class DestinationAddUpdate extends Component {
             headers: {
               Authorization: `Bearer ${localStorage.getItem("token")}`,
             },
-          }
+          },
         )
         .then((res) => {
           const data = res.data;
@@ -185,27 +183,29 @@ class DestinationAddUpdate extends Component {
     var validated = true;
     if (
       document.getElementById("nameInput").value == null ||
-      document.getElementById("nameInput").value == "") {
-        validated = false;
-        document.getElementById("errorMessage").innerHTML =
-          "Hãy nhập tên của điểm đến.";
-      }
+      document.getElementById("nameInput").value == ""
+    ) {
+      validated = false;
+      document.getElementById("errorMessage").innerHTML =
+        "Hãy nhập tên của điểm đến.";
+    }
     if (
       document.getElementById("descInput").value == null ||
-      document.getElementById("descInput").value == "") {
-        validated = false;
-        document.getElementById("errorMessage").innerHTML =
-          "Hãy nhập mô tả của điểm đến.";
-      }
+      document.getElementById("descInput").value == ""
+    ) {
+      validated = false;
+      document.getElementById("errorMessage").innerHTML =
+        "Hãy nhập mô tả của điểm đến.";
+    }
     if (id != 0 && curDes == null && this.state.destinationChanged == true) {
       validated = false;
       document.getElementById("errorMessage").innerHTML =
-      "Hãy chọn thuộc điểm đến.";
+        "Hãy chọn thuộc điểm đến.";
     }
     if (id == 0 && curDes == null) {
       validated = false;
       document.getElementById("errorMessage").innerHTML =
-      "Hãy chọn thuộc điểm đến.";
+        "Hãy chọn thuộc điểm đến.";
     }
     // console.log(document.getElementById("nameInput").value);
     // console.log(document.getElementById("addressInput").value);
@@ -244,7 +244,7 @@ class DestinationAddUpdate extends Component {
         });
         await this.state.deletedImages.forEach((entry, index) => {
           axios.post(
-            `http://localhost:8080/location/api/destination/deleteImg/` + entry
+            `http://localhost:8080/location/api/destination/deleteImg/` + entry,
           );
         });
         await this.state.newImages.forEach((entry, index) => {
@@ -263,7 +263,7 @@ class DestinationAddUpdate extends Component {
                   Authorization: `Bearer ${localStorage.getItem("token")}`,
                   "Content-Type": "multipart/form-data",
                 },
-              }
+              },
             )
             .then(function (response) {});
         });
@@ -310,7 +310,7 @@ class DestinationAddUpdate extends Component {
                     Authorization: `Bearer ${localStorage.getItem("token")}`,
                     "Content-Type": "multipart/form-data",
                   },
-                }
+                },
               )
               .then(function (response) {});
           });
@@ -386,13 +386,13 @@ class DestinationAddUpdate extends Component {
       const imgs = Array.from(files);
       var sizeValidator = false;
       imgs.forEach((entry, index) => {
-        if (entry.size/1024 > 10240)
-          sizeValidator = true;
-        else
-          currentNewImgs.push(entry);
+        if (entry.size / 1024 > 10240) sizeValidator = true;
+        else currentNewImgs.push(entry);
       });
       if (sizeValidator)
-        alert("Một hoặc nhiều ảnh nặng quá mức cho phép và đã không được thêm vào.")
+        alert(
+          "Một hoặc nhiều ảnh nặng quá mức cho phép và đã không được thêm vào.",
+        );
       this.setState({
         newImages: currentNewImgs,
       });
@@ -427,7 +427,7 @@ class DestinationAddUpdate extends Component {
           <MDBBtn className={style.updateBtn} onClick={this.updateClick}>
             Cập nhật thông tin
           </MDBBtn>
-        </div>
+        </div>,
       );
     else
       submitBtn.push(
@@ -441,7 +441,7 @@ class DestinationAddUpdate extends Component {
           <MDBBtn className={style.updateBtn} onClick={this.updateClick}>
             Thêm điểm đến
           </MDBBtn>
-        </div>
+        </div>,
       );
     const navItem = [];
     if (id > 0) navItem.push(<b>Chỉnh sửa điểm đến</b>);
@@ -449,7 +449,7 @@ class DestinationAddUpdate extends Component {
     const headerText = [];
     if (id > 0)
       headerText.push(
-        <h2 style={{ textAlign: "center" }}>Cập nhật Điểm đến</h2>
+        <h2 style={{ textAlign: "center" }}>Cập nhật Điểm đến</h2>,
       );
     else
       headerText.push(<h2 style={{ textAlign: "center" }}>Thêm Điểm đến</h2>);
@@ -467,7 +467,7 @@ class DestinationAddUpdate extends Component {
           multiple
           hidden
         />
-      </MDBContainer>
+      </MDBContainer>,
     );
     //Set initial content
     const selectDestination = [];
@@ -491,7 +491,7 @@ class DestinationAddUpdate extends Component {
           className="basic-multi-select"
           classNamePrefix="select"
           placeholder="Chọn điểm đến trực thuộc"
-        />
+        />,
       );
       if (id > 0) {
         document.getElementById("nameInput").value =
@@ -527,7 +527,7 @@ class DestinationAddUpdate extends Component {
                     <FontAwesomeIcon icon={faClose} />
                   </a>
                 </div>
-              </MDBCard>
+              </MDBCard>,
             );
           });
         }
@@ -555,12 +555,12 @@ class DestinationAddUpdate extends Component {
                 <FontAwesomeIcon icon={faClose} />
               </a>
             </div>
-          </MDBCard>
+          </MDBCard>,
         );
       });
     }
     const requiredStar = [];
-    requiredStar.push(<b className={style.requiredStar}>*</b>)
+    requiredStar.push(<b className={style.requiredStar}>*</b>);
 
     return (
       <MDBContainer className={style.mainContainer}>
@@ -575,7 +575,8 @@ class DestinationAddUpdate extends Component {
         {submitBtn}
         <div id="errorMessage" className={style.errorMessage}></div>
         <label>
-          <b>Tên</b>{requiredStar}
+          <b>Tên</b>
+          {requiredStar}
         </label>
         <MDBTextArea
           id="nameInput"
@@ -587,7 +588,8 @@ class DestinationAddUpdate extends Component {
           rows={1}
         />
         <label>
-          <b>Mô tả</b>{requiredStar}
+          <b>Mô tả</b>
+          {requiredStar}
         </label>
         <MDBTextArea
           id="descInput"
@@ -600,7 +602,8 @@ class DestinationAddUpdate extends Component {
         />
         <MDBRow>
           <label>
-            <b>Trực thuộc điểm đến</b>{requiredStar}
+            <b>Trực thuộc điểm đến</b>
+            {requiredStar}
           </label>
           {selectDestination}
         </MDBRow>

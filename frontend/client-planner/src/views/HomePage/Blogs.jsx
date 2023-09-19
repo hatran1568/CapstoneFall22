@@ -69,7 +69,7 @@ function Blogs() {
                         <span className={style.metaPost}>
                           {new Date(blog.dateModified).toLocaleDateString(
                             "vi",
-                            options
+                            options,
                           )}
                         </span>
                         <h2 className="mt-0 mb-3">

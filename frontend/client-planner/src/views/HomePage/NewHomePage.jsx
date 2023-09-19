@@ -88,7 +88,7 @@ function NewHomePage() {
             draggable: true,
             progress: undefined,
             theme: "light",
-          }
+          },
         );
         setIsGenerating(true);
       });

@@ -1,14 +1,15 @@
 package com.tripplanner.LocationService.dto.request;
 
 public class POIDesRequestDTO {
-    int value;
-    String label;
 
-    public int getValue() {
-        return value;
-    }
+  int value;
+  String label;
 
-    public String getLabel() {
-        return label;
-    }
+  public int getValue() {
+    return value;
+  }
+
+  public String getLabel() {
+    return label;
+  }
 }

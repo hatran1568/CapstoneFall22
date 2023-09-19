@@ -32,7 +32,7 @@ function Map(props) {
         setDaySelected(1);
         setAllDates(getAllDates(res.data.startDate, res.data.endDate));
         setAllMonths(
-          getAllMonths(getAllDates(res.data.startDate, res.data.endDate))
+          getAllMonths(getAllDates(res.data.startDate, res.data.endDate)),
         );
         var owned = false;
         if (res.data.user && res.data.user == localStorage.getItem("id")) {
@@ -103,7 +103,7 @@ function Map(props) {
       }
     });
     var sortedArr = detailsArr.sort((a, b) =>
-      a.startTime > b.startTime ? 1 : b.startTime > a.startTime ? -1 : 0
+      a.startTime > b.startTime ? 1 : b.startTime > a.startTime ? -1 : 0,
     );
     return sortedArr;
   };
@@ -175,7 +175,7 @@ function Map(props) {
                         >
                           {date.getDate()}
                         </a>
-                      )
+                      ),
                     )}
                   </div>
                 ))}
@@ -224,7 +224,7 @@ function Map(props) {
                                   <div className={style.poiTime}>
                                     {new Date(
                                       new Date(trip.startDate).getTime() +
-                                        (mark.dayNumber - 1) * 86400000
+                                        (mark.dayNumber - 1) * 86400000,
                                     ).toLocaleDateString("vi", options)}
                                   </div>
                                   <div className={style.poiTime}>
@@ -233,7 +233,7 @@ function Map(props) {
                                   </div>
                                 </Tooltip>
                               </Marker>
-                            )
+                            ),
                         )
                       : null}
                   </MapContainer>
@@ -283,7 +283,7 @@ function Map(props) {
                                 </div>
                               </div>
                             </div>
-                          )
+                          ),
                       )
                     : null}
                 </div>

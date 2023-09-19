@@ -1,69 +1,70 @@
 package com.tripplanner.LocationService.dto.request;
 
 public class NewRequestDTO {
-    String name;
-    String address;
-    String description;
-    String info;
-    String email;
-    String phone;
-    int close;
-    int open;
-    int duration;
-    double price;
-    String website;
-    int poiId;
-    int userId;
 
-    public String getName() {
-        return name;
-    }
+  String name;
+  String address;
+  String description;
+  String info;
+  String email;
+  String phone;
+  int close;
+  int open;
+  int duration;
+  double price;
+  String website;
+  int poiId;
+  int userId;
 
-    public String getAddress() {
-        return address;
-    }
+  public String getName() {
+    return name;
+  }
 
-    public String getDescription() {
-        return description;
-    }
+  public String getAddress() {
+    return address;
+  }
 
-    public String getInfo() {
-        return info;
-    }
+  public String getDescription() {
+    return description;
+  }
 
-    public String getEmail() {
-        return email;
-    }
+  public String getInfo() {
+    return info;
+  }
 
-    public String getPhone() {
-        return phone;
-    }
+  public String getEmail() {
+    return email;
+  }
 
-    public int getClose() {
-        return close;
-    }
+  public String getPhone() {
+    return phone;
+  }
 
-    public int getOpen() {
-        return open;
-    }
+  public int getClose() {
+    return close;
+  }
 
-    public int getDuration() {
-        return duration;
-    }
+  public int getOpen() {
+    return open;
+  }
 
-    public double getPrice() {
-        return price;
-    }
+  public int getDuration() {
+    return duration;
+  }
 
-    public String getWebsite() {
-        return website;
-    }
+  public double getPrice() {
+    return price;
+  }
 
-    public int getPoiId() {
-        return poiId;
-    }
+  public String getWebsite() {
+    return website;
+  }
 
-    public int getUserId() {
-        return userId;
-    }
+  public int getPoiId() {
+    return poiId;
+  }
+
+  public int getUserId() {
+    return userId;
+  }
 }

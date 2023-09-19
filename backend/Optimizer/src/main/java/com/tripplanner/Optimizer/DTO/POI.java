@@ -1,50 +1,39 @@
 package com.tripplanner.Optimizer.DTO;
 
-
+import java.util.Date;
 import lombok.Data;
 
-import java.util.Date;
-
 @Data
-
 public class POI extends MasterActivity {
 
+  private Category category;
 
+  private String Description;
 
+  private double googleRate;
 
+  private String phone;
+  private String businessEmail;
 
-    private Category category;
+  private String website;
 
+  private int openTime;
 
-    private String Description;
+  private int duration;
 
+  private int closeTime;
 
-    private double googleRate;
+  private double typicalPrice;
 
-    private String phone;
- private String businessEmail;
+  private String additionalInformation;
 
+  private Date dateCreated;
 
-    private String website;
+  private Date dateModified;
 
-    private int openTime;
+  private Double longitude;
 
-    private int duration;
+  private Double latitude;
 
-    private int closeTime;
-
-    private double typicalPrice;
-
-    private String additionalInformation;
-
-    private Date dateCreated;
-
-    private Date dateModified;
-
-    private Double longitude;
-
-    private Double latitude;
-
-    private boolean isDeleted;
-
-    }
+  private boolean isDeleted;
+}

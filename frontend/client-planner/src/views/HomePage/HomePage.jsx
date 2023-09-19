@@ -72,7 +72,7 @@ function HomePage() {
     // stompClient.subscribe("/chatroom", onMessageReceived);
     stompClient.subscribe(
       "/user/" + localStorage.getItem("id") + "/chatroom",
-      onPrivateMessage
+      onPrivateMessage,
     );
   };
 
@@ -105,7 +105,7 @@ function HomePage() {
               headers: {
                 "Content-Type": "application/json",
               },
-            }
+            },
           )
           .then((response) => {
             setTripCount(response.data);
@@ -118,7 +118,7 @@ function HomePage() {
               headers: {
                 "Content-Type": "application/json",
               },
-            }
+            },
           )
           .then((response) => {
             setTrips(response.data);
@@ -213,7 +213,7 @@ function HomePage() {
               headers: {
                 "Content-Type": "application/json",
               },
-            }
+            },
           )
           .then((response) => {
             setTripCount(response.data);
@@ -226,7 +226,7 @@ function HomePage() {
               headers: {
                 "Content-Type": "application/json",
               },
-            }
+            },
           )
           .then((response) => {
             setTrips(response.data);
@@ -377,10 +377,10 @@ function HomePage() {
   };
   const submitGenerateTrip = (event) => {
     const startDate = new Date(
-      document.getElementById("startDateGenerateInput").value
+      document.getElementById("startDateGenerateInput").value,
     );
     const endDate = new Date(
-      document.getElementById("endDateGenerateInput").value
+      document.getElementById("endDateGenerateInput").value,
     );
     if (document.getElementById("budgetGenerateInput").value == "") {
       document.getElementById("errorEmptyPlan").innerHTML =
@@ -436,7 +436,7 @@ function HomePage() {
             draggable: true,
             progress: undefined,
             theme: "light",
-          }
+          },
         );
         setIsGenerating(true);
         setRequest(response.data.id);

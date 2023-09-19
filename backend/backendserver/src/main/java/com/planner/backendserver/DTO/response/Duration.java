@@ -4,6 +4,7 @@ import lombok.Data;
 
 @Data
 public class Duration {
-    public String text;
-    public int value;
+
+  public String text;
+  public int value;
 }

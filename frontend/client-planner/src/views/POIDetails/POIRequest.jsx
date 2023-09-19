@@ -4,7 +4,7 @@ import { useState, useRef, useMemo } from "react";
 import { useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { Editor } from "react-draft-wysiwyg";
-import validator from 'validator';
+import validator from "validator";
 import Rating from "../../components/POIs/Rating";
 import { Component } from "react";
 import {
@@ -72,7 +72,7 @@ class POIRequest extends Component {
             headers: {
               Authorization: `Bearer ${localStorage.getItem("token")}`,
             },
-          }
+          },
         )
         .then((res) => {
           const data = res.data;
@@ -99,59 +99,71 @@ class POIRequest extends Component {
     var validated = true;
     if (
       document.getElementById("nameInput").value == null ||
-      document.getElementById("nameInput").value == "") {
-        validated = false;
-        document.getElementById("errorMessage").innerHTML =
-          "Hãy nhập tên của địa điểm.";
-      }
+      document.getElementById("nameInput").value == ""
+    ) {
+      validated = false;
+      document.getElementById("errorMessage").innerHTML =
+        "Hãy nhập tên của địa điểm.";
+    }
     if (
       document.getElementById("addressInput").value == null ||
-      document.getElementById("addressInput").value == "") {
-        validated = false;
-        document.getElementById("errorMessage").innerHTML =
-          "Hãy nhập địa chỉ của địa điểm.";
-      }
+      document.getElementById("addressInput").value == ""
+    ) {
+      validated = false;
+      document.getElementById("errorMessage").innerHTML =
+        "Hãy nhập địa chỉ của địa điểm.";
+    }
     if (
       document.getElementById("descInput").value == null ||
-      document.getElementById("descInput").value == "") {
-        validated = false;
-        document.getElementById("errorMessage").innerHTML =
-          "Hãy nhập mô tả của địa điểm.";
-      }
+      document.getElementById("descInput").value == ""
+    ) {
+      validated = false;
+      document.getElementById("errorMessage").innerHTML =
+        "Hãy nhập mô tả của địa điểm.";
+    }
     if (
       document.getElementById("durationInput").value == null ||
-      document.getElementById("durationInput").value == "") {
-        validated = false;
-        document.getElementById("errorMessage").innerHTML =
-          "Hãy nhập khoảng thời gian của địa điểm.";
-      }
+      document.getElementById("durationInput").value == ""
+    ) {
+      validated = false;
+      document.getElementById("errorMessage").innerHTML =
+        "Hãy nhập khoảng thời gian của địa điểm.";
+    }
     if (
       document.getElementById("priceInput").value == null ||
-      document.getElementById("priceInput").value == "") {
-        validated = false;
-        document.getElementById("errorMessage").innerHTML =
-          "Hãy nhập giá trung bình của địa điểm.";
-      }
+      document.getElementById("priceInput").value == ""
+    ) {
+      validated = false;
+      document.getElementById("errorMessage").innerHTML =
+        "Hãy nhập giá trung bình của địa điểm.";
+    }
     if (
       document.getElementById("closeInput").value == null ||
-      document.getElementById("closeInput").value == "") {
-        validated = false;
-        document.getElementById("errorMessage").innerHTML =
-          "Hãy nhập thời gian đóng cửa của địa điểm.";
-      }
+      document.getElementById("closeInput").value == ""
+    ) {
+      validated = false;
+      document.getElementById("errorMessage").innerHTML =
+        "Hãy nhập thời gian đóng cửa của địa điểm.";
+    }
     if (
       document.getElementById("openInput").value == null ||
-      document.getElementById("openInput").value == "") {
-        validated = false;
-        document.getElementById("errorMessage").innerHTML =
-          "Hãy nhập thời gian mở cửa của địa điểm.";
-      }
-    if (document.getElementById("emailInput").value == null || document.getElementById("emailInput").value == ""){}
-      else if(!validator.isEmail(document.getElementById("emailInput").value)) {
-        validated = false;
-        document.getElementById("errorMessage").innerHTML =
-          "Hãy nhập đúng email.";
-      }
+      document.getElementById("openInput").value == ""
+    ) {
+      validated = false;
+      document.getElementById("errorMessage").innerHTML =
+        "Hãy nhập thời gian mở cửa của địa điểm.";
+    }
+    if (
+      document.getElementById("emailInput").value == null ||
+      document.getElementById("emailInput").value == ""
+    ) {
+    } else if (
+      !validator.isEmail(document.getElementById("emailInput").value)
+    ) {
+      validated = false;
+      document.getElementById("errorMessage").innerHTML =
+        "Hãy nhập đúng email.";
+    }
     if (validated) {
       const loadingIcon = document.getElementById("loadingIcon");
       loadingIcon.style.display = "inline";
@@ -200,7 +212,7 @@ class POIRequest extends Component {
                   Authorization: `Bearer ${localStorage.getItem("token")}`,
                   "Content-Type": "multipart/form-data",
                 },
-              }
+              },
             )
             .then(function (response) {});
         });
@@ -298,11 +310,11 @@ class POIRequest extends Component {
         <MDBBtn className={style.updateBtn} onClick={this.updateClick}>
           Thêm yêu cầu
         </MDBBtn>
-      </div>
+      </div>,
     );
     const headerText = [];
     headerText.push(
-      <h2 style={{ textAlign: "center" }}>Yêu cầu cập nhật Địa điểm</h2>
+      <h2 style={{ textAlign: "center" }}>Yêu cầu cập nhật Địa điểm</h2>,
     );
     const imageAddBtn = [];
     imageAddBtn.push(
@@ -318,7 +330,7 @@ class POIRequest extends Component {
           multiple
           hidden
         />
-      </MDBContainer>
+      </MDBContainer>,
     );
     //Set initial content
     if (this.state.dataLoaded) {
@@ -403,12 +415,12 @@ class POIRequest extends Component {
                 <FontAwesomeIcon icon={faClose} />
               </a>
             </div>
-          </MDBCard>
+          </MDBCard>,
         );
       });
     }
     const requiredStar = [];
-    requiredStar.push(<b className={style.requiredStar}>*</b>)
+    requiredStar.push(<b className={style.requiredStar}>*</b>);
 
     return (
       <MDBContainer className={style.mainContainer}>
@@ -416,7 +428,8 @@ class POIRequest extends Component {
         {submitBtn}
         <div id="errorMessage" className={style.errorMessage}></div>
         <label>
-          <b>Tên</b>{requiredStar}
+          <b>Tên</b>
+          {requiredStar}
         </label>
         <MDBTextArea
           id="nameInput"
@@ -428,7 +441,8 @@ class POIRequest extends Component {
           rows={1}
         />
         <label>
-          <b>Địa chỉ</b>{requiredStar}
+          <b>Địa chỉ</b>
+          {requiredStar}
         </label>
         <MDBTextArea
           id="addressInput"
@@ -440,7 +454,8 @@ class POIRequest extends Component {
           rows={1}
         />
         <label>
-          <b>Mô tả</b>{requiredStar}
+          <b>Mô tả</b>
+          {requiredStar}
         </label>
         <MDBTextArea
           id="descInput"
@@ -507,7 +522,8 @@ class POIRequest extends Component {
         <MDBRow>
           <MDBCol>
             <label>
-              <b>Khoảng thời gian</b>{requiredStar}
+              <b>Khoảng thời gian</b>
+              {requiredStar}
             </label>
             <div className="input-group mb-3">
               <span className="input-group-text">
@@ -526,7 +542,8 @@ class POIRequest extends Component {
           </MDBCol>
           <MDBCol>
             <label>
-              <b>Giờ mở cửa</b>{requiredStar}
+              <b>Giờ mở cửa</b>
+              {requiredStar}
             </label>
             <div className="input-group mb-3">
               <span className="input-group-text">
@@ -537,7 +554,8 @@ class POIRequest extends Component {
           </MDBCol>
           <MDBCol>
             <label>
-              <b>Giờ đóng cửa</b>{requiredStar}
+              <b>Giờ đóng cửa</b>
+              {requiredStar}
             </label>
             <div className="input-group mb-3">
               <span className="input-group-text">
@@ -550,7 +568,8 @@ class POIRequest extends Component {
         <MDBRow>
           <MDBCol>
             <label>
-              <b>Giá trung bình</b>{requiredStar}
+              <b>Giá trung bình</b>
+              {requiredStar}
             </label>
             <div className="input-group mb-3">
               <span className="input-group-text">

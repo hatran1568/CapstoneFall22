@@ -22,11 +22,10 @@ import org.springframework.web.bind.annotation.RestController;
 
 @Data
 public class HotelsRequestDTO {
-    private int poiId;
-    private int page;
-    private double distance;
-    private int price;
-    private int rate;
 
-
+  private int poiId;
+  private int page;
+  private double distance;
+  private int price;
+  private int rate;
 }

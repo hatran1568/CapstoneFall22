@@ -50,7 +50,7 @@ class BlogList extends Component {
           this.state.currentPage,
         {
           headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
-        }
+        },
       )
       .then((res) => {
         const data = res.data;
@@ -72,7 +72,7 @@ class BlogList extends Component {
           "/count",
         {
           headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
-        }
+        },
       )
       .then((res) => {
         const data = res.data;
@@ -96,7 +96,7 @@ class BlogList extends Component {
           event.selected,
         {
           headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
-        }
+        },
       )
       .then((response) => this.setState({ blogs: response.data }));
   };
@@ -145,7 +145,7 @@ class BlogList extends Component {
             headers: {
               Authorization: `Bearer ${localStorage.getItem("token")}`,
             },
-          }
+          },
         );
         //window.location.reload();
         this.componentDidMount();
@@ -188,7 +188,7 @@ class BlogList extends Component {
             headers: {
               Authorization: `Bearer ${localStorage.getItem("token")}`,
             },
-          }
+          },
         );
         //window.location.reload();
         this.componentDidMount();
@@ -226,7 +226,7 @@ class BlogList extends Component {
             onClick={this.hideBlog}
           >
             <FontAwesomeIcon icon={faEyeSlash} />
-          </a>
+          </a>,
         );
       if (entry.status == "HIDDEN")
         hideBtn.push(
@@ -236,7 +236,7 @@ class BlogList extends Component {
             onClick={this.unhideBlog}
           >
             <FontAwesomeIcon icon={faEye} />
-          </a>
+          </a>,
         );
       if (index % 2 == 0)
         blogTableData.push(
@@ -282,7 +282,7 @@ class BlogList extends Component {
                 <FontAwesomeIcon icon={faTrash} />
               </a>
             </th>
-          </tr>
+          </tr>,
         );
       else
         blogTableData.push(
@@ -328,7 +328,7 @@ class BlogList extends Component {
                 <FontAwesomeIcon icon={faTrash} />
               </a>
             </th>
-          </tr>
+          </tr>,
         );
     });
     return (

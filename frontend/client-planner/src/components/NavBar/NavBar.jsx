@@ -67,7 +67,7 @@ const NavBar = () => {
             <SearchBar key={"search"} />
           </MDBNavbarItem>
         </MDBNavbarNav>
-      </>
+      </>,
     );
   } else {
     searchBar.push(
@@ -75,7 +75,7 @@ const NavBar = () => {
         <MDBNavbarItem>
           <SearchBar />
         </MDBNavbarItem>
-      </MDBNavbarNav>
+      </MDBNavbarNav>,
     );
   }
 

@@ -1,46 +1,45 @@
 package com.planner.backendserver.entity;
 
+import java.util.Date;
+import javax.persistence.*;
 import lombok.Data;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
-import javax.persistence.*;
-import java.util.Date;
-
 @Data
 @Entity
-@Table(name="rating")
+@Table(name = "rating")
 public class Rating {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name="rate_id",columnDefinition = "INT(1)")
-    private int rateId;
 
-    @ManyToOne
-    @JoinColumn(name = "user_id", nullable = false)
-    private User user;
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  @Column(name = "rate_id", columnDefinition = "INT(1)")
+  private int rateId;
 
-    @ManyToOne
-    @JoinColumn(name = "poi_id", nullable = false)
-    private POI POI;
+  @ManyToOne
+  @JoinColumn(name = "user_id", nullable = false)
+  private User user;
 
-    @JoinColumn(name = "rate")
-    private int rate;
+  @ManyToOne
+  @JoinColumn(name = "poi_id", nullable = false)
+  private POI POI;
 
-    @JoinColumn(name = "comment",columnDefinition = "text")
-    private String Comment;
+  @JoinColumn(name = "rate")
+  private int rate;
 
-    @Column(name="date_created")
-    @Temporal(TemporalType.TIMESTAMP)
-    @CreationTimestamp
-    private Date dateCreated;
+  @JoinColumn(name = "comment", columnDefinition = "text")
+  private String Comment;
 
-    @Column(name="is_deleted")
-    private boolean isDeleted;
+  @Column(name = "date_created")
+  @Temporal(TemporalType.TIMESTAMP)
+  @CreationTimestamp
+  private Date dateCreated;
 
-    @Column(name="date_modified")
-    @Temporal(TemporalType.TIMESTAMP)
-    @UpdateTimestamp
-    private Date dateModified;
+  @Column(name = "is_deleted")
+  private boolean isDeleted;
 
+  @Column(name = "date_modified")
+  @Temporal(TemporalType.TIMESTAMP)
+  @UpdateTimestamp
+  private Date dateModified;
 }

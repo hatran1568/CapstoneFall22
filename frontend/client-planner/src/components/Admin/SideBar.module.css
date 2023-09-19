@@ -1,4 +1,4 @@
-.expandBtn{
+.expandBtn {
   min-width: 50px;
   min-height: 40px;
   max-height: 40px;
@@ -11,40 +11,40 @@
   font-size: 25px;
   color: black;
 }
-.sidebarIcon{
+.sidebarIcon {
   text-align: center;
 }
-.sidebarText{
+.sidebarText {
   text-align: left;
 }
-.sidebarMenu{
+.sidebarMenu {
   padding: 10px;
 }
-.profileIcon{
+.profileIcon {
   text-align: center;
   width: 100%;
   margin-top: 1vh;
-  display:flex;
+  display: flex;
   justify-content: center;
 }
-.contentContainer{
+.contentContainer {
   padding: 0;
   margin: 0;
   margin-top: 15vh;
 }
-.userAvatar{
+.userAvatar {
   width: 40px;
   height: 40px;
   border-radius: 50%;
   margin: 5px;
 }
-.username{
+.username {
   margin-right: 5px;
 }
-.sidebar{
+.sidebar {
   background-color: rgb(240, 240, 240);
 }
-.sidebarItem{
+.sidebarItem {
   color: black;
   text-decoration: none;
 }

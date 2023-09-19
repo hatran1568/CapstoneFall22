@@ -28,7 +28,12 @@
   border-bottom: 1px dashed transparent;
   -webkit-font-smoothing: antialiased;
   text-shadow: 0 15px 40px rgb(0 0 0 / 20%);
-  font-family: Klarna Display, Helvetica Neue, Arial, Helvetica, sans-serif;
+  font-family:
+    Klarna Display,
+    Helvetica Neue,
+    Arial,
+    Helvetica,
+    sans-serif;
   font-size: 60px;
   font-weight: 700;
   line-height: 1.05;
@@ -49,7 +54,12 @@
 .datesDiv {
   display: block;
   text-align: center;
-  font-family: Klarna Display, Helvetica Neue, Arial, Helvetica, sans-serif;
+  font-family:
+    Klarna Display,
+    Helvetica Neue,
+    Arial,
+    Helvetica,
+    sans-serif;
 }
 .datesDiv button {
   margin-left: 1em;
@@ -134,7 +144,12 @@
   border: none !important;
   color: #5f6163 !important;
   background-color: #fff !important;
-  font-family: Klarna Text, Helvetica Neue, Arial, Helvetica, sans-serif;
+  font-family:
+    Klarna Text,
+    Helvetica Neue,
+    Arial,
+    Helvetica,
+    sans-serif;
   font-size: 16px !important;
   font-weight: 500 !important;
   text-transform: none !important;
@@ -153,7 +168,9 @@
 }
 .navTabs {
   border: none !important;
-  box-shadow: 0 4px 12px 0 rgb(0 0 0 / 5%), 0 2px 12px rgb(0 0 0 / 7%) !important;
+  box-shadow:
+    0 4px 12px 0 rgb(0 0 0 / 5%),
+    0 2px 12px rgb(0 0 0 / 7%) !important;
 }
 .closeBtn {
   float: right;

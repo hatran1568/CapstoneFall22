@@ -105,12 +105,12 @@ class PublicTrips extends Component {
       this.state.search,
       this.state.daysRange[0],
       this.state.daysRange[1],
-      0
+      0,
     );
     this.getCount(
       this.state.search,
       this.state.daysRange[0],
-      this.state.daysRange[1]
+      this.state.daysRange[1],
     );
   };
   resetDaysRange = () => {
@@ -125,7 +125,7 @@ class PublicTrips extends Component {
       this.state.search,
       this.state.daysRange[0],
       this.state.daysRange[1],
-      event.selected
+      event.selected,
     );
   };
   getAll = () => {

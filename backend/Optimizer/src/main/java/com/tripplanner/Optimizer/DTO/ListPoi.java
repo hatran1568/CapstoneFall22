@@ -1,10 +1,11 @@
 package com.tripplanner.Optimizer.DTO;
 
+import java.util.ArrayList;
 import lombok.Data;
 
-import java.util.ArrayList;
 @Data
 public class ListPoi {
-    ArrayList<POI> list;
-    String additional;
+
+  ArrayList<POI> list;
+  String additional;
 }

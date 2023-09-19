@@ -1,4 +1,3 @@
 package com.tripplanner.Optimizer.config;
 
-public class WebSocketConnection {
-}
+public class WebSocketConnection {}

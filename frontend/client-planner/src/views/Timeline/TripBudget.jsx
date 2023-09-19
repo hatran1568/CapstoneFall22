@@ -53,7 +53,7 @@ library.add(
   faBagShopping,
   faGasPump,
   faBasketShopping,
-  faNoteSticky
+  faNoteSticky,
 );
 
 const { confirm } = Modal;
@@ -126,7 +126,7 @@ class TripBudget extends Component {
         });
         axios
           .get(
-            `http://localhost:8080/api/expense/user/` + this.state.trip.tripId
+            `http://localhost:8080/api/expense/user/` + this.state.trip.tripId,
           )
           .then((res) => {
             const data = res.data;
@@ -177,7 +177,7 @@ class TripBudget extends Component {
         `http://localhost:8080/trip/api/expense/` +
           id +
           "/" +
-          this.state.currentFilter
+          this.state.currentFilter,
       )
       .then((res) => {
         const data = res.data;
@@ -284,7 +284,7 @@ class TripBudget extends Component {
     //Calculate % Expense and display Progress Bar
     const expenseRate =
       Math.round(
-        (this.state.totalBudget / this.state.trip.budget) * 100 * 100
+        (this.state.totalBudget / this.state.trip.budget) * 100 * 100,
       ) / 100;
     const exceedExpense = Math.round((expenseRate - 100) * 100) / 100;
     const progressBar = [];
@@ -296,12 +296,12 @@ class TripBudget extends Component {
           strokeColor="rgb(255, 99, 132)"
           showInfo={false}
           percent={expenseRate}
-        />
+        />,
       );
       progressBar.push(
         <span className={style.budgetExceed}>
           Bạn đã quá ngân sách {exceedExpense}%
-        </span>
+        </span>,
       );
     } else if (expenseRate > 80) {
       progressBar.push(
@@ -311,12 +311,12 @@ class TripBudget extends Component {
           strokeColor="rgb(255, 182, 10)"
           showInfo={false}
           percent={expenseRate}
-        />
+        />,
       );
       progressBar.push(
         <span className={style.budgetWarning}>
           Bạn đang ở {expenseRate}% ngân sách
-        </span>
+        </span>,
       );
     } else if (expenseRate <= 80) {
       progressBar.push(
@@ -326,12 +326,12 @@ class TripBudget extends Component {
           strokeColor="rgb(82, 196, 26)"
           showInfo={false}
           percent={expenseRate}
-        />
+        />,
       );
       progressBar.push(
         <span className={style.budgetNormal}>
           Bạn đang ở {expenseRate}% ngân sách
-        </span>
+        </span>,
       );
     }
     //Expenses
@@ -374,7 +374,7 @@ class TripBudget extends Component {
               <FontAwesomeIcon icon="trash" />
             </MDBCol>
           </MDBRow>
-        </MDBCardBody>
+        </MDBCardBody>,
       );
     });
     //Check user

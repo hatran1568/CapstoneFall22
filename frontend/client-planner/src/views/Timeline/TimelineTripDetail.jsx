@@ -156,14 +156,14 @@ class TripDetail extends Component {
                 <p className={`text-muted card-text ${style.timeText}`}>
                   {moment(
                     this.getTimeFromSecs(this.state.tripDetail.startTime),
-                    "HH:mm:ss"
+                    "HH:mm:ss",
                   )
                     .locale("en")
                     .format("hh:mm a")}
                   <br />
                   {moment(
                     this.getTimeFromSecs(this.state.tripDetail.endTime),
-                    "HH:mm:ss"
+                    "HH:mm:ss",
                   )
                     .locale("en")
                     .format("hh:mm a")}
@@ -216,7 +216,7 @@ class TripDetail extends Component {
                         this.props.deleteEvent(
                           event,
                           this.state.tripDetail.tripDetailsId,
-                          this.state.tripDetail.masterActivity.name
+                          this.state.tripDetail.masterActivity.name,
                         )
                       }
                     >

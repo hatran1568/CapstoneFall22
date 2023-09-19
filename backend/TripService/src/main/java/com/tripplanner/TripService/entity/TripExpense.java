@@ -1,36 +1,33 @@
 package com.tripplanner.TripService.entity;
 
-
-import lombok.Data;
-
 import javax.persistence.*;
+import lombok.Data;
 
 @Data
 @Entity
-@Table(name="trip_expense")
+@Table(name = "trip_expense")
 public class TripExpense {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name="trip_expense_id",columnDefinition = "INT(1)")
-    private int tripExpenseId;
 
-    @ManyToOne
-    @JoinColumn(name = "expense_category_id", nullable = false)
-    private ExpenseCategory expenseCategory;
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  @Column(name = "trip_expense_id", columnDefinition = "INT(1)")
+  private int tripExpenseId;
 
-    @ManyToOne
-    @JoinColumn(name = "trip_id", nullable = false)
-    private Trip trip;
+  @ManyToOne
+  @JoinColumn(name = "expense_category_id", nullable = false)
+  private ExpenseCategory expenseCategory;
 
-    @Column(name="amount")
-    private int amount;
+  @ManyToOne
+  @JoinColumn(name = "trip_id", nullable = false)
+  private Trip trip;
 
-    @Column(name="Description",columnDefinition = "text")
-    private String description;
+  @Column(name = "amount")
+  private int amount;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+  @Column(name = "Description", columnDefinition = "text")
+  private String description;
 
-    @JoinColumn(name = "trip_details_id", nullable = true)
-    private TripDetails tripDetails;
-
+  @ManyToOne(fetch = FetchType.LAZY)
+  @JoinColumn(name = "trip_details_id", nullable = true)
+  private TripDetails tripDetails;
 }

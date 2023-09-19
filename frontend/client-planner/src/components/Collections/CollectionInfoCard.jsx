@@ -1,6 +1,14 @@
 import React, { useEffect, useState } from "react";
 import axios from "../../api/axios";
-import { MDBBtn, MDBCard, MDBCardBody, MDBCardImage, MDBCol, MDBIcon, MDBRow } from "mdb-react-ui-kit";
+import {
+  MDBBtn,
+  MDBCard,
+  MDBCardBody,
+  MDBCardImage,
+  MDBCol,
+  MDBIcon,
+  MDBRow,
+} from "mdb-react-ui-kit";
 import { Modal } from "antd";
 import EditCollectionModal from "./EditCollectionModal";
 import style from "./CollectionInfoCard.module.css";
@@ -52,9 +60,12 @@ const CollectionInfoCard = (prop) => {
   return isDeleted ? null : (
     <>
       <MDBCard className={`${style.card}`} style={{ border: 0 }}>
-        <a className={style.link} href={"/collection?id=" + prop.collection.collectionId}>
+        <a
+          className={style.link}
+          href={"/collection?id=" + prop.collection.collectionId}
+        >
           <MDBRow>
-            <MDBCol sm='3'>
+            <MDBCol sm="3">
               <MDBCardImage
                 className={style.img}
                 src={
@@ -65,21 +76,34 @@ const CollectionInfoCard = (prop) => {
                 fluid
               />
             </MDBCol>
-            <MDBCol sm='8'>
-              <h5 className='mt-4'>{info.title}</h5>
-              <p className='mt-2 mb-0'>{info.description}</p>
-              <small className='text-mute' style={{ position: "absolute", bottom: "2vh", color: "rgb(175, 175, 175)" }}>
+            <MDBCol sm="8">
+              <h5 className="mt-4">{info.title}</h5>
+              <p className="mt-2 mb-0">{info.description}</p>
+              <small
+                className="text-mute"
+                style={{
+                  position: "absolute",
+                  bottom: "2vh",
+                  color: "rgb(175, 175, 175)",
+                }}
+              >
                 <i>Chỉnh sửa: {formatDate(prop.collection.dateModified)}</i>
               </small>
             </MDBCol>
-            <MDBCol sm='1'>
-              <div className='mt-4'>
-                <button className={`${style.deleteBtn}`} onClick={(e) => handleDelete(e)}>
-                  <MDBIcon far icon='trash-alt' size='lg' />
+            <MDBCol sm="1">
+              <div className="mt-4">
+                <button
+                  className={`${style.deleteBtn}`}
+                  onClick={(e) => handleDelete(e)}
+                >
+                  <MDBIcon far icon="trash-alt" size="lg" />
                 </button>
               </div>
-              <div className='mt-4'>
-                <EditCollectionModal collection={prop.collection} refresh={setInfo}/>
+              <div className="mt-4">
+                <EditCollectionModal
+                  collection={prop.collection}
+                  refresh={setInfo}
+                />
               </div>
             </MDBCol>
           </MDBRow>

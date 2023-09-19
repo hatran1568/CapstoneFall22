@@ -1,10 +1,16 @@
 package com.tripplanner.BlogService.service.implementers;
 
+import static com.tripplanner.BlogService.entity.BlogStatus.PUBLISHED;
+import static org.mockito.Mockito.*;
+
 import com.tripplanner.BlogService.config.RestTemplateClient;
 import com.tripplanner.BlogService.dto.request.BlogDetailsDTO;
 import com.tripplanner.BlogService.dto.response.UserDetailResponseDTO;
 import com.tripplanner.BlogService.entity.Blog;
 import com.tripplanner.BlogService.repository.BlogRepository;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,72 +20,67 @@ import org.springframework.cloud.client.ServiceInstance;
 import org.springframework.cloud.client.discovery.DiscoveryClient;
 import org.springframework.web.client.RestTemplate;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-
-import static com.tripplanner.BlogService.entity.BlogStatus.PUBLISHED;
-import static org.mockito.Mockito.*;
-
 @SpringBootTest
 class BLogServiceImplTest {
-    @Autowired
-    private BLogServiceImpl service;
 
-    @MockBean
-    private BlogRepository repo;
+  @Autowired
+  private BLogServiceImpl service;
 
-    @MockBean
-    private DiscoveryClient discoveryClient;
+  @MockBean
+  private BlogRepository repo;
 
-    @MockBean
-    private RestTemplateClient restTemplateClient;
+  @MockBean
+  private DiscoveryClient discoveryClient;
 
-    @Test
-    void getBlogByKeyWordTest() {
-        List<Blog> list = new ArrayList<>();
-        Blog blog = new Blog();
-        blog.setBlogId(1);
-        blog.setUser(1);
-        blog.setTitle("abc");
-        blog.setContent("");
-        blog.setStatus(PUBLISHED);
-        list.add(blog);
-        doReturn(list).when(repo).getBlogsByKeyword("a");
+  @MockBean
+  private RestTemplateClient restTemplateClient;
 
-        List<Blog> returnedList = service.getBlogByKeyWord("a");
+  @Test
+  void getBlogByKeyWordTest() {
+    List<Blog> list = new ArrayList<>();
+    Blog blog = new Blog();
+    blog.setBlogId(1);
+    blog.setUser(1);
+    blog.setTitle("abc");
+    blog.setContent("");
+    blog.setStatus(PUBLISHED);
+    list.add(blog);
+    doReturn(list).when(repo).getBlogsByKeyword("a");
 
-        Assertions.assertSame(returnedList, list);
-    }
+    List<Blog> returnedList = service.getBlogByKeyWord("a");
 
-    @Test
-    void getBlogByIdTest() {
-        Blog blog = new Blog();
-        blog.setBlogId(1);
-        blog.setUser(1);
-        blog.setTitle("abc");
-        blog.setContent("");
-        blog.setStatus(PUBLISHED);
-        Optional<Blog> blogOptional = Optional.of(blog);
-        doReturn(blogOptional).when(repo).findById(1);
-        List<ServiceInstance> instances = new ArrayList<>();
-        ServiceInstance instance = mock(ServiceInstance.class);
-        instances.add(instance);
-        doReturn(instances).when(discoveryClient).getInstances("user-service");
-        RestTemplate restTemplate = mock(RestTemplate.class);
-        doReturn(restTemplate).when(restTemplateClient).restTemplate();
-        UserDetailResponseDTO user = new UserDetailResponseDTO();
-        user.setName("");
-        user.setAvatar("");
-        when(
-                restTemplate.getForObject(
-                        instance.getUri() + "/user/api/user/findById/" + blog.getUser(),
-                        UserDetailResponseDTO.class
-                )
-        ).thenReturn(user);
+    Assertions.assertSame(returnedList, list);
+  }
 
-        BlogDetailsDTO returned = service.getBlogById(1);
+  @Test
+  void getBlogByIdTest() {
+    Blog blog = new Blog();
+    blog.setBlogId(1);
+    blog.setUser(1);
+    blog.setTitle("abc");
+    blog.setContent("");
+    blog.setStatus(PUBLISHED);
+    Optional<Blog> blogOptional = Optional.of(blog);
+    doReturn(blogOptional).when(repo).findById(1);
+    List<ServiceInstance> instances = new ArrayList<>();
+    ServiceInstance instance = mock(ServiceInstance.class);
+    instances.add(instance);
+    doReturn(instances).when(discoveryClient).getInstances("user-service");
+    RestTemplate restTemplate = mock(RestTemplate.class);
+    doReturn(restTemplate).when(restTemplateClient).restTemplate();
+    UserDetailResponseDTO user = new UserDetailResponseDTO();
+    user.setName("");
+    user.setAvatar("");
+    when(
+      restTemplate.getForObject(
+        instance.getUri() + "/user/api/user/findById/" + blog.getUser(),
+        UserDetailResponseDTO.class
+      )
+    )
+      .thenReturn(user);
 
-        Assertions.assertEquals(returned.getBlogId(), blog.getBlogId());
-    }
+    BlogDetailsDTO returned = service.getBlogById(1);
+
+    Assertions.assertEquals(returned.getBlogId(), blog.getBlogId());
+  }
 }

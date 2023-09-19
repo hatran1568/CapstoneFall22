@@ -1,21 +1,21 @@
 package com.planner.backendserver.entity;
 
-import lombok.Data;
-
 import javax.persistence.*;
+import lombok.Data;
 
 @Data
 @Entity
-@Table(name="category")
+@Table(name = "category")
 public class Category {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name="category_id",columnDefinition = "INT(1)")
-    private int categoryID;
 
-    @Column(name="category_name")
-    private String categoryName;
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  @Column(name = "category_id", columnDefinition = "INT(1)")
+  private int categoryID;
 
-    @Column(name="description", columnDefinition = "text")
-    private String description;
+  @Column(name = "category_name")
+  private String categoryName;
+
+  @Column(name = "description", columnDefinition = "text")
+  private String description;
 }

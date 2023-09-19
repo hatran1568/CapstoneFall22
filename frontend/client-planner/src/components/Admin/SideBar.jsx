@@ -47,7 +47,7 @@ function AdminSidebar({ props }) {
         await axios
           .get(
             "http://localhost:8080/user/api/user/findById/" +
-              localStorage.getItem("id")
+              localStorage.getItem("id"),
           )
           .then((response) => setUser(response.data));
       };

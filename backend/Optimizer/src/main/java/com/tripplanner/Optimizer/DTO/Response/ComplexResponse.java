@@ -9,9 +9,10 @@ import lombok.Data;
 @Data
 @AllArgsConstructor
 public class ComplexResponse {
-    private Solution s;
-    private com.tripplanner.Optimizer.DTO.Data data;
-    private GenerateTripUserInput input;
-    private OptimizerRequest request;
-    private String token;
+
+  private Solution s;
+  private com.tripplanner.Optimizer.DTO.Data data;
+  private GenerateTripUserInput input;
+  private OptimizerRequest request;
+  private String token;
 }

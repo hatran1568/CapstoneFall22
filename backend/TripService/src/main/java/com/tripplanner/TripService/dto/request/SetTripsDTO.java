@@ -4,6 +4,7 @@ import lombok.Data;
 
 @Data
 public class SetTripsDTO {
-    private int user;
-    private int[] tripIds;
+
+  private int user;
+  private int[] tripIds;
 }

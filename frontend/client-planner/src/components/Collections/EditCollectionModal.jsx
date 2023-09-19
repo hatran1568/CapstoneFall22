@@ -10,7 +10,9 @@ import style from "./EditCollectionModal.module.css";
 const EditCollectionModal = (prop) => {
   const [open, setOpen] = useState(false);
   const [titleInput, setTitleInput] = useState(prop.collection.title);
-  const [descriptionInput, setDescriptionInput] = useState(prop.collection.description);
+  const [descriptionInput, setDescriptionInput] = useState(
+    prop.collection.description,
+  );
   const { confirm } = Modal;
 
   const handleEdit = (e) => {
@@ -75,17 +77,17 @@ const EditCollectionModal = (prop) => {
   return (
     <>
       <button className={`${style.editBtn}`} onClick={(e) => handleEdit(e)}>
-        <MDBIcon fas icon='pencil-alt' size='lg' />
+        <MDBIcon fas icon="pencil-alt" size="lg" />
       </button>
       <Modal
-        title='Chỉnh sửa thông tin bộ sưu tập'
+        title="Chỉnh sửa thông tin bộ sưu tập"
         open={open}
         onOk={handleOk}
         onCancel={handleCancel}
         cancelText={"Hủy"}
-        okText='Lưu'
+        okText="Lưu"
       >
-        <MDBInputGroup className='px-2 mb-3'>
+        <MDBInputGroup className="px-2 mb-3">
           <h5>Tiêu đề</h5>
           <Input
             showCount
@@ -93,12 +95,12 @@ const EditCollectionModal = (prop) => {
             onChange={(e) => {
               setTitleInput(e.target.value);
             }}
-            size='large'
-            spellCheck='false'
+            size="large"
+            spellCheck="false"
             defaultValue={prop.collection.title}
           />
         </MDBInputGroup>
-        <MDBInputGroup className='px-2'>
+        <MDBInputGroup className="px-2">
           <h5>Mô tả</h5>
           <TextArea
             showCount
@@ -108,7 +110,7 @@ const EditCollectionModal = (prop) => {
             }}
             maxLength={100}
             style={{ width: 1000, resize: "none" }}
-            spellCheck='false'
+            spellCheck="false"
             defaultValue={prop.collection.description}
           />
         </MDBInputGroup>

@@ -34,7 +34,7 @@ function ResetPasswordConfirm() {
             headers: {
               "Content-Type": "application/json",
             },
-          }
+          },
         )
         .catch((err) => {
           if (err.response.status === 404) {

@@ -1,5 +1,8 @@
 package com.planner.backendserver.entity;
 
 public enum BlogStatus {
-        PUBLISHED,DRAFT,HIDDEN,DELETED
+  PUBLISHED,
+  DRAFT,
+  HIDDEN,
+  DELETED,
 }

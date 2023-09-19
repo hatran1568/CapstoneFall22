@@ -4,17 +4,14 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 
 @Data
-
 public class POIImage {
 
-    private int imageId;
+  private int imageId;
 
+  @JsonIgnore
+  private POIDTO poi;
 
-    @JsonIgnore
-    private POIDTO poi;
+  private String url;
 
-
-    private String url;
-
-    private String description;
+  private String description;
 }

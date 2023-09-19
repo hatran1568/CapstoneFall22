@@ -22,7 +22,7 @@ const DestinationSearchBar = (props) => {
           "http://localhost:8080/location/search/Destination/" + searchInput,
           {
             headers: { "Content-Type": "application/json" },
-          }
+          },
         )
         .then((response) => response.data)
         .catch(() => setResults(false))

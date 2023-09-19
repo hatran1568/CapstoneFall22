@@ -439,7 +439,12 @@ a.fc-col-header-cell-cushion {
   text-decoration: none;
   /* color: black; */
   font-size: 16px;
-  font-family: Klarna Text, Helvetica Neue, Arial, Helvetica, sans-serif;
+  font-family:
+    Klarna Text,
+    Helvetica Neue,
+    Arial,
+    Helvetica,
+    sans-serif;
   color: #0e0e0f;
 }
 .fc .fc-bg-event,

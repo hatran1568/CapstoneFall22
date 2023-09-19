@@ -57,7 +57,7 @@ class UserList extends Component {
           this.state.currentPage,
         {
           headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
-        }
+        },
       )
       .then((res) => {
         const data = res.data;
@@ -76,7 +76,7 @@ class UserList extends Component {
           this.state.currentNameKey,
         {
           headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
-        }
+        },
       )
       .then((res) => {
         const data = res.data;
@@ -147,7 +147,7 @@ class UserList extends Component {
             onClick={this.deactivateUser}
           >
             <FontAwesomeIcon icon={faEyeSlash} />
-          </a>
+          </a>,
         );
       if (entry.status == "DEACTIVATED")
         hideBtn.push(
@@ -158,7 +158,7 @@ class UserList extends Component {
             onClick={this.activateUser}
           >
             <FontAwesomeIcon icon={faEye} />
-          </a>
+          </a>,
         );
       if (index % 2 == 0)
         poiTableData.push(
@@ -191,7 +191,7 @@ class UserList extends Component {
               {hideBtn}
               <a className={style.tableIcons} id={entry.userId} name={name} onClick={this.deleteUser}><FontAwesomeIcon icon={faTrash}/></a>
             </th> */}
-          </tr>
+          </tr>,
         );
       else
         poiTableData.push(
@@ -224,7 +224,7 @@ class UserList extends Component {
               {hideBtn}
               <a className={style.tableIcons} id={entry.userId} name={name} onClick={this.deleteDes}><FontAwesomeIcon icon={faTrash}/></a>
             </th> */}
-          </tr>
+          </tr>,
         );
     });
     const tableId = [];
@@ -233,7 +233,7 @@ class UserList extends Component {
         <th scope="col" className={style.tableId}>
           ID
           <FontAwesomeIcon className={style.sortIcon} icon={faSortUp} />
-        </th>
+        </th>,
       );
     else
       tableId.push(
@@ -245,7 +245,7 @@ class UserList extends Component {
         >
           ID
           <FontAwesomeIcon className={style.sortIcon} icon={faSort} />
-        </th>
+        </th>,
       );
 
     const tableRole = [];
@@ -259,7 +259,7 @@ class UserList extends Component {
         >
           VAI TRÒ
           <FontAwesomeIcon className={style.sortIcon} icon={faSortUp} />
-        </th>
+        </th>,
       );
     else if (this.state.currentFilter == "roleDESC")
       tableRole.push(
@@ -271,7 +271,7 @@ class UserList extends Component {
         >
           VAI TRÒ
           <FontAwesomeIcon className={style.sortIcon} icon={faSortDown} />
-        </th>
+        </th>,
       );
     else
       tableRole.push(
@@ -283,7 +283,7 @@ class UserList extends Component {
         >
           VAI TRÒ
           <FontAwesomeIcon className={style.sortIcon} icon={faSort} />
-        </th>
+        </th>,
       );
 
     const tableName = [];
@@ -297,7 +297,7 @@ class UserList extends Component {
         >
           TÊN
           <FontAwesomeIcon className={style.sortIcon} icon={faSortUp} />
-        </th>
+        </th>,
       );
     else if (this.state.currentFilter == "nameDESC")
       tableName.push(
@@ -309,7 +309,7 @@ class UserList extends Component {
         >
           TÊN
           <FontAwesomeIcon className={style.sortIcon} icon={faSortDown} />
-        </th>
+        </th>,
       );
     else
       tableName.push(
@@ -321,7 +321,7 @@ class UserList extends Component {
         >
           TÊN
           <FontAwesomeIcon className={style.sortIcon} icon={faSort} />
-        </th>
+        </th>,
       );
 
     const tableDate = [];
@@ -335,7 +335,7 @@ class UserList extends Component {
         >
           NGÀY SỬA
           <FontAwesomeIcon className={style.sortIcon} icon={faSortUp} />
-        </th>
+        </th>,
       );
     else if (this.state.currentFilter == "dateDESC")
       tableName.push(
@@ -347,7 +347,7 @@ class UserList extends Component {
         >
           NGÀY SỬA
           <FontAwesomeIcon className={style.sortIcon} icon={faSortDown} />
-        </th>
+        </th>,
       );
     else
       tableName.push(
@@ -359,7 +359,7 @@ class UserList extends Component {
         >
           NGÀY SỬA
           <FontAwesomeIcon className={style.sortIcon} icon={faSort} />
-        </th>
+        </th>,
       );
 
     return (

@@ -8,8 +8,7 @@ import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 @EnableDiscoveryClient
 public class OptimizerApplication {
 
-	public static void main(String[] args) {
-		SpringApplication.run(OptimizerApplication.class, args);
-	}
-
+  public static void main(String[] args) {
+    SpringApplication.run(OptimizerApplication.class, args);
+  }
 }

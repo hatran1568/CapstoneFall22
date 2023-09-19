@@ -30,7 +30,7 @@ function POIsDestination() {
     const listResp = async () => {
       await axios
         .get(
-          "http://localhost:8080/location/api/destination/thumbnail/" + desId
+          "http://localhost:8080/location/api/destination/thumbnail/" + desId,
         )
         .then((response) => {
           let res = response.data;
@@ -65,7 +65,7 @@ function POIsDestination() {
             "/" +
             catId +
             "/" +
-            rating
+            rating,
         )
         .then((response) => setPOIs(response.data));
     };
@@ -82,7 +82,7 @@ function POIsDestination() {
             catId +
             "/" +
             rating +
-            "/count"
+            "/count",
         )
         .then((response) => setPOICount(response.data));
     };
@@ -98,7 +98,7 @@ function POIsDestination() {
   const filterBox = [];
   const catBtnClick = (event) => {
     navigate(
-      "?desid=" + desId + "&catid=" + event.target.id + "&rating=" + rating
+      "?desid=" + desId + "&catid=" + event.target.id + "&rating=" + rating,
     );
     window.location.reload(false);
   };
@@ -111,7 +111,7 @@ function POIsDestination() {
               {cat.categoryName}
             </a>
           </div>
-        </b>
+        </b>,
       );
     else
       filterBox.push(
@@ -119,7 +119,7 @@ function POIsDestination() {
           <a onClick={catBtnClick} id={cat.categoryId}>
             {cat.categoryName}
           </a>
-        </div>
+        </div>,
       );
   });
   filterBox.push(
@@ -129,7 +129,7 @@ function POIsDestination() {
           Xem tất cả
         </a>
       </b>
-    </div>
+    </div>,
   );
   //FilterRating
   const ratingBtnClick = (event) => {
@@ -139,7 +139,7 @@ function POIsDestination() {
         "&catid=" +
         catId +
         "&rating=" +
-        event.currentTarget.id
+        event.currentTarget.id,
     );
     window.location.reload(false);
   };
@@ -163,7 +163,7 @@ function POIsDestination() {
               />
             </MDBCol>
           </MDBRow>
-        </a>
+        </a>,
       );
     else
       filterRatingBox.push(
@@ -182,7 +182,7 @@ function POIsDestination() {
               />
             </MDBCol>
           </MDBRow>
-        </a>
+        </a>,
       );
   });
   filterRatingBox.push(
@@ -190,7 +190,7 @@ function POIsDestination() {
       <a onClick={ratingBtnClick} id={0} className={style.removeFilterButton}>
         Xem tất cả
       </a>
-    </b>
+    </b>,
   );
   //Pagination
   const itemCount = poiscount;
@@ -208,7 +208,7 @@ function POIsDestination() {
           "/" +
           catId +
           "/" +
-          rating
+          rating,
       )
       .then((response) => setPOIs(response.data));
     // poiBox = [];

@@ -96,7 +96,12 @@
   padding-bottom: 2em;
   text-align: center;
   cursor: pointer;
-  font-family: Klarna Text, Helvetica Neue, Arial, Helvetica, sans-serif;
+  font-family:
+    Klarna Text,
+    Helvetica Neue,
+    Arial,
+    Helvetica,
+    sans-serif;
 }
 .recentTrips:hover {
   background-color: #0e0e0fd2;

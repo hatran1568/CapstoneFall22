@@ -8,10 +8,11 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class POIOfCollectionDTO {
-    private int activityId;
-    private String name;
-    private String address;
-    private String category;
-    private double googleRate;
-    private String imgUrl;
+
+  private int activityId;
+  private String name;
+  private String address;
+  private String category;
+  private double googleRate;
+  private String imgUrl;
 }

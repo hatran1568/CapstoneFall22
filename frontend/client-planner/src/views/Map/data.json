@@ -1,443 +1,472 @@
 {
-    "tripId": 53,
-    "budget": 1.0E7,
-    "startDate": "2022-11-05",
-    "endDate": "2022-11-06",
-    "name": "2 days in Hà Nội",
-    "dateModified": "2022-11-03T15:47:50.703+00:00",
-    "listTripDetails": [{
-            "tripDetailsId": 1083,
-            "masterActivity": {
-                "activityId": 54,
-                "name": "Phủ Tây Hồ",
-                "address": "52 P. Đặng Thai Mai, Quảng An, Tây Hồ, Hà Nội",
-                "category": {
-                    "categoryID": 4,
-                    "categoryName": "Historic sights",
-                    "description": null
-                },
-                "googleRate": 4.6,
-                "openTime": 0,
-                "duration": 7200,
-                "closeTime": 86340,
-                "typicalPrice": 250000.0,
-                "images": [{
-                    "imageId": 54,
-                    "url": "img/poi/54/temple.jpg",
-                    "description": null
-                }],
-                "description": "Phủ Tây Hồ là một ngôi đền thờ công chúa Liễu Hạnh nằm tại thủ đô Hà Nội của Việt Nam, theo truyền thuyết, phủ được xây dựng vào khoảng thế kỷ 17.\n\nNgôi đền tọa lạc tại bán đảo lớn của làng Nghi Tàm, nhô ra giữa Hồ Tây, ở số 52 phố Đặng Thai Mai, phường Quảng An, quận Tây Hồ, thành phố Hà Nội.[1] Theo truyền thuyết, phủ được xây dựng vào khoảng thế kỷ 17 nhưng có thể có muộn hơn. Vì trong các sách nói về di tích của Thăng Long - Hà Nội cổ ra đời đầu thế kỷ 20 như Thăng Long cổ tích khảo, Long Biên bách nhị vịnh, Tây Hồ chí, Hà Thành linh tích cổ lục,...đều không ghi chép về di tích này.\n\nPhủ Tây Hồ đã được Bộ Văn hóa (nay là Bộ Văn hóa, Thể thao và Du lịch) cấp bằng di tích Lịch sử-Văn hóa ngày 13 tháng 2 năm 1996.[2] Ngoài ra, tại sân phủ có một cây si cổ thụ cũng đã được công nhận là \"cây di sản Việt Nam\", và ở kề bên phủ còn có đền Kim Ngưu thờ Trâu Vàng theo truyền thuyết.[3]\n\nNgày nay, Phủ Tây Hồ mở hội vào 2 ngày lễ chính là mùng 3 tháng 3 âm lịch và 13 tháng 8 âm lịch.",
-                "custom": false,
-                "latitude": 21.0625984,
-                "longitude": 105.8277652
-            },
-            "startTime": 30600,
-            "endTime": 37800,
-            "dayNumber": "1",
-            "note": null
+  "tripId": 53,
+  "budget": 1.0e7,
+  "startDate": "2022-11-05",
+  "endDate": "2022-11-06",
+  "name": "2 days in Hà Nội",
+  "dateModified": "2022-11-03T15:47:50.703+00:00",
+  "listTripDetails": [
+    {
+      "tripDetailsId": 1083,
+      "masterActivity": {
+        "activityId": 54,
+        "name": "Phủ Tây Hồ",
+        "address": "52 P. Đặng Thai Mai, Quảng An, Tây Hồ, Hà Nội",
+        "category": {
+          "categoryID": 4,
+          "categoryName": "Historic sights",
+          "description": null
         },
-        {
-            "tripDetailsId": 1084,
-            "masterActivity": {
-                "activityId": 55,
-                "name": "Phố Phan Đình Phùng",
-                "address": "Quán Thánh, Ba Đình, Hanoi, Vietnam",
-                "category": {
-                    "categoryID": 2,
-                    "categoryName": "Outdoors",
-                    "description": null
-                },
-                "googleRate": 4.8,
-                "openTime": 0,
-                "duration": 7200,
-                "closeTime": 86340,
-                "typicalPrice": 25000.0,
-                "images": [{
-                    "imageId": 55,
-                    "url": "img/poi/55/avc.jpg",
-                    "description": null
-                }],
-                "description": "Phan Đình Phùng - phố lãng mạn, mộng mơ bởi có hàng cây xanh thuộc vào loại đẹp nhất thành phố với ba hàng cây, vỉa hè rộng rãi, thoáng mát. Những cây xanh trên phố đa phần là sấu có tuổi đời cả trăm năm. Hàng cây khép tán che kín lòng phố, mùa hè hay bất cứ mùa nào, người đi đường cũng được hưởng bóng mát và nghe thấy tiếng gió rì rào trên tán lá.\n\nNhững cây sấu ở phố Phan Đình Phùng đã trở thành những gốc cây cổ thụ kềnh càng, nhiều hình dạng. Có những chỗ, gốc cây giống những vách thuyền, những chỗ khác, gốc cây lại như một vòm hang đá, và có những chỗ gốc cây như một con bạch tuộc khổng lồ với rất nhiều tua vòi tỏa ra các hướng. Nói về sự lãng mạn và thanh bình của những cây sấu phố Phan Đình Phùng thì nói mãi không hết, đặc biệt vào mùa sấu thay lá cuối xuân, đầu hè. Lá sấu rụng vàng xanh hè phố, mỗi khi gió thổi thì có một cơn mưa lá sấu trút trên đường, vì thế con phố luôn có đông người đi dạo và chụp ảnh, đặc biệt là những bạn trẻ và khách du lịch",
-                "custom": false,
-                "latitude": 21.0407726,
-                "longitude": 105.8410151
-            },
-            "startTime": 39150,
-            "endTime": 46350,
-            "dayNumber": "1",
-            "note": null
+        "googleRate": 4.6,
+        "openTime": 0,
+        "duration": 7200,
+        "closeTime": 86340,
+        "typicalPrice": 250000.0,
+        "images": [
+          {
+            "imageId": 54,
+            "url": "img/poi/54/temple.jpg",
+            "description": null
+          }
+        ],
+        "description": "Phủ Tây Hồ là một ngôi đền thờ công chúa Liễu Hạnh nằm tại thủ đô Hà Nội của Việt Nam, theo truyền thuyết, phủ được xây dựng vào khoảng thế kỷ 17.\n\nNgôi đền tọa lạc tại bán đảo lớn của làng Nghi Tàm, nhô ra giữa Hồ Tây, ở số 52 phố Đặng Thai Mai, phường Quảng An, quận Tây Hồ, thành phố Hà Nội.[1] Theo truyền thuyết, phủ được xây dựng vào khoảng thế kỷ 17 nhưng có thể có muộn hơn. Vì trong các sách nói về di tích của Thăng Long - Hà Nội cổ ra đời đầu thế kỷ 20 như Thăng Long cổ tích khảo, Long Biên bách nhị vịnh, Tây Hồ chí, Hà Thành linh tích cổ lục,...đều không ghi chép về di tích này.\n\nPhủ Tây Hồ đã được Bộ Văn hóa (nay là Bộ Văn hóa, Thể thao và Du lịch) cấp bằng di tích Lịch sử-Văn hóa ngày 13 tháng 2 năm 1996.[2] Ngoài ra, tại sân phủ có một cây si cổ thụ cũng đã được công nhận là \"cây di sản Việt Nam\", và ở kề bên phủ còn có đền Kim Ngưu thờ Trâu Vàng theo truyền thuyết.[3]\n\nNgày nay, Phủ Tây Hồ mở hội vào 2 ngày lễ chính là mùng 3 tháng 3 âm lịch và 13 tháng 8 âm lịch.",
+        "custom": false,
+        "latitude": 21.0625984,
+        "longitude": 105.8277652
+      },
+      "startTime": 30600,
+      "endTime": 37800,
+      "dayNumber": "1",
+      "note": null
+    },
+    {
+      "tripDetailsId": 1084,
+      "masterActivity": {
+        "activityId": 55,
+        "name": "Phố Phan Đình Phùng",
+        "address": "Quán Thánh, Ba Đình, Hanoi, Vietnam",
+        "category": {
+          "categoryID": 2,
+          "categoryName": "Outdoors",
+          "description": null
         },
-        {
-            "tripDetailsId": 1085,
-            "masterActivity": {
-                "activityId": 24,
-                "name": "Cầu Thê Húc",
-                "address": "Hàng Trống, Hoàn Kiếm, Hà Nội",
-                "category": {
-                    "categoryID": 4,
-                    "categoryName": "Historic sights",
-                    "description": null
-                },
-                "googleRate": 4.6,
-                "openTime": 21600,
-                "duration": 5400,
-                "closeTime": 86340,
-                "typicalPrice": 25000.0,
-                "images": [{
-                    "imageId": 24,
-                    "url": "img/poi/24/the-red-bridge.jpg",
-                    "description": null
-                }],
-                "description": "Cầu Thê Húc là cây cầu ở hồ Hoàn Kiếm, Hà Nội, thủ đô của Việt Nam.\n\nNối từ Hồ Hoàn Kiếm ra hòn đảo nhỏ nơi có đền Ngọc Sơn, cây cầu này màu đỏ son, làm bằng gỗ, có nhiều trụ liên tiếp. Cầu được Thần Siêu Nguyễn Văn Siêu xây dựng vào năm 1865. Tên của cầu có nghĩa là \"nơi đậu ánh sáng Mặt Trời buổi sáng sớm\" hay \"Ngưng tụ hào quang\" (棲旭).",
-                "custom": false,
-                "latitude": 21.0307168,
-                "longitude": 105.8528256
-            },
-            "startTime": 47133,
-            "endTime": 52533,
-            "dayNumber": "1",
-            "note": null
+        "googleRate": 4.8,
+        "openTime": 0,
+        "duration": 7200,
+        "closeTime": 86340,
+        "typicalPrice": 25000.0,
+        "images": [
+          {
+            "imageId": 55,
+            "url": "img/poi/55/avc.jpg",
+            "description": null
+          }
+        ],
+        "description": "Phan Đình Phùng - phố lãng mạn, mộng mơ bởi có hàng cây xanh thuộc vào loại đẹp nhất thành phố với ba hàng cây, vỉa hè rộng rãi, thoáng mát. Những cây xanh trên phố đa phần là sấu có tuổi đời cả trăm năm. Hàng cây khép tán che kín lòng phố, mùa hè hay bất cứ mùa nào, người đi đường cũng được hưởng bóng mát và nghe thấy tiếng gió rì rào trên tán lá.\n\nNhững cây sấu ở phố Phan Đình Phùng đã trở thành những gốc cây cổ thụ kềnh càng, nhiều hình dạng. Có những chỗ, gốc cây giống những vách thuyền, những chỗ khác, gốc cây lại như một vòm hang đá, và có những chỗ gốc cây như một con bạch tuộc khổng lồ với rất nhiều tua vòi tỏa ra các hướng. Nói về sự lãng mạn và thanh bình của những cây sấu phố Phan Đình Phùng thì nói mãi không hết, đặc biệt vào mùa sấu thay lá cuối xuân, đầu hè. Lá sấu rụng vàng xanh hè phố, mỗi khi gió thổi thì có một cơn mưa lá sấu trút trên đường, vì thế con phố luôn có đông người đi dạo và chụp ảnh, đặc biệt là những bạn trẻ và khách du lịch",
+        "custom": false,
+        "latitude": 21.0407726,
+        "longitude": 105.8410151
+      },
+      "startTime": 39150,
+      "endTime": 46350,
+      "dayNumber": "1",
+      "note": null
+    },
+    {
+      "tripDetailsId": 1085,
+      "masterActivity": {
+        "activityId": 24,
+        "name": "Cầu Thê Húc",
+        "address": "Hàng Trống, Hoàn Kiếm, Hà Nội",
+        "category": {
+          "categoryID": 4,
+          "categoryName": "Historic sights",
+          "description": null
         },
-        {
-            "tripDetailsId": 1086,
-            "masterActivity": {
-                "activityId": 23,
-                "name": "Cột cờ Hà Nội",
-                "address": "28A Điện Biên Phủ, Điện Biên, Ba Đình, Hà Nội",
-                "category": {
-                    "categoryID": 4,
-                    "categoryName": "Historic sights",
-                    "description": null
-                },
-                "googleRate": 4.5,
-                "openTime": 32400,
-                "duration": 3600,
-                "closeTime": 61200,
-                "typicalPrice": 25000.0,
-                "images": [{
-                    "imageId": 23,
-                    "url": "img/poi/23/cotco.jpg",
-                    "description": null
-                }],
-                "description": "Cột cờ Hà Nội hay còn gọi Kỳ đài Hà Nội là một kết cấu dạng tháp được xây dựng cùng thời với thành Hà Nội dưới triều nhà Nguyễn (bắt đầu năm 1805, hoàn thành năm 1812). Kiến trúc cột cờ bao gồm ba tầng đế và một thân cột, được coi là một trong những biểu tượng của thành phố.",
-                "custom": false,
-                "latitude": 21.0325556,
-                "longitude": 105.8398039
-            },
-            "startTime": 53235,
-            "endTime": 56835,
-            "dayNumber": "1",
-            "note": null
+        "googleRate": 4.6,
+        "openTime": 21600,
+        "duration": 5400,
+        "closeTime": 86340,
+        "typicalPrice": 25000.0,
+        "images": [
+          {
+            "imageId": 24,
+            "url": "img/poi/24/the-red-bridge.jpg",
+            "description": null
+          }
+        ],
+        "description": "Cầu Thê Húc là cây cầu ở hồ Hoàn Kiếm, Hà Nội, thủ đô của Việt Nam.\n\nNối từ Hồ Hoàn Kiếm ra hòn đảo nhỏ nơi có đền Ngọc Sơn, cây cầu này màu đỏ son, làm bằng gỗ, có nhiều trụ liên tiếp. Cầu được Thần Siêu Nguyễn Văn Siêu xây dựng vào năm 1865. Tên của cầu có nghĩa là \"nơi đậu ánh sáng Mặt Trời buổi sáng sớm\" hay \"Ngưng tụ hào quang\" (棲旭).",
+        "custom": false,
+        "latitude": 21.0307168,
+        "longitude": 105.8528256
+      },
+      "startTime": 47133,
+      "endTime": 52533,
+      "dayNumber": "1",
+      "note": null
+    },
+    {
+      "tripDetailsId": 1086,
+      "masterActivity": {
+        "activityId": 23,
+        "name": "Cột cờ Hà Nội",
+        "address": "28A Điện Biên Phủ, Điện Biên, Ba Đình, Hà Nội",
+        "category": {
+          "categoryID": 4,
+          "categoryName": "Historic sights",
+          "description": null
         },
-        {
-            "tripDetailsId": 1087,
-            "masterActivity": {
-                "activityId": 20,
-                "name": "Tháp Rùa",
-                "address": "Hang Trong Street, Hoan Kiem District, Hanoi, Vietnam",
-                "category": {
-                    "categoryID": 4,
-                    "categoryName": "Historic sights",
-                    "description": null
-                },
-                "googleRate": 4.6,
-                "openTime": 0,
-                "duration": 5400,
-                "closeTime": 86340,
-                "typicalPrice": 25000.0,
-                "images": [{
-                    "imageId": 20,
-                    "url": "img/poi/20/thaprua.jpg",
-                    "description": null
-                }],
-                "description": "Tháp Rùa là một ngọn tháp nhỏ được xây dựng trên một gò đất giữa lòng Hồ Hoàn Kiếm, rộng khoảng 350 mét vuông. Nằm ngay vị trí trung tâm của thành phố Hà Nội, sở hữu vị trí vàng như thế bất cứ ai muốn tìm đến nhìn ngắm hình ảnh Tháp Rùa cổ kính cũng đều vô cùng dễ dàng.\n\nVào thời nhà Lý – Trần, Hồ Gươm được biết đến như một nơi vui chơi của đế vương, và đảo rùa là nơi xây dựng đình Tả Vọng để vua chúa thưởng ngoạn câu cá thư giãn, nhưng đến thời Nguyễn thì không còn nữa. Vào thời kì Pháp thuộc những năm 1883, có người nhà Bá Hộ Kim được cử làm trung gian Việt Pháp, thấy vị trí vô cùng đắc địa của đảo rùa nên ông có ý định xây tháp để chôn cất cha mẹ. Tháp Rùa được hoàn thành nhưng ý định chôn cất phụ thân ở đó không được thực hiện. Và Tháp Rùa tồn tại từ ngày đó đến nay và trở thành địa điểm nổi bật thu hút của Hà Nội.",
-                "custom": false,
-                "latitude": 21.0279,
-                "longitude": 105.8523
-            },
-            "startTime": 57294,
-            "endTime": 62694,
-            "dayNumber": "1",
-            "note": null
+        "googleRate": 4.5,
+        "openTime": 32400,
+        "duration": 3600,
+        "closeTime": 61200,
+        "typicalPrice": 25000.0,
+        "images": [
+          {
+            "imageId": 23,
+            "url": "img/poi/23/cotco.jpg",
+            "description": null
+          }
+        ],
+        "description": "Cột cờ Hà Nội hay còn gọi Kỳ đài Hà Nội là một kết cấu dạng tháp được xây dựng cùng thời với thành Hà Nội dưới triều nhà Nguyễn (bắt đầu năm 1805, hoàn thành năm 1812). Kiến trúc cột cờ bao gồm ba tầng đế và một thân cột, được coi là một trong những biểu tượng của thành phố.",
+        "custom": false,
+        "latitude": 21.0325556,
+        "longitude": 105.8398039
+      },
+      "startTime": 53235,
+      "endTime": 56835,
+      "dayNumber": "1",
+      "note": null
+    },
+    {
+      "tripDetailsId": 1087,
+      "masterActivity": {
+        "activityId": 20,
+        "name": "Tháp Rùa",
+        "address": "Hang Trong Street, Hoan Kiem District, Hanoi, Vietnam",
+        "category": {
+          "categoryID": 4,
+          "categoryName": "Historic sights",
+          "description": null
         },
-        {
-            "tripDetailsId": 1088,
-            "masterActivity": {
-                "activityId": 32,
-                "name": "Phố Hàng Gai",
-                "address": "Hoàn Kiếm",
-                "category": {
-                    "categoryID": 7,
-                    "categoryName": "Shopping",
-                    "description": null
-                },
-                "googleRate": 5.0,
-                "openTime": 21600,
-                "duration": 7200,
-                "closeTime": 79200,
-                "typicalPrice": 250000.0,
-                "images": [{
-                    "imageId": 32,
-                    "url": "img/poi/32/hang-gai-07.jpg",
-                    "description": null
-                }],
-                "description": "Con phố nhộn nhịp này nổi tiếng về lụa, đồ may đo, các phòng triển lãm nhiều màu sắc và đồ lưu niệm thủ công được bày bán trong những cửa hàng có màu vôi vàng xưa cũ.\n\nCòn được gọi là Phố Tơ lụa, Phố Hàng Gai sôi động là một trong những khu vực mua sắm nổi tiếng của Hà Nội. Con phố nổi tiếng với nhiều cửa hàng đồ tơ lụa và những hàng may đo theo yêu cầu của từng vị khách. Trên phông nền kết hợp giữa kiến trúc truyền thống và hiện đại là những quầy hàng, hiệu may, những người bán hàng rong và phòng triển lãm mỹ thuật. Trên phố có những chiếc xe máy đi qua, các loại áo váy truyền thống cũng như hiện đại bày trước các cửa hàng và mũ nón của Việt Nam cùng đèn lồng giấy treo thành hàng trên những bức tường.\n\nỞ phố Hàng Gai, du khách có thể được các thợ may lành nghề may đo trang phục chất lượng cao trong 48 giờ. Đi dọc phố, du khách sẽ thấy có rất nhiều mẫu lụa với đủ màu sắc để lựa chọn. Tại Hà Nội, làng Vạn Phúc là địa danh nổi tiếng sản xuất một số vải lụa hàng đầu Việt Nam. Du khách có thể chọn lụa in, lụa vẽ hoặc lụa vân. Hãy mang theo ảnh mẫu để chọn được đúng sản phẩm.\n\nTại đây, du khách cũng sẽ thấy những chiếc túi được sản xuất tại địa phương, đồ lưu niệm thủ công làm từ Giấy Dó truyền thống và vải thêu Việt Nam. Việt Nam có hơn 50 dân tộc, đồ thủ công và trang phục được bày bán ở đây đại diện cho nhiều thiết kế và cách dệt vải độc đáo của các dân tộc. Hãy tìm đồ nội thất khảm xà cừ, tranh sơn dầu và tranh màu nước, bản in, đồ cổ, đồ dùng sơn mài, tượng gốm và gỗ đàn hương điêu khắc.",
-                "custom": false,
-                "latitude": 21.0321797,
-                "longitude": 105.8504522
-            },
-            "startTime": 63072,
-            "endTime": 70272,
-            "dayNumber": "1",
-            "note": null
+        "googleRate": 4.6,
+        "openTime": 0,
+        "duration": 5400,
+        "closeTime": 86340,
+        "typicalPrice": 25000.0,
+        "images": [
+          {
+            "imageId": 20,
+            "url": "img/poi/20/thaprua.jpg",
+            "description": null
+          }
+        ],
+        "description": "Tháp Rùa là một ngọn tháp nhỏ được xây dựng trên một gò đất giữa lòng Hồ Hoàn Kiếm, rộng khoảng 350 mét vuông. Nằm ngay vị trí trung tâm của thành phố Hà Nội, sở hữu vị trí vàng như thế bất cứ ai muốn tìm đến nhìn ngắm hình ảnh Tháp Rùa cổ kính cũng đều vô cùng dễ dàng.\n\nVào thời nhà Lý – Trần, Hồ Gươm được biết đến như một nơi vui chơi của đế vương, và đảo rùa là nơi xây dựng đình Tả Vọng để vua chúa thưởng ngoạn câu cá thư giãn, nhưng đến thời Nguyễn thì không còn nữa. Vào thời kì Pháp thuộc những năm 1883, có người nhà Bá Hộ Kim được cử làm trung gian Việt Pháp, thấy vị trí vô cùng đắc địa của đảo rùa nên ông có ý định xây tháp để chôn cất cha mẹ. Tháp Rùa được hoàn thành nhưng ý định chôn cất phụ thân ở đó không được thực hiện. Và Tháp Rùa tồn tại từ ngày đó đến nay và trở thành địa điểm nổi bật thu hút của Hà Nội.",
+        "custom": false,
+        "latitude": 21.0279,
+        "longitude": 105.8523
+      },
+      "startTime": 57294,
+      "endTime": 62694,
+      "dayNumber": "1",
+      "note": null
+    },
+    {
+      "tripDetailsId": 1088,
+      "masterActivity": {
+        "activityId": 32,
+        "name": "Phố Hàng Gai",
+        "address": "Hoàn Kiếm",
+        "category": {
+          "categoryID": 7,
+          "categoryName": "Shopping",
+          "description": null
         },
-        {
-            "tripDetailsId": 1089,
-            "masterActivity": {
-                "activityId": 38,
-                "name": "Con đường Gốm sứ",
-                "address": "11 P. Hàng Vôi, Lý Thái Tổ, Hoàn Kiếm, Hà Nội",
-                "category": {
-                    "categoryID": 2,
-                    "categoryName": "Outdoors",
-                    "description": null
-                },
-                "googleRate": 4.3,
-                "openTime": 32400,
-                "duration": 3600,
-                "closeTime": 61200,
-                "typicalPrice": 25000.0,
-                "images": [{
-                    "imageId": 38,
-                    "url": "img/poi/38/hanoi-ceramic-mosaic.jpg",
-                    "description": null
-                }],
-                "description": "Con đường gốm sứ ven sông Hồng xuất phát từ ý tưởng của họa sĩ, nhà báo Nguyễn Thu Thủy là một công trình nghệ thuật trong chương trình chào đón đại lễ 1000 năm Thăng Long của nhân dân thủ đô Hà Nội. Công trình này đã nhận được giải thưởng \"Bùi Xuân Phái\" vì tình yêu Hà Nội\" năm 2008 và Tổ chức Guinness thế giới đã công nhận đây là bức tranh gốm dài nhất thế giới (dài xấp xỉ 3,85 km) - đạt kỷ lục Guinness.",
-                "custom": false,
-                "latitude": 21.0300768,
-                "longitude": 105.8574661
-            },
-            "startTime": 70515,
-            "endTime": 74115,
-            "dayNumber": "1",
-            "note": null
+        "googleRate": 5.0,
+        "openTime": 21600,
+        "duration": 7200,
+        "closeTime": 79200,
+        "typicalPrice": 250000.0,
+        "images": [
+          {
+            "imageId": 32,
+            "url": "img/poi/32/hang-gai-07.jpg",
+            "description": null
+          }
+        ],
+        "description": "Con phố nhộn nhịp này nổi tiếng về lụa, đồ may đo, các phòng triển lãm nhiều màu sắc và đồ lưu niệm thủ công được bày bán trong những cửa hàng có màu vôi vàng xưa cũ.\n\nCòn được gọi là Phố Tơ lụa, Phố Hàng Gai sôi động là một trong những khu vực mua sắm nổi tiếng của Hà Nội. Con phố nổi tiếng với nhiều cửa hàng đồ tơ lụa và những hàng may đo theo yêu cầu của từng vị khách. Trên phông nền kết hợp giữa kiến trúc truyền thống và hiện đại là những quầy hàng, hiệu may, những người bán hàng rong và phòng triển lãm mỹ thuật. Trên phố có những chiếc xe máy đi qua, các loại áo váy truyền thống cũng như hiện đại bày trước các cửa hàng và mũ nón của Việt Nam cùng đèn lồng giấy treo thành hàng trên những bức tường.\n\nỞ phố Hàng Gai, du khách có thể được các thợ may lành nghề may đo trang phục chất lượng cao trong 48 giờ. Đi dọc phố, du khách sẽ thấy có rất nhiều mẫu lụa với đủ màu sắc để lựa chọn. Tại Hà Nội, làng Vạn Phúc là địa danh nổi tiếng sản xuất một số vải lụa hàng đầu Việt Nam. Du khách có thể chọn lụa in, lụa vẽ hoặc lụa vân. Hãy mang theo ảnh mẫu để chọn được đúng sản phẩm.\n\nTại đây, du khách cũng sẽ thấy những chiếc túi được sản xuất tại địa phương, đồ lưu niệm thủ công làm từ Giấy Dó truyền thống và vải thêu Việt Nam. Việt Nam có hơn 50 dân tộc, đồ thủ công và trang phục được bày bán ở đây đại diện cho nhiều thiết kế và cách dệt vải độc đáo của các dân tộc. Hãy tìm đồ nội thất khảm xà cừ, tranh sơn dầu và tranh màu nước, bản in, đồ cổ, đồ dùng sơn mài, tượng gốm và gỗ đàn hương điêu khắc.",
+        "custom": false,
+        "latitude": 21.0321797,
+        "longitude": 105.8504522
+      },
+      "startTime": 63072,
+      "endTime": 70272,
+      "dayNumber": "1",
+      "note": null
+    },
+    {
+      "tripDetailsId": 1089,
+      "masterActivity": {
+        "activityId": 38,
+        "name": "Con đường Gốm sứ",
+        "address": "11 P. Hàng Vôi, Lý Thái Tổ, Hoàn Kiếm, Hà Nội",
+        "category": {
+          "categoryID": 2,
+          "categoryName": "Outdoors",
+          "description": null
         },
-        {
-            "tripDetailsId": 1090,
-            "masterActivity": {
-                "activityId": 42,
-                "name": "Nhà cổ Mã Mây",
-                "address": "87 P. Mã Mây, Hàng Buồm, Hoàn Kiếm, Hà Nội",
-                "category": {
-                    "categoryID": 1,
-                    "categoryName": "Art and Culture",
-                    "description": null
-                },
-                "googleRate": 4.2,
-                "openTime": 36000,
-                "duration": 3600,
-                "closeTime": 79200,
-                "typicalPrice": 120000.0,
-                "images": [{
-                    "imageId": 42,
-                    "url": "img/poi/42/home-stay-in-heritage.jpg",
-                    "description": null
-                }],
-                "description": "Ngôi nhà 87 Mã Mây là một trong 14 ngôi nhà cổ ở Hà Nội được xây dựng khoảng cuối thế kỷ XIX. Tổng diện tích của ngôi nhà là 157,6m2, được xây dựng vuông góc với đường phố, chiều dài đất là 28m, chiều rộng mặt tiền 5m và chiều rộng của mặt hậu là 6m.\n\nHiện nay, ngôi nhà trở thành điểm thông tin, tuyên truyền giới thiệu đến người dân và du khách về ngôi nhà phố của người Việt trong khu phố cổ Hà Nội. Du khách đến tham quan ngôi nhà, sẽ được hiểu hơn về nếp sống, sinh hoạt của người Hà Nội xưa. Đây cũng là nơi giới thiệu kiến trúc cổ Hà Nội và gợi ý nhân dân phố cổ cách bảo tồn, tôn tạo nhà cổ.",
-                "custom": false,
-                "latitude": 21.034419,
-                "longitude": 105.8535283
-            },
-            "startTime": 74358,
-            "endTime": 77958,
-            "dayNumber": "1",
-            "note": null
+        "googleRate": 4.3,
+        "openTime": 32400,
+        "duration": 3600,
+        "closeTime": 61200,
+        "typicalPrice": 25000.0,
+        "images": [
+          {
+            "imageId": 38,
+            "url": "img/poi/38/hanoi-ceramic-mosaic.jpg",
+            "description": null
+          }
+        ],
+        "description": "Con đường gốm sứ ven sông Hồng xuất phát từ ý tưởng của họa sĩ, nhà báo Nguyễn Thu Thủy là một công trình nghệ thuật trong chương trình chào đón đại lễ 1000 năm Thăng Long của nhân dân thủ đô Hà Nội. Công trình này đã nhận được giải thưởng \"Bùi Xuân Phái\" vì tình yêu Hà Nội\" năm 2008 và Tổ chức Guinness thế giới đã công nhận đây là bức tranh gốm dài nhất thế giới (dài xấp xỉ 3,85 km) - đạt kỷ lục Guinness.",
+        "custom": false,
+        "latitude": 21.0300768,
+        "longitude": 105.8574661
+      },
+      "startTime": 70515,
+      "endTime": 74115,
+      "dayNumber": "1",
+      "note": null
+    },
+    {
+      "tripDetailsId": 1090,
+      "masterActivity": {
+        "activityId": 42,
+        "name": "Nhà cổ Mã Mây",
+        "address": "87 P. Mã Mây, Hàng Buồm, Hoàn Kiếm, Hà Nội",
+        "category": {
+          "categoryID": 1,
+          "categoryName": "Art and Culture",
+          "description": null
         },
-        {
-            "tripDetailsId": 1091,
-            "masterActivity": {
-                "activityId": 17,
-                "name": "Bảo tàng Mỹ thuật Việt Nam",
-                "address": "66 P. Nguyễn Thái Học, Điện Biên, Ba Đình, Hà Nội",
-                "category": {
-                    "categoryID": 5,
-                    "categoryName": "Museums",
-                    "description": null
-                },
-                "googleRate": 4.4,
-                "openTime": 30600,
-                "duration": 7200,
-                "closeTime": 61200,
-                "typicalPrice": 40000.0,
-                "images": [{
-                    "imageId": 17,
-                    "url": "img/poi/17/museums.jpg",
-                    "description": null
-                }],
-                "description": "Nằm trong hệ thống các bảo tàng quốc gia Việt Nam, trực thuộc Bộ Văn hóa Thể thao và Du lịch, Bảo tàng Mỹ thuật Việt Nam được đánh giá là một trong những bảo tàng có vị trí quan trọng nhất trong việc lưu giữ và phát huy kho tàng di sản văn hoá nghệ thuật của cộng đồng các dân tộc Việt Nam.\n\nThành lập ngày 24 tháng 6 năm 1966, sứ mệnh của Bảo tàng là nghiên cứu, sưu tầm, kiểm kê, bảo quản, tu sửa, phục chế, trưng bày, giáo dục, truyền thông và phát huy giá trị các tài liệu, hiện vật, các tác phẩm mỹ thuật tiêu biểu của nước nhà tới công chúng trong và ngoài nước.",
-                "custom": false,
-                "latitude": 21.0307844,
-                "longitude": 105.837084
-            },
-            "startTime": 30600,
-            "endTime": 37800,
-            "dayNumber": "2",
-            "note": null
+        "googleRate": 4.2,
+        "openTime": 36000,
+        "duration": 3600,
+        "closeTime": 79200,
+        "typicalPrice": 120000.0,
+        "images": [
+          {
+            "imageId": 42,
+            "url": "img/poi/42/home-stay-in-heritage.jpg",
+            "description": null
+          }
+        ],
+        "description": "Ngôi nhà 87 Mã Mây là một trong 14 ngôi nhà cổ ở Hà Nội được xây dựng khoảng cuối thế kỷ XIX. Tổng diện tích của ngôi nhà là 157,6m2, được xây dựng vuông góc với đường phố, chiều dài đất là 28m, chiều rộng mặt tiền 5m và chiều rộng của mặt hậu là 6m.\n\nHiện nay, ngôi nhà trở thành điểm thông tin, tuyên truyền giới thiệu đến người dân và du khách về ngôi nhà phố của người Việt trong khu phố cổ Hà Nội. Du khách đến tham quan ngôi nhà, sẽ được hiểu hơn về nếp sống, sinh hoạt của người Hà Nội xưa. Đây cũng là nơi giới thiệu kiến trúc cổ Hà Nội và gợi ý nhân dân phố cổ cách bảo tồn, tôn tạo nhà cổ.",
+        "custom": false,
+        "latitude": 21.034419,
+        "longitude": 105.8535283
+      },
+      "startTime": 74358,
+      "endTime": 77958,
+      "dayNumber": "1",
+      "note": null
+    },
+    {
+      "tripDetailsId": 1091,
+      "masterActivity": {
+        "activityId": 17,
+        "name": "Bảo tàng Mỹ thuật Việt Nam",
+        "address": "66 P. Nguyễn Thái Học, Điện Biên, Ba Đình, Hà Nội",
+        "category": {
+          "categoryID": 5,
+          "categoryName": "Museums",
+          "description": null
         },
-        {
-            "tripDetailsId": 1092,
-            "masterActivity": {
-                "activityId": 1,
-                "name": "Hồ Hoàn Kiếm",
-                "address": "Hoàn Kiếm, Hà Nội",
-                "category": {
-                    "categoryID": 2,
-                    "categoryName": "Outdoors",
-                    "description": null
-                },
-                "googleRate": 4.6,
-                "openTime": 0,
-                "duration": 7200,
-                "closeTime": 86340,
-                "typicalPrice": 50000.0,
-                "images": [{
-                    "imageId": 1,
-                    "url": "img/poi/1/Thap_Rua.jpg",
-                    "description": null
-                }],
-                "description": "Hồ Hoàn Kiếm (chữ Nôm: 湖還劍 hoặc 還劍湖) còn được gọi là Hồ Gươm là một hồ nước ngọt tự nhiên nằm ở trung tâm thành phố Hà Nội. Hồ có diện tích khoảng 12 ha. Trước kia, hồ còn có các tên gọi là hồ Lục Thủy (vì nước có màu xanh quanh năm), hồ Thủy Quân (dùng để duyệt thủy binh), hồ Tả Vọng và Hữu Vọng (trong thời Lê mạt). Tên gọi Hoàn Kiếm xuất hiện vào đầu thế kỷ 15 gắn với truyền thuyết vua Lê Lợi trả lại gươm thần cho Rùa thần. Theo truyền thuyết, trong một lần vua Lê Thái Tổ dạo chơi trên thuyền, bỗng một con rùa vàng nổi lên mặt nước đòi nhà vua trả thanh gươm mà Long Vương cho mượn để đánh đuổi quân Minh xâm lược. Nhà vua liền trả gươm cho rùa thần và rùa lặn xuống nước biến mất. Từ đó hồ được lấy tên là hồ Hoàn Kiếm. Tên hồ còn được lấy để đặt cho một quận trung tâm của Hà Nội (quận Hoàn Kiếm) và là hồ nước duy nhất của quận này cho đến ngày nay.",
-                "custom": false,
-                "latitude": 21.02877475,
-                "longitude": 105.8523647
-            },
-            "startTime": 38421,
-            "endTime": 45621,
-            "dayNumber": "2",
-            "note": null
+        "googleRate": 4.4,
+        "openTime": 30600,
+        "duration": 7200,
+        "closeTime": 61200,
+        "typicalPrice": 40000.0,
+        "images": [
+          {
+            "imageId": 17,
+            "url": "img/poi/17/museums.jpg",
+            "description": null
+          }
+        ],
+        "description": "Nằm trong hệ thống các bảo tàng quốc gia Việt Nam, trực thuộc Bộ Văn hóa Thể thao và Du lịch, Bảo tàng Mỹ thuật Việt Nam được đánh giá là một trong những bảo tàng có vị trí quan trọng nhất trong việc lưu giữ và phát huy kho tàng di sản văn hoá nghệ thuật của cộng đồng các dân tộc Việt Nam.\n\nThành lập ngày 24 tháng 6 năm 1966, sứ mệnh của Bảo tàng là nghiên cứu, sưu tầm, kiểm kê, bảo quản, tu sửa, phục chế, trưng bày, giáo dục, truyền thông và phát huy giá trị các tài liệu, hiện vật, các tác phẩm mỹ thuật tiêu biểu của nước nhà tới công chúng trong và ngoài nước.",
+        "custom": false,
+        "latitude": 21.0307844,
+        "longitude": 105.837084
+      },
+      "startTime": 30600,
+      "endTime": 37800,
+      "dayNumber": "2",
+      "note": null
+    },
+    {
+      "tripDetailsId": 1092,
+      "masterActivity": {
+        "activityId": 1,
+        "name": "Hồ Hoàn Kiếm",
+        "address": "Hoàn Kiếm, Hà Nội",
+        "category": {
+          "categoryID": 2,
+          "categoryName": "Outdoors",
+          "description": null
         },
-        {
-            "tripDetailsId": 1093,
-            "masterActivity": {
-                "activityId": 56,
-                "name": "Phố Hàng Đậu",
-                "address": "Ly Thai To, Hoàn Kiếm, Hanoi, Vietnam",
-                "category": {
-                    "categoryID": 2,
-                    "categoryName": "Outdoors",
-                    "description": null
-                },
-                "googleRate": 4.8,
-                "openTime": 0,
-                "duration": 7200,
-                "closeTime": 86340,
-                "typicalPrice": 25000.0,
-                "images": [{
-                    "imageId": 56,
-                    "url": "img/poi/56/Hang-Dau-Street-Hoan-Kiem-District-Hanoi.jpg",
-                    "description": null
-                }],
-                "description": "Phố Hàng Đậu dài 272m, nay thuộc phường Đồng Xuân, quận Hoàn Kiếm, Hà Nội; cách Hồ Gươm hơn 1km về hướng bắc. Từ ngã tư Yên Phụ – Trần Nhật Duật, phố đi về hướng tây, cắt ngang phố Nguyễn Thiệp rồi kéo qua ngã ba Hồng Phúc đến tháp nước Hàng Đậu, nơi giáp với các phố Hàng Than, Hàng Giấy, Hàng Cót, Phan Đình Phùng, Quán Thánh.\n\nPhố Hàng Đậu có từ trước khi thực dân Pháp chiếm Hà Nội. Đoạn đường này có lối rẽ vào các phố Nguyễn Thiệp, Hàng Giấy cho nên trở thành một nút giao thông nối bến Nứa ven sông Hồng với các chợ ở khu vực phía bắc của tòa thành cũ. Đoạn cuối phố rẽ vào phố Hàng Cót thì nối các phường dân cư đông đúc ở mé Cửa Bắc với Cửa Đông, do đó phố Hàng Đậu được coi như đường ranh giới giữa hai khu vực. Những ngày phiên chợ, nông dân gánh các loại hạt đậu, hạt đỗ đến bán ở đây cho người thành thị mua về làm đậu phụ, nước tương, giá đỗ… dần dần trở thành tên phố.\n\nNgày nay các hộ trên phố Hàng Đậu kinh doanh nhiều mặt hàng khác như quần áo, tân dược, điện thoại di động, cá cảnh, cần câu, bể cá v.v.. Các cửa hàng ăn đôi khi chiếm cả vỉa hè. Phố vẫn là một trục giao thông quan trọng, mặc dù Hà Nội đã có thêm nhiều cây cầu khác ngoài cầu Long Biên. Ngay đầu phía đông phố, Bến Nứa được xây dựng lại thành một điểm trung chuyển xe bus tấp nập gần suốt ngày đêm.",
-                "custom": false,
-                "latitude": 21.0312796,
-                "longitude": 105.8539261
-            },
-            "startTime": 45945,
-            "endTime": 53145,
-            "dayNumber": "2",
-            "note": null
+        "googleRate": 4.6,
+        "openTime": 0,
+        "duration": 7200,
+        "closeTime": 86340,
+        "typicalPrice": 50000.0,
+        "images": [
+          {
+            "imageId": 1,
+            "url": "img/poi/1/Thap_Rua.jpg",
+            "description": null
+          }
+        ],
+        "description": "Hồ Hoàn Kiếm (chữ Nôm: 湖還劍 hoặc 還劍湖) còn được gọi là Hồ Gươm là một hồ nước ngọt tự nhiên nằm ở trung tâm thành phố Hà Nội. Hồ có diện tích khoảng 12 ha. Trước kia, hồ còn có các tên gọi là hồ Lục Thủy (vì nước có màu xanh quanh năm), hồ Thủy Quân (dùng để duyệt thủy binh), hồ Tả Vọng và Hữu Vọng (trong thời Lê mạt). Tên gọi Hoàn Kiếm xuất hiện vào đầu thế kỷ 15 gắn với truyền thuyết vua Lê Lợi trả lại gươm thần cho Rùa thần. Theo truyền thuyết, trong một lần vua Lê Thái Tổ dạo chơi trên thuyền, bỗng một con rùa vàng nổi lên mặt nước đòi nhà vua trả thanh gươm mà Long Vương cho mượn để đánh đuổi quân Minh xâm lược. Nhà vua liền trả gươm cho rùa thần và rùa lặn xuống nước biến mất. Từ đó hồ được lấy tên là hồ Hoàn Kiếm. Tên hồ còn được lấy để đặt cho một quận trung tâm của Hà Nội (quận Hoàn Kiếm) và là hồ nước duy nhất của quận này cho đến ngày nay.",
+        "custom": false,
+        "latitude": 21.02877475,
+        "longitude": 105.8523647
+      },
+      "startTime": 38421,
+      "endTime": 45621,
+      "dayNumber": "2",
+      "note": null
+    },
+    {
+      "tripDetailsId": 1093,
+      "masterActivity": {
+        "activityId": 56,
+        "name": "Phố Hàng Đậu",
+        "address": "Ly Thai To, Hoàn Kiếm, Hanoi, Vietnam",
+        "category": {
+          "categoryID": 2,
+          "categoryName": "Outdoors",
+          "description": null
         },
-        {
-            "tripDetailsId": 1094,
-            "masterActivity": {
-                "activityId": 60,
-                "name": "La Belle Vie Spa Massage",
-                "address": "48 P. Lương Văn Can, Hàng Gai, Hoàn Kiếm, Hà Nội",
-                "category": {
-                    "categoryID": 6,
-                    "categoryName": "Spas & Wellness",
-                    "description": null
-                },
-                "googleRate": 4.9,
-                "openTime": 32400,
-                "duration": 7200,
-                "closeTime": 79200,
-                "typicalPrice": 750000.0,
-                "images": [{
-                    "imageId": 60,
-                    "url": "img/poi/60/2022-06-04.jpg",
-                    "description": null
-                }],
-                "description": "Đội ngũ Labelle Massage bao gồm các chuyên gia trị liệu và thẩm mỹ có kiến thức chuyên sâu về massage trị liệu, bấm huyệt, chăm sóc da mặt, móng tay và móng chân. Các nhà trị liệu của chúng tôi được đào tạo thường xuyên để tiếp xúc với các kỹ thuật mới và tiên phong. Không chỉ thân thiện và chuyên nghiệp, chúng tôi còn rất quan tâm đến nhu cầu của bạn và tùy chỉnh phương pháp điều trị dựa trên nhu cầu của bạn. Với hy vọng tạo ra một spa thực sự đầy cảm hứng, mỗi cá nhân trong đội ngũ của chúng tôi luôn cố gắng hết sức để làm cho mỗi liệu trình trở nên độc đáo.",
-                "custom": false,
-                "latitude": 21.0327469,
-                "longitude": 105.8504278
-            },
-            "startTime": 53604,
-            "endTime": 60804,
-            "dayNumber": "2",
-            "note": null
+        "googleRate": 4.8,
+        "openTime": 0,
+        "duration": 7200,
+        "closeTime": 86340,
+        "typicalPrice": 25000.0,
+        "images": [
+          {
+            "imageId": 56,
+            "url": "img/poi/56/Hang-Dau-Street-Hoan-Kiem-District-Hanoi.jpg",
+            "description": null
+          }
+        ],
+        "description": "Phố Hàng Đậu dài 272m, nay thuộc phường Đồng Xuân, quận Hoàn Kiếm, Hà Nội; cách Hồ Gươm hơn 1km về hướng bắc. Từ ngã tư Yên Phụ – Trần Nhật Duật, phố đi về hướng tây, cắt ngang phố Nguyễn Thiệp rồi kéo qua ngã ba Hồng Phúc đến tháp nước Hàng Đậu, nơi giáp với các phố Hàng Than, Hàng Giấy, Hàng Cót, Phan Đình Phùng, Quán Thánh.\n\nPhố Hàng Đậu có từ trước khi thực dân Pháp chiếm Hà Nội. Đoạn đường này có lối rẽ vào các phố Nguyễn Thiệp, Hàng Giấy cho nên trở thành một nút giao thông nối bến Nứa ven sông Hồng với các chợ ở khu vực phía bắc của tòa thành cũ. Đoạn cuối phố rẽ vào phố Hàng Cót thì nối các phường dân cư đông đúc ở mé Cửa Bắc với Cửa Đông, do đó phố Hàng Đậu được coi như đường ranh giới giữa hai khu vực. Những ngày phiên chợ, nông dân gánh các loại hạt đậu, hạt đỗ đến bán ở đây cho người thành thị mua về làm đậu phụ, nước tương, giá đỗ… dần dần trở thành tên phố.\n\nNgày nay các hộ trên phố Hàng Đậu kinh doanh nhiều mặt hàng khác như quần áo, tân dược, điện thoại di động, cá cảnh, cần câu, bể cá v.v.. Các cửa hàng ăn đôi khi chiếm cả vỉa hè. Phố vẫn là một trục giao thông quan trọng, mặc dù Hà Nội đã có thêm nhiều cây cầu khác ngoài cầu Long Biên. Ngay đầu phía đông phố, Bến Nứa được xây dựng lại thành một điểm trung chuyển xe bus tấp nập gần suốt ngày đêm.",
+        "custom": false,
+        "latitude": 21.0312796,
+        "longitude": 105.8539261
+      },
+      "startTime": 45945,
+      "endTime": 53145,
+      "dayNumber": "2",
+      "note": null
+    },
+    {
+      "tripDetailsId": 1094,
+      "masterActivity": {
+        "activityId": 60,
+        "name": "La Belle Vie Spa Massage",
+        "address": "48 P. Lương Văn Can, Hàng Gai, Hoàn Kiếm, Hà Nội",
+        "category": {
+          "categoryID": 6,
+          "categoryName": "Spas & Wellness",
+          "description": null
         },
-        {
-            "tripDetailsId": 1095,
-            "masterActivity": {
-                "activityId": 41,
-                "name": "Phố Mã Mây",
-                "address": "Hàng Buồm, Hoàn Kiếm, Hà Nội",
-                "category": {
-                    "categoryID": 4,
-                    "categoryName": "Historic sights",
-                    "description": null
-                },
-                "googleRate": 4.7,
-                "openTime": 0,
-                "duration": 7200,
-                "closeTime": 86340,
-                "typicalPrice": 250000.0,
-                "images": [{
-                    "imageId": 41,
-                    "url": "img/poi/41/street.jpg",
-                    "description": null
-                }],
-                "description": "Phố Mã Mây là một phố trong khu phố cổ Hà Nội, chạy theo hướng nam lên phía bắc rồi lại quay sang phía tây. Đầu phía nam của phố cắt phố Hàng Bạc, đầu quay sang phía tây nối vào phố Hàng Buồm.\n\nTên Mã Mây ghép từ hai tên phố Hàng Mã (đoạn phía nam) và Hàng Mây (đoạn phía bắc). Ngày nay phố Mã Mây chủ yếu là các công ty và nhà nghỉ phục vụ khách du lịch.",
-                "custom": false,
-                "latitude": 21.0348763,
-                "longitude": 105.8534239
-            },
-            "startTime": 61317,
-            "endTime": 68517,
-            "dayNumber": "2",
-            "note": null
+        "googleRate": 4.9,
+        "openTime": 32400,
+        "duration": 7200,
+        "closeTime": 79200,
+        "typicalPrice": 750000.0,
+        "images": [
+          {
+            "imageId": 60,
+            "url": "img/poi/60/2022-06-04.jpg",
+            "description": null
+          }
+        ],
+        "description": "Đội ngũ Labelle Massage bao gồm các chuyên gia trị liệu và thẩm mỹ có kiến thức chuyên sâu về massage trị liệu, bấm huyệt, chăm sóc da mặt, móng tay và móng chân. Các nhà trị liệu của chúng tôi được đào tạo thường xuyên để tiếp xúc với các kỹ thuật mới và tiên phong. Không chỉ thân thiện và chuyên nghiệp, chúng tôi còn rất quan tâm đến nhu cầu của bạn và tùy chỉnh phương pháp điều trị dựa trên nhu cầu của bạn. Với hy vọng tạo ra một spa thực sự đầy cảm hứng, mỗi cá nhân trong đội ngũ của chúng tôi luôn cố gắng hết sức để làm cho mỗi liệu trình trở nên độc đáo.",
+        "custom": false,
+        "latitude": 21.0327469,
+        "longitude": 105.8504278
+      },
+      "startTime": 53604,
+      "endTime": 60804,
+      "dayNumber": "2",
+      "note": null
+    },
+    {
+      "tripDetailsId": 1095,
+      "masterActivity": {
+        "activityId": 41,
+        "name": "Phố Mã Mây",
+        "address": "Hàng Buồm, Hoàn Kiếm, Hà Nội",
+        "category": {
+          "categoryID": 4,
+          "categoryName": "Historic sights",
+          "description": null
         },
-        {
-            "tripDetailsId": 1096,
-            "masterActivity": {
-                "activityId": 36,
-                "name": "Nguyên Art Gallery",
-                "address": "31 P. Văn Miếu, Văn Miếu, Đống Đa, Hà Nội",
-                "category": {
-                    "categoryID": 1,
-                    "categoryName": "Art and Culture",
-                    "description": null
-                },
-                "googleRate": 4.8,
-                "openTime": 32400,
-                "duration": 7200,
-                "closeTime": 64800,
-                "typicalPrice": 200000.0,
-                "images": [{
-                    "imageId": 36,
-                    "url": "img/poi/36/getlstd-property-photo.jpg",
-                    "description": null
-                }],
-                "description": "Kiệt Tác Nghệ Thuật là một thương hiệu của phòng tranh nghệ thuật Nguyen Art Gallery. Đây là thương hiệu đầu tiên có sự kết hợp của các tác phẩm tranh nghệ thuật nguyên bản và trang trí nội thất độc đáo, sáng tạo. Được sáng lập từ năm 2006, Kiệt Tác Nghệ Thuật cũng như Nguyen Art Gallery đã trở thành một điểm đến lý tưởng của các nhà sưu tập trong & ngoài nước với mong muốn quảng bá & giới thiệu nét đẹp tinh túy truyền thống của mỹ thuật hội họa Việt Nam. Với mong muốn phát triển các tác phẩm nghệ thuật “made in Vietnam”, Nguyen Art Gallery luôn định hướng các tác phẩm trực tiếp vào văn hóa sinh hoạt, nhu cầu sử dụng của người Việt Nam để mang đến một không gian sống thật sang trọng và ấn tượng, và để khẳng định gu thẩm mỹ ngày càng cao cả về chất và lượng của Việt Nam.",
-                "custom": false,
-                "latitude": 21.0285587,
-                "longitude": 105.8364668
-            },
-            "startTime": 69651,
-            "endTime": 76851,
-            "dayNumber": "2",
-            "note": null
-        }
-    ]
+        "googleRate": 4.7,
+        "openTime": 0,
+        "duration": 7200,
+        "closeTime": 86340,
+        "typicalPrice": 250000.0,
+        "images": [
+          {
+            "imageId": 41,
+            "url": "img/poi/41/street.jpg",
+            "description": null
+          }
+        ],
+        "description": "Phố Mã Mây là một phố trong khu phố cổ Hà Nội, chạy theo hướng nam lên phía bắc rồi lại quay sang phía tây. Đầu phía nam của phố cắt phố Hàng Bạc, đầu quay sang phía tây nối vào phố Hàng Buồm.\n\nTên Mã Mây ghép từ hai tên phố Hàng Mã (đoạn phía nam) và Hàng Mây (đoạn phía bắc). Ngày nay phố Mã Mây chủ yếu là các công ty và nhà nghỉ phục vụ khách du lịch.",
+        "custom": false,
+        "latitude": 21.0348763,
+        "longitude": 105.8534239
+      },
+      "startTime": 61317,
+      "endTime": 68517,
+      "dayNumber": "2",
+      "note": null
+    },
+    {
+      "tripDetailsId": 1096,
+      "masterActivity": {
+        "activityId": 36,
+        "name": "Nguyên Art Gallery",
+        "address": "31 P. Văn Miếu, Văn Miếu, Đống Đa, Hà Nội",
+        "category": {
+          "categoryID": 1,
+          "categoryName": "Art and Culture",
+          "description": null
+        },
+        "googleRate": 4.8,
+        "openTime": 32400,
+        "duration": 7200,
+        "closeTime": 64800,
+        "typicalPrice": 200000.0,
+        "images": [
+          {
+            "imageId": 36,
+            "url": "img/poi/36/getlstd-property-photo.jpg",
+            "description": null
+          }
+        ],
+        "description": "Kiệt Tác Nghệ Thuật là một thương hiệu của phòng tranh nghệ thuật Nguyen Art Gallery. Đây là thương hiệu đầu tiên có sự kết hợp của các tác phẩm tranh nghệ thuật nguyên bản và trang trí nội thất độc đáo, sáng tạo. Được sáng lập từ năm 2006, Kiệt Tác Nghệ Thuật cũng như Nguyen Art Gallery đã trở thành một điểm đến lý tưởng của các nhà sưu tập trong & ngoài nước với mong muốn quảng bá & giới thiệu nét đẹp tinh túy truyền thống của mỹ thuật hội họa Việt Nam. Với mong muốn phát triển các tác phẩm nghệ thuật “made in Vietnam”, Nguyen Art Gallery luôn định hướng các tác phẩm trực tiếp vào văn hóa sinh hoạt, nhu cầu sử dụng của người Việt Nam để mang đến một không gian sống thật sang trọng và ấn tượng, và để khẳng định gu thẩm mỹ ngày càng cao cả về chất và lượng của Việt Nam.",
+        "custom": false,
+        "latitude": 21.0285587,
+        "longitude": 105.8364668
+      },
+      "startTime": 69651,
+      "endTime": 76851,
+      "dayNumber": "2",
+      "note": null
+    }
+  ]
 }

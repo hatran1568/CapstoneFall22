@@ -15,32 +15,37 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/api"  )
-
+@RequestMapping("/api")
 public class RegisterController {
-    @Autowired
-    UserService userService;
-    @RequestMapping(value = "/register", produces = { "*/*" }, method = RequestMethod.POST)
-    public ResponseEntity authenticateUser(@RequestBody RegisterRequestDTO registerRequest) {
-        try{
-            User user = new User();
-            user.setEmail(registerRequest.getEmail());
-            user.setName(registerRequest.getUsername());
-            user.setPassword(new BCryptPasswordEncoder().encode(registerRequest.getPassword()));
-            user.setRole(new Role(2,"User"));
-            user.setProvider(Provider.LOCAL);
-            if(userService.checkExistByEmail(user.getEmail())==true){
-                return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-            }
-            else{
-                userService.register(user);
-                return  new ResponseEntity(HttpStatus.OK);
-            }
 
-        }
-        catch (Exception e){
-            return  new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-        }
+  @Autowired
+  UserService userService;
 
+  @RequestMapping(
+    value = "/register",
+    produces = { "*/*" },
+    method = RequestMethod.POST
+  )
+  public ResponseEntity authenticateUser(
+    @RequestBody RegisterRequestDTO registerRequest
+  ) {
+    try {
+      User user = new User();
+      user.setEmail(registerRequest.getEmail());
+      user.setName(registerRequest.getUsername());
+      user.setPassword(
+        new BCryptPasswordEncoder().encode(registerRequest.getPassword())
+      );
+      user.setRole(new Role(2, "User"));
+      user.setProvider(Provider.LOCAL);
+      if (userService.checkExistByEmail(user.getEmail()) == true) {
+        return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+      } else {
+        userService.register(user);
+        return new ResponseEntity(HttpStatus.OK);
+      }
+    } catch (Exception e) {
+      return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
     }
+  }
 }
